@@ -65,7 +65,7 @@ class WorksController < ApplicationController
     end
 
     def set_producer_options
-      @producer_options = Producer.order(:name).pluck(:name).uniq
+      @producer_options = Producer.order(:name).pluck(:name).uniq.join(";")
     end
 
     # Only allow a list of trusted parameters through.

@@ -1,26 +1,26 @@
-<%= form_with(model: work) do |form| %>
-  <%= render("shared/form_errors", form: form) %>
+<%= form_with(model: work, data: { controller: "works", works_producers_value: @producer_options }, html: {style: "display:flex;width:100%"}) do |form| %>
+  <div>
+    <div style="flex-grow:1">
+      <%= render("shared/form_errors", form: form) %>
 
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
-  </div>
-  <hr>
-  <div>
-    <div style="border: 1px solid #ccc; padding: 1em; width: 12em; margin-bottom:1em;">
-      <%= form.fields_for :producers, @work.producers.build do |t| %>
-        <%= t.label :name %>
-        <%= t.text_field :name, list: "producers_autocomplete" %>
-        <datalist id="producers_autocomplete">
-          <%= options_for_select(@producer_options) %>
-        </datalist>
-        <br>
-      <% end %>
+      <div>
+        <%= form.label :title, style: "display: block" %>
+        <%= form.text_field :title %>
+      </div>
+      <hr>
+
+      <%#= link_to "New Producer +", new_producer_path, data: { turbo_stream: true } %>
+      <%= link_to "New Producer +", "", data: { action: "click->works#appendForm" } %>
+
+      <%#= turbo_frame_tag "new_producers_list" do %>
+        <%# turbo_stream.append "new_producers_list"  %>
+      <%# end %>
+
+
+      <div data-works-target="newProducerList">
+      <div>
+
     </div>
-    <%# use more than one of these ^^^ to pass a collection, no modification needed. %>
-  </div>
-
-  <div>
-    <%= form.submit %>
+    <div style="flex-grow:1">2</div>
   </div>
 <% end %>

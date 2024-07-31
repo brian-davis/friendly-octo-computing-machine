@@ -1,5 +1,6 @@
 class ProducersController < ApplicationController
   before_action :set_producer, only: %i[ show edit update destroy ]
+  before_action :set_producer_options, only: %i[new]
   before_action :set_work_options, only: %i[ new edit ]
 
   # GET /producers or /producers.json
@@ -14,6 +15,11 @@ class ProducersController < ApplicationController
   # GET /producers/new
   def new
     @producer = Producer.new
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   # GET /producers/1/edit
@@ -62,6 +68,10 @@ class ProducersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_producer
       @producer = Producer.find(params[:id])
+    end
+
+    def set_producer_options
+      @producer_options = Producer.order(:name).pluck(:name).uniq
     end
 
     def set_work_options
