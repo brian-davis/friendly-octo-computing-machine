@@ -1,0 +1,26 @@
+<%= form_with(model: producer) do |form| %>
+    <%= render("shared/form_errors", form: form) %>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+  <hr>
+  <div>
+    <div style="border: 1px solid #ccc; padding: 1em; width: 12em; margin-bottom:1em;">
+      <%= form.fields_for :works, @producer.works.build do |t| %>
+        <%= t.label :title %>
+        <%= t.text_field :title, list: "works_autocomplete" %>
+        <datalist id="works_autocomplete">
+          <%= options_for_select(@work_options) %>
+        </datalist>
+        <br>
+      <% end %>
+    </div>
+    <%# use more than one of these ^^^ to pass a collection, no modification needed. %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
