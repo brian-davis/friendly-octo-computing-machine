@@ -14,7 +14,8 @@ class Work < ApplicationRecord
   def producers_attributes=(producers_attributes)
     producers_attributes.each do |_k, attrs|
       if (id = attrs.delete("id"))
-        work_producer = work_producers.find_by(id: id)
+        work_producer = work_producers.find_by(producer_id: id)
+        # destroy the join record, not the associated producer (orphan producers OK)
         work_producer.destroy if work_producer && attrs["_destroy"] == "1"
       elsif attrs["name"].present?
         # TODO: attrs on join model
