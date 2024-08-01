@@ -12,7 +12,7 @@ class WorkTest < ActiveSupport::TestCase
           }
         }
       }
-    }).require(:work).permit(:name, producers_attributes: [:name])
+    }).require(:work).permit(:name, producers_attributes: [:name, :id, :_destroy])
     new_work = Work.create(params1)
     assert new_work.persisted?
     assert_equal 1, new_work.work_producers.count
@@ -33,7 +33,7 @@ class WorkTest < ActiveSupport::TestCase
           }
         }
       }
-    }).require(:work).permit(:name, producers_attributes: [:name])
+    }).require(:work).permit(:name, producers_attributes: [:name, :id, :_destroy])
 
     new_work.update(params2)
 
@@ -59,7 +59,7 @@ class WorkTest < ActiveSupport::TestCase
           }
         }
       }
-    }).require(:work).permit(:name, producers_attributes: [:name])
+    }).require(:work).permit(:name, producers_attributes: [:name, :id, :_destroy])
 
     new_work.update(params3)
 
@@ -69,6 +69,35 @@ class WorkTest < ActiveSupport::TestCase
     assert_equal 1, Producer.where(name: "Producer1").count
     assert_equal 1, Producer.where(name: "Producer2").count
     assert_equal 1, Producer.where(name: "Producer3").count
+  end
+
+  test "attaching existing associated models" do
+    # part 1
+    existing_producer = Producer.create(name: "existing")
+
+    params = ActionController::Parameters.new({
+      work: {
+        title: "Work1",
+        producers_attributes: {
+          "0" => {
+            name: existing_producer.name # TODO: use id
+          },
+          "1" => {
+            name: "Producer2" # new
+          }
+        }
+      }
+    }).require(:work).permit(:name, producers_attributes: [:name, :id, :_destroy])
+
+    new_work = Work.create(params)
+
+    assert_equal 2, new_work.work_producers.count
+    assert_equal 2, new_work.producers.count
+    assert_equal "existing", new_work.producers.first.name
+    assert_equal "Producer2", new_work.producers.second.name
+
+    assert_equal 1, Producer.where(name: "existing").count
+    assert_equal 1, Producer.where(name: "Producer2").count
   end
 
   test "building and destroying associated models" do
@@ -82,7 +111,7 @@ class WorkTest < ActiveSupport::TestCase
           }
         }
       }
-    }).require(:work).permit(:name, producers_attributes: [:name])
+    }).require(:work).permit(:name, producers_attributes: [:name, :id, :_destroy])
     new_work = Work.create(params1)
 
     # part 2
@@ -98,7 +127,7 @@ class WorkTest < ActiveSupport::TestCase
           }
         }
       }
-    }).require(:work).permit(:name, producers_attributes: [:name])
+    }).require(:work).permit(:name, producers_attributes: [:name, :id, :_destroy])
 
     new_work.update(params2)
 
