@@ -1,68 +1,61 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["newProducerList"];
-  static values = {
-    producers: String,
-    producercount: Number,
-  };
+  static targets = [
+    "newProducerList",
+    "appendedProducerForm",
+    "persistedProducerForm",
+    "subForm",
+  ];
 
   connect() {
     // console.log("works connected");
-    // console.log("this.producersValue", this.producersValue);
-    this.producerOptions = this.producersValue.split(";");
-    // console.log(this.producerOptions);
-    console.log("this.producercountValue", this.producercountValue);
-    if (this.producercountValue > 0) {
-      this.appendFormIndex = this.producercountValue;
-    } else {
-      this.appendFormIndex = 0;
+  }
+
+  // as multiple new associated Producer sub-forms can be added dynamically,
+  // appended to the same list as sub-forms for already persisted associations (edit)
+  // ensure that they all get unique index values so nothing is overwriting anything
+  // else in the params collection.
+  rebaseAssociationForms() {
+    console.log("rebaseAssociationForms()");
+    for (let i = 0; i < this.subFormTargets.length; i++) {
+      let currentSubForm = this.subFormTargets[i];
+      // console.log(i);
+      // console.log(currentSubForm);
+      let label = currentSubForm.querySelector("label");
+      // console.log(label);
+
+      let labelFor = label.getAttribute("for");
+      // console.log(labelFor);
+      let newLabelFor = labelFor.replace(/[0-9]/g, String(i));
+      // console.log(newLabelFor);
+      label.setAttribute("for", newLabelFor);
+
+      let input = currentSubForm.querySelector("input");
+      // console.log(input);
+
+      let inputName = input.getAttribute("name");
+      // console.log(inputName);
+      let newInputName = inputName.replace(/[0-9]/g, String(i));
+      // console.log(newInputName);
+      input.setAttribute("name", newInputName);
+
+      let inputId = input.getAttribute("id");
+      let newInputId = inputId.replace(/[0-9]/g, String(i));
+      // console.log(newInputId);
+      input.setAttribute("id", newInputId);
     }
   }
 
-  // TODO: custom actions, move this to server side.  Append then rebase all HTML indexes
-  // https://turbo.hotwired.dev/handbook/streams#but-what-about-running-javascript%3F
-  formTemplate() {
-    let template =
-      '<li class="appendedProducerForm"><label for="work_producers_attributes_INDEX_name">Name</label><input list="producers_autocomplete" type="text" name="work[producers_attributes][INDEX][name]" id="work_producers_attributes_INDEX_name"><datalist id="producers_autocomplete">OPTIONS</datalist><span data-action="click->works#formDismiss" style="cursor: pointer; color: red; margin: 0.5em;">remove ⓧ</span><br></li>';
-
-    let optionTemplate = '<option value="NAME">NAME</option>';
-    let newOptions = this.producerOptions.map((name) => {
-      return optionTemplate.replaceAll("NAME", name);
-    });
-
-    let renderedElement = template
-      .replaceAll("INDEX", this.appendFormIndex)
-      .replaceAll("OPTIONS", newOptions);
-
-    return renderedElement;
+  appendedProducerFormTargetConnected() {
+    // TODO
+    // console.log("appendedProducerFormTargetConnected()");
+    this.rebaseAssociationForms();
   }
 
-  appendForm(event) {
-    event.preventDefault();
-    // console.log("append form");
-    let newForm = this.formTemplate();
-    this.newProducerListTarget.insertAdjacentHTML("beforeend", newForm);
-    this.appendFormIndex += 1;
-  }
-
-  formDismiss(event) {
-    const dismissableForm = event.srcElement.parentElement;
-    dismissableForm.remove();
-    this.appendFormIndex -= 1;
+  appendedProducerFormTargetDisconnected() {
+    // TODO
+    // console.log("appendedProducerFormTargetdisonnected()");
+    this.rebaseAssociationForms();
   }
 }
-
-// template based on Rails form generator:
-/*
-<div style="border: 1px solid #ccc; padding: 1em; width: 12em; margin-bottom:1em;">
-  <%= form.fields_for :producers, @work.producers.build do |t| %>
-    <%= t.label :name %>
-    <%= t.text_field :name, list: "producers_autocomplete" %>
-    <datalist id="producers_autocomplete">
-      <%= options_for_select(@producer_options) %>
-    </datalist>
-    <br>
-  <% end %>
-</div>
-*/

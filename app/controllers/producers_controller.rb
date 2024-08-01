@@ -14,11 +14,6 @@ class ProducersController < ApplicationController
   # GET /producers/new
   def new
     @producer = Producer.new
-
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
   end
 
   # GET /producers/1/edit

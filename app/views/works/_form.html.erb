@@ -1,4 +1,4 @@
-<%= form_with(model: work, data: { controller: "works", works_producers_value: @producer_options, works_producercount_value: @work.producers.size }) do |form| %>
+<%= form_with(model: work, data: { controller: "works" }) do |form| %>
   <%= render("shared/form_errors", form: form) %>
   <ul class="flex-outer">
     <li>
@@ -9,24 +9,13 @@
       <p>
       Authors
       <br>
-      <%= link_to("New Author +", nil, { data: { action: "click->works#appendForm" }}) %>
+      <%= link_to("New Author +", build_producer_work_path(@work), data: { turbo_stream: true }) %>
       </p>
-      <ul class="flex-inner" data-works-target="newProducerList">
-        <%# JS %>
-
+      <ul class="flex-inner" data-works-target="newProducerList" id="new_producers_list">
+        <%# TURBO %>
         <% @work.producers.each do |producer| %>
-          <li class="appendedProducerForm">
-            <%= form.fields_for :producers, producer do |t| %>
-              <%= t.hidden_field :id %>
-
-              <b><%= producer.name %></b>
-
-              <label><%= t.check_box :_destroy %> remove</label>
-              <br>
-            <% end %>
-          </li>
+          <%= render("works/producer", form: form, producer: producer) %>
         <% end %>
-
       </ul>
     </li>
     <li>

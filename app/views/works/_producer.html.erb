@@ -1,0 +1,25 @@
+<li class="appendedProducerFormContainer">
+  <%= form.fields_for :producers, producer do |t| %>
+    <% if producer.persisted? %>
+      <%# initial render, make saved association deletable %>
+      <div data-works-target="persistedProducerForm subForm">
+        <%= t.hidden_field :id %>
+        <%= t.label :name %>
+        <%= t.text_field :name, readonly: true %>
+        <b>remove</b><%= t.check_box :_destroy %>
+      </div>
+    <% else %>
+      <%# dynamically add new associations %>
+      <div data-works-target="appendedProducerForm subForm">
+        <%= t.label :name %>
+        <%= t.text_field :name, list: "producers_autocomplete" %>
+        <datalist id="producers_autocomplete">
+          <%= options_for_select(@producer_options) %>
+        </datalist>
+
+        <%# TODO: hotwire %>
+        <span data-action="click->works#formDismiss" style="cursor: pointer">cancel ⓧ</span>
+      </div>
+    <% end %>
+  <% end %>
+</li>

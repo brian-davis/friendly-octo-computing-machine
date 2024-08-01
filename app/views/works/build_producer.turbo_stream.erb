@@ -1,0 +1,5 @@
+<%= form_with(model: @work) do |form| %>
+  <%= turbo_stream.append "new_producers_list" do %>
+    <%= render("works/producer", form: form, producer: @work.producers.build) %>
+  <% end %>
+<% end %>
