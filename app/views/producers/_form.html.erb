@@ -1,26 +1,37 @@
-<%= form_with(model: producer) do |form| %>
+<%= form_with(model: producer, data: { controller: "producers", producers_works_value: @work_options, producers_workscount_value: @producer.works.size }) do |form| %>
     <%= render("shared/form_errors", form: form) %>
 
-  <div>
-    <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
-  </div>
-  <hr>
-  <div>
-    <div style="border: 1px solid #ccc; padding: 1em; width: 12em; margin-bottom:1em;">
-      <%= form.fields_for :works, @producer.works.build do |t| %>
-        <%= t.label :title %>
-        <%= t.text_field :title, list: "works_autocomplete" %>
-        <datalist id="works_autocomplete">
-          <%= options_for_select(@work_options) %>
-        </datalist>
-        <br>
-      <% end %>
-    </div>
-    <%# use more than one of these ^^^ to pass a collection, no modification needed. %>
-  </div>
+  <ul class="flex-outer">
+    <li>
+      <%= form.label :name %>
+      <%= form.text_field :name, { placeholder: "author name required" } %>
+    </li>
+    <li>
+      <p>
+      Books
+      <br>
+      <%= link_to("New Book +", nil, { data: { action: "click->producers#appendForm" }}) %>
+      </p>
+      <ul class="flex-inner" data-works-target="newWorksList">
+        <%# JS %>
 
-  <div>
-    <%= form.submit %>
-  </div>
+        <% @producer.works.each do |work| %>
+          <li class="appendedWorkForm">
+            <%= form.fields_for :works, work do |t| %>
+              <%= t.hidden_field :id %>
+
+              <b><%= work.title %></b>
+
+              <label><%= t.check_box :_destroy %> remove</label>
+              <br>
+            <% end %>
+          </li>
+        <% end %>
+
+      </ul>
+    </li>
+    <li>
+      <%= form.button "Submit", type: "submit", name: "commit", value: "Submit", data: { disable_with: "Submit" } %>
+    </li>
+  </ul>
 <% end %>

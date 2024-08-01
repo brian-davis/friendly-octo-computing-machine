@@ -38,7 +38,6 @@ class WorksController < ApplicationController
   # PATCH/PUT /works/1 or /works/1.json
   def update
     respond_to do |format|
-      # binding.irb
       if @work.update(work_params)
         format.html { redirect_to work_url(@work), notice: "Work was successfully updated." }
         format.json { render :show, status: :ok, location: @work }
@@ -69,7 +68,6 @@ private
     @producer_options = Producer.order(:name).pluck(:name).uniq.join(";")
   end
 
-  # Only allow a list of trusted parameters through.
   def work_params
     params.require(:work).permit(:title, producers_attributes: [:name, :id, :_destroy])
   end

@@ -4,7 +4,8 @@ class Work < ApplicationRecord
   accepts_nested_attributes_for :producers
 
   # Setter for `has_many :producers, through: :work_producers`.
-  # Use Work form to build associated Producer models.
+  # Use Work form to build associated Producer records, or
+  # to remove existing WorkProducer records.
   # Accept multiple Producer attribute sets.  Ignore duplicate data.
   # Destroy or create only, no update.
   # e.g.:
@@ -18,8 +19,8 @@ class Work < ApplicationRecord
         # destroy the join record, not the associated producer (orphan producers OK)
         work_producer.destroy if work_producer && attrs["_destroy"] == "1"
       elsif attrs["name"].present?
-        # TODO: attrs on join model
-        producer = producers.find_or_create_by(name: attrs["name"]) # builds join model
+        producer = Producer.find_or_create_by(name: attrs["name"])
+        joiner = work_producers.create(producer: producer)
       end
     end
   end

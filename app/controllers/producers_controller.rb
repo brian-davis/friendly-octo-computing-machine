@@ -1,6 +1,5 @@
 class ProducersController < ApplicationController
   before_action :set_producer, only: %i[ show edit update destroy ]
-  before_action :set_producer_options, only: %i[new]
   before_action :set_work_options, only: %i[ new edit ]
 
   # GET /producers or /producers.json
@@ -70,16 +69,11 @@ class ProducersController < ApplicationController
       @producer = Producer.find(params[:id])
     end
 
-    def set_producer_options
-      @producer_options = Producer.order(:name).pluck(:name).uniq
-    end
-
     def set_work_options
       @work_options = Work.order(:title).pluck(:title).uniq
     end
 
-    # Only allow a list of trusted parameters through.
     def producer_params
-      params.require(:producer).permit(:name, work_attributes: [:title])
+      params.require(:producer).permit(:name, works_attributes: [:title, :id, :_destroy])
     end
 end

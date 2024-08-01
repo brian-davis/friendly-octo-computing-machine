@@ -45,15 +45,14 @@ export default class extends Controller {
   }
 
   formDismiss(event) {
-    const dismissableTag = event.srcElement.parentElement;
-    dismissableTag.remove();
+    const dismissableForm = event.srcElement.parentElement;
+    dismissableForm.remove();
     this.appendFormIndex -= 1;
   }
 }
 
-{
-  /*
-
+// template based on Rails form generator:
+/*
 <div style="border: 1px solid #ccc; padding: 1em; width: 12em; margin-bottom:1em;">
   <%= form.fields_for :producers, @work.producers.build do |t| %>
     <%= t.label :name %>
@@ -64,6 +63,4 @@ export default class extends Controller {
     <br>
   <% end %>
 </div>
-
 */
-}
