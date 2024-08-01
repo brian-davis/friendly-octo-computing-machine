@@ -17,7 +17,8 @@ class WorkTest < ActiveSupport::TestCase
     assert new_work.persisted?
     assert_equal 1, new_work.work_producers.count
     assert_equal 1, new_work.producers.count
-    assert_equal "Producer1", new_work.producers.first.name
+    producer1 = new_work.producers.first
+    assert_equal "Producer1", producer1.name
     assert_equal 1, Producer.where(name: "Producer1").count
 
     # part 2
@@ -26,7 +27,8 @@ class WorkTest < ActiveSupport::TestCase
         title: "Work1",
         producers_attributes: {
           "0" => {
-            name: "Producer1" # ignore
+            id: producer1.id, # ignore
+            name: producer1.name
           },
           "1" => {
             name: "Producer2" # new
@@ -42,37 +44,10 @@ class WorkTest < ActiveSupport::TestCase
     assert_equal "Producer2", new_work.producers.second.name
     assert_equal 1, Producer.where(name: "Producer1").count
     assert_equal 1, Producer.where(name: "Producer2").count
-
-    # part 3, redundant test
-    params3 = ActionController::Parameters.new({
-      work: {
-        title: "Work1",
-        producers_attributes: {
-          "0" => {
-            name: "Producer1" # ignore
-          },
-          "1" => {
-            name: "Producer2" # ignore
-          },
-          "2" => {
-            name: "Producer3" # new
-          }
-        }
-      }
-    }).require(:work).permit(:name, producers_attributes: [:name, :id, :_destroy])
-
-    new_work.update(params3)
-
-    assert_equal 3, new_work.work_producers.count
-    assert_equal 3, new_work.producers.count
-    assert_equal "Producer3", new_work.producers.third.name
-    assert_equal 1, Producer.where(name: "Producer1").count
-    assert_equal 1, Producer.where(name: "Producer2").count
-    assert_equal 1, Producer.where(name: "Producer3").count
   end
 
-  test "attaching existing associated models" do
-    # part 1
+  test "attaching existing associated models by id" do
+    # no existing .work_producer
     existing_producer = Producer.create(name: "existing")
 
     params = ActionController::Parameters.new({
@@ -80,7 +55,8 @@ class WorkTest < ActiveSupport::TestCase
         title: "Work1",
         producers_attributes: {
           "0" => {
-            name: existing_producer.name # TODO: use id
+            id: existing_producer.id,
+            "name" => existing_producer.name,
           },
           "1" => {
             name: "Producer2" # new
@@ -114,13 +90,16 @@ class WorkTest < ActiveSupport::TestCase
     }).require(:work).permit(:name, producers_attributes: [:name, :id, :_destroy])
     new_work = Work.create(params1)
 
+    producer1 = new_work.producers.find_by(name: "Producer1")
+
     # part 2
     params2 = ActionController::Parameters.new({
       work: {
         title: "Work1",
         producers_attributes: {
           "0" => {
-            name: "Producer1" # ignore
+            id: producer1.id,
+            name: producer1.name # ignore
           },
           "1" => {
             name: "Producer2" # new
@@ -131,17 +110,21 @@ class WorkTest < ActiveSupport::TestCase
 
     new_work.update(params2)
 
+    producer2 = new_work.producers.find_by(name: "Producer2")
+
     # part 3
     params3 = ActionController::Parameters.new({
       work: {
         title: "Work1",
         producers_attributes: {
           "0" => {
-            "id" => Producer.find_by(name: "Producer1").id.to_s,
+            "id" => producer1.id,
+            "name" => producer1.name,
             "_destroy" => "1"
           },
           "1" => {
-            name: "Producer2" # ignore
+            id: producer2.id, # ignore
+            "name" => producer2.name,
           },
           "2" => {
             name: "Producer3" # new

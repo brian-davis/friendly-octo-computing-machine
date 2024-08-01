@@ -14,23 +14,17 @@ class Work < ApplicationRecord
   # #=> ignore 0, destroy 1, create 2
   def producers_attributes=(producers_attributes)
     producers_attributes.each do |_k, attrs|
-      if (id = attrs.delete("id"))
-        # existing Producer record
-        # destroy the join record, not the associated producer (orphan producers OK)
-        work_producer = work_producers.find_by(producer_id: id)
-        work_producer.destroy if work_producer && attrs["_destroy"] == "1"
-      elsif attrs["name"].present?
-        # # new Producer record
-        # producers.find_or_initialize_by({
-        #   name: attrs["name"]
-        # })
-
-        # must work on Work.new and on persisted record
+      if (attrs.delete("_destroy") == "1")
+        # destroy join record for existing, joined Producer record
+        work_producers.destroy_by(producer_id: attrs["id"])
+      elsif (id = attrs.delete("id"))
+        # new or existing join record to existing Producer record
         work_producers.find_or_initialize_by({
-          producer: Producer.find_or_initialize_by(name: attrs["name"]) # TODO: use id.
-        })
-
-        # #=> onto .save
+          producer_id: id
+        }) if Producer.exists?(id: id)
+      else
+        # new join record to new Producer record
+        producers.build(attrs)
       end
     end
   end

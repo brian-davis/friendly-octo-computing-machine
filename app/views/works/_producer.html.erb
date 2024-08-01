@@ -11,9 +11,11 @@
     <% else %>
       <%# dynamically add new associations %>
       <div data-works-target="appendedProducerForm subForm">
+        <%= t.hidden_field :id %><%# OK for new? %>
         <%= t.label :name %>
         <%= t.text_field :name, list: "producers_autocomplete" %>
         <datalist id="producers_autocomplete">
+          <%# TODO: insert ids %>
           <%= options_for_select(@producer_options) %>
         </datalist>
 
