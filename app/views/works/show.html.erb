@@ -2,6 +2,8 @@
 
 <%= render @work %>
 
+<%= render @work.producers %>
+
 <div>
   <%= link_to "Edit this work", edit_work_path(@work) %> |
   <%= link_to "Back to works", works_path %>

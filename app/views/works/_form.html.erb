@@ -1,26 +1,36 @@
-<%= form_with(model: work, data: { controller: "works", works_producers_value: @producer_options }, html: {style: "display:flex;width:100%"}) do |form| %>
-  <div>
-    <div style="flex-grow:1">
-      <%= render("shared/form_errors", form: form) %>
+<%= form_with(model: work, data: { controller: "works", works_producers_value: @producer_options, works_producercount_value: @work.producers.size }) do |form| %>
+  <%= render("shared/form_errors", form: form) %>
+  <ul class="flex-outer">
+    <li>
+      <%= form.label :title %>
+      <%= form.text_field :title, { placeholder: "book title required" } %>
+    </li>
+    <li>
+      <p>
+      Authors
+      <br>
+      <%= link_to("New Author +", nil, { data: { action: "click->works#appendForm" }}) %>
+      </p>
+      <ul class="flex-inner" data-works-target="newProducerList">
+        <%# JS %>
 
-      <div>
-        <%= form.label :title, style: "display: block" %>
-        <%= form.text_field :title %>
-      </div>
-      <hr>
+        <% @work.producers.each do |producer| %>
+          <li class="appendedProducerForm">
+            <%= form.fields_for :producers, producer do |t| %>
+              <%= t.hidden_field :id %>
 
-      <%#= link_to "New Producer +", new_producer_path, data: { turbo_stream: true } %>
-      <%= link_to "New Producer +", "", data: { action: "click->works#appendForm" } %>
+              <b><%= producer.name %></b>
 
-      <%#= turbo_frame_tag "new_producers_list" do %>
-        <%# turbo_stream.append "new_producers_list"  %>
-      <%# end %>
+              <label><%= t.check_box :_destroy %> remove</label>
+              <br>
+            <% end %>
+          </li>
+        <% end %>
 
-
-      <div data-works-target="newProducerList">
-      <div>
-
-    </div>
-    <div style="flex-grow:1">2</div>
-  </div>
+      </ul>
+    </li>
+    <li>
+      <%= form.button "Submit", type: "submit", name: "commit", value: "Submit", data: { disable_with: "Submit" } %>
+    </li>
+  </ul>
 <% end %>
