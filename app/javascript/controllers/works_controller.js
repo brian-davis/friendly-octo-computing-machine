@@ -20,6 +20,8 @@ export default class extends Controller {
     }
   }
 
+  // TODO: custom actions, move this to server side.  Append then rebase all HTML indexes
+  // https://turbo.hotwired.dev/handbook/streams#but-what-about-running-javascript%3F
   formTemplate() {
     let template =
       '<li class="appendedProducerForm"><label for="work_producers_attributes_INDEX_name">Name</label><input list="producers_autocomplete" type="text" name="work[producers_attributes][INDEX][name]" id="work_producers_attributes_INDEX_name"><datalist id="producers_autocomplete">OPTIONS</datalist><span data-action="click->works#formDismiss" style="cursor: pointer; color: red; margin: 0.5em;">remove ⓧ</span><br></li>';
