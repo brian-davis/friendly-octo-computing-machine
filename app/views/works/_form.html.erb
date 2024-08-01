@@ -9,10 +9,9 @@
       <p>
       Authors
       <br>
-      <%= link_to("New Author +", build_producer_work_path(@work), data: { turbo_stream: true }) %>
+      <%= link_to("New Author +", build_producer_works_path(work_id: @work.try(:id)), data: { turbo_stream: true }) %>
       </p>
       <ul class="flex-inner" data-works-target="newProducerList" id="new_producers_list">
-        <%# TURBO %>
         <% @work.producers.each do |producer| %>
           <%= render("works/producer", form: form, producer: producer) %>
         <% end %>

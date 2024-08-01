@@ -19,30 +19,20 @@ export default class extends Controller {
   rebaseAssociationForms() {
     console.log("rebaseAssociationForms()");
     for (let i = 0; i < this.subFormTargets.length; i++) {
-      let currentSubForm = this.subFormTargets[i];
-      // console.log(i);
-      // console.log(currentSubForm);
-      let label = currentSubForm.querySelector("label");
-      // console.log(label);
+      const currentSubForm = this.subFormTargets[i];
+      const label = currentSubForm.querySelector("label");
+      const input = currentSubForm.querySelector("input");
 
-      let labelFor = label.getAttribute("for");
-      // console.log(labelFor);
-      let newLabelFor = labelFor.replace(/[0-9]/g, String(i));
-      // console.log(newLabelFor);
+      const labelFor = label.getAttribute("for");
+      const newLabelFor = labelFor.replace(/[0-9]/g, String(i));
       label.setAttribute("for", newLabelFor);
 
-      let input = currentSubForm.querySelector("input");
-      // console.log(input);
-
-      let inputName = input.getAttribute("name");
-      // console.log(inputName);
-      let newInputName = inputName.replace(/[0-9]/g, String(i));
-      // console.log(newInputName);
+      const inputName = input.getAttribute("name");
+      const newInputName = inputName.replace(/[0-9]/g, String(i));
       input.setAttribute("name", newInputName);
 
-      let inputId = input.getAttribute("id");
-      let newInputId = inputId.replace(/[0-9]/g, String(i));
-      // console.log(newInputId);
+      const inputId = input.getAttribute("id");
+      const newInputId = inputId.replace(/[0-9]/g, String(i));
       input.setAttribute("id", newInputId);
     }
   }
@@ -57,5 +47,14 @@ export default class extends Controller {
     // TODO
     // console.log("appendedProducerFormTargetdisonnected()");
     this.rebaseAssociationForms();
+  }
+
+  // TODO: use hotwire
+  formDismiss(event) {
+    const dismissableForm = event.srcElement.closest(
+      ".appendedProducerFormContainer"
+    );
+    dismissableForm.remove();
+    this.appendFormIndex -= 1;
   }
 }

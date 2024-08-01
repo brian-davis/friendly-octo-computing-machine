@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   resources :producers
   resources :works do
-    member do
+    collection do
       get :build_producer, format: :turbo_stream
     end
   end

@@ -1,6 +1,6 @@
 class WorksController < ApplicationController
-  before_action :set_work, only: %i[ show edit update destroy build_producer]
-  before_action :set_producer_options, only: %i[ new edit build_producer]
+  before_action :set_work, only: %i[show edit update destroy]
+  before_action :set_producer_options, only: %i[new edit build_producer]
 
   # GET /works or /works.json
   def index
@@ -17,7 +17,7 @@ class WorksController < ApplicationController
   end
 
   def build_producer
-    # binding.irb
+    @work = Work.find_by(id: params[:work_id]) || Work.new
     respond_to do |format|
       format.turbo_stream
     end
