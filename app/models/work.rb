@@ -21,6 +21,7 @@ class Work < ApplicationRecord
         # new or existing join record to existing Producer record
         work_producers.find_or_initialize_by({
           producer_id: id
+          # TODO: role
         }) if Producer.exists?(id: id)
       else
         # new join record to new Producer record

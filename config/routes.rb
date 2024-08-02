@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :works do
     collection do
       get :build_producer, format: :turbo_stream
+      get :select_producer, format: :turbo_stream
     end
   end
 

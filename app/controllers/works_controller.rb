@@ -1,6 +1,7 @@
 class WorksController < ApplicationController
   before_action :set_work, only: %i[show edit update destroy]
-  before_action :set_producer_options, only: %i[new edit build_producer]
+  before_action :build_or_set_work, only: %i[build_producer select_producer]
+  before_action :set_producer_options, only: %i[new edit]
 
   # GET /works or /works.json
   def index
@@ -17,7 +18,13 @@ class WorksController < ApplicationController
   end
 
   def build_producer
-    @work = Work.find_by(id: params[:work_id]) || Work.new
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
+  def select_producer
+    @producer = Producer.find(params["producer_id"])
     respond_to do |format|
       format.turbo_stream
     end
@@ -72,7 +79,11 @@ private
   end
 
   def set_producer_options
-    @producer_options = Producer.order(:name).pluck(:name).uniq
+    @producer_options = Producer.order(:name).pluck(:name, :id).uniq
+  end
+
+  def build_or_set_work
+    @work = Work.find_by(id: params[:work_id]) || Work.new
   end
 
   def work_params
