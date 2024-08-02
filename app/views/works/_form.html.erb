@@ -2,52 +2,58 @@
 <%= form_with(model: work, data: { controller: "works", works_id_value: @work.id }) do |form| %>
   <%= render("shared/form_errors", form: form) %>
   <ul class="flex-outer">
+    <%# ROW 1 %>
     <li>
+      <%# COLUMN 1 %>
       <%= form.label :title %>
+      <%# COLUMN 2 %>
       <%= form.text_field :title, { placeholder: "book title required" } %>
     </li>
+
+    <%# ROW 2 %>
     <li>
+      <%# COLUMN 1 %>
       <p>
-      Authors
-      <br>
-      <%= link_to("New Author +", build_producer_works_path(work_id: @work.try(:id)), data: { turbo_stream: true }) %>
-      <br>
+        Authors
+        <br>
+        <%= link_to("New Author +", build_producer_works_path(work_id: @work.try(:id)), data: { turbo_stream: true }) %>
+        <br>
 
-      <%#= link_to("Choose Author +", select_producer_works_path(work_id: @work.try(:id)), data: { turbo_stream: true }) %>
-
-      <i>choose existing author</i>:
-      <br>
-      <%=
-      select_tag(
-        "authors",
-        options_for_select(@producer_options),
-        {
-          include_blank: true,
-          data: {
-            action: "change->works#selectProducer"
-          },
-          style: {
-            width: "100%"
+        <i>choose existing author</i>:
+        <br>
+        <%=
+        select_tag(
+          "authors",
+          options_for_select(@producer_options),
+          {
+            include_blank: true,
+            data: {
+              action: "change->works#selectProducer"
+            }
           }
-        }
-      )
-      %>
-
+        )
+        %>
       </p>
+
+      <%# COLUMN 2 %>
       <ul class="flex-inner" data-works-target="newProducerList" id="new_producers_list">
-        <% @work.producers.each do |producer| %>
-          <%= form.fields_for :producers, producer do |t| %>
-          <div data-works-target="persistedProducerForm subForm">
-            <%= t.hidden_field :id %>
-            <%= t.label :name %>
-            <%= t.text_field :name, readonly: true %>
-            <b>remove</b><%= t.check_box :_destroy %>
-          <% end %>
-          </div>
+        <% @work_producers.each do |work_producer| %>
+          <li class="appendedProducerFormContainer">
+            <%= form.fields_for :work_producers, work_producer do |t| %>
+              <div data-works-target="subForm">
+                <%= "#{work_producer.role}: #{work_producer.producer.name}" %>
+                <%= t.hidden_field :id %>
+                <b>remove</b><%= t.check_box :_destroy %>
+              </div>
+            <% end %>
+          </li>
        <% end %>
       </ul>
     </li>
+
+    <%# ROW 3 %>
     <li>
+      <%# COLUMN 1 %>
       <%= form.button "Submit", type: "submit", name: "commit", value: "Submit", data: { disable_with: "Submit" } %>
     </li>
   </ul>

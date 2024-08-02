@@ -3,7 +3,9 @@
 one:
   work: one
   producer: one
+  role: author
 
 two:
   work: two
   producer: two
+  role: editor

@@ -2,12 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 import { get } from "@rails/request.js";
 
 export default class extends Controller {
-  static targets = [
-    "newProducerList",
-    "appendedProducerForm",
-    "persistedProducerForm",
-    "subForm",
-  ];
+  static targets = ["newProducerList", "appendedProducerForm", "subForm"];
   static values = {
     id: String, // may be empty, don't cast to 0
   };
@@ -56,8 +51,7 @@ export default class extends Controller {
     const dismissableForm = event.srcElement.closest(
       ".appendedProducerFormContainer"
     );
-    dismissableForm.remove();
-    this.appendFormIndex -= 1;
+    dismissableForm.remove(); // appendedProducerFormTargetDisconnected
   }
 
   selectProducer(event) {

@@ -2,7 +2,11 @@
 
 <%= render @work %>
 
-<%= render @work.producers %>
+<b>Producers</b>
+<br>
+<% @producer_credits.each do |role, name| %>
+  <i><%= role %></i>: <%= name %>
+<% end %>
 
 <div>
   <%= link_to "Edit this work", edit_work_path(@work) %> |

@@ -1,7 +1,8 @@
 class WorksController < ApplicationController
   before_action :set_work, only: %i[show edit update destroy]
   before_action :build_or_set_work, only: %i[build_producer select_producer]
-  before_action :set_producer_options, only: %i[new edit]
+  before_action :set_producer_options, only: %i[new edit update]
+  before_action :set_work_and_work_producers, only: %i[new edit]
 
   # GET /works or /works.json
   def index
@@ -10,11 +11,11 @@ class WorksController < ApplicationController
 
   # GET /works/1 or /works/1.json
   def show
+    @producer_credits = @work.work_producers.includes(:producer).pluck(:role, :name)
   end
 
   # GET /works/new
   def new
-    @work = Work.new
   end
 
   def build_producer
@@ -23,6 +24,7 @@ class WorksController < ApplicationController
     end
   end
 
+  # join an existing Producer record to a Work record with new WorkProducer record
   def select_producer
     @producer = Producer.find(params["producer_id"])
     respond_to do |format|
@@ -52,6 +54,7 @@ class WorksController < ApplicationController
   # PATCH/PUT /works/1 or /works/1.json
   def update
     respond_to do |format|
+      binding.irb
       if @work.update(work_params)
         format.html { redirect_to work_url(@work), notice: "Work was successfully updated." }
         format.json { render :show, status: :ok, location: @work }
@@ -73,9 +76,13 @@ class WorksController < ApplicationController
   end
 
 private
-  # Use callbacks to share common setup or constraints between actions.
   def set_work
     @work = Work.find(params[:id])
+  end
+
+  def set_work_and_work_producers
+    @work ||= Work.new
+    @work_producers = @work.work_producers.includes(:producer)
   end
 
   def set_producer_options
@@ -87,6 +94,12 @@ private
   end
 
   def work_params
-    params.require(:work).permit(:title, producers_attributes: [:name, :id, :_destroy])
+    params.require(:work).permit(:title, work_producers_attributes: [
+      :id,
+      :role,
+      :_destroy,
+      :producer_id,
+      producer_attributes: [:name]
+    ])
   end
 end
