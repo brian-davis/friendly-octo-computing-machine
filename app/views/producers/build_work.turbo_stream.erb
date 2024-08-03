@@ -3,7 +3,7 @@
     <li class="subFormContainer">
       <%= form.fields_for :work_producers, @producer.work_producers.build do |t| %>
         <b>role: </b>
-        <div data-works-target="subForm">
+        <div data-dismissable-target="subForm">
           <b>role: </b>
           <%= t.select(:role, options_for_select(WorkProducer.roles.keys)) %>
 
@@ -12,7 +12,7 @@
             <%= tt.text_field :title %>
           <% end %>
 
-          <span data-action="click->producers#formDismiss" style="cursor: pointer">cancel ⓧ</span>
+          <span data-action="click->dismissable#formDismiss" style="cursor: pointer">cancel ⓧ</span>
         </div>
       <% end %>
     </li>

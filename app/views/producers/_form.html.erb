@@ -35,7 +35,7 @@
       </p>
 
       <%# COLUMN 2 %>
-      <ul class="flex-inner" id="sub_form_list">
+      <ul class="flex-inner" id="sub_form_list" data-controller="dismissable">
         <% @work_producers.each do |work_producer| %>
           <li class="subFormContainer">
             <%= form.fields_for :work_producers, work_producer do |t| %>

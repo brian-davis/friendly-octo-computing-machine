@@ -2,7 +2,7 @@
   <%= turbo_stream.append "sub_form_list" do %>
     <li class="subFormContainer">
       <%= form.fields_for :work_producers, @work.work_producers.build do |t| %>
-        <div data-works-target="subForm">
+        <div data-dismissable-target="subForm">
           <b>role: </b>
           <%= t.select(:role, options_for_select(WorkProducer.roles.keys)) %>
 
@@ -11,7 +11,7 @@
             <%= tt.text_field :name %>
           <% end %>
 
-          <span data-action="click->works#formDismiss" style="cursor: pointer">cancel ⓧ</span>
+          <span data-action="click->dismissable#formDismiss" style="cursor: pointer">cancel ⓧ</span>
         </div>
       <% end %>
     </li>
