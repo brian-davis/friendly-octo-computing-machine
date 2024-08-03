@@ -1,8 +1,7 @@
 class WorksController < ApplicationController
   before_action :set_work, only: %i[show edit update destroy]
   before_action :build_or_set_work, only: %i[build_producer select_producer]
-  before_action :set_producer_options, only: %i[new edit]
-  before_action :set_work_and_work_producers, only: %i[new edit]
+  before_action :set_form_options, only: %i[new edit]
 
   # GET /works or /works.json
   def index
@@ -39,15 +38,14 @@ class WorksController < ApplicationController
   # POST /works or /works.json
   def create
     @work = Work.new(work_params)
+
     respond_to do |format|
       if @work.save
         format.html { redirect_to work_url(@work), notice: "Work was successfully created." }
         format.json { render :show, status: :created, location: @work }
       else
         format.html {
-          set_work_and_work_producers
-          set_producer_options
-
+          set_form_options
           render :new, status: :unprocessable_entity
         }
 
@@ -69,9 +67,7 @@ class WorksController < ApplicationController
       else
 
         format.html {
-          set_work_and_work_producers
-          set_producer_options
-
+          set_form_options
           render :edit, status: :unprocessable_entity
         }
 
@@ -99,15 +95,13 @@ private
     @work = Work.find(params[:id])
   end
 
-  def set_work_and_work_producers
+  def set_form_options
     @work ||= Work.new
     @work_producers = @work.work_producers.includes(:producer)
-  end
-
-  def set_producer_options
     @producer_options = Producer.order(:name).pluck(:name, :id).uniq
   end
 
+  # TODO: combine with set_form_options
   def build_or_set_work
     @work = Work.find_by(id: params[:work_id]) || Work.new
   end

@@ -1,6 +1,14 @@
 require "test_helper"
 
 class WorkTest < ActiveSupport::TestCase
+  test "attribute validation" do
+    w1 = Work.new({
+      # empty
+    })
+    refute w1.valid?
+    assert_equal ["Title can't be blank"], w1.errors.full_messages
+  end
+
   test "build a new work_producer and link to existing producer" do
     work1 = works(:one)
     producer1 = producers(:two)
@@ -146,13 +154,5 @@ class WorkTest < ActiveSupport::TestCase
 
     refute w1.valid?
     assert_equal ["Work producers producer name can't be blank"], w1.errors.full_messages
-  end
-
-  test "attribute validation" do
-    w1 = Work.new({
-      # empty
-    })
-    refute w1.valid?
-    assert_equal ["Title can't be blank"], w1.errors.full_messages
   end
 end

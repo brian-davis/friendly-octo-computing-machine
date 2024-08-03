@@ -44,7 +44,8 @@ body {
 textarea {
   padding: 0.5em;
 }
-.flex-inner li.appendedProducerFormContainer {
+.flex-inner li.appendedProducerFormContainer,
+.flex-inner li.appendedWorkFormContainer {
   border: 1px solid #ccc;
   background: #eee;
   padding: 1em;

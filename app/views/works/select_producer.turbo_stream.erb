@@ -3,10 +3,12 @@
     <li class="appendedProducerFormContainer">
       <%= form.fields_for :work_producers, @work.work_producers.build do |t| %>
         <div data-works-target="appendedProducerForm subForm">
-          <%= t.hidden_field :producer_id, value: @producer.id %>
           <%= t.label :role %>
           <%= t.select(:role, options_for_select(WorkProducer.roles.keys)) %>
+
+          <%= t.hidden_field :producer_id, value: @producer.id %>
           <%= @producer.name %>
+
           <span data-action="click->works#formDismiss" style="cursor: pointer">cancel ⓧ</span>
         </div>
       <% end %>

@@ -1,66 +1,74 @@
 import { Controller } from "@hotwired/stimulus";
+import { get } from "@rails/request.js";
 
 export default class extends Controller {
-  static targets = ["newWorkList"];
+  static targets = ["newWorkList", "appendedWorkForm", "subForm"];
   static values = {
-    works: String,
-    workcount: Number,
+    id: String, // may be empty, don't cast to 0
   };
 
   connect() {
     // console.log("producers connected");
-    // console.log("this.worksValue", this.worksValue);
-    this.workOptions = this.worksValue.split(";");
-    // console.log(this.workOptions);
-    console.log("this.workcountValue", this.workcountValue);
-    if (this.workcountValue > 0) {
-      this.appendFormIndex = this.workcountValue;
-    } else {
-      this.appendFormIndex = 0;
+    // console.log(this.idValue === "");
+  }
+
+  // as multiple new associated Work sub-forms can be added dynamically,
+  // appended to the same list as sub-forms for already persisted associations (edit)
+  // ensure that they all get unique index values so nothing is overwriting anything
+  // else in the params collection.
+  rebaseAssociationForms() {
+    // console.log("rebaseAssociationForms()");
+    for (let i = 0; i < this.subFormTargets.length; i++) {
+      const currentSubForm = this.subFormTargets[i];
+      const label = currentSubForm.querySelector("label");
+      const input = currentSubForm.querySelector("input");
+
+      const labelFor = label.getAttribute("for");
+      const newLabelFor = labelFor.replace(/[0-9]/g, String(i));
+      label.setAttribute("for", newLabelFor);
+
+      const inputName = input.getAttribute("name");
+      const newInputName = inputName.replace(/[0-9]/g, String(i));
+      input.setAttribute("name", newInputName);
+
+      const inputId = input.getAttribute("id");
+      const newInputId = inputId.replace(/[0-9]/g, String(i));
+      input.setAttribute("id", newInputId);
     }
   }
 
-  formTemplate() {
-    let template =
-      '<li class="appendedWorkForm"><label for="work_works_attributes_INDEX_name">Name</label><input list="works_autocomplete" type="text" name="work[works_attributes][INDEX][name]" id="work_works_attributes_INDEX_name"><datalist id="works_autocomplete">OPTIONS</datalist><span data-action="click->works#formDismiss" style="cursor: pointer; color: red; margin: 0.5em;">remove ⓧ</span><br></li>';
-
-    let optionTemplate = '<option value="NAME">NAME</option>';
-    let newOptions = this.workOptions.map((name) => {
-      return optionTemplate.replaceAll("NAME", name);
-    });
-
-    let renderedElement = template
-      .replaceAll("INDEX", this.appendFormIndex)
-      .replaceAll("OPTIONS", newOptions);
-
-    return renderedElement;
+  appendedWorkFormTargetConnected() {
+    // console.log("appendedWorkFormTargetConnected()");
+    this.rebaseAssociationForms();
   }
 
-  appendForm(event) {
-    event.preventDefault();
-    // console.log("append form");
-    let newForm = this.formTemplate();
-    this.newWorkListTarget.insertAdjacentHTML("beforeend", newForm);
-    this.appendFormIndex += 1;
+  appendedWorkFormTargetDisconnected() {
+    // console.log("appendedWorkFormTargetdisonnected()");
+    this.rebaseAssociationForms();
   }
 
   formDismiss(event) {
-    const dismissableForm = event.srcElement.parentElement;
-    dismissableForm.remove();
-    this.appendFormIndex -= 1;
+    const dismissableForm = event.srcElement.closest(
+      ".appendedWorkFormContainer"
+    );
+    dismissableForm.remove(); // appendedWorkFormTargetDisconnected
+  }
+
+  selectWork(event) {
+    // console.log("selectWork", event.currentTarget.value);
+    let url = "/producers/select_work";
+    url += `?work_id=${event.currentTarget.value}`;
+
+    if (this.idValue != "") {
+      url += `&producer_id=${this.idValue}`;
+    }
+
+    // https://github.com/hotwired/stimulus/issues/689
+    // https://fly.io/ruby-dispatch/turbostream-fetch/
+    get(url, {
+      headers: {
+        Accept: "text/vnd.turbo-stream.html, text/html, application/xhtml+xml",
+      },
+    });
   }
 }
-
-// template based on Rails form generator:
-/*
-<div style="border: 1px solid #ccc; padding: 1em; width: 12em; margin-bottom:1em;">
-  <%= form.fields_for :works, @work.works.build do |t| %>
-    <%= t.label :name %>
-    <%= t.text_field :name, list: "works_autocomplete" %>
-    <datalist id="works_autocomplete">
-      <%= options_for_select(@work_options) %>
-    </datalist>
-    <br>
-  <% end %>
-</div>
-*/

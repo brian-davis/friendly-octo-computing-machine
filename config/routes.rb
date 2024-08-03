@@ -3,7 +3,14 @@ Rails.application.routes.draw do
   get 'home/index'
   get 'home/append'
 
-  resources :producers
+  resources :producers do
+    collection do
+      get :build_work, format: :turbo_stream
+      get :select_work, format: :turbo_stream
+    end
+  end
+
+
   resources :works do
     collection do
       get :build_producer, format: :turbo_stream

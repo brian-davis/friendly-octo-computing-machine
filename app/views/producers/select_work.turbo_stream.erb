@@ -1,0 +1,17 @@
+<%= form_with(model: @producer) do |form| %>
+  <%= turbo_stream.append "new_works_list" do %>
+    <li class="appendedWorkFormContainer">
+      <%= form.fields_for :work_producers, @producer.work_producers.build do |t| %>
+        <div data-works-target="appendedWorkForm subForm">
+          <%= t.label :role %>
+          <%= t.select(:role, options_for_select(WorkProducer.roles.keys)) %>
+
+          <%= t.hidden_field :work_id, value: @work.id %>
+          <%= @work.title %>
+
+          <span data-action="click->works#formDismiss" style="cursor: pointer">cancel ⓧ</span>
+        </div>
+      <% end %>
+    </li>
+  <% end %>
+<% end %>
