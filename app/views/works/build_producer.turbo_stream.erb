@@ -1,13 +1,13 @@
 <%= form_with(model: @work) do |form| %>
-  <%= turbo_stream.append "new_producers_list" do %>
-    <li class="appendedProducerFormContainer">
+  <%= turbo_stream.append "sub_form_list" do %>
+    <li class="subFormContainer">
       <%= form.fields_for :work_producers, @work.work_producers.build do |t| %>
-        <%= t.label :role %>
-        <%= t.select(:role, options_for_select(WorkProducer.roles.keys)) %>
+        <div data-works-target="subForm">
+          <b>role: </b>
+          <%= t.select(:role, options_for_select(WorkProducer.roles.keys)) %>
 
-        <div data-works-target="appendedProducerForm subForm">
           <%= t.fields_for :producer_attributes, t.object.build_producer do |tt| %>
-            <%= tt.label :name %>
+            <b>name: </b>
             <%= tt.text_field :name %>
           <% end %>
 

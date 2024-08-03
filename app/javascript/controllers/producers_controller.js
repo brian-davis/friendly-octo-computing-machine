@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 import { get } from "@rails/request.js";
 
 export default class extends Controller {
-  static targets = ["newWorkList", "appendedWorkForm", "subForm"];
+  static targets = ["subForm"];
   static values = {
     id: String, // may be empty, don't cast to 0
   };
@@ -37,21 +37,19 @@ export default class extends Controller {
     }
   }
 
-  appendedWorkFormTargetConnected() {
-    // console.log("appendedWorkFormTargetConnected()");
+  subFormTargetConnected() {
+    // console.log("subFormTargetConnected()");
     this.rebaseAssociationForms();
   }
 
-  appendedWorkFormTargetDisconnected() {
-    // console.log("appendedWorkFormTargetdisonnected()");
+  subFormTargetDisconnected() {
+    // console.log("subFormTargetdisonnected()");
     this.rebaseAssociationForms();
   }
 
   formDismiss(event) {
-    const dismissableForm = event.srcElement.closest(
-      ".appendedWorkFormContainer"
-    );
-    dismissableForm.remove(); // appendedWorkFormTargetDisconnected
+    const dismissableForm = event.srcElement.closest(".subFormContainer");
+    dismissableForm.remove(); // subFormTargetDisconnected
   }
 
   selectWork(event) {

@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 import { get } from "@rails/request.js";
 
 export default class extends Controller {
-  static targets = ["newProducerList", "appendedProducerForm", "subForm"];
+  static targets = ["subForm"];
   static values = {
     id: String, // may be empty, don't cast to 0
   };
@@ -10,6 +10,7 @@ export default class extends Controller {
   connect() {
     // console.log("works connected");
     // console.log(this.idValue === "");
+    // console.log(this.subFormTargets);
   }
 
   // as multiple new associated Producer sub-forms can be added dynamically,
@@ -20,38 +21,41 @@ export default class extends Controller {
     // console.log("rebaseAssociationForms()");
     for (let i = 0; i < this.subFormTargets.length; i++) {
       const currentSubForm = this.subFormTargets[i];
-      const label = currentSubForm.querySelector("label");
-      const input = currentSubForm.querySelector("input");
+      // console.log("currentSubForm", currentSubForm);
 
-      const labelFor = label.getAttribute("for");
-      const newLabelFor = labelFor.replace(/[0-9]/g, String(i));
-      label.setAttribute("for", newLabelFor);
+      let subFormInputs = currentSubForm.querySelectorAll("input, select");
+      // console.log("subFormInputs", subFormInputs);
 
-      const inputName = input.getAttribute("name");
-      const newInputName = inputName.replace(/[0-9]/g, String(i));
-      input.setAttribute("name", newInputName);
+      for (let ii = 0; ii < subFormInputs.length; ii++) {
+        let input = subFormInputs[ii];
+        console.log("input", input);
+        const inputName = input.getAttribute("name");
+        console.log(inputName);
+        const newInputName = inputName.replace(/[0-9]/g, String(i));
+        input.setAttribute("name", newInputName);
 
-      const inputId = input.getAttribute("id");
-      const newInputId = inputId.replace(/[0-9]/g, String(i));
-      input.setAttribute("id", newInputId);
+        const inputId = input.getAttribute("id");
+        if (inputId) {
+          const newInputId = inputId.replace(/[0-9]/g, String(i));
+          input.setAttribute("id", newInputId);
+        }
+      }
     }
   }
 
-  appendedProducerFormTargetConnected() {
-    // console.log("appendedProducerFormTargetConnected()");
+  subFormTargetConnected() {
+    // console.log("subFormTargetConnected()");
     this.rebaseAssociationForms();
   }
 
-  appendedProducerFormTargetDisconnected() {
-    // console.log("appendedProducerFormTargetdisonnected()");
+  subFormTargetDisconnected() {
+    // console.log("subFormTargetdisonnected()");
     this.rebaseAssociationForms();
   }
 
   formDismiss(event) {
-    const dismissableForm = event.srcElement.closest(
-      ".appendedProducerFormContainer"
-    );
-    dismissableForm.remove(); // appendedProducerFormTargetDisconnected
+    const dismissableForm = event.srcElement.closest(".subFormContainer");
+    dismissableForm.remove(); // subFormTargetDisconnected
   }
 
   selectProducer(event) {
