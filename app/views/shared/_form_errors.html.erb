@@ -1,11 +1,2 @@
-<% if form.object.errors.any? %>
-  <div style="color: red">
-    <h2><%= pluralize(form.object.errors.count, "error") %> prohibited this object from being saved:</h2>
-
-    <ul>
-      <% form.object.errors.each do |error| %>
-        <li><%= error.full_message %></li>
-      <% end %>
-    </ul>
-  </div>
-<% end %>
+<%# HTML response %>
+<%= render("shared/errors", form: form) %>

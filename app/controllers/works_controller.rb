@@ -1,7 +1,7 @@
 class WorksController < ApplicationController
   before_action :set_work, only: %i[show edit update destroy]
   before_action :build_or_set_work, only: %i[build_producer select_producer]
-  before_action :set_producer_options, only: %i[new edit update]
+  before_action :set_producer_options, only: %i[new edit]
   before_action :set_work_and_work_producers, only: %i[new edit]
 
   # GET /works or /works.json
@@ -39,13 +39,22 @@ class WorksController < ApplicationController
   # POST /works or /works.json
   def create
     @work = Work.new(work_params)
-
     respond_to do |format|
       if @work.save
         format.html { redirect_to work_url(@work), notice: "Work was successfully created." }
         format.json { render :show, status: :created, location: @work }
       else
-        format.html { render :new, status: :unprocessable_entity }
+        format.html {
+          set_work_and_work_producers
+          set_producer_options
+
+          render :new, status: :unprocessable_entity
+        }
+
+        format.turbo_stream {
+          render "shared/form_errors", locals: { model_object: @work }
+        }
+
         format.json { render json: @work.errors, status: :unprocessable_entity }
       end
     end
@@ -54,12 +63,22 @@ class WorksController < ApplicationController
   # PATCH/PUT /works/1 or /works/1.json
   def update
     respond_to do |format|
-      binding.irb
       if @work.update(work_params)
         format.html { redirect_to work_url(@work), notice: "Work was successfully updated." }
         format.json { render :show, status: :ok, location: @work }
       else
-        format.html { render :edit, status: :unprocessable_entity }
+
+        format.html {
+          set_work_and_work_producers
+          set_producer_options
+
+          render :edit, status: :unprocessable_entity
+        }
+
+        format.turbo_stream {
+          render "shared/form_errors", locals: { model_object: @work }
+        }
+
         format.json { render json: @work.errors, status: :unprocessable_entity }
       end
     end

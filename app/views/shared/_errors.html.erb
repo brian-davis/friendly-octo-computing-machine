@@ -1,0 +1,14 @@
+<div id="form_errors" data-controller="dismissable">
+  <% if form.object.errors.any? %>
+    <div style="color: red" class="dismissableDiv">
+      <h2><%= pluralize(form.object.errors.count, "error") %> prohibited this object from being saved:</h2>
+
+      <ul>
+        <% form.object.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+      <div data-action="click->dismissable#dismiss" style="cursor: pointer">Dismiss ❌</div>
+    </div>
+  <% end %>
+</div>
