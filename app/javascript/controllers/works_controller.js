@@ -26,5 +26,7 @@ export default class extends Controller {
         Accept: "text/vnd.turbo-stream.html, text/html, application/xhtml+xml",
       },
     });
+
+    event.currentTarget.value = "";
   }
 }

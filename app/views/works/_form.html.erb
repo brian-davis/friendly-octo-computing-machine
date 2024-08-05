@@ -15,17 +15,22 @@
       <%# COLUMN 1 %>
       <p>
         Authors
-        <br>
-        <%= link_to("New Author +", build_producer_works_path(work_id: @work.try(:id)), data: { turbo_stream: true }) %>
-        <br>
+        <br><br>
 
-        <i>choose existing author</i>:
-        <br>
-        <%= select_tag("authors", options_for_select(@producer_options), { include_blank: true, data: { action: "change->works#selectProducer" }}) %>
+        <span style="margin-left: 1em; font-size: smaller">
+          <%= link_to(build_producer_works_path(work_id: @work.try(:id)), class: "link-button", data: { turbo_stream: true }) do %>
+          New Author &nbsp; &nbsp;+
+        <% end %>
+        </span>
+
+        <br><br>
+        <span style="margin-left: 1em; font-size: smaller">
+          <%= select_tag("authors", options_for_select(@producer_options), { include_blank: "Select Author", class: "select-button", data: { action: "change->works#selectProducer" }}) %>
+        </span>
       </p>
 
       <%# COLUMN 2 %>
-      <div class="flex-inner " id="sub_form_list" data-controller="dismissable">
+      <div id="sub_form_list" data-controller="dismissable">
         <% @work_producers.each do |work_producer| %>
           <div class="subFormContainer" data-dismissable-target="subForm">
             <%= form.fields_for :work_producers, work_producer do |t| %>

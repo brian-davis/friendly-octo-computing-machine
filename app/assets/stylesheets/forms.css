@@ -2,7 +2,12 @@ body {
   font-family: sans-serif;
 }
 
-.flex-outer li,
+.flex-outer li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
 .flex-inner {
   display: flex;
   flex-wrap: wrap;
@@ -10,10 +15,11 @@ body {
 }
 
 .flex-outer {
-  /* background-color: aquamarine; */
   padding: 1em;
+  border: 1px solid #ccc;
 }
 
+/* left column labels */
 .flex-outer > li > label,
 .flex-outer li p {
   flex: 1 0 120px;
@@ -23,36 +29,33 @@ body {
 .flex-inner {
   flex: 1 0 220px;
 }
+
+/* submit button */
 .flex-outer li button {
   margin-left: auto;
   padding: 8px 16px;
-  border: 1px solid #bbb;
-  background: #eee;
-  /* color: #f2f2f2; */
+  border: 1px solid #ccc;
+  background: yellow;
   text-transform: uppercase;
   letter-spacing: 0.09em;
   border-radius: 2px;
 }
 
+/* rows */
 .flex-outer li {
   margin-bottom: 1em;
 }
-.flex-outer li input,
-textarea {
-  padding: 0.5em;
-}
 
-.flex-inner {
-  /* padding: none; */
-}
-
-.flex-inner .subFormContainer {
+#sub_form_list .subFormContainer {
   border: 1px solid #ccc;
-  /* background: #eee; */
   padding: 0.5em;
-  /* width: 12em; */
   margin-right: 1em;
   margin-bottom: 1em;
+}
+
+input,
+textarea {
+  padding: 0.5em;
 }
 
 input:read-only {
@@ -67,4 +70,12 @@ input:read-write {
 
 .subform-line {
   margin-bottom: 0.5em;
+}
+
+a.link-button,
+select.select-button {
+  text-decoration: none;
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  background: floralwhite;
 }
