@@ -8,6 +8,12 @@ body {
   flex-wrap: wrap;
   align-items: center;
 }
+
+.flex-outer {
+  /* background-color: aquamarine; */
+  padding: 1em;
+}
+
 .flex-outer > li > label,
 .flex-outer li p {
   flex: 1 0 120px;
@@ -27,16 +33,7 @@ body {
   letter-spacing: 0.09em;
   border-radius: 2px;
 }
-.flex-inner li {
-  width: 100px;
-}
-.flex-inner {
-  justify-content: space-between;
-}
-.flex-outer {
-  background-color: aquamarine;
-  padding: 1em;
-}
+
 .flex-outer li {
   margin-bottom: 1em;
 }
@@ -44,10 +41,30 @@ body {
 textarea {
   padding: 0.5em;
 }
-.flex-inner li.subFormContainer {
+
+.flex-inner {
+  /* padding: none; */
+}
+
+.flex-inner .subFormContainer {
   border: 1px solid #ccc;
-  background: #eee;
-  padding: 1em;
-  width: 12em;
+  /* background: #eee; */
+  padding: 0.5em;
+  /* width: 12em; */
+  margin-right: 1em;
   margin-bottom: 1em;
+}
+
+input:read-only {
+  background-color: aliceblue;
+  border: 1px solid aliceblue;
+}
+
+input:read-write {
+  background-color: yellow;
+  border: 1px solid #ccc;
+}
+
+.subform-line {
+  margin-bottom: 0.5em;
 }

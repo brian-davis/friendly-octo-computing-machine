@@ -5,7 +5,8 @@
     <li>
       <%# COLUMN 1 %>
       <%= form.label :title %>
-      <%# COLUMN 2 %>
+
+        <%# COLUMN 2 %>
       <%= form.text_field :title, { placeholder: "book title required" } %>
     </li>
 
@@ -24,19 +25,30 @@
       </p>
 
       <%# COLUMN 2 %>
-      <ul class="flex-inner" id="sub_form_list" data-controller="dismissable" >
+      <div class="flex-inner " id="sub_form_list" data-controller="dismissable">
         <% @work_producers.each do |work_producer| %>
-          <li class="subFormContainer">
+          <div class="subFormContainer" data-works-target="subForm">
             <%= form.fields_for :work_producers, work_producer do |t| %>
-              <div data-works-target="subForm">
-                <%= "#{work_producer.role}: #{work_producer.producer.name}" %>
-                <%= t.hidden_field :id %>
-                <b>remove</b><%= t.check_box :_destroy %>
+              <%= t.hidden_field :id %>
+
+              <div class="subform-line">
+                <i style="font-size: smaller;"><%= work_producer.role.titleize %>:</i>
+                <%= t.fields_for :producer_attributes, t.object.producer do |tt| %>
+                  <%= tt.text_field :name, readonly: true %>
+                <% end %>
               </div>
+
+              <div class="subform-line">
+                <span class="check-label" style="position:relative; top:2px; right: 4px">
+                  <%= t.check_box :_destroy %><b style="position:relative; bottom:3px;font-size:smaller;color: red">undo</b>
+                </span>
+              </div>
+
             <% end %>
-          </li>
+          </div>
        <% end %>
-      </ul>
+      </div>
+
     </li>
 
     <%# ROW 3 %>
