@@ -55,7 +55,7 @@ export default class extends Controller {
   }
 
   // TODO: use this instead of work_controller
-  dismiss(event) {
+  dismissErrors(event) {
     // console.log("dismiss");
     const dismissableDiv = event.srcElement.closest(".dismissableDiv");
     dismissableDiv.remove();
