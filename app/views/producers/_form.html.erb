@@ -5,6 +5,7 @@
     <li>
       <%# COLUMN 1 %>
       <%= form.label :name %>
+
       <%# COLUMN 2 %>
       <%= form.text_field :name, { placeholder: "name required" } %>
     </li>
@@ -14,40 +15,42 @@
       <%# COLUMN 1 %>
       <p>
         Works
-        <br>
-        <%= link_to("New Book +", build_work_producers_path(producer_id: @producer.try(:id)), data: { turbo_stream: true }) %>
-        <br>
+        <br><br>
 
-        <i>choose existing work</i>:
-        <br>
-        <%=
-        select_tag(
-          "works",
-          options_for_select(@work_options),
-          {
-            include_blank: true,
-            data: {
-              action: "change->producers#selectWork"
-            }
-          }
-        )
-        %>
+        <span style="margin-left: 1em; font-size: smaller">
+          <%= link_to(build_work_producers_path(producer_id: @producer.try(:id)),class: "link-button", data: { turbo_stream: true }) do %>
+            New Book &nbsp; &nbsp;+
+          <% end %>
+        </span>
+        <br><br>
+
+        <span style="margin-left: 1em; font-size: smaller">
+        <%= select_tag("works", options_for_select(@work_options), { include_blank: "Select Work", class: "select-button", data: { action: "change->producers#selectWork" }}) %>
       </p>
 
       <%# COLUMN 2 %>
-      <ul class="flex-inner" id="sub_form_list" data-controller="dismissable">
+      <div id="sub_form_list" data-controller="dismissable">
         <% @work_producers.each do |work_producer| %>
-          <li class="subFormContainer">
+          <div class="subFormContainer" data-dismissable-target="subForm">
             <%= form.fields_for :work_producers, work_producer do |t| %>
-              <div data-dismissable-target="subForm">
-                <%= "#{work_producer.role}: #{work_producer.work.title}" %>
-                <%= t.hidden_field :id %>
-                <b>remove</b><%= t.check_box :_destroy %>
+              <%= t.hidden_field :id %>
+
+              <div class="subform-line">
+                <i style="font-size: smaller;"><%= work_producer.role.titleize %>:</i>
+                <%= t.fields_for :work_attributes, t.object.work do |tt| %>
+                  <%= tt.text_field :title, readonly: true %>
+                <% end %>
+              </div>
+
+              <div class="subform-line">
+                <span class="check-label" style="position:relative; top:2px; right: 4px">
+                  <%= t.check_box :_destroy %><b style="position:relative; bottom:3px;font-size:smaller;color: red">undo</b>
+                </span>
               </div>
             <% end %>
-          </li>
+          </div>
        <% end %>
-      </ul>
+      </div>
     </li>
 
     <%# ROW 3 %>

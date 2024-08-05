@@ -1,17 +1,21 @@
 <%= form_with(model: @producer) do |form| %>
   <%= turbo_stream.append "sub_form_list" do %>
-    <li class="subFormContainer">
+    <div class="subFormContainer" data-dismissable-target="subForm">
       <%= form.fields_for :work_producers, @producer.work_producers.build do |t| %>
-        <div data-dismissable-target="subForm">
-          <b>role: </b>
-          <%= t.select(:role, options_for_select(WorkProducer.roles.keys)) %>
+        <%= t.hidden_field :work_id, value: @work.id %>
 
-          <%= t.hidden_field :work_id, value: @work.id %>
-          <%= @work.title %>
+        <div class="subform-line">
+          <b style="font-size:smaller">Title: </b><%= @work.title %>
+        </div>
 
-          <span data-action="click->dismissable#formDismiss" style="cursor: pointer">cancel ⓧ</span>
+        <div class="subform-line">
+          <b style="font-size:smaller">Role: </b><%= t.select(:role, options_for_select(WorkProducer.roles.keys)) %>
+        </div>
+
+        <div class="subform-line">
+          <span data-action="click->dismissable#formDismiss" style="cursor: pointer; "><b style="font-size:smaller">ⓧ</b> <b style="font-size: smaller; color: red; position:relative; bottom: 1px">cancel</b></span>
         </div>
       <% end %>
-    </li>
+    </div>
   <% end %>
 <% end %>
