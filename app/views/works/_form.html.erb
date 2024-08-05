@@ -27,7 +27,7 @@
       <%# COLUMN 2 %>
       <div class="flex-inner " id="sub_form_list" data-controller="dismissable">
         <% @work_producers.each do |work_producer| %>
-          <div class="subFormContainer" data-works-target="subForm">
+          <div class="subFormContainer" data-dismissable-target="subForm">
             <%= form.fields_for :work_producers, work_producer do |t| %>
               <%= t.hidden_field :id %>
 

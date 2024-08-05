@@ -6,7 +6,7 @@ export default class extends Controller {
   connect() {
     // console.log("dismissable_controller connected");
     // console.log(this.idValue === "");
-    // console.log(this.subFormTargets);
+    console.log(this.subFormTargets);
   }
 
   // as multiple new associated Producer sub-forms can be added dynamically,
@@ -15,6 +15,7 @@ export default class extends Controller {
   // else in the params collection.
   rebaseAssociationForms() {
     // console.log("rebaseAssociationForms()");
+
     for (let i = 0; i < this.subFormTargets.length; i++) {
       const currentSubForm = this.subFormTargets[i];
       // console.log("currentSubForm", currentSubForm);
@@ -24,9 +25,9 @@ export default class extends Controller {
 
       for (let ii = 0; ii < subFormInputs.length; ii++) {
         let input = subFormInputs[ii];
-        console.log("input", input);
+        // console.log("input", input);
         const inputName = input.getAttribute("name");
-        console.log(inputName);
+        // console.log(inputName);
         const newInputName = inputName.replace(/[0-9]/g, String(i));
         input.setAttribute("name", newInputName);
 

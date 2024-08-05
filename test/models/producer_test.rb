@@ -7,6 +7,9 @@ class ProducerTest < ActiveSupport::TestCase
     })
     refute pr1.valid?
     assert_equal ["Name can't be blank"], pr1.errors.full_messages
+    pr1.name = ""
+    refute pr1.valid?
+    assert_equal ["Name can't be blank"], pr1.errors.full_messagesa
   end
 
   test "build a new work_producer and link to existing work" do
