@@ -2,15 +2,22 @@
 
 <%= render @work %>
 
-<b>Producers</b>
-<br>
-<% @producer_credits.each do |role, name| %>
-  <i><%= role %></i>: <%= name %>
-<% end %>
+<h2>Authors</h2>
+<ul>
+  <% if @producer_credits.empty? %>
+    <span class="empty-list">EMPTY</span>
+  <% else %>
+    <% @producer_credits.each do |role, name| %>
+      <li>
+        <i><%= role %></i>: <%= name %>
+      </li>
+    <% end %>
+  <% end %>
+</ul>
 
-<div>
+<div class="nav-links">
   <%= link_to "Edit this work", edit_work_path(@work) %> |
-  <%= link_to "Back to works", works_path %>
+  <%= link_to "Back to works", works_path %> |
 
-  <%= button_to "Destroy this work", @work, method: :delete %>
+  <%= link_to "Destroy this work", @work, method: :delete, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
 </div>

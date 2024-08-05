@@ -1,14 +1,18 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Producers</h1>
+<h1>Authors</h1>
 
-<div id="producers">
+<ul id="producers">
   <% @producers.each do |producer| %>
-    <%= render producer %>
-    <p>
-      <%= link_to "Show this producer", producer %>
-    </p>
+    <li>
+      <%= render producer %>
+      <%= link_to "Show this author", producer, class: "index-link" %>
+    </li>
   <% end %>
-</div>
+</ul>
 
-<%= link_to "New producer", new_producer_path %>
+
+<div class="nav-links">
+  <%= link_to "New author", new_producer_path %> |
+  <%= link_to "Back to top", root_path %>
+</div>

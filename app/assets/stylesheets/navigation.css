@@ -1,0 +1,19 @@
+.nav-links {
+  outline: 1px solid #ccc;
+  padding: 0.5em;
+}
+
+.nav-links a,
+a.index-link {
+  color: darkseagreen;
+  text-decoration-thickness: 2px;
+  text-decoration-skip: edges;
+}
+
+.nav-links a[data-method="delete"] {
+  color: red;
+}
+
+.empty-list {
+  opacity: 50%;
+}
