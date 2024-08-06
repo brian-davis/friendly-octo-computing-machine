@@ -155,4 +155,72 @@ class WorkTest < ActiveSupport::TestCase
     refute w1.valid?
     assert_equal ["Work producers producer name can't be blank"], w1.errors.full_messages
   end
+
+  test "no duplicate on re-submit" do
+    # Initial form submit
+    params1 = ActionController::Parameters.new({
+      work: {
+        title: "First Work",
+        work_producers_attributes: {
+          "0" => {
+            role: "author",
+            producer_attributes: {
+              name: "First Author"
+            }
+          }
+        }
+      }
+    }).require(:work).permit(:title, work_producers_attributes: [
+      :id,
+      :role,
+      :_destroy,
+      :producer_id,
+      producer_attributes: [:name]
+    ])
+    w1 = Work.new(params1)
+    assert w1.save
+    assert_equal 1, Work.where(title: "First Work").count
+    assert_equal 1, Producer.where(name: "First Author").count
+    assert_equal 1, w1.producers.count
+    assert_equal 1, w1.work_producers.count
+
+    p1 = w1.producers.first
+    wp1 = w1.work_producers.first
+
+    # 2nd form submit, adds a new author, re-submits old data (should ignore)
+
+    params2 = ActionController::Parameters.new({
+      work: {
+        title: "First Work",
+        work_producers_attributes: {
+          "0" => {
+            role: "author", # should ignore this (no new work_producer)
+            producer_attributes: { # should ignore this (no new producer)
+              name: "First Author"
+            }
+          },
+          "1" => {
+            role: "translator", # accept this
+            producer_attributes: { # accept this
+              name: "First Translator"
+            }
+          }
+        }
+      }
+    }).require(:work).permit(:title, work_producers_attributes: [
+      :id,
+      :role,
+      :_destroy,
+      :producer_id,
+      producer_attributes: [:name]
+    ])
+    assert w1.update(params2)
+    binding.irb
+
+    assert_equal 1, Work.where(title: "First Work").count
+    assert_equal 1, Producer.where(name: "First Author").count
+    assert_equal 1, Producer.where(name: "First Translator").count
+    assert_equal 2, w1.producers.count
+    assert_equal 2, w1.work_producers.count
+  end
 end
