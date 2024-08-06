@@ -1,7 +1,5 @@
 <p style="color: green"><%= notice %></p>
-
 <h1>Works</h1>
-
 <div class="outline">
   <ul id="works">
     <% if @works.empty? %>
@@ -10,7 +8,6 @@
       <% @works.each do |work| %>
         <li>
           <%= render work %>
-          <%= link_to "Show this work", work, class: "index-link" %>
         </li>
       <% end %>
     <% end %>
