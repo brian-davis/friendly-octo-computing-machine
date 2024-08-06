@@ -4,11 +4,15 @@
 
 <div class="outline">
   <ul id="works">
-    <% @works.each do |work| %>
-      <li>
-        <%= render work %>
-        <%= link_to "Show this work", work, class: "index-link" %>
-      </li>
+    <% if @works.empty? %>
+      <span class="empty-list">EMPTY</span>
+    <% else %>
+      <% @works.each do |work| %>
+        <li>
+          <%= render work %>
+          <%= link_to "Show this work", work, class: "index-link" %>
+        </li>
+      <% end %>
     <% end %>
   </ul>
 </div>

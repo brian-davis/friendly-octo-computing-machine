@@ -38,7 +38,7 @@ class ProducersController < ApplicationController
   # POST /producers or /producers.json
   def create
     @producer = Producer.new(producer_params)
-
+# binding.irb
     respond_to do |format|
       if @producer.save
         format.html { redirect_to producer_url(@producer), notice: "Producer was successfully created." }
@@ -61,7 +61,6 @@ class ProducersController < ApplicationController
   # PATCH/PUT /producers/1 or /producers/1.json
   def update
     respond_to do |format|
-      binding.irb
       if @producer.update(producer_params)
         format.html { redirect_to producer_url(@producer), notice: "Producer was successfully updated." }
         format.json { render :show, status: :ok, location: @producer }
@@ -104,7 +103,7 @@ class ProducersController < ApplicationController
 
     # TODO: combine with set_form_options
     def build_or_set_producer
-      @producer = Producer.find_by(id: params[:producer_id]) || Work.new
+      @producer = Producer.find_by(id: params[:producer_id]) || Producer.new
     end
 
     def producer_params

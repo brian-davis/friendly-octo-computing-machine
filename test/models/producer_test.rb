@@ -9,7 +9,7 @@ class ProducerTest < ActiveSupport::TestCase
     assert_equal ["Name can't be blank"], pr1.errors.full_messages
     pr1.name = ""
     refute pr1.valid?
-    assert_equal ["Name can't be blank"], pr1.errors.full_messagesa
+    assert_equal ["Name can't be blank"], pr1.errors.full_messages
   end
 
   test "build a new work_producer and link to existing work" do
@@ -100,7 +100,7 @@ class ProducerTest < ActiveSupport::TestCase
     assert_equal 2, producer.work_producers.where(work_id: work.id).count
   end
 
-  test "create a work through work_producer" do
+  test "create a work through existing work_producer" do
     producer = producers(:one)
     new_title_param = "New Work"
     params = ActionController::Parameters.new({
@@ -127,6 +127,49 @@ class ProducerTest < ActiveSupport::TestCase
     producer.update(params)
     assert Work.where(title: new_title_param).exists?
     assert producer.works.pluck(:title).include?(new_title_param)
+  end
+
+  test "create a work through new work_producer" do
+    params = ActionController::Parameters.new({
+      producer: {
+        name: "Plato",
+        work_producers_attributes: {
+          "0" => {
+            role: "author",
+            work_attributes: {
+              title: "Republic"
+            }
+          },
+          "1" => {
+            role: "author",
+            work_attributes: {
+              title: "Apology"
+            }
+          }
+        }
+      }
+    }).require(:producer).permit(:name, work_producers_attributes: [
+      :id,
+      :role,
+      :_destroy,
+      :work_id,
+      work_attributes: [:title]
+    ])
+
+    producer = Producer.new(params)
+
+    refute Producer.where(name: "Plato").exists?
+    refute Work.where(title: "Republic").exists?
+    refute Work.where(title: "Apology").exists?
+
+    producer.save
+
+    assert Producer.where(name: "Plato").exists?
+    assert Work.where(title: "Republic").exists?
+    assert Work.where(title: "Apology").exists?
+
+    assert producer.works.pluck(:title).include?("Republic")
+    assert producer.works.pluck(:title).include?("Apology")
   end
 
   test "validation on associated work_producer" do

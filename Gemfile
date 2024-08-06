@@ -62,3 +62,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem "rename", "~> 1.1"

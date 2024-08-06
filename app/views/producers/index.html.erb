@@ -4,11 +4,15 @@
 
 <div class="outline">
   <ul id="producers">
-    <% @producers.each do |producer| %>
-      <li>
-        <%= render producer %>
-        <%= link_to "Show this author", producer, class: "index-link" %>
-      </li>
+    <% if @producers.empty? %>
+      <span class="empty-list">EMPTY</span>
+    <% else %>
+      <% @producers.each do |producer| %>
+        <li>
+          <%= render producer %>
+          <%= link_to "Show this author", producer, class: "index-link" %>
+        </li>
+      <% end %>
     <% end %>
   </ul>
 </div>
