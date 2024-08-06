@@ -5,7 +5,8 @@
         <%= t.hidden_field :producer_id, value: @producer.id %>
 
         <div class="subform-line">
-          <b style="font-size:smaller">Name: </b><%= @producer.name %>
+          <%# display only; ignore on submit %>
+          <%= text_field_tag(:_producer_name, @producer.name, readonly: true) %>
         </div>
 
         <div class="subform-line">

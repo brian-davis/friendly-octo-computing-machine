@@ -37,9 +37,9 @@
 
               <div class="subform-line">
                 <i style="font-size: smaller;"><%= work_producer.role.titleize %>:</i>
-                <%= t.fields_for :work_attributes, t.object.work do |tt| %>
-                  <%= tt.text_field :title, readonly: true %>
-                <% end %>
+
+                <%# display only; ignore on submit %>
+                <%= text_field_tag(:_work_title, work_producer.work.title, readonly: true) %>
               </div>
 
               <div class="subform-line">

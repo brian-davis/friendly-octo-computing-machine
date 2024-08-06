@@ -156,7 +156,7 @@ class WorkTest < ActiveSupport::TestCase
     assert_equal ["Work producers producer name can't be blank"], w1.errors.full_messages
   end
 
-  test "no duplicate on re-submit" do
+  test "no duplicate producer on re-submit" do
     # Initial form submit
     params1 = ActionController::Parameters.new({
       work: {
@@ -194,14 +194,13 @@ class WorkTest < ActiveSupport::TestCase
         title: "First Work",
         work_producers_attributes: {
           "0" => {
-            role: "author", # should ignore this (no new work_producer)
-            producer_attributes: { # should ignore this (no new producer)
-              name: "First Author"
-            }
+            id: wp1.id,
+            :_destroy => "0",
+            :_producer_name => "First Producer" # display only, ignore
           },
           "1" => {
-            role: "translator", # accept this
-            producer_attributes: { # accept this
+            role: "translator",
+            producer_attributes: {
               name: "First Translator"
             }
           }
@@ -215,12 +214,77 @@ class WorkTest < ActiveSupport::TestCase
       producer_attributes: [:name]
     ])
     assert w1.update(params2)
-    binding.irb
 
     assert_equal 1, Work.where(title: "First Work").count
     assert_equal 1, Producer.where(name: "First Author").count
+    # binding.irb
     assert_equal 1, Producer.where(name: "First Translator").count
     assert_equal 2, w1.producers.count
     assert_equal 2, w1.work_producers.count
+  end
+
+  test "no duplicate work producers; unique by id and role" do
+    # Initial form submit
+    params1 = ActionController::Parameters.new({
+      work: {
+        title: "First Work",
+        work_producers_attributes: {
+          "0" => {
+            role: "author",
+            producer_attributes: {
+              name: "First Author"
+            }
+          }
+        }
+      }
+    }).require(:work).permit(:title, work_producers_attributes: [
+      :id,
+      :role,
+      :_destroy,
+      :producer_id,
+      producer_attributes: [:name]
+    ])
+    w1 = Work.new(params1)
+    assert w1.save
+    assert_equal 1, Work.where(title: "First Work").count
+    assert_equal 1, Producer.where(name: "First Author").count
+    assert_equal 1, w1.producers.count
+    assert_equal 1, w1.work_producers.count
+
+    p1 = w1.producers.first
+    wp1 = w1.work_producers.first
+
+    # 2nd form submit, reselect the same author and role
+
+    params2 = ActionController::Parameters.new({
+      work: {
+        title: "First Work",
+        work_producers_attributes: {
+          "0" => {
+            id: wp1.id,
+            :_destroy => "0",
+            :_producer_name => "First Producer" # display only, ignore
+          },
+         "1" => { # same as before, should ignore
+            role: "author",
+            producer_id: p1.id,
+          }
+        }
+      }
+    }).require(:work).permit(:title, work_producers_attributes: [
+      :id,
+      :role,
+      :_destroy,
+      :producer_id,
+      producer_attributes: [:name]
+    ])
+    refute w1.update(params2)
+    assert_equal ["Work producers Must be unique by role"], w1.errors.full_messages
+
+    assert_equal 1, Work.where(title: "First Work").count
+    assert_equal 1, Producer.where(name: "First Author").count
+
+    assert_equal 1, w1.producers.count
+    assert_equal 1, w1.work_producers.count
   end
 end
