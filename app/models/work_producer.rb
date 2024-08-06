@@ -9,6 +9,12 @@ class WorkProducer < ApplicationRecord
 
   validate :validate_parent_role_uniqueness
 
+  class << self
+    def role_options
+      roles.keys.map { |k| [k.sub("_", "-").capitalize, k] }
+    end
+  end
+
 private
 
   def validate_parent_role_uniqueness

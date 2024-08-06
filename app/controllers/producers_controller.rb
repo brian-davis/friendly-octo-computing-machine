@@ -61,6 +61,7 @@ class ProducersController < ApplicationController
   # PATCH/PUT /producers/1 or /producers/1.json
   def update
     respond_to do |format|
+      binding.irb
       if @producer.update(producer_params)
         format.html { redirect_to producer_url(@producer), notice: "Producer was successfully updated." }
         format.json { render :show, status: :ok, location: @producer }

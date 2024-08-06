@@ -1,19 +1,38 @@
 <%= form_with(model: @producer) do |form| %>
   <%= turbo_stream.append "sub_form_list" do %>
-    <div class="subFormContainer" data-dismissable-target="subForm">
+    <div class="subFormContainer outline" data-dismissable-target="subForm">
       <%= form.fields_for :work_producers, @producer.work_producers.build do |t| %>
         <%= t.hidden_field :work_id, value: @work.id %>
 
         <div class="subform-line">
-          <b style="font-size:smaller">Title: </b><%= @work.title %>
+          <%# COLUMN 1 %>
+          <b class="label-text label-column">
+            <span class="midline-offset">
+              Name:
+            </span>
+          </b>
+          <%# COLUMN 2 %>
+          <%# display only; ignore on submit %>
+          <%= text_field_tag(:_work_title, @work.title, readonly: true) %>
         </div>
 
         <div class="subform-line">
-          <b style="font-size:smaller">Role: </b><%= t.select(:role, options_for_select(WorkProducer.roles.keys)) %>
+          <%# COLUMN 1 %>
+          <b class="label-text label-column">
+            <span class="midline-offset">
+            Role:
+            </span>
+          </b>
+
+          <%# COLUMN 2 %>
+          <%= t.select(:role, options_for_select(WorkProducer.role_options)) %>
         </div>
 
-        <div class="subform-line">
-          <span data-action="click->dismissable#formDismiss" style="cursor: pointer; "><b style="font-size:smaller">ⓧ</b> <b style="font-size: smaller; color: red; position:relative; bottom: 1px">cancel</b></span>
+        <%# FULL COLUMN %>
+        <div class="subform-line" style="justify-content: flex-end;">
+          <span class="clickable" data-action="click->dismissable#formDismiss">
+          <b class="label-text" style="font-weight: 300">ⓧ</b>
+          <b class="label-text danger">Cancel</b></span>
         </div>
       <% end %>
     </div>

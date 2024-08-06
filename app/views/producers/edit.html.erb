@@ -1,10 +1,10 @@
-<h1>Editing producer</h1>
+<h1>Editing Author</h1>
+<div class="outline">
+  <%= render "form", producer: @producer %>
+</div>
 
-<%= render "form", producer: @producer %>
-
-<br>
-
-<div class="nav-links">
-  <%= link_to "Show this producer", @producer %> |
-  <%= link_to "Back to producers", producers_path %>
+<div class="nav-links outline">
+  <%= link_to "Show this author", @producer, class: "nav-button" %> |
+  <%= link_to "Back to authors", producers_path, class: "nav-button" %> |
+  <%= link_to "Back to top", root_path, class: "nav-button" %>
 </div>

@@ -1,23 +1,24 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @producer %>
-
-<h2>Works</h2>
-<ul>
-  <% if @work_credits.empty? %>
-    <span class="empty-list">EMPTY</span>
-  <% else %>
-    <% @work_credits.each do |role, title| %>
-      <li>
-        <i><%= role %></i>: <%= title %>
-      </li>
+<div class="outline">
+  <%= render @producer %>
+  <b>Works</b>
+  <ul>
+    <% if @work_credits.empty? %>
+      <span class="empty-list">EMPTY</span>
+    <% else %>
+      <% @work_credits.each do |role, title| %>
+        <li>
+          <i><%= role.capitalize %></i>: <%= title %>
+        </li>
+      <% end %>
     <% end %>
-  <% end %>
-</ul>
+  </ul>
+</div>
 
-<div class="nav-links">
-  <%= link_to "Edit this producer", edit_producer_path(@producer) %> |
-  <%= link_to "Back to producers", producers_path %> |
-
-  <%= link_to "Destroy this producer", @producer, method: :delete, data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+<div class="nav-links outline">
+  <%= link_to "Edit this author", edit_producer_path(@producer), class: "link-button" %> |
+  <%= link_to "Destroy this record", @producer, method: :delete, class: "link-button", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %> |
+  <%= link_to "Back to authors", producers_path, class: "nav-button" %> |
+  <%= link_to "Back to top", root_path, class: "nav-button" %>
 </div>

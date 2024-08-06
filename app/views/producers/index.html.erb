@@ -2,17 +2,19 @@
 
 <h1>Authors</h1>
 
-<ul id="producers">
-  <% @producers.each do |producer| %>
-    <li>
-      <%= render producer %>
-      <%= link_to "Show this author", producer, class: "index-link" %>
-    </li>
-  <% end %>
-</ul>
+<div class="outline">
+  <ul id="producers">
+    <% @producers.each do |producer| %>
+      <li>
+        <%= render producer %>
+        <%= link_to "Show this author", producer, class: "index-link" %>
+      </li>
+    <% end %>
+  </ul>
+</div>
 
 
-<div class="nav-links">
-  <%= link_to "New author", new_producer_path %> |
-  <%= link_to "Back to top", root_path %>
+<div class="nav-links outline">
+  <%= link_to "New author", new_producer_path, class: "link-button" %> |
+  <%= link_to "Back to top", root_path, class: "nav-button" %>
 </div>

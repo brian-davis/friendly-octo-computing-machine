@@ -1,0 +1,9 @@
+.indented {
+  margin-left: 1em;
+}
+
+.outline {
+  border: 1px solid #ccc;
+  padding: 1em;
+  margin-bottom: 1em;
+}

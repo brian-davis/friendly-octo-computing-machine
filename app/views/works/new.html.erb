@@ -1,9 +1,9 @@
 <h1>New work</h1>
 
-<%= render "form", work: @work %>
+<div class="outline">
+  <%= render "form", work: @work %>
+</div>
 
-<br>
-
-<div class="nav-links">
-  <%= link_to "Back to works", works_path %>
+<div class="nav-links outline">
+  <%= link_to "Back to works", works_path, class: "nav-button" %>
 </div>

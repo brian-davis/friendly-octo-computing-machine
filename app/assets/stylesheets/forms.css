@@ -14,9 +14,8 @@ body {
   align-items: center;
 }
 
-.flex-outer {
-  padding: 1em;
-  border: 1px solid #ccc;
+ul.flex-outer {
+  /*  */
 }
 
 /* left column labels */
@@ -47,15 +46,13 @@ body {
 }
 
 #sub_form_list .subFormContainer {
-  border: 1px solid #ccc;
-  padding: 0.5em;
-  margin-right: 1em;
-  margin-bottom: 1em;
+  width: 25em;
 }
 
-input,
+input[type="text"],
 textarea {
   padding: 0.5em;
+  width: 100%;
 }
 
 input:read-only {
@@ -70,6 +67,18 @@ input:read-write {
 
 .subform-line {
   margin-bottom: 0.5em;
+  display: flex;
+}
+
+.subform-line .label-column {
+  flex-basis: 25%;
+}
+
+.subform-line select {
+  width: 104%;
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  background-color: yellow;
 }
 
 a.link-button,
@@ -78,4 +87,26 @@ select.select-button {
   padding: 0.5em;
   border: 1px solid #ccc;
   background: floralwhite;
+}
+
+.label-text {
+  font-size: smaller;
+}
+
+.bold-label {
+  font-weight: 600;
+  font-size: medium;
+}
+
+.danger {
+  color: red;
+}
+
+.midline-offset {
+  position: relative;
+  top: 0.5em;
+}
+
+.clickable {
+  cursor: pointer;
 }

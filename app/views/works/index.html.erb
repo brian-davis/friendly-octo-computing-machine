@@ -2,16 +2,18 @@
 
 <h1>Works</h1>
 
-<ul id="works">
-  <% @works.each do |work| %>
-    <li>
-      <%= render work %>
-      <%= link_to "Show this work", work, class: "index-link" %>
-    </li>
-  <% end %>
-</ul>
+<div class="outline">
+  <ul id="works">
+    <% @works.each do |work| %>
+      <li>
+        <%= render work %>
+        <%= link_to "Show this work", work, class: "index-link" %>
+      </li>
+    <% end %>
+  </ul>
+</div>
 
-<div class="nav-links">
-  <%= link_to "New work", new_work_path %> |
-  <%= link_to "Back to top", root_path %>
+<div class="nav-links outline">
+  <%= link_to "New work", new_work_path, class: "link-button" %> |
+  <%= link_to "Back to top", root_path, class:"nav-button" %>
 </div>

@@ -1,6 +1,5 @@
 .nav-links {
-  outline: 1px solid #ccc;
-  padding: 0.5em;
+  /* background-color: white; */
 }
 
 .nav-links a,
@@ -16,4 +15,13 @@ a.index-link {
 
 .empty-list {
   opacity: 50%;
+}
+
+/* .link-button {} */
+
+.nav-button {
+  text-decoration: none;
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  background: aliceblue;
 }

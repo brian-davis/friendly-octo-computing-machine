@@ -4,7 +4,7 @@
     <%# ROW 1 %>
     <li>
       <%# COLUMN 1 %>
-      <%= form.label :name %>
+      <%= form.label :name, class: "bold-label" %>
 
       <%# COLUMN 2 %>
       <%= form.text_field :name, { placeholder: "name required" } %>
@@ -14,38 +14,55 @@
     <li>
       <%# COLUMN 1 %>
       <p>
-        Works
+        <span class="bold-label">Works</span>
         <br><br>
 
-        <span style="margin-left: 1em; font-size: smaller">
+        <span class="indented label-text">
           <%= link_to(build_work_producers_path(producer_id: @producer.try(:id)),class: "link-button", data: { turbo_stream: true }) do %>
-            New Book &nbsp; &nbsp;+
+            New Work &nbsp; &nbsp;+
           <% end %>
         </span>
         <br><br>
 
-        <span style="margin-left: 1em; font-size: smaller">
+        <span class="indented label-text">
         <%= select_tag("works", options_for_select(@work_options), { include_blank: "Select Work", class: "select-button", data: { action: "change->producers#selectWork" }}) %>
       </p>
 
       <%# COLUMN 2 %>
       <div id="sub_form_list" data-controller="dismissable">
         <% @work_producers.each do |work_producer| %>
-          <div class="subFormContainer" data-dismissable-target="subForm">
+          <div class="outline subFormContainer" data-dismissable-target="subForm">
             <%= form.fields_for :work_producers, work_producer do |t| %>
-              <%= t.hidden_field :id %>
+              <%= t.hidden_field :id %><%# work_producer id %>
 
               <div class="subform-line">
-                <i style="font-size: smaller;"><%= work_producer.role.titleize %>:</i>
+                <%# COLUMN 1 %>
+                <b class="label-text label-column">
+                  <span class="midline-offset">
+                    Title:
+                  </span>
+                </b>
 
+                <%# COLUMN 2 %>
                 <%# display only; ignore on submit %>
                 <%= text_field_tag(:_work_title, work_producer.work.title, readonly: true) %>
               </div>
 
               <div class="subform-line">
-                <span class="check-label" style="position:relative; top:2px; right: 4px">
-                  <%= t.check_box :_destroy %><b style="position:relative; bottom:3px;font-size:smaller;color: red">undo</b>
+                <b class="label-text label-column">
+                <span class="midline-offset">
+                Role:
                 </span>
+                </b>
+
+                <%# display only; ignore on submit %>
+                <%= text_field_tag(:_work_producer_role, work_producer.role.titleize, readonly: true) %>
+              </div>
+
+              <%# FULL COLUMN %>
+              <div class="subform-line" style="justify-content: flex-end;">
+                <%= t.check_box :_destroy %>
+                <b class="label-text danger" style="position:relative; top: 1px">Undo</b>
               </div>
             <% end %>
           </div>
