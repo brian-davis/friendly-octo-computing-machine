@@ -1,7 +1,37 @@
 <p style="color: green"><%= notice %></p>
 
-<div class="outline">
-  <%= render @work %>
+<div id="<%= dom_id @work %>" class="outline">
+  <b>
+    <%= title_line(@work) %>
+  </b>
+
+  <p class="small-text indented">
+    <%= alternate_title_line(@work).html_safe %>
+  </p>
+
+  <p>
+    <%= byline(@work) %>
+  </p>
+
+  <p>
+    <%= [@work.publisher&.name, @work.year_of_publication].compact.join(", ") %>
+  </p>
+
+  <hr>
+  <b>Authors</b>
+  <ul>
+    <% if @work.work_producers.empty? %>
+      <span class="empty-list">EMPTY</span>
+    <% else %>
+      <% @work.work_producers.each do |wp| %>
+        <li>
+          <%= wp.role.titleize.split(" ").join("-") %>:
+          <%= link_to wp.producer.name, wp.producer, class: "index-link" %>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+
 </div>
 
 <div class="nav-links outline">

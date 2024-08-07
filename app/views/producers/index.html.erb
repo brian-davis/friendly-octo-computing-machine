@@ -1,7 +1,5 @@
 <p style="color: green"><%= notice %></p>
-
 <h1>Authors</h1>
-
 <div class="outline">
   <ul id="producers">
     <% if @producers.empty? %>
@@ -15,7 +13,6 @@
     <% end %>
   </ul>
 </div>
-
 
 <div class="nav-links outline">
   <%= link_to "New author", new_producer_path, class: "link-button" %> |

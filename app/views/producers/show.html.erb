@@ -1,15 +1,17 @@
 <p style="color: green"><%= notice %></p>
 
-<div class="outline">
-  <%= render @producer %>
+<div id="<%= dom_id @producer %>" class="outline">
+  <b><%= @producer.name %></b>
+
+  <hr>
   <b>Works</b>
   <ul>
-    <% if @work_credits.empty? %>
+    <% if @producer.works.empty? %>
       <span class="empty-list">EMPTY</span>
     <% else %>
-      <% @work_credits.each do |role, title| %>
+      <% @producer.work_producers.joins(:work).pluck(:role, :title).each do |role, title| %>
         <li>
-          <i><%= role.capitalize %></i>: <%= title %>
+          <%= role.capitalize %>: <%= title %>
         </li>
       <% end %>
     <% end %>

@@ -7,7 +7,7 @@
     <% else %>
       <% @works.each do |work| %>
         <li>
-          <%= link_to work.title, work, class: "index-link" %>
+          <%= render work %>
         </li>
       <% end %>
     <% end %>

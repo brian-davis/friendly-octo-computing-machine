@@ -11,3 +11,7 @@
 .small-text {
   font-size: smaller;
 }
+
+hr {
+  border: 2px solid aliceblue;
+}
