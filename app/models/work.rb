@@ -12,6 +12,8 @@
 #  foreign_title       :string
 #  year_of_composition :integer
 #  year_of_publication :integer
+#  language            :string
+#  original_language   :string
 #
 class Work < ApplicationRecord
   has_many :work_producers, dependent: :destroy
@@ -26,6 +28,18 @@ class Work < ApplicationRecord
   accepts_nested_attributes_for :publisher # destroy false
 
   validates :title, presence: true
+
+  class << self
+    # pseudo-enum
+    def language_options
+      distinct.pluck(:language).compact.sort
+    end
+
+    # pseudo-enum
+    def original_language_options
+      distinct.pluck(:original_language).compact.sort
+    end
+  end
 
   private
 

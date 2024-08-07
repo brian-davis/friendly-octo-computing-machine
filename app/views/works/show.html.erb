@@ -6,24 +6,28 @@
   </b>
 
   <p class="small-text indented">
-    <%= alternate_title_line(@work).html_safe %>
+    <%= alternate_title_line(@work) %>
   </p>
 
-  <p>
+  <p class="small-text indented">
     <%= byline(@work) %>
   </p>
 
-  <p>
-    <%= [@work.publisher&.name, @work.year_of_publication].compact.join(", ") %>
+  <p class="small-text indented">
+    <%= publishing_line(@work) %>
+  </p>
+
+  <p class="small-text indented">
+    <%= language_line(@work) %>
   </p>
 
   <hr>
   <b>Authors</b>
-  <ul>
+  <ul class="associated-items">
     <% if @work.work_producers.empty? %>
       <span class="empty-list">EMPTY</span>
     <% else %>
-      <% @work.work_producers.each do |wp| %>
+      <% @work.work_producers.joins(:producer).merge(Producer.order(:name)).each do |wp| %>
         <li>
           <%= wp.role.titleize.split(" ").join("-") %>:
           <%= link_to wp.producer.name, wp.producer, class: "index-link" %>
@@ -37,6 +41,6 @@
 <div class="nav-links outline">
   <%= link_to "Edit this work", edit_work_path(@work), class: "link-button" %> |
   <%= link_to "Destroy this work", @work, method: :delete, class: "link-button", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %> |
-  <%= link_to "Back to works", works_path, class: "nav-button" %> |
+  <%= link_to "Back to books", works_path, class: "nav-button" %> |
   <%= link_to "Back to top", root_path, class: "nav-button" %>
 </div>

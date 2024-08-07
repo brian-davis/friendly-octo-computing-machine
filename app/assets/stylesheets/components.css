@@ -15,3 +15,7 @@
 hr {
   border: 2px solid aliceblue;
 }
+
+ul.associated-items li {
+  margin-bottom: 1em;
+}

@@ -1,7 +1,7 @@
 <%= form_with(model: producer, data: { controller: "producers", producers_id_value: @producer.id }) do |form| %>
   <%= render("shared/form_errors", form: form) %>
   <ul class="flex-outer">
-    <%# ROW 1 %>
+    <%# ROW %>
     <li>
       <%# COLUMN 1 %>
       <%= form.label :name, class: "bold-label" %>
@@ -10,22 +10,77 @@
       <%= form.text_field :name, { placeholder: "name required" } %>
     </li>
 
-    <%# ROW 2 %>
+    <%# ROW %>
+    <li>
+      <%# COLUMN 1 %>
+      <%= form.label :nationality, class: "bold-label" %>
+
+      <%# COLUMN 2 %>
+      <%# https://github.com/rails/rails/pull/52137 %>
+      <%= form.text_field :nationality, { list: "work_nationalities_datalist" } %>
+      <%= content_tag(:datalist, nil, id: :work_nationalities_datalist, 'data-autocomplete-input-target' => :datalist) do %>
+        <% Producer.nationality_options.each do |nationality| %>
+          <%=
+            content_tag(
+              :option,
+              nil,
+              value: nationality,
+              'data-autocomplete-input-target' => 'datalistOption'
+            )
+          %>
+        <% end %>
+      <% end %>
+    </li>
+
+    <%# ROW %>
+    <li>
+      <%# COLUMN 1 %>
+      <%= form.label :bio_link, class: "bold-label" %>
+
+      <%# COLUMN 2 %>
+      <span class="correct-width">
+        <%= form.text_field :bio_link %>
+      </span>
+    </li>
+
+    <%# ROW %>
+    <li>
+      <%# COLUMN 1 %>
+      <%= form.label :birth_year, class: "bold-label" %>
+
+      <%# COLUMN 2 %>
+      <span class="correct-width">
+        <%= form.number_field :birth_year %>
+      </span>
+    </li>
+
+    <%# ROW %>
+    <li>
+      <%# COLUMN 1 %>
+      <%= form.label :death_year, class: "bold-label" %>
+
+      <%# COLUMN 2 %>
+      <span class="correct-width">
+        <%= form.number_field :death_year %>
+      </span>
+    </li>
+
+    <%# ROW %>
     <li>
       <%# COLUMN 1 %>
       <p>
-        <span class="bold-label">Works</span>
+        <span class="bold-label">Books</span>
         <br><br>
 
         <span class="indented label-text">
-          <%= link_to(build_work_producers_path(producer_id: @producer.try(:id)),class: "link-button", data: { turbo_stream: true }) do %>
-            New Work &nbsp; &nbsp;+
+          <%= link_to(build_work_producers_path(producer_id: @producer.try(:id)),class: "link-button small-text", data: { turbo_stream: true }) do %>
+            New Book &nbsp; &nbsp;+
           <% end %>
         </span>
         <br><br>
 
         <span class="indented label-text">
-        <%= select_tag("works", options_for_select(@work_options), { include_blank: "Select Work", class: "select-button", data: { action: "change->producers#selectWork" }}) %>
+        <%= select_tag("books", options_for_select(@work_options), { include_blank: "Select Book", class: "select-button small-text", data: { action: "change->producers#selectWork" }}) %>
       </p>
 
       <%# COLUMN 2 %>
@@ -70,7 +125,7 @@
       </div>
     </li>
 
-    <%# ROW 3 %>
+    <%# ROW %>
     <li>
       <%# COLUMN 1 %>
       <%= form.button "Submit", type: "submit", name: "commit", value: "Submit", data: { disable_with: "Submit" } %>

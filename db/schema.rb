@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_07_215038) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_07_223430) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,7 +22,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_07_215038) do
     t.integer "death_year"
     t.string "bio_link"
     t.string "nationality"
-    t.string "language"
   end
 
   create_table "publishers", force: :cascade do |t|
@@ -51,6 +50,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_07_215038) do
     t.string "foreign_title"
     t.integer "year_of_composition"
     t.integer "year_of_publication"
+    t.string "language"
+    t.string "original_language"
     t.index ["publisher_id"], name: "index_works_on_publisher_id"
   end
 

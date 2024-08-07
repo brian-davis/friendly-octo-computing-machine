@@ -5,7 +5,7 @@ class WorksController < ApplicationController
 
   # GET /works or /works.json
   def index
-    @works = Work.all
+    @works = Work.all.order(:title)
   end
 
   # GET /works/1 or /works/1.json
@@ -128,6 +128,8 @@ private
       :foreign_title,
       :year_of_composition,
       :year_of_publication,
+      :language,
+      :original_language,
 
       :publisher_id,
       :_clear_publisher,

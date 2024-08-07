@@ -3,14 +3,14 @@
 <div class="outline">
   <%= render @publisher %>
 
-  <b>Works</b>
-  <ul>
+  <b>Books</b>
+  <ul class="associated-items">
     <% if @publisher.works.empty? %>
       <span class="empty-list">EMPTY</span>
     <% else %>
-      <% @publisher.works.each do |work| %>
+      <% @publisher.works.order(:title).each do |work| %>
         <li>
-          <%= work.title %>
+          <%= link_to work.title, work, class: "index-link" %>
         </li>
       <% end %>
     <% end %>

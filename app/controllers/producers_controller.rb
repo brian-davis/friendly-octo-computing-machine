@@ -5,7 +5,7 @@ class ProducersController < ApplicationController
 
   # GET /producers or /producers.json
   def index
-    @producers = Producer.all
+    @producers = Producer.all.order(:name)
   end
 
   # GET /producers/1 or /producers/1.json
@@ -98,7 +98,9 @@ class ProducersController < ApplicationController
     def set_form_options
       @producer ||= Producer.new
       @work_producers = @producer.work_producers.includes(:work)
-      @work_options = Work.order(:title).pluck(:title, :id).uniq
+      @work_options = Work.order(:title).pluck(:title, :id).uniq.map do |title, id|
+        [title.truncate(25), id]
+      end
     end
 
     # TODO: combine with set_form_options
@@ -107,12 +109,20 @@ class ProducersController < ApplicationController
     end
 
     def producer_params
-      params.require(:producer).permit(:name, work_producers_attributes: [
-        :id,
-        :role,
-        :_destroy,
-        :work_id,
-        work_attributes: [:title]
-      ])
+      params.require(:producer).permit(
+        :name,
+        :birth_year,
+        :death_year,
+        :bio_link,
+        :nationality,
+
+        work_producers_attributes: [
+          :id,
+          :role,
+          :_destroy,
+          :work_id,
+          work_attributes: [:title]
+        ]
+      )
     end
 end

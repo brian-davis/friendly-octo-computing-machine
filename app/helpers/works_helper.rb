@@ -11,7 +11,7 @@ module WorksHelper
       "<i>#{title}</i>"
     end.join(" or ")
     return "" if base.empty?
-    "Also known as #{base}"
+    "Also known as #{base}".html_safe
   end
 
   def byline(work)
@@ -23,5 +23,22 @@ module WorksHelper
       author_names,
       year
     ].compact.join(", ")
+  end
+
+  def publishing_line(work)
+    html = [
+      link_to(work.publisher&.name, work.publisher, class: "index-link").to_s,
+      work.year_of_publication
+    ].compact.join(", ")
+    return "" if html.blank?
+    html.html_safe
+  end
+
+  def language_line(work)
+    if work.original_language.present? && work.language.present?
+      "#{work.language}, translated from #{work.original_language}"
+    elsif work.original_language.present? || work.language.present?
+      "#{work.original_language.presence || work.language.presence} language"
+    end
   end
 end

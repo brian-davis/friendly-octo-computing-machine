@@ -3,15 +3,25 @@
 <div id="<%= dom_id @producer %>" class="outline">
   <b><%= @producer.name %></b>
 
+  <p class="small-text indented">
+    <%= life_line(@producer) %>
+  </p>
+
+  <p class="small-text indented">
+    <% if @producer.bio_link.present? %>
+      <%= link_to("bio", @producer.bio_link, { class: "small-text index-link", target: "_blank" }) %>
+    <% end %>
+  </p>
+
   <hr>
-  <b>Works</b>
-  <ul>
+  <b>Books</b>
+  <ul class="associated-items">
     <% if @producer.works.empty? %>
       <span class="empty-list">EMPTY</span>
     <% else %>
-      <% @producer.work_producers.joins(:work).pluck(:role, :title).each do |role, title| %>
+      <% @producer.work_producers.joins(:work).merge(Work.order(:title)).each do |wp| %>
         <li>
-          <%= role.capitalize %>: <%= title %>
+          <%= wp.role.capitalize %>: <%= link_to(wp.work.title, wp.work, class: "index-link") %>
         </li>
       <% end %>
     <% end %>

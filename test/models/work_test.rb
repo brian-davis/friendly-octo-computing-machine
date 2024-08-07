@@ -12,6 +12,8 @@
 #  foreign_title       :string
 #  year_of_composition :integer
 #  year_of_publication :integer
+#  language            :string
+#  original_language   :string
 #
 require "test_helper"
 
