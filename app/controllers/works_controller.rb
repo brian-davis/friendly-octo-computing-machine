@@ -121,12 +121,21 @@ private
   end
 
   def work_params
-    params.require(:work).permit(:title, :publisher_id, :_clear_publisher,work_producers_attributes: [
-      :id,
-      :role,
-      :_destroy,
-      :producer_id,
-      producer_attributes: [:name]
-    ])
+    params.require(:work).permit(
+      :title,
+
+      :publisher_id,
+      :_clear_publisher,
+
+      publisher_attributes: [:name],
+
+      work_producers_attributes: [
+        :id,
+        :role,
+        :_destroy,
+        :producer_id,
+        producer_attributes: [:name]
+      ]
+    )
   end
 end

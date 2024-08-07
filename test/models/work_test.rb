@@ -297,4 +297,23 @@ class WorkTest < ActiveSupport::TestCase
     assert_equal 1, w1.producers.count
     assert_equal 1, w1.work_producers.count
   end
+
+  test "build publisher with new work" do
+    attrs = {
+      title: "New Work",
+      publisher: Publisher.new({
+        name: "New Publisher"
+      })
+    }
+    refute Work.exists?({ title: "New Work" })
+    refute Publisher.exists?({ name: "New Publisher" })
+
+    Work.create(attrs)
+
+    assert Work.exists?({ title: "New Work" })
+    assert Publisher.exists?({ name: "New Publisher" })
+
+    w1 = Work.find_by({ title: "New Work" })
+    assert_equal "New Publisher", w1.publisher.name
+  end
 end

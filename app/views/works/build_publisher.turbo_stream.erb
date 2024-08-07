@@ -1,0 +1,27 @@
+<%= form_with(model: @work) do |form| %>
+  <%= turbo_stream.update "sub_form_list_publisher" do %>
+    <div class="outline subFormContainer" data-dismissable-target="subForm">
+
+      <%= form.fields_for :publisher, @work.build_publisher do |t| %>
+        <div class="subform-line">
+          <%# COLUMN 1 %>
+          <b class="label-text label-column">
+            <span class="midline-offset">
+            Name:
+            </span>
+          </b>
+
+          <%# COLUMN 2 %>
+          <%= t.text_field(:name) %>
+        </div>
+      <% end %>
+
+      <%# FULL COLUMN %>
+      <div class="subform-line" style="justify-content: flex-end;">
+        <span class="clickable" data-action="click->dismissable#formDismiss">
+        <b class="label-text" style="font-weight: 300">ⓧ</b>
+        <b class="label-text danger">Cancel</b></span>
+      </div>
+    </div>
+  <% end %>
+<% end %>
