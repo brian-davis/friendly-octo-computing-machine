@@ -1,10 +1,18 @@
 <div id="<%= dom_id work %>">
-  <p>
-    <%= link_to work.title, work, class: "index-link" %>
+  <b>
+    <%= title_line(work) %>
+  </b>
+
+  <p class="small-text indented">
+    Also known as <%= alternate_title_line(work).html_safe %>
   </p>
 
   <p>
-    <%= work.publisher&.name %>
+    <%= byline(work) %>
+  </p>
+
+  <p>
+    <%= [work.publisher&.name, work.year_of_publication].compact.join(", ") %>
   </p>
 
   <b>Authors</b>

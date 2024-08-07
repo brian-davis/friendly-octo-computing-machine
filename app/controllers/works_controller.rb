@@ -123,6 +123,11 @@ private
   def work_params
     params.require(:work).permit(
       :title,
+      :subtitle,
+      :alternate_title,
+      :foreign_title,
+      :year_of_composition,
+      :year_of_publication,
 
       :publisher_id,
       :_clear_publisher,

@@ -7,10 +7,57 @@
       <%= form.label :title, class: "bold-label" %>
 
         <%# COLUMN 2 %>
-      <%= form.text_field :title, { placeholder: "book title required" } %>
+      <%= form.text_field :title, { placeholder: "title required" } %>
     </li>
 
-    <%# ROW 2 %>
+    <%# ROW %>
+    <li>
+      <%# COLUMN 1 %>
+      <%= form.label :subtitle, class: "bold-label" %>
+
+        <%# COLUMN 2 %>
+      <%= form.text_field :subtitle %>
+    </li>
+
+    <%# ROW %>
+    <li>
+      <%# COLUMN 1 %>
+      <%= form.label :alternate_title, class: "bold-label" %>
+
+        <%# COLUMN 2 %>
+      <%= form.text_field :alternate_title %>
+    </li>
+
+    <%# ROW %>
+    <li>
+      <%# COLUMN 1 %>
+      <%= form.label :foreign_title, class: "bold-label" %>
+
+        <%# COLUMN 2 %>
+      <%= form.text_field :foreign_title %>
+    </li>
+
+    <%# ROW %>
+    <li>
+      <%# COLUMN 1 %>
+      <%= form.label :year_of_composition, class: "bold-label" %>
+      <%# COLUMN 2 %>
+      <span id="correct-width">
+        <%= form.number_field :year_of_composition %>
+      </span>
+    </li>
+
+    <%# ROW %>
+    <li>
+      <%# COLUMN 1 %>
+      <%= form.label :year_of_publication, class: "bold-label" %>
+      <%# COLUMN 2 %>
+      <span id="correct-width">
+        <%= form.number_field :year_of_publication %>
+      </span>
+    </li>
+
+    <%# ROW %>
     <li>
       <p>
         <span class="bold-label">Publisher</span>
@@ -56,7 +103,7 @@
       </div>
     </li>
 
-    <%# ROW 3 %>
+    <%# ROW %>
     <li>
       <%# COLUMN 1 %>
       <p>
@@ -117,7 +164,7 @@
       </div>
     </li>
 
-    <%# ROW 3 %>
+    <%# ROW %>
     <li>
       <%# COLUMN 1 %>
       <%= form.button "Submit", type: "submit", name: "commit", value: "Submit", data: { disable_with: "Submit" } %>

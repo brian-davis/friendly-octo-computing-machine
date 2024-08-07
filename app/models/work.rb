@@ -2,15 +2,22 @@
 #
 # Table name: works
 #
-#  id           :bigint           not null, primary key
-#  title        :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  publisher_id :bigint
+#  id                  :bigint           not null, primary key
+#  title               :string
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  publisher_id        :bigint
+#  subtitle            :string
+#  alternate_title     :string
+#  foreign_title       :string
+#  year_of_composition :integer
+#  year_of_publication :integer
 #
 class Work < ApplicationRecord
   has_many :work_producers, dependent: :destroy
   has_many :producers, through: :work_producers
+
+
   accepts_nested_attributes_for :work_producers, allow_destroy: true
 
   attr_accessor :_clear_publisher
@@ -24,7 +31,7 @@ class Work < ApplicationRecord
 
   # remove association, not associated record
   def clear_publisher
-    if self._clear_publisher
+    if self._clear_publisher == "1"
       self.publisher_id = nil
     end
   end

@@ -2,11 +2,16 @@
 #
 # Table name: works
 #
-#  id           :bigint           not null, primary key
-#  title        :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  publisher_id :bigint
+#  id                  :bigint           not null, primary key
+#  title               :string
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  publisher_id        :bigint
+#  subtitle            :string
+#  alternate_title     :string
+#  foreign_title       :string
+#  year_of_composition :integer
+#  year_of_publication :integer
 #
 require "test_helper"
 
