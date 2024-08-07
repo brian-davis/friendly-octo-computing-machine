@@ -1,5 +1,5 @@
-# Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 Rails.application.routes.draw do
+  resources :publishers
   get 'home/index'
   get 'home/append'
 
@@ -15,6 +15,9 @@ Rails.application.routes.draw do
     collection do
       get :build_producer, format: :turbo_stream
       get :select_producer, format: :turbo_stream
+
+      get :build_publisher, format: :turbo_stream
+      get :select_publisher, format: :turbo_stream
     end
   end
 

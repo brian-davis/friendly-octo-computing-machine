@@ -1,6 +1,6 @@
 class WorksController < ApplicationController
   before_action :set_work, only: %i[show edit update destroy]
-  before_action :build_or_set_work, only: %i[build_producer select_producer]
+  before_action :build_or_set_work, only: %i[build_producer select_producer build_publisher select_publisher]
   before_action :set_form_options, only: %i[new edit]
 
   # GET /works or /works.json
@@ -10,7 +10,6 @@ class WorksController < ApplicationController
 
   # GET /works/1 or /works/1.json
   def show
-    @producer_credits = @work.work_producers.includes(:producer).pluck(:role, :name)
   end
 
   # GET /works/new
@@ -26,6 +25,20 @@ class WorksController < ApplicationController
   # join an existing Producer record to a Work record with new WorkProducer record
   def select_producer
     @producer = Producer.find(params["producer_id"])
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
+  def build_publisher
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
+  # join an existing Producer record to a Work record with new WorkProducer record
+  def select_publisher
+    @publisher = Publisher.find(params["publisher_id"])
     respond_to do |format|
       format.turbo_stream
     end
@@ -99,6 +112,7 @@ private
     @work ||= Work.new
     @work_producers = @work.work_producers.includes(:producer)
     @producer_options = Producer.order(:name).pluck(:name, :id).uniq
+    @publisher_options = Publisher.order(:name).pluck(:name, :id).uniq
   end
 
   # TODO: combine with set_form_options
@@ -107,7 +121,7 @@ private
   end
 
   def work_params
-    params.require(:work).permit(:title, work_producers_attributes: [
+    params.require(:work).permit(:title, :publisher_id, :_clear_publisher,work_producers_attributes: [
       :id,
       :role,
       :_destroy,

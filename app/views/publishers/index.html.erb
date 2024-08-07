@@ -1,13 +1,14 @@
 <p style="color: green"><%= notice %></p>
-<h1>Works</h1>
+<h1>Publishers</h1>
+
 <div class="outline">
-  <ul id="works">
-    <% if @works.empty? %>
+  <ul id="publishers">
+    <% if @publishers.empty? %>
       <span class="empty-list">EMPTY</span>
     <% else %>
-      <% @works.each do |work| %>
+      <% @publishers.each do |publisher| %>
         <li>
-          <%= link_to work.title, work, class: "index-link" %>
+          <%= render publisher %>
         </li>
       <% end %>
     <% end %>
@@ -15,6 +16,6 @@
 </div>
 
 <div class="nav-links outline">
-  <%= link_to "New work", new_work_path, class: "link-button" %> |
+  <%= link_to "New publisher", new_publisher_path, class: "link-button"  %>
   <%= link_to "Back to top", root_path, class:"nav-button" %>
 </div>

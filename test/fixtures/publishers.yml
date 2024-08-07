@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: producers
+# Table name: publishers
 #
 #  id         :bigint           not null, primary key
 #  name       :string
@@ -9,7 +9,7 @@
 #
 
 one:
-  name: ProducerOne
+  name: MyString
 
 two:
-  name: ProducerTwo
+  name: MyString

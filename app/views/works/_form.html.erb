@@ -12,6 +12,52 @@
 
     <%# ROW 2 %>
     <li>
+      <p>
+        <span class="bold-label">Publisher</span>
+        <br><br>
+
+        <span class="indented label-text">
+          <%= link_to(build_publisher_works_path(work_id: @work.try(:id)), class: "link-button", data: { turbo_stream: true }) do %>
+          New Publisher &nbsp; &nbsp;+
+        <% end %>
+        </span>
+
+        <br><br>
+        <span class="indented label-text">
+          <%= select_tag("publishers", options_for_select(@publisher_options), { include_blank: "Select Publisher", class: "select-button", data: { action: "change->works#selectPublisher" }}) %>
+        </span>
+      </p>
+
+      <%# COLUMN 2 %>
+      <div id="sub_form_list_publisher" data-controller="dismissable">
+        <% if work.publisher %>
+          <%# ONLY 1 %>
+          <div class="outline subFormContainer" data-dismissable-target="subForm">
+            <%= form.hidden_field :publisher_id, value: work.publisher_id %>
+            <div class="subform-line">
+              <%# COLUMN 1 %>
+              <b class="label-text label-column">
+                <span class="midline-offset">
+                  Name:
+                </span>
+              </b>
+              <%# COLUMN 2 %>
+              <%# display only; ignore on submit %>
+              <%= text_field_tag(:_publisher_name, work.publisher&.name, readonly: true) %>
+            </div>
+
+            <%# FULL COLUMN %>
+            <div class="subform-line" style="justify-content: flex-end;">
+              <%= form.check_box :_clear_publisher %>
+              <b class="label-text danger" style="position:relative; top: 1px">Undo</b>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </li>
+
+    <%# ROW 3 %>
+    <li>
       <%# COLUMN 1 %>
       <p>
         <span class="bold-label">Authors</span>

@@ -1,3 +1,13 @@
+# == Schema Information
+#
+# Table name: works
+#
+#  id           :bigint           not null, primary key
+#  title        :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  publisher_id :bigint
+#
 require "test_helper"
 
 class WorkTest < ActiveSupport::TestCase

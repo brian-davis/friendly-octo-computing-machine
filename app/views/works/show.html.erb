@@ -2,19 +2,6 @@
 
 <div class="outline">
   <%= render @work %>
-
-  <b>Authors</b>
-  <ul>
-    <% if @producer_credits.empty? %>
-      <span class="empty-list">EMPTY</span>
-    <% else %>
-      <% @producer_credits.each do |role, name| %>
-        <li>
-          <i><%= role.capitalize %></i>: <%= name %>
-        </li>
-      <% end %>
-    <% end %>
-  </ul>
 </div>
 
 <div class="nav-links outline">

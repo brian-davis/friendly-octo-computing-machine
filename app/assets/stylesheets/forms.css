@@ -45,7 +45,8 @@ ul.flex-outer {
   margin-bottom: 1em;
 }
 
-#sub_form_list .subFormContainer {
+#sub_form_list .subFormContainer,
+#sub_form_list_publisher .subFormContainer {
   width: 25em;
 }
 

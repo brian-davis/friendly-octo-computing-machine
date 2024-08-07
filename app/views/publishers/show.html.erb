@@ -1,0 +1,25 @@
+<p style="color: green"><%= notice %></p>
+
+<div class="outline">
+  <%= render @publisher %>
+
+  <b>Works</b>
+  <ul>
+    <% if @publisher.works.empty? %>
+      <span class="empty-list">EMPTY</span>
+    <% else %>
+      <% @publisher.works.each do |work| %>
+        <li>
+          <%= work.title %>
+        </li>
+      <% end %>
+    <% end %>
+  </ul>
+</div>
+
+<div class="nav-links outline">
+  <%= link_to "Edit this publisher", edit_publisher_path(@publisher), class: "link-button" %> |
+  <%= link_to "Destroy this publisher", @publisher, method: :delete, class: "link-button", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %> |
+  <%= link_to "Back to publishers", publishers_path, class: "nav-button" %> |
+  <%= link_to "Back to top", root_path, class: "nav-button" %>
+</div>

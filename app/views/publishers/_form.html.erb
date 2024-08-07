@@ -1,0 +1,70 @@
+<%= form_with(model: publisher) do |form| %>
+  <%= render("shared/form_errors", form: form) %>
+
+  <ul class="flex-outer">
+    <%# ROW 1 %>
+    <li>
+      <%# COLUMN 1 %>
+      <%= form.label :name, class: "bold-label" %>
+
+        <%# COLUMN 2 %>
+      <%= form.text_field :name, { placeholder: "name required" } %>
+    </li>
+
+    <%# ROW 2 %>
+    <li>
+      <%# COLUMN 1 %>
+      <p>
+        <span class="bold-label">Works</span>
+        <br><br>
+
+        <span class="indented label-text">
+          <%#= link_to(build_producer_works_path(work_id: @work.try(:id)), class: "link-button", data: { turbo_stream: true }) do %>
+            <%# New Author &nbsp; &nbsp;+ %>
+          <%# end %>
+        </span>
+
+        <br><br>
+        <span class="indented label-text">
+          <%#= select_tag("works", options_for_select(@work_options), { include_blank: "Select Work", class: "select-button", data: { action: "change->publishers#selectWork" }}) %>
+        </span>
+      </p>
+
+      <%# COLUMN 2 %>
+      <div id="sub_form_list" data-controller="dismissable">
+        <% @publisher.works.each do |work| %>
+          <div class="outline subFormContainer" data-dismissable-target="subForm">
+            <%= form.fields_for :works, work do |t| %>
+              <%= t.hidden_field :id %><%# work id %>
+
+              <div class="subform-line">
+                <%# COLUMN 1 %>
+                <b class="label-text label-column">
+                  <span class="midline-offset">
+                    Title:
+                  </span>
+                </b>
+
+                <%# COLUMN 2 %>
+                <%# display only; ignore on submit %>
+                <%= text_field_tag(:_work_title, work.title, readonly: true) %>
+              </div>
+
+              <%# FULL COLUMN %>
+              <div class="subform-line" style="justify-content: flex-end;">
+                <%= t.check_box :_destroy %>
+                <b class="label-text danger" style="position:relative; top: 1px">Undo</b>
+              </div>
+            <% end %>
+          </div>
+       <% end %>
+      </div>
+    </li>
+
+    <%# ROW 3 %>
+    <li>
+      <%# COLUMN 1 %>
+      <%= form.button "Submit", type: "submit", name: "commit", value: "Submit", data: { disable_with: "Submit" } %>
+    </li>
+  </ul>
+<% end %>

@@ -64,3 +64,5 @@ group :test do
 end
 
 gem "rename", "~> 1.1"
+
+gem "annotate", "~> 3.2"

@@ -1,3 +1,14 @@
+# == Schema Information
+#
+# Table name: work_producers
+#
+#  id          :bigint           not null, primary key
+#  work_id     :bigint           not null
+#  producer_id :bigint           not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  role        :integer
+#
 class WorkProducer < ApplicationRecord
   belongs_to :work
   belongs_to :producer
