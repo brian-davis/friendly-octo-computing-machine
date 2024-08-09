@@ -10,6 +10,7 @@
 #  death_year  :integer
 #  bio_link    :string
 #  nationality :string
+#  works_count :integer          default(0)
 #
 require "test_helper"
 
@@ -219,7 +220,7 @@ class ProducerTest < ActiveSupport::TestCase
   test "works counter_cache" do
     p1 = Producer.create(name: "Plutarch")
     assert_equal 0, p1.works.count
-    assert_equal nil, p1.works_count
+    assert_equal 0, p1.works_count # column default
     w1 = p1.works.create({ title: "Life of Dion" })
     assert_equal 1, p1.works.count
     assert_equal 1, p1.works_count

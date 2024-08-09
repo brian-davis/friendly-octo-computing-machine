@@ -14,6 +14,7 @@
 #  year_of_publication :integer
 #  language            :string
 #  original_language   :string
+#  tags                :string           default([]), is an Array
 #
 class Work < ApplicationRecord
   has_many :work_producers, dependent: :destroy
@@ -22,7 +23,7 @@ class Work < ApplicationRecord
   accepts_nested_attributes_for :work_producers, allow_destroy: true
 
   attr_accessor :_clear_publisher
-  belongs_to :publisher, optional: true
+  belongs_to :publisher, optional: true, counter_cache: true
   before_validation :clear_publisher
   before_save :deduplicate_tags
   accepts_nested_attributes_for :publisher # destroy false

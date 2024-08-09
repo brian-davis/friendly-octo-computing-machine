@@ -2,10 +2,11 @@
 #
 # Table name: publishers
 #
-#  id         :bigint           not null, primary key
-#  name       :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id          :bigint           not null, primary key
+#  name        :string
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  works_count :integer          default(0)
 #
 class Publisher < ApplicationRecord
   has_many :works

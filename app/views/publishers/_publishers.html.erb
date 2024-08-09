@@ -1,0 +1,9 @@
+<% if @publishers.empty? %>
+  <span class="empty-list">EMPTY</span>
+<% else %>
+  <% @publishers.each do |publisher| %>
+    <li>
+      <%= render publisher %>
+    </li>
+  <% end %>
+<% end %>

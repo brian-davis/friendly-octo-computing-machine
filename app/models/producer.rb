@@ -10,6 +10,7 @@
 #  death_year  :integer
 #  bio_link    :string
 #  nationality :string
+#  works_count :integer          default(0)
 #
 class Producer < ApplicationRecord
   has_many :work_producers, dependent: :destroy

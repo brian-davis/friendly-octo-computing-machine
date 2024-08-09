@@ -1,17 +1,25 @@
 <p style="color: green"><%= notice %></p>
 <h1>Publishers</h1>
 
-<div class="outline">
+<div class="outline" data-controller="publishers">
+  <%=
+  select_options = [
+    ["Name ▲", "name-asc"],
+    ["Name ▼", "name-desc"],
+    ["works count ▼", "works_count-desc"],
+    ["works count ▲", "works_count-asc"]
+  ]
+  select_tag(
+    "_order",
+    options_for_select(select_options), {
+      class: "select-button small-text",
+      include_blank: "Sort",
+      data: { action: "change->publishers#selectOrder" }
+    })
+  %>
+
   <ul id="publishers">
-    <% if @publishers.empty? %>
-      <span class="empty-list">EMPTY</span>
-    <% else %>
-      <% @publishers.each do |publisher| %>
-        <li>
-          <%= render publisher %>
-        </li>
-      <% end %>
-    <% end %>
+    <%= render("publishers") %>
   </ul>
 </div>
 

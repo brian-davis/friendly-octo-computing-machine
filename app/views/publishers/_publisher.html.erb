@@ -1,5 +1,5 @@
 <div id="<%= dom_id publisher %>">
   <p>
-    <%= link_to publisher.name, publisher, class: "index-link" %>
+    <%= link_to "#{publisher.name} | #{(publisher.works_count || 0)}", publisher, class: "index-link" %>
   </p>
 </div>
