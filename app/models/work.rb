@@ -31,6 +31,8 @@ class Work < ApplicationRecord
 
   taggable_array :tags
 
+  scope :untagged, -> { where({ tags: [] }) }
+
   class << self
     # pseudo-enum
     def language_options

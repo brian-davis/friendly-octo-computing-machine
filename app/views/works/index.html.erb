@@ -2,6 +2,17 @@
 <h1>Books</h1>
 
 <div class="outline cloud-list">
+  <%= link_to(works_path({ tag: "all" }), style: "text-decoration: none;", data: { turbo_stream: true }) do %>
+    <span class="model-tag all-tag">
+      <span class="model-tag-name">
+        All
+      </span>
+      <span class="model-tag-count">
+        <%= @works_count %>
+      </span>
+    </span>
+  <% end %>
+
   <% @tags_cloud.each do |tag, count| %>
     <%= link_to(works_path({ tag: tag }), style: "text-decoration: none;", data: { turbo_stream: true }) do %>
       <span class="model-tag">
@@ -14,13 +25,14 @@
       </span>
     <% end %>
   <% end %>
-  <%= link_to(works_path({ tag: "all" }), style: "text-decoration: none;", data: { turbo_stream: true }) do %>
+
+  <%= link_to(works_path({ tag: "untagged" }), style: "text-decoration: none;", data: { turbo_stream: true }) do %>
     <span class="model-tag all-tag">
       <span class="model-tag-name">
-        All
+        Untagged
       </span>
       <span class="model-tag-count">
-        <%= @works_count %>
+        <%= @untagged_count %>
       </span>
     </span>
   <% end %>

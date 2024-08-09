@@ -9,19 +9,18 @@ class WorksController < ApplicationController
   def index
     @works = Work.all.order(:title)
     @works_count = Work.count
+    @untagged_count = Work.untagged.count
 
     respond_to do |format|
+      # initial
       format.html {
         @tags_cloud = Work.tags_cloud.sort_by { |k, v| v * -1 } # most popular first
-        # initial
         render("index")
       }
 
+      # filter
       format.turbo_stream {
-        if params["tag"].present? && params["tag"] != "all"
-          @works = Work.all.with_any_tags([params["tag"]]).order(:title)
-        end
-
+        @works = filtered_works(params)
         render("index")
       }
     end
@@ -153,6 +152,18 @@ private
   # TODO: combine with set_form_options
   def build_or_set_work
     @work = Work.find_by(id: params[:work_id]) || Work.new
+  end
+
+  def filtered_works(params)
+    if params["tag"] == "untagged"
+      Work.untagged.order(:title)
+    elsif params["tag"].in?(Work.all_tags)
+      Work.all.with_any_tags([params["tag"]]).order(:title)
+    elsif params["tag"] == "all" || params["tag"].blank?
+      Work.all.order(:title)
+    else
+      Work.none
+    end
   end
 
   def work_params
