@@ -215,4 +215,20 @@ class ProducerTest < ActiveSupport::TestCase
     refute p1.valid?
     assert_equal ["Work producers work title can't be blank"], p1.errors.full_messages
   end
+
+  test "works counter_cache" do
+    p1 = Producer.create(name: "Plutarch")
+    assert_equal 0, p1.works.count
+    assert_equal nil, p1.works_count
+    w1 = p1.works.create({ title: "Life of Dion" })
+    assert_equal 1, p1.works.count
+    assert_equal 1, p1.works_count
+    w2 = p1.works.create({ title: "Life of Timoleon" })
+    assert_equal 2, p1.works.count
+    assert_equal 2, p1.works_count
+    w2.destroy
+    p1.reload
+    assert_equal 1, p1.works.count
+    assert_equal 1, p1.works_count
+  end
 end

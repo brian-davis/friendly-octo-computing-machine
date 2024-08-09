@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_08_000221) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_09_174729) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_08_000221) do
     t.integer "death_year"
     t.string "bio_link"
     t.string "nationality"
+    t.integer "works_count", default: 0
   end
 
   create_table "publishers", force: :cascade do |t|
@@ -37,6 +38,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_08_000221) do
     t.datetime "updated_at", null: false
     t.integer "role"
     t.index ["producer_id"], name: "index_work_producers_on_producer_id"
+    t.index ["work_id", "producer_id", "role"], name: "index_work_producers_on_work_id_and_producer_id_and_role", unique: true
     t.index ["work_id"], name: "index_work_producers_on_work_id"
   end
 

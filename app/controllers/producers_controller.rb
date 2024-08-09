@@ -2,10 +2,14 @@ class ProducersController < ApplicationController
   before_action :set_producer, only: %i[ show edit update destroy ]
   before_action :build_or_set_producer, only: %i[build_work select_work]
   before_action :set_form_options, only: %i[new edit]
+  before_action :set_producers, only: %i[index]
 
   # GET /producers or /producers.json
   def index
-    @producers = Producer.all.order(:name)
+    respond_to do |format|
+      format.html { }
+      format.turbo_stream { }
+    end
   end
 
   # GET /producers/1 or /producers/1.json
@@ -89,40 +93,57 @@ class ProducersController < ApplicationController
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_producer
-      @producer = Producer.find(params[:id])
-    end
+private
+  # Use callbacks to share common setup or constraints between actions.
+  def set_producer
+    @producer = Producer.find(params[:id])
+  end
 
-    def set_form_options
-      @producer ||= Producer.new
-      @work_producers = @producer.work_producers.includes(:work)
-      @work_options = Work.order(:title).pluck(:title, :id).uniq.map do |title, id|
-        [title.truncate(25), id]
-      end
-    end
+  def set_producers
+    valid_order_params = ["name", "works_count"]
+    valid_dir_params = ["asc", "desc"]
 
-    # TODO: combine with set_form_options
-    def build_or_set_producer
-      @producer = Producer.find_by(id: params[:producer_id]) || Producer.new
-    end
+    order_param = params["order"].presence
+    order_arg = (valid_order_params & [order_param])[0] || :name
 
-    def producer_params
-      params.require(:producer).permit(
-        :name,
-        :birth_year,
-        :death_year,
-        :bio_link,
-        :nationality,
+    dir_param = params["dir"].presence
+    dir_arg = (valid_dir_params & [dir_param])[0] || :asc
 
-        work_producers_attributes: [
-          :id,
-          :role,
-          :_destroy,
-          :work_id,
-          work_attributes: [:title]
-        ]
-      )
+    order_param = "#{order_arg} #{dir_arg.upcase}"
+    order_params = [order_param]
+    order_params << "name ASC" unless order_arg == "name"
+
+    @producers = Producer.all.order(*order_params)
+  end
+
+  def set_form_options
+    @producer ||= Producer.new
+    @work_producers = @producer.work_producers.includes(:work)
+    @work_options = Work.order(:title).pluck(:title, :id).uniq.map do |title, id|
+      [title.truncate(25), id]
     end
+  end
+
+  # TODO: combine with set_form_options
+  def build_or_set_producer
+    @producer = Producer.find_by(id: params[:producer_id]) || Producer.new
+  end
+
+  def producer_params
+    params.require(:producer).permit(
+      :name,
+      :birth_year,
+      :death_year,
+      :bio_link,
+      :nationality,
+
+      work_producers_attributes: [
+        :id,
+        :role,
+        :_destroy,
+        :work_id,
+        work_attributes: [:title]
+      ]
+    )
+  end
 end

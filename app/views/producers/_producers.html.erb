@@ -1,0 +1,9 @@
+<% if @producers.empty? %>
+  <span class="empty-list">EMPTY</span>
+<% else %>
+  <% @producers.each do |producer| %>
+    <li>
+      <%= render producer %>
+    </li>
+  <% end %>
+<% end %>

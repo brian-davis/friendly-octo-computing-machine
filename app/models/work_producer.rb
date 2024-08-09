@@ -11,7 +11,7 @@
 #
 class WorkProducer < ApplicationRecord
   belongs_to :work
-  belongs_to :producer
+  belongs_to :producer, counter_cache: :works_count
 
   accepts_nested_attributes_for :producer
   accepts_nested_attributes_for :work
