@@ -29,7 +29,9 @@
   <div style="margin-bottom: 1em">
     <% @work.tags.each do |tag| %>
       <span class="model-tag">
-        <%= tag %>
+        <span class="model-tag-name">
+          <%= tag %>
+        </span>
       </span>
     <% end %>
   </div>

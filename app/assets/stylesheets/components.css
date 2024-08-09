@@ -20,11 +20,41 @@ ul.associated-items li {
   margin-bottom: 1em;
 }
 
+.cloud-list {
+  display: flex;
+}
+
 .model-tag {
   background-color: honeydew;
-  padding: 0.25em;
-  border: 2px solid aquamarine;
-  border-radius: 6px;
+  border: 2px solid darkseagreen;
+  color: darkseagreen;
+  border-radius: 8px;
   margin-right: 0.5em;
   margin-bottom: 0.5em;
+  display: flex;
+  width: fit-content;
+}
+
+.model-tag span {
+  text-align: center;
+  padding: 0.2em 0.4em;
+  border-radius: 8px;
+}
+
+.model-tag .model-tag-count {
+  background-color: honeydew;
+  border-radius: 0px 8px 8px 0px;
+  border-left: 2px solid darkseagreen;
+}
+
+.model-tag.all-tag {
+  background-color: floralwhite;
+  border: 2px solid orange;
+  color: orange;
+}
+
+.model-tag.all-tag .model-tag-count {
+  background-color: floralwhite;
+  border-radius: 0px 8px 8px 0px;
+  border-left: 2px solid orange;
 }

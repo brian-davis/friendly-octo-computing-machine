@@ -8,6 +8,23 @@ class WorksController < ApplicationController
   # GET /works or /works.json
   def index
     @works = Work.all.order(:title)
+    @works_count = Work.count
+
+    respond_to do |format|
+      format.html {
+        @tags_cloud = Work.tags_cloud.sort_by { |k, v| v * -1 } # most popular first
+        # initial
+        render("index")
+      }
+
+      format.turbo_stream {
+        if params["tag"].present? && params["tag"] != "all"
+          @works = Work.all.with_any_tags([params["tag"]]).order(:title)
+        end
+
+        render("index")
+      }
+    end
   end
 
   # GET /works/1 or /works/1.json
