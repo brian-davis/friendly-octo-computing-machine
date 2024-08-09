@@ -16,7 +16,11 @@ module WorksHelper
 
   def byline(work)
     authors = work.producers.merge(WorkProducer.where({ role: [:author, :co_author] })) # TODO: move to model
-    author_names = authors.pluck(:name).to_sentence
+    author_names = authors.pluck(:name).map do |name|
+      first_name, last_name = name.split(" ")
+      formal_name = last_name || first_name
+      formal_name
+    end.to_sentence
     year = common_era_year(work.year_of_composition) # ApplicationHelper
 
     [
@@ -25,12 +29,17 @@ module WorksHelper
     ].compact.join(", ")
   end
 
+  def full_title_line(work)
+    "#{work.title} (#{byline(work)})"
+  end
+
   def publishing_line(work)
+    return "" unless work && work.publisher
+
     html = [
       link_to(work.publisher&.name, work.publisher, class: "index-link").to_s,
       work.year_of_publication
     ].compact.join(", ")
-    return "" if html.blank?
     html.html_safe
   end
 
