@@ -20,6 +20,19 @@
   <p class="small-text indented">
     <%= language_line(@work) %>
   </p>
+  <hr>
+
+  <div style="margin-bottom: 1em">
+    <b>Tags</b>
+  </div>
+
+  <div style="margin-bottom: 1em">
+    <% @work.tags.each do |tag| %>
+      <span class="model-tag">
+        <%= tag %>
+      </span>
+    <% end %>
+  </div>
 
   <hr>
   <b>Authors</b>

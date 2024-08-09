@@ -65,4 +65,8 @@ end
 
 gem "rename", "~> 1.1"
 
+# $ bundle exec annotate --models
 gem "annotate", "~> 3.2"
+
+# https://github.com/tmiyamon/acts-as-taggable-array-on
+gem "acts-as-taggable-array-on", "~> 0.7.0"

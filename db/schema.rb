@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_07_223430) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_08_000221) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -52,7 +52,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_07_223430) do
     t.integer "year_of_publication"
     t.string "language"
     t.string "original_language"
+    t.string "tags", default: [], array: true
     t.index ["publisher_id"], name: "index_works_on_publisher_id"
+    t.index ["tags"], name: "index_works_on_tags", using: :gin
   end
 
   add_foreign_key "work_producers", "producers"

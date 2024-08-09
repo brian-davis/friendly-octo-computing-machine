@@ -18,6 +18,9 @@ Rails.application.routes.draw do
 
       get :build_publisher, format: :turbo_stream
       get :select_publisher, format: :turbo_stream
+
+      get :build_tag, format: :turbo_stream
+      get :select_tag, format: :turbo_stream
     end
   end
 

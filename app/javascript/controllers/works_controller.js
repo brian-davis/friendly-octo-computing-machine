@@ -31,9 +31,29 @@ export default class extends Controller {
   }
 
   selectPublisher(event) {
-    console.log("selectPublisher", event.currentTarget.value);
+    // console.log("selectPublisher", event.currentTarget.value);
     let url = "/works/select_publisher";
     url += `?publisher_id=${event.currentTarget.value}`;
+
+    if (this.idValue != "") {
+      url += `&work_id=${this.idValue}`;
+    }
+
+    // https://github.com/hotwired/stimulus/issues/689
+    // https://fly.io/ruby-dispatch/turbostream-fetch/
+    get(url, {
+      headers: {
+        Accept: "text/vnd.turbo-stream.html, text/html, application/xhtml+xml",
+      },
+    });
+
+    event.currentTarget.value = "";
+  }
+
+  selectTag(event) {
+    // console.log("selectTag", event.currentTarget.value);
+    let url = "/works/select_tag";
+    url += `?tag=${event.currentTarget.value}`;
 
     if (this.idValue != "") {
       url += `&work_id=${this.idValue}`;

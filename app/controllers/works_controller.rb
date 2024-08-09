@@ -1,6 +1,8 @@
 class WorksController < ApplicationController
   before_action :set_work, only: %i[show edit update destroy]
-  before_action :build_or_set_work, only: %i[build_producer select_producer build_publisher select_publisher]
+  before_action :build_or_set_work, only: %i[
+    build_producer select_producer build_publisher select_publisher build_tag select_tag
+  ]
   before_action :set_form_options, only: %i[new edit]
 
   # GET /works or /works.json
@@ -30,7 +32,22 @@ class WorksController < ApplicationController
     end
   end
 
+  def build_tag
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
+  # join an existing Producer record to a Work record with new WorkProducer record
+  def select_tag
+    @tag = params["tag"]
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
   def build_publisher
+    @tag = String.new
     respond_to do |format|
       format.turbo_stream
     end
@@ -113,6 +130,7 @@ private
     @work_producers = @work.work_producers.includes(:producer)
     @producer_options = Producer.order(:name).pluck(:name, :id).uniq
     @publisher_options = Publisher.order(:name).pluck(:name, :id).uniq
+    @tag_options = Work.all_tags.sort
   end
 
   # TODO: combine with set_form_options
@@ -121,7 +139,7 @@ private
   end
 
   def work_params
-    params.require(:work).permit(
+    permitted_params = params.require(:work).permit(
       :title,
       :subtitle,
       :alternate_title,
@@ -130,12 +148,10 @@ private
       :year_of_publication,
       :language,
       :original_language,
-
       :publisher_id,
       :_clear_publisher,
-
+      tags: [],
       publisher_attributes: [:name],
-
       work_producers_attributes: [
         :id,
         :role,
@@ -144,5 +160,10 @@ private
         producer_attributes: [:name]
       ]
     )
+
+
+    permitted_params[:tags] ||= [] # always over-write (destructive)
+    permitted_params[:tags].delete("") # ignore empty form data
+    permitted_params
   end
 end

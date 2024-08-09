@@ -107,6 +107,45 @@
     <%# ROW %>
     <li>
       <p>
+        <span class="bold-label">Tags</span>
+        <br><br>
+
+        <span class="indented label-text">
+          <%= link_to(build_tag_works_path(work_id: @work.try(:id)), class: "link-button", data: { turbo_stream: true }) do %>
+          New Tag &nbsp; &nbsp;+
+        <% end %>
+        </span>
+
+        <br><br>
+        <span class="indented label-text">
+          <%= select_tag("tags", options_for_select(@tag_options), { include_blank: "Select Tag", class: "select-button", data: { action: "change->works#selectTag" }}) %>
+        </span>
+      </p>
+
+      <%# COLUMN 2 %>
+      <div id="sub_form_list_tags" data-controller="dismissable">
+        <% if work.tags.any? %>
+          <% work.tags.each.with_index do |tag, i| %>
+            <div class="outline subFormContainer" data-dismissable-target="subForm">
+              <div class="subform-line">
+                <%= text_field_tag("work[tags][]", tag, readonly: true) %>
+              </div>
+
+              <%# FULL COLUMN %>
+              <div class="subform-line" style="justify-content: flex-end;">
+                <%= check_box_tag :_destroy, { data: { action: "click->dismissable#formDismiss"}} %>
+                <b class="label-text danger" style="position:relative; top: 1px">Undo</b>
+              </div>
+            </div>
+
+          <% end %>
+        <% end %>
+      </div>
+    </li>
+
+    <%# ROW %>
+    <li>
+      <p>
         <span class="bold-label">Publisher</span>
         <br><br>
 
@@ -170,7 +209,7 @@
       </p>
 
       <%# COLUMN 2 %>
-      <div id="sub_form_list" data-controller="dismissable">
+      <div id="sub_form_list_producers" data-controller="dismissable">
         <% @work_producers.each do |work_producer| %>
           <div class="outline subFormContainer" data-dismissable-target="subForm">
             <%= form.fields_for :work_producers, work_producer do |t| %>

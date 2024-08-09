@@ -4,9 +4,9 @@ export default class extends Controller {
   static targets = ["subForm"];
 
   connect() {
-    // console.log("dismissable_controller connected");
+    // console.log("dismissable_controller connected", this.element);
     // console.log(this.idValue === "");
-    console.log(this.subFormTargets);
+    // console.log(this.subFormTargets);
   }
 
   // as multiple new associated Producer sub-forms can be added dynamically,
@@ -51,6 +51,7 @@ export default class extends Controller {
   }
 
   formDismiss(event) {
+    event.preventDefault();
     const dismissableForm = event.srcElement.closest(".subFormContainer");
     dismissableForm.remove(); // subFormTargetDisconnected
   }

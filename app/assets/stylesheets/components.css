@@ -19,3 +19,12 @@ hr {
 ul.associated-items li {
   margin-bottom: 1em;
 }
+
+.model-tag {
+  background-color: honeydew;
+  padding: 0.25em;
+  border: 2px solid aquamarine;
+  border-radius: 6px;
+  margin-right: 0.5em;
+  margin-bottom: 0.5em;
+}
