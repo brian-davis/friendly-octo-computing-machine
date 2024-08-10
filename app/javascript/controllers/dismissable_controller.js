@@ -51,9 +51,8 @@ export default class extends Controller {
   }
 
   formDismiss(event) {
-    event.preventDefault();
     const dismissableForm = event.srcElement.closest(".subFormContainer");
-    dismissableForm.remove(); // subFormTargetDisconnected
+    dismissableForm.remove();
   }
 
   // TODO: use this instead of work_controller

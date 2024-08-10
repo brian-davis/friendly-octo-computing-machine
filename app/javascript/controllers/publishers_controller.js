@@ -8,6 +8,7 @@ export default class extends Controller {
 
   // index.html.erb
   selectOrder(event) {
+    event.preventDefault();
     console.log("selectOrder");
 
     const selection = event.currentTarget.value;

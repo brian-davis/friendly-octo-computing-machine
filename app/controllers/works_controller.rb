@@ -5,22 +5,21 @@ class WorksController < ApplicationController
   ]
   before_action :set_form_options, only: %i[new edit]
 
+  before_action :filter_and_sort_works, only: %i[index]
+
   # GET /works or /works.json
   def index
-    @works = Work.all.order(:title)
-    @works_count = Work.count
-    @untagged_count = Work.untagged.count
-
     respond_to do |format|
       # initial
       format.html {
+        @works_count = Work.count
+        @untagged_count = Work.untagged.count
         @tags_cloud = Work.tags_cloud.sort_by { |k, v| v * -1 } # most popular first
         render("index")
       }
 
-      # filter
+      # filter, sort
       format.turbo_stream {
-        @works = filtered_works(params)
         render("index")
       }
     end
@@ -154,18 +153,6 @@ private
     @work = Work.find_by(id: params[:work_id]) || Work.new
   end
 
-  def filtered_works(params)
-    if params["tag"] == "untagged"
-      Work.untagged.order(:title)
-    elsif params["tag"].in?(Work.all_tags)
-      Work.all.with_any_tags([params["tag"]]).order(:title)
-    elsif params["tag"] == "all" || params["tag"].blank?
-      Work.all.order(:title)
-    else
-      Work.none
-    end
-  end
-
   def work_params
     permitted_params = params.require(:work).permit(
       :title,
@@ -193,5 +180,37 @@ private
     permitted_params[:tags] ||= [] # always over-write (destructive)
     permitted_params[:tags].delete("") # ignore empty form data
     permitted_params
+  end
+
+  def filter_and_sort_works
+    @works = if params["tag"] == "untagged"
+      Work.untagged
+    elsif params["tag"].in?(Work.all_tags)
+      Work.all.with_any_tags([params["tag"]])
+    elsif params["tag"] == "all" || params["tag"].blank?
+      Work.all
+    else
+      # ?tag=malicious
+      Work.none
+    end
+
+    valid_order_params = ["title", "year"]
+    valid_dir_params = ["asc", "desc"]
+
+    order_param = params["order"].presence
+    order_arg = (valid_order_params & [order_param])[0] || :title
+
+    dir_param = params["dir"].presence
+    dir_arg = (valid_dir_params & [dir_param])[0] || :asc
+
+    @order_value = [order_arg, dir_arg].join("-");
+
+    order_arg = "year_of_composition" if order_arg.to_s == "year"
+    order_param = "#{order_arg} #{dir_arg.upcase}"
+    order_params = [order_param]
+    order_params << "title ASC" unless order_arg == "title"
+    order_params.uniq!
+
+    @works = @works.order(*order_params)
   end
 end

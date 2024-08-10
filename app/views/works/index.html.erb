@@ -1,50 +1,70 @@
 <p style="color: green"><%= notice %></p>
-<h1>Books</h1>
 
-<div class="outline cloud-list">
-  <%= link_to(works_path({ tag: "all" }), style: "text-decoration: none;", data: { turbo_stream: true }) do %>
-    <span class="model-tag all-tag">
-      <span class="model-tag-name">
-        All
-      </span>
-      <span class="model-tag-count">
-        <%= @works_count %>
-      </span>
-    </span>
-  <% end %>
+<div id="books-index" data-controller="sortable">
+  <h1>Books</h1>
 
-  <% @tags_cloud.each do |tag, count| %>
-    <%= link_to(works_path({ tag: tag }), style: "text-decoration: none;", data: { turbo_stream: true }) do %>
-      <span class="model-tag">
+  <div class="outline cloud-list">
+    <%= link_to(works_path({ tag: "all" }), style: "text-decoration: none;", data: { turbo_stream: true, action: "click->sortable#decorateTagClick", filter_value: "all" }) do %>
+      <span class="model-tag all-tag">
         <span class="model-tag-name">
-          <%= tag %>
+          All
         </span>
         <span class="model-tag-count">
-          <%= count %>
+          <%= @works_count %>
         </span>
       </span>
     <% end %>
-  <% end %>
 
-  <%= link_to(works_path({ tag: "untagged" }), style: "text-decoration: none;", data: { turbo_stream: true }) do %>
-    <span class="model-tag all-tag">
-      <span class="model-tag-name">
-        Untagged
+    <% @tags_cloud.each do |tag, count| %>
+      <%= link_to(works_path({ tag: tag }), style: "text-decoration: none;", data: { turbo_stream: true, action: "click->sortable#decorateTagClick", filter_value: tag }) do %>
+        <span class="model-tag">
+          <span class="model-tag-name">
+            <%= tag %>
+          </span>
+          <span class="model-tag-count">
+            <%= count %>
+          </span>
+        </span>
+      <% end %>
+    <% end %>
+
+    <%= link_to(works_path({ tag: "untagged" }), style: "text-decoration: none;", data: { turbo_stream: true, action: "click->sortable#decorateTagClick", filter_value: "untagged" }) do %>
+      <span class="model-tag all-tag">
+        <span class="model-tag-name">
+          Untagged
+        </span>
+        <span class="model-tag-count">
+          <%= @untagged_count %>
+        </span>
       </span>
-      <span class="model-tag-count">
-        <%= @untagged_count %>
-      </span>
-    </span>
-  <% end %>
+    <% end %>
+  </div>
+
+  <div class="outline" id="works-collection">
+    <%=
+    select_options = [
+      ["Title ▲", "title-asc"],
+      ["Title ▼", "title-desc"],
+      ["Year ▲", "year-asc"],
+      ["Year ▼", "year-desc"]
+    ]
+    select_tag(
+      "_order",
+      options_for_select(select_options), {
+        class: "select-button small-text",
+        include_blank: "Sort",
+        data: { action: "change->sortable#selectOrder" }
+      })
+    %>
+
+    <ul id="works">
+      <%= render "works" %>
+    </ul>
+  </div>
+
+  <div class="nav-links outline">
+    <%= link_to "New Book", new_work_path, class: "link-button" %> |
+    <%= link_to "Back to top", root_path, class:"nav-button" %>
+  </div>
 </div>
 
-<div class="outline">
-  <ul id="works">
-    <%= render "works" %>
-  </ul>
-</div>
-
-<div class="nav-links outline">
-  <%= link_to "New Book", new_work_path, class: "link-button" %> |
-  <%= link_to "Back to top", root_path, class:"nav-button" %>
-</div>
