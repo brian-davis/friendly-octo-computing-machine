@@ -14,6 +14,8 @@ export default class extends Controller {
   // _form.html.erb
   selectWork(event) {
     event.preventDefault();
+    event.stopPropagation();
+
     // console.log("selectWork", event.currentTarget.value);
     let url = "/producers/select_work";
     url += `?work_id=${event.currentTarget.value}`;
@@ -37,6 +39,8 @@ export default class extends Controller {
   // index.html.erb
   selectOrder(event) {
     event.preventDefault();
+    event.stopPropagation();
+
     // console.log("selectOrder");
 
     const selection = event.currentTarget.value;

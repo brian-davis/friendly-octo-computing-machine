@@ -53,7 +53,10 @@
       options_for_select(select_options), {
         class: "select-button small-text",
         include_blank: "Sort",
-        data: { action: "change->sortable#selectOrder" }
+        data: {
+          action: "change->sortable#selectOrder",
+          action_url: "/works"
+        }
       })
     %>
 

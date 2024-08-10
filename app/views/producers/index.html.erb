@@ -1,27 +1,33 @@
 <p style="color: green"><%= notice %></p>
-<h1>Authors</h1>
-<div class="outline" data-controller="producers">
-  <%=
-  select_options = [
-    ["Name ▲", "name-asc"],
-    ["Name ▼", "name-desc"],
-    ["works count ▼", "works_count-desc"],
-    ["works count ▲", "works_count-asc"]
-  ]
-  select_tag(
-    "_order",
-    options_for_select(select_options), {
-      class: "select-button small-text",
-      include_blank: "Sort",
-      data: { action: "change->producers#selectOrder" }
-    })
-  %>
-  <ul id="producers">
-    <%= render("producers") %>
-  </ul>
-</div>
 
-<div class="nav-links outline">
-  <%= link_to "New author", new_producer_path, class: "link-button" %> |
-  <%= link_to "Back to top", root_path, class: "nav-button" %>
+<div id="producers-index" data-controller="sortable">
+  <h1>Authors</h1>
+  <div class="outline" data-controller="producers">
+    <%=
+    select_options = [
+      ["Name ▲", "name-asc"],
+      ["Name ▼", "name-desc"],
+      ["works count ▲", "works_count-asc"],
+      ["works count ▼", "works_count-desc"]
+    ]
+    select_tag(
+      "_order",
+      options_for_select(select_options), {
+        class: "select-button small-text",
+        include_blank: "Sort",
+        data: {
+          action: "change->sortable#selectOrder",
+          action_url: "/producers"
+        }
+      })
+    %>
+    <ul id="producers">
+      <%= render("producers") %>
+    </ul>
+  </div>
+
+  <div class="nav-links outline">
+    <%= link_to "New author", new_producer_path, class: "link-button" %> |
+    <%= link_to "Back to top", root_path, class: "nav-button" %>
+  </div>
 </div>

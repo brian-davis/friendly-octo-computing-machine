@@ -23,7 +23,7 @@ export default class extends Controller {
     this.orderValue = order_param;
     this.dirValue = dir_param;
 
-    let url = "/works";
+    let url = event.currentTarget.dataset.actionUrl;
 
     if (this.orderValue) {
       url += `?order=${this.orderValue}`;

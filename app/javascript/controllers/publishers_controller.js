@@ -3,13 +3,15 @@ import { get } from "@rails/request.js";
 
 export default class extends Controller {
   connect() {
-    console.log("publishers connected");
+    // console.log("publishers connected");
   }
 
   // index.html.erb
   selectOrder(event) {
     event.preventDefault();
-    console.log("selectOrder");
+    event.stopPropagation();
+
+    // console.log("selectOrder");
 
     const selection = event.currentTarget.value;
     const [order_param, dir_param] = selection.split("-");
