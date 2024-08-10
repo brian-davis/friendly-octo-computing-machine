@@ -20,14 +20,27 @@ export default class extends Controller {
     url += `?order=${order_param}`;
     url += `&dir=${dir_param}`;
 
+    this.turboRequest(url);
+
+    event.currentTarget.value = "";
+  }
+
+  async turboRequest(url) {
+    // console.log(url);
+
     // https://github.com/hotwired/stimulus/issues/689
     // https://fly.io/ruby-dispatch/turbostream-fetch/
-    get(url, {
+    // https://github.com/rails/request.js#how-to-use
+    const response = await get(url, {
       headers: {
         Accept: "text/vnd.turbo-stream.html, text/html, application/xhtml+xml",
       },
     });
 
-    event.currentTarget.value = "";
+    if (response.ok) {
+      console.log("OK");
+    } else {
+      console.debug(response);
+    }
   }
 }
