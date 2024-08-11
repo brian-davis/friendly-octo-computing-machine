@@ -1,4 +1,4 @@
-<%= form_with(model: work, data: { controller: "works",  works_id_value: @work.id }) do |form| %>
+<%= form_with(model: work, data: { controller: "works",  works_id_value: @work.id, works_request_helper_outlet: ".request-helper" }) do |form| %>
   <%= render("shared/form_errors", form: form) %>
   <ul class="flex-outer">
     <%# ROW 1 %>

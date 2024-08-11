@@ -8,9 +8,16 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
   </head>
 
+
+  <%# turbo %>
   <body>
     <%= yield %>
   </body>
+
+  <%# shared %>
+  <%# DEBUG: this _is_ getting disconnected/re-connected with every page %>
+  <div class="request-helper" style="display:none;" data-controller="request-helper"></div>
 </html>

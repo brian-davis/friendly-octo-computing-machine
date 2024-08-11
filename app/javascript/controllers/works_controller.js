@@ -9,6 +9,7 @@ export default class extends Controller {
   static values = {
     id: String, // may be empty, don't cast to 0, _form.html
   };
+  static outlets = ["request-helper"];
 
   // _form.html.erb
   selectProducer(event) {
@@ -23,7 +24,7 @@ export default class extends Controller {
       url += `&work_id=${this.idValue}`;
     }
 
-    this.turboRequest(url);
+    this.requestHelperOutlet.turboGet(url);
 
     event.currentTarget.value = "";
   }
@@ -41,7 +42,7 @@ export default class extends Controller {
       url += `&work_id=${this.idValue}`;
     }
 
-    this.turboRequest(url);
+    this.requestHelperOutlet.turboGet(url);
 
     event.currentTarget.value = "";
   }
@@ -59,7 +60,7 @@ export default class extends Controller {
       url += `&work_id=${this.idValue}`;
     }
 
-    this.turboRequest(url);
+    this.requestHelperOutlet.turboGet(url);
 
     event.currentTarget.value = "";
   }
@@ -77,27 +78,8 @@ export default class extends Controller {
       url += `&work_id=${this.idValue}`;
     }
 
-    this.turboRequest(url);
+    this.requestHelperOutlet.turboGet(url);
 
     event.currentTarget.value = "";
-  }
-
-  async turboRequest(url) {
-    // console.log(url);
-
-    // https://github.com/hotwired/stimulus/issues/689
-    // https://fly.io/ruby-dispatch/turbostream-fetch/
-    // https://github.com/rails/request.js#how-to-use
-    const response = await get(url, {
-      headers: {
-        Accept: "text/vnd.turbo-stream.html, text/html, application/xhtml+xml",
-      },
-    });
-
-    if (response.ok) {
-      console.log("OK");
-    } else {
-      console.debug(response);
-    }
   }
 }

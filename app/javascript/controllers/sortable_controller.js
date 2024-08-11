@@ -2,15 +2,16 @@ import { Controller } from "@hotwired/stimulus";
 import { get } from "@rails/request.js";
 
 export default class extends Controller {
+  static values = {};
+  static outlets = ["request-helper"];
+
   connect() {
-    console.log("sortable connected");
+    // console.log("sortable connected");
 
     this.filterValue = "";
     this.orderValue = "";
     this.dirValue = "";
   }
-
-  static values = {};
 
   // index.html.erb
   selectOrder(event) {
@@ -36,10 +37,9 @@ export default class extends Controller {
     if (this.filterValue) {
       url += `&tag=${this.filterValue}`;
     }
-
-    this.turboRequest(url);
-
     // event.currentTarget.value = "";
+
+    this.requestHelperOutlet.turboGet(url);
   }
 
   decorateTagClick(event) {
@@ -63,25 +63,6 @@ export default class extends Controller {
       url += `&dir=${this.dirValue}`;
     }
 
-    this.turboRequest(url);
-  }
-
-  async turboRequest(url) {
-    // console.log(url);
-
-    // https://github.com/hotwired/stimulus/issues/689
-    // https://fly.io/ruby-dispatch/turbostream-fetch/
-    // https://github.com/rails/request.js#how-to-use
-    const response = await get(url, {
-      headers: {
-        Accept: "text/vnd.turbo-stream.html, text/html, application/xhtml+xml",
-      },
-    });
-
-    if (response.ok) {
-      console.log("OK");
-    } else {
-      console.debug(response);
-    }
+    this.requestHelperOutlet.turboGet(url);
   }
 }
