@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_08_09_193141) do
+ActiveRecord::Schema[7.1].define(version: 2024_08_11_224747) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -30,6 +30,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_09_193141) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "works_count", default: 0
+  end
+
+  create_table "quotes", force: :cascade do |t|
+    t.text "text"
+    t.integer "page"
+    t.string "section"
+    t.bigint "work_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["work_id"], name: "index_quotes_on_work_id"
   end
 
   create_table "work_producers", force: :cascade do |t|
@@ -60,6 +70,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_09_193141) do
     t.index ["tags"], name: "index_works_on_tags", using: :gin
   end
 
+  add_foreign_key "quotes", "works"
   add_foreign_key "work_producers", "producers"
   add_foreign_key "work_producers", "works"
   add_foreign_key "works", "publishers"

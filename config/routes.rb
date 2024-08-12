@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  resources :publishers
   get 'home/index'
   get 'home/append'
+
 
   resources :producers do
     collection do
@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :publishers
 
   resources :works do
     collection do
@@ -22,6 +23,8 @@ Rails.application.routes.draw do
       get :build_tag, format: :turbo_stream
       get :select_tag, format: :turbo_stream
     end
+
+    resources :quotes
   end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

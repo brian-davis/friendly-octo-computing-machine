@@ -1,0 +1,15 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Quotes for <%= @work.title %></h1>
+
+<div id="quotes">
+  <% @quotes.each do |quote| %>
+    <%= render quote %>
+    <p>
+      <%= link_to "Show this quote", [@work, quote] %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "Back to Book", @work %>
+<%= link_to "New quote", new_work_quote_path(@work) %>

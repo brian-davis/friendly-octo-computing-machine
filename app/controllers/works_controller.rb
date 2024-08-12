@@ -169,13 +169,19 @@ private
       publisher_attributes: [:name],
       work_producers_attributes: [
         :id,
-        :role,
         :_destroy,
+        :role,
         :producer_id,
         producer_attributes: [:name]
+      ],
+      quotes_attributes: [
+        :id,
+        :_destroy,
+        :text,
+        :page,
+        :section
       ]
     )
-
 
     permitted_params[:tags] ||= [] # always over-write (destructive)
     permitted_params[:tags].delete("") # ignore empty form data

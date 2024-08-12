@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @quote %>
+
+<div>
+  <%= link_to "Edit this quote", edit_work_quote_path([@work, @quote]) %> |
+  <%= link_to "Back to quotes", work_quotes_path(@work) %>
+
+  <%= button_to "Destroy this quote", [@work, @quote], method: :delete %>
+</div>

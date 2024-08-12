@@ -1,0 +1,16 @@
+<div>
+  <%= form_with(model: [@work, quote], html: { class: "quote-form" }) do |form| %>
+    <%= render("shared/form_errors", form: form) %>
+
+    <%= form.label(:page) %>
+    <%= form.number_field(:page) %>
+
+    <%= form.label(:section) %>
+    <%= form.text_field(:section) %>
+
+    <%= form.label(:text) %>
+    <%= form.text_area(:text) %>
+
+    <%= form.submit %>
+  <% end %>
+</div>

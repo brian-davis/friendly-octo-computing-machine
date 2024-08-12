@@ -324,4 +324,50 @@ class WorkTest < ActiveSupport::TestCase
     w1 = Work.find_by({ title: "New Work" })
     assert_equal "New Publisher", w1.publisher.name
   end
+
+  test "build quote with new work" do
+    attrs = {
+      title: "Fairy Tales",
+      quotes: [Quote.new({
+        text: "Once Upon A Time..."
+      })]
+    }
+    refute Work.exists?({ title: "Fairy Tales" })
+    refute Quote.exists?({ text: "Once Upon A Time..." })
+
+    Work.create(attrs)
+
+    assert Work.exists?({ title: "Fairy Tales" })
+    assert Quote.exists?({ text: "Once Upon A Time..." })
+
+    w1 = Work.find_by({ title: "Fairy Tales" })
+    assert "Once Upon A Time...".in?(w1.quotes.pluck(:text))
+  end
+
+  test "build quote with nested params" do
+    work1 = works(:one)
+
+    params1 = ActionController::Parameters.new({
+      work: {
+        quotes_attributes: {
+          "0" => {
+            text: "Once Upon A Time...",
+            page: 1,
+            section: "1a"
+          }
+        }
+      }
+    }).require(:work).permit(:title, quotes_attributes: [
+      :id,
+      :_destroy,
+      :text,
+      :page,
+      :section
+    ])
+
+    refute "Once Upon A Time...".in?(work1.quotes.pluck(:text))
+    work1.update(params1)
+    assert work1.quotes.any?
+    assert "Once Upon A Time...".in?(work1.quotes.pluck(:text))
+  end
 end

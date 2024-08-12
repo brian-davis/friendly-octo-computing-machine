@@ -118,3 +118,62 @@ select.select-button {
 .clickable {
   cursor: pointer;
 }
+
+/*
+CSS GRID
+
+https://webdesign.tutsplus.com/how-to-build-web-form-layouts-with-css-grid--cms-28776t
+
+TODO: Currently only on quote form.  Use this everywhere.
+*/
+
+form.quote-form {
+  display: grid;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 1rem;
+}
+
+@media (min-width: 400px) {
+  form.quote-form {
+    grid-template-columns: 200px 1fr;
+    grid-gap: 16px;
+  }
+
+  form.quote-form label {
+    text-align: right;
+    grid-column: 1 / 2;
+  }
+
+  form.quote-form input[type="number"],
+  form.quote-form input[type="text"],
+  form.quote-form textarea,
+  form.quote-form input[type="submit"] {
+    padding: 0.25rem;
+    grid-column: 2 / 3;
+    /* fix cascading */
+    width: unset;
+  }
+
+  form.quote-form textarea {
+    height: 80px;
+
+    /* fix cascading */
+    background-color: yellow;
+    border: 1px solid #ccc;
+    padding: 1rem;
+  }
+
+  form.quote-form input[type="submit"] {
+    /* fix cascading */
+    background-color: lightcyan;
+    border: 1px solid #ccc;
+    padding: 1rem;
+    width: 20%;
+  }
+
+  form.quote-form input#quote_page,
+  form.quote-form input#quote_section {
+    width: 5rem;
+  }
+}

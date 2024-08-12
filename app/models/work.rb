@@ -19,18 +19,20 @@
 class Work < ApplicationRecord
   has_many :work_producers, dependent: :destroy
   has_many :producers, through: :work_producers
-
-  accepts_nested_attributes_for :work_producers, allow_destroy: true
+  has_many :quotes, dependent: :destroy
+  belongs_to :publisher, optional: true, counter_cache: true
 
   attr_accessor :_clear_publisher
-  belongs_to :publisher, optional: true, counter_cache: true
-  before_validation :clear_publisher
-  before_save :deduplicate_tags
+  accepts_nested_attributes_for :work_producers, allow_destroy: true
   accepts_nested_attributes_for :publisher # destroy false
-
-  validates :title, presence: true
+  accepts_nested_attributes_for :quotes, allow_destroy: true
 
   taggable_array :tags
+
+  before_validation :clear_publisher
+  before_save :deduplicate_tags
+
+  validates :title, presence: true
 
   scope :untagged, -> { where({ tags: [] }) }
 
