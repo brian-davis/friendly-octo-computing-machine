@@ -1,5 +1,6 @@
 .nav-links {
-  /* background-color: white; */
+  /* DEBUG: why is 1.5 needed, to look like 1? */
+  padding: 1.5rem 1.5rem 1.5rem 1rem;
 }
 
 .nav-links a,

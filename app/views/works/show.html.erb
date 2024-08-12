@@ -1,38 +1,43 @@
 <p style="color: green"><%= notice %></p>
 
 <div id="<%= dom_id @work %>" class="outline">
-  <b>
-    <%= title_line(@work) %>
-  </b>
+  <div class="book-card outline">
+    <b>
+      <%= title_line(@work) %>
+    </b>
 
-  <p class="small-text indented">
-    <%= alternate_title_line(@work) %>
-  </p>
+    <p class="small-text indented">
+      <%= alternate_title_line(@work) %>
+    </p>
 
-  <p class="small-text indented">
-    <%= byline(@work) %>
-  </p>
+    <p class="small-text indented">
+      <%= byline(@work) %>
+    </p>
 
-  <p class="small-text indented">
-    <%= publishing_line(@work) %>
-  </p>
+    <p class="small-text indented">
+      <%= publishing_line(@work) %>
+    </p>
 
-  <p class="small-text indented">
-    <%= language_line(@work) %>
-  </p>
+    <p class="small-text indented">
+      <%= language_line(@work) %>
+    </p>
+  </div>
+
   <hr>
 
-  <div style="margin-bottom: 1em">
+  <div style="margin-bottom: 1em; cloud-list;">
     <b>Tags</b>
   </div>
 
-  <div style="margin-bottom: 1em">
+  <div style="margin-bottom: 1em;" class="cloud-list">
     <% @work.tags.each do |tag| %>
-      <span class="model-tag">
-        <span class="model-tag-name">
-          <%= tag %>
+      <%= link_to(works_path({ tag: tag }), style: "text-decoration: none;", data: { turbo_stream: true, action: "click->sortable#decorateTagClick", filter_value: tag }) do %>
+        <span class="model-tag">
+          <span class="model-tag-name">
+            <%= tag %>
+          </span>
         </span>
-      </span>
+      <% end %>
     <% end %>
   </div>
 
@@ -60,8 +65,8 @@
 </div>
 
 <div class="nav-links outline">
-  <%= link_to "Edit this work", edit_work_path(@work), class: "link-button" %> |
-  <%= link_to "Destroy this work", @work, method: :delete, class: "link-button", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %> |
   <%= link_to "Back to books", works_path, class: "nav-button" %> |
-  <%= link_to "Back to top", root_path, class: "nav-button" %>
+  <%= link_to "Back to top", root_path, class: "nav-button" %> |
+  <%= link_to "Edit this work", edit_work_path(@work), class: "link-button" %> |
+  <%= link_to "Destroy this work", @work, method: :delete, class: "link-button", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
 </div>

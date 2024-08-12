@@ -166,9 +166,9 @@ form.quote-form {
 
   form.quote-form input[type="submit"] {
     /* fix cascading */
-    background-color: lightcyan;
+    background-color: yellow;
     border: 1px solid #ccc;
-    padding: 1rem;
+    padding: 0.5rem;
     width: 20%;
   }
 

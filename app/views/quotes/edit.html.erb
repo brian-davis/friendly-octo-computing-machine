@@ -4,7 +4,7 @@
 
 <br>
 
-<div>
-  <%= link_to "Show this quote", [@work, @quote] %> |
-  <%= link_to "Back to quotes", work_quotes_path(@work) %>
+<div class="nav-links outline">
+  <%= link_to "Show this quote", [@work, @quote], class: "nav-button" %> |
+  <%= link_to "Back to quotes", work_quotes_path(@work), class: "nav-button" %>
 </div>

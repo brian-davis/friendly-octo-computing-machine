@@ -1,15 +1,22 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Quotes for <%= @work.title %></h1>
+<b>Quotes for <%= @work.title %></b>
 
-<div id="quotes">
-  <% @quotes.each do |quote| %>
-    <%= render quote %>
-    <p>
-      <%= link_to "Show this quote", [@work, quote] %>
-    </p>
+<div class="outline">
+<ul id="quotes">
+  <% if @quotes.empty? %>
+    <span class="empty-list">EMPTY</span>
+  <% else %>
+    <% @quotes.each do |quote| %>
+      <li>
+        <%= link_to quote.text.truncate(30), [@work, quote], class: "index-link" %>
+      </li>
+    <% end %>
   <% end %>
+</ul>
 </div>
 
-<%= link_to "Back to Book", @work %>
-<%= link_to "New quote", new_work_quote_path(@work) %>
+<div class="nav-links outline">
+  <%= link_to "Back to Book", @work, class: "nav-button" %>
+  <%= link_to "New quote", new_work_quote_path(@work), class: "link-button" %>
+</div>

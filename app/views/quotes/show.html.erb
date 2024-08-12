@@ -1,10 +1,26 @@
 <p style="color: green"><%= notice %></p>
 
-<%= render @quote %>
+<div id="<%= dom_id @quote %>" class="outline">
+  <div>
+    <%= @work.title %>
+  </div>
+  <br>
+  <div>
+    <b>Page: </b>
+    <%= @quote.page %>
+  </div>
+  <div>
+    <b>Section: </b>
+    <%= @quote.section %>
+  </div>
+  <br>
+  <div>
+    <%= @quote.text %>
+  </div>
+</div>
 
-<div>
-  <%= link_to "Edit this quote", edit_work_quote_path([@work, @quote]) %> |
-  <%= link_to "Back to quotes", work_quotes_path(@work) %>
-
-  <%= button_to "Destroy this quote", [@work, @quote], method: :delete %>
+<div class="nav-links outline">
+  <%= link_to "Back to quotes", work_quotes_path(@work), class: "nav-button" %> |
+  <%= link_to "Edit this quote", edit_work_quote_path([@work, @quote]), class: "link-button" %> |
+  <%= link_to "Destroy this quote", [@work, @quote], method: :delete, class: "link-button", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
 </div>
