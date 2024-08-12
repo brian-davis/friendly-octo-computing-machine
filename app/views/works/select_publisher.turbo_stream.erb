@@ -4,21 +4,18 @@
       <%= form.hidden_field :publisher_id, value: @publisher.id %>
       <div class="subform-line">
         <%# COLUMN 1 %>
-        <b class="label-text label-column">
-          <span class="midline-offset">
-            Name:
-          </span>
-        </b>
+        <b>Name:</b>
+
         <%# COLUMN 2 %>
         <%# display only; ignore on submit %>
         <%= text_field_tag(:_publisher_name, @publisher.name, readonly: true) %>
       </div>
 
       <%# FULL COLUMN %>
-      <div class="subform-line" style="justify-content: flex-end;">
+      <div class="undo-label">
         <span class="clickable" data-action="click->dismissable#formDismiss">
-        <b class="label-text" style="font-weight: 300">ⓧ</b>
-        <b class="label-text danger">Cancel</b></span>
+        <b class="danger">ⓧ</b>
+        <b class="danger">Cancel</b></span>
       </div>
     </div>
   <% end %>

@@ -26,3 +26,18 @@ a.index-link {
   border: 1px solid #ccc;
   background: aliceblue;
 }
+
+a.link-button,
+select.select-button {
+  font-size: small;
+  font-weight: 500;
+  width: 10rem;
+  text-decoration: none;
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  background: floralwhite;
+}
+
+select.select-button {
+  width: 10.9rem;
+}

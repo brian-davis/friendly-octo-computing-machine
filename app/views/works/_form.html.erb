@@ -1,260 +1,173 @@
-<%= form_with(model: work, data: { controller: "works",  works_id_value: @work.id, works_request_helper_outlet: ".request-helper" }) do |form| %>
+<%= form_with(model: work, html: { class: "table-form" }, data: { controller: "works",  works_id_value: @work.id, works_request_helper_outlet: ".request-helper" }) do |form| %>
   <%= render("shared/form_errors", form: form) %>
-  <ul class="flex-outer">
-    <%# ROW 1 %>
-    <li>
-      <%# COLUMN 1 %>
-      <%= form.label :title, class: "bold-label" %>
 
-        <%# COLUMN 2 %>
-      <%= form.text_field :title, { placeholder: "title required" } %>
-    </li>
+  <%= form.label :title %>
+  <%= form.text_field :title, { placeholder: "title required" } %>
 
-    <%# ROW %>
-    <li>
-      <%# COLUMN 1 %>
-      <%= form.label :subtitle, class: "bold-label" %>
+  <%= form.label :subtitle %>
+  <%= form.text_field :subtitle %>
 
-        <%# COLUMN 2 %>
-      <%= form.text_field :subtitle %>
-    </li>
+  <%= form.label :alternate_title %>
+  <%= form.text_field :alternate_title %>
 
-    <%# ROW %>
-    <li>
-      <%# COLUMN 1 %>
-      <%= form.label :alternate_title, class: "bold-label" %>
+  <%= form.label :foreign_title %>
+  <%= form.text_field :foreign_title %>
 
-        <%# COLUMN 2 %>
-      <%= form.text_field :alternate_title %>
-    </li>
+  <%= form.label :year_of_composition %>
+  <%= form.number_field(:year_of_composition, class: "correct-width") %>
 
-    <%# ROW %>
-    <li>
-      <%# COLUMN 1 %>
-      <%= form.label :foreign_title, class: "bold-label" %>
+  <%= form.label :year_of_publication %>
+  <%= form.number_field :year_of_publication, class: "correct-width" %>
 
-        <%# COLUMN 2 %>
-      <%= form.text_field :foreign_title %>
-    </li>
+  <%= form.label :language %>
 
-    <%# ROW %>
-    <li>
-      <%# COLUMN 1 %>
-      <%= form.label :year_of_composition, class: "bold-label" %>
-      <%# COLUMN 2 %>
-      <span class="correct-width">
-        <%= form.number_field :year_of_composition %>
-      </span>
-    </li>
+  <%# https://github.com/rails/rails/pull/52137 %>
+  <%= form.text_field :language, { list: "work_languages_datalist", class: "correct-width-2" } %>
+  <%=
+    content_tag(
+      :datalist,
+      nil, {
+        id: :work_languages_datalist,
+        'data-autocomplete-input-target' => :datalist
+      }
+    ) do %>
+    <% Work.language_options.each do |language| %>
+      <%=
+        content_tag(
+          :option,
+          nil,
+          value: language,
+          'data-autocomplete-input-target' => 'datalistOption'
+        )
+      %>
+    <% end %>
+  <% end %>
 
-    <%# ROW %>
-    <li>
-      <%# COLUMN 1 %>
-      <%= form.label :year_of_publication, class: "bold-label" %>
-      <%# COLUMN 2 %>
-      <span class="correct-width">
-        <%= form.number_field :year_of_publication %>
-      </span>
-    </li>
+  <%= form.label :original_language %>
+  <%# https://github.com/rails/rails/pull/52137 %>
+  <%= form.text_field :original_language, { list: "work_original_languages_datalist", class: "correct-width-2" } %>
+  <%= content_tag(:datalist, nil, id: :work_original_languages_datalist, 'data-autocomplete-input-target' => :datalist) do %>
+    <% Work.original_language_options.each do |original_language| %>
+      <%=
+        content_tag(
+          :option,
+          nil,
+          value: original_language,
+          'data-autocomplete-input-target' => 'datalistOption'
+        )
+      %>
+    <% end %>
+  <% end %>
 
-    <%# ROW %>
-    <li>
-      <%# COLUMN 1 %>
-      <%= form.label :language, class: "bold-label" %>
+  <hr>
+  <hr>
 
-      <%# COLUMN 2 %>
-
-      <%# https://github.com/rails/rails/pull/52137 %>
-      <%= form.text_field :language, { list: "work_languages_datalist" } %>
-      <%= content_tag(:datalist, nil, id: :work_languages_datalist, 'data-autocomplete-input-target' => :datalist) do %>
-        <% Work.language_options.each do |language| %>
-          <%=
-            content_tag(
-              :option,
-              nil,
-              value: language,
-              'data-autocomplete-input-target' => 'datalistOption'
-            )
-          %>
+  <div class="label-group">
+    <%= form.label :publisher %>
+    <%= link_to(build_publisher_works_path(work_id: @work.try(:id)), class: "link-button", data: { turbo_stream: true }) do %>
+          New Publisher &nbsp;+
         <% end %>
-      <% end %>
+    <%= select_tag("publishers", options_for_select(@publisher_options), { include_blank: "Select Publisher", class: "select-button", data: { action: "change->works#selectPublisher" }}) %>
+  </div>
+  <div class="subFormListSection" id="sub_form_list_publisher" data-controller="dismissable">
+    <% if work.publisher %>
+      <%# ONLY 1 %>
+      <div class="outline subFormContainer" data-dismissable-target="subForm">
+        <%= form.hidden_field :publisher_id, value: work.publisher_id %>
+        <div class="subform-line">
+          <%# COLUMN 1 %>
+          <b>Name:</b>
+          <%# COLUMN 2 %>
+          <%# display only; ignore on submit %>
+          <%= text_field_tag(:_publisher_name, work.publisher&.name, readonly: true) %>
+        </div>
 
-    </li>
-
-    <%# ROW %>
-    <li>
-      <%# COLUMN 1 %>
-      <%= form.label :original_language, class: "bold-label" %>
-
-
-      <%# COLUMN 2 %>
-      <%# https://github.com/rails/rails/pull/52137 %>
-      <%= form.text_field :original_language, { list: "work_original_languages_datalist" } %>
-      <%= content_tag(:datalist, nil, id: :work_original_languages_datalist, 'data-autocomplete-input-target' => :datalist) do %>
-        <% Work.original_language_options.each do |original_language| %>
-          <%=
-            content_tag(
-              :option,
-              nil,
-              value: original_language,
-              'data-autocomplete-input-target' => 'datalistOption'
-            )
-          %>
-        <% end %>
-      <% end %>
-    </li>
-
-    <%# ROW %>
-    <li>
-      <p>
-        <span class="bold-label">Tags</span>
-        <br><br>
-
-        <span class="indented label-text">
-          <%= link_to(build_tag_works_path(work_id: @work.try(:id)), class: "link-button", data: { turbo_stream: true }) do %>
-          New Tag &nbsp; &nbsp;+
-        <% end %>
-        </span>
-
-        <br><br>
-        <span class="indented label-text">
-          <%= select_tag("tags", options_for_select(@tag_options), { include_blank: "Select Tag", class: "select-button", data: { action: "change->works#selectTag" }}) %>
-        </span>
-      </p>
-
-      <%# COLUMN 2 %>
-      <div id="sub_form_list_tags" data-controller="dismissable">
-        <% if work.tags.any? %>
-          <% work.tags.each.with_index do |tag, i| %>
-            <div class="outline subFormContainer" data-dismissable-target="subForm">
-              <div class="subform-line">
-                <%= text_field_tag("work[tags][]", tag, readonly: true) %>
-              </div>
-
-              <%# FULL COLUMN %>
-              <div class="subform-line" style="justify-content: flex-end;">
-                <%= check_box_tag :_destroy, { data: { action: "click->dismissable#formDismiss"}} %>
-                <b class="label-text danger" style="position:relative; top: 1px">Undo</b>
-              </div>
-            </div>
-
-          <% end %>
-        <% end %>
+        <%# FULL COLUMN %>
+        <div class="undo-label">
+          <%= form.check_box :_clear_publisher %>
+          <b class="danger">Undo</b>
+        </div>
       </div>
-    </li>
+    <% end %>
+  </div>
 
-    <%# ROW %>
-    <li>
-      <p>
-        <span class="bold-label">Publisher</span>
-        <br><br>
+  <hr>
+  <hr>
 
-        <span class="indented label-text">
-          <%= link_to(build_publisher_works_path(work_id: @work.try(:id)), class: "link-button", data: { turbo_stream: true }) do %>
-          New Publisher &nbsp; &nbsp;+
-        <% end %>
-        </span>
+  <div class="label-group">
+    <%= form.label :producers do %>
+      Authors
+    <% end %>
+    <%= link_to(build_producer_works_path(work_id: @work.try(:id)), class: "link-button", data: { turbo_stream: true }) do %>
+          New Author &nbsp;+
+    <% end %>
+    <%= select_tag("authors", options_for_select(@producer_options), { include_blank: "Select Author", class: "select-button", data: { action: "change->works#selectProducer" }}) %>
+  </div>
 
-        <br><br>
-        <span class="indented label-text">
-          <%= select_tag("publishers", options_for_select(@publisher_options), { include_blank: "Select Publisher", class: "select-button", data: { action: "change->works#selectPublisher" }}) %>
-        </span>
-      </p>
+  <div id="sub_form_list_producers" data-controller="dismissable">
+    <% @work_producers.each do |work_producer| %>
+      <div class="outline subFormContainer" data-dismissable-target="subForm">
+        <%= form.fields_for :work_producers, work_producer do |t| %>
+          <%= t.hidden_field :id %><%# work_producer id %>
 
-      <%# COLUMN 2 %>
-      <div id="sub_form_list_publisher" data-controller="dismissable">
-        <% if work.publisher %>
-          <%# ONLY 1 %>
-          <div class="outline subFormContainer" data-dismissable-target="subForm">
-            <%= form.hidden_field :publisher_id, value: work.publisher_id %>
-            <div class="subform-line">
-              <%# COLUMN 1 %>
-              <b class="label-text label-column">
-                <span class="midline-offset">
-                  Name:
-                </span>
-              </b>
-              <%# COLUMN 2 %>
-              <%# display only; ignore on submit %>
-              <%= text_field_tag(:_publisher_name, work.publisher&.name, readonly: true) %>
-            </div>
+          <div class="subform-line">
+            <%# COLUMN 1 %>
+            <b>Name:</b>
 
-            <%# FULL COLUMN %>
-            <div class="subform-line" style="justify-content: flex-end;">
-              <%= form.check_box :_clear_publisher %>
-              <b class="label-text danger" style="position:relative; top: 1px">Undo</b>
-            </div>
+            <%# COLUMN 2 %>
+            <%# display only; ignore on submit %>
+            <%= text_field_tag(:_producer_name, work_producer.producer.name, readonly: true) %>
+          </div>
+
+          <div class="subform-line">
+            <b>Role:</b>
+
+            <%# display only; ignore on submit %>
+            <%= text_field_tag(:_work_producer_role, work_producer.role.titleize, readonly: true) %>
+          </div>
+
+          <%# FULL COLUMN %>
+          <div class="undo-label">
+            <%= t.check_box :_destroy %>
+            <b class="danger">Undo</b>
           </div>
         <% end %>
       </div>
-    </li>
+    <% end %>
+    <%# turbo_stream.append %>
+  </div>
 
-    <%# ROW %>
-    <li>
-      <%# COLUMN 1 %>
-      <p>
-        <span class="bold-label">Authors</span>
-        <br><br>
+  <hr>
+  <hr>
 
-        <span class="indented label-text">
-          <%= link_to(build_producer_works_path(work_id: @work.try(:id)), class: "link-button", data: { turbo_stream: true }) do %>
-          New Author &nbsp; &nbsp;+
-        <% end %>
-        </span>
-
-        <br><br>
-        <span class="indented label-text">
-          <%= select_tag("authors", options_for_select(@producer_options), { include_blank: "Select Author", class: "select-button", data: { action: "change->works#selectProducer" }}) %>
-        </span>
-      </p>
-
-      <%# COLUMN 2 %>
-      <div id="sub_form_list_producers" data-controller="dismissable">
-        <% @work_producers.each do |work_producer| %>
-          <div class="outline subFormContainer" data-dismissable-target="subForm">
-            <%= form.fields_for :work_producers, work_producer do |t| %>
-              <%= t.hidden_field :id %><%# work_producer id %>
-
-              <div class="subform-line">
-                <%# COLUMN 1 %>
-                <b class="label-text label-column">
-                  <span class="midline-offset">
-                    Name:
-                  </span>
-                </b>
-
-                <%# COLUMN 2 %>
-                <%# display only; ignore on submit %>
-                <%= text_field_tag(:_producer_name, work_producer.producer.name, readonly: true) %>
-              </div>
-
-              <div class="subform-line">
-                <b class="label-text label-column">
-                <span class="midline-offset">
-                Role:
-                </span>
-                </b>
-
-                <%# display only; ignore on submit %>
-                <%= text_field_tag(:_work_producer_role, work_producer.role.titleize, readonly: true) %>
-              </div>
-
-              <%# FULL COLUMN %>
-              <div class="subform-line" style="justify-content: flex-end;">
-                <%= t.check_box :_destroy %>
-                <b class="label-text danger" style="position:relative; top: 1px">Undo</b>
-              </div>
-            <% end %>
+  <div class="label-group">
+    <%= form.label :tags do %>
+      Genre
+    <% end %>
+    <%= link_to(build_tag_works_path(work_id: @work.try(:id)), class: "link-button", data: { turbo_stream: true }) do %>
+      New Genre &nbsp;+
+    <% end %>
+    <%= select_tag("tags", options_for_select(@tag_options), { include_blank: "Select Genre", class: "select-button", data: { action: "change->works#selectTag" }}) %>
+  </div>
+  <div id="sub_form_list_tags" data-controller="dismissable">
+    <% if work.tags.any? %>
+      <% work.tags.each.with_index do |tag, i| %>
+        <div class="outline subFormContainer" data-dismissable-target="subForm">
+          <div class="subform-line">
+            <b>Tag:</b>
+            <%= text_field_tag("work[tags][]", tag, readonly: true) %>
           </div>
-        <% end %>
-        <%# turbo_stream.append %>
-      </div>
-    </li>
 
-    <%# ROW %>
-    <li>
-      <%# COLUMN 1 %>
-      <%= form.button "Submit", type: "submit", name: "commit", value: "Submit", data: { disable_with: "Submit" } %>
-    </li>
-  </ul>
+          <%# FULL COLUMN %>
+          <div class="undo-label">
+            <%= check_box_tag :_destroy, { data: { action: "click->dismissable#formDismiss"}} %>
+            <b class="danger">Undo</b>
+          </div>
+        </div>
+
+      <% end %>
+    <% end %>
+  </div>
+
+  <%= form.submit %>
 <% end %>

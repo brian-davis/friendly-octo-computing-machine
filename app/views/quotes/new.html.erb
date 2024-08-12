@@ -1,8 +1,8 @@
-<h1>New quote</h1>
+<h1>New Quote</h1>
 
-<%= render "form", quote: @quote %>
-
-<br>
+<div class="outline">
+  <%= render "form", quote: @quote %>
+</div>
 
 <div class="nav-links outline">
   <%= link_to "Back to quotes", work_quotes_path(@work), class: "nav-button" %>

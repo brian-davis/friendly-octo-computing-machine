@@ -1,3 +1,7 @@
+body {
+  font-family: sans-serif;
+}
+
 .indented {
   margin-left: 1em;
 }
@@ -57,4 +61,12 @@ ul.associated-items li {
   background-color: floralwhite;
   border-radius: 0px 8px 8px 0px;
   border-left: 2px solid orange;
+}
+
+.danger {
+  color: red;
+}
+
+.clickable {
+  cursor: pointer;
 }

@@ -1,179 +1,120 @@
-body {
-  font-family: sans-serif;
-}
-
-.flex-outer li {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-}
-
-.flex-inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-ul.flex-outer {
-  /*  */
-}
-
-/* left column labels */
-.flex-outer > li > label,
-.flex-outer li p {
-  flex: 1 0 120px;
-  max-width: 220px;
-}
-.flex-outer > li > label + *,
-.flex-inner {
-  flex: 1 0 220px;
-}
-
-/* submit button */
-.flex-outer li button {
-  margin-left: auto;
-  padding: 8px 16px;
-  border: 1px solid #ccc;
-  background: yellow;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
-  border-radius: 2px;
-}
-
-/* rows */
-.flex-outer li {
-  margin-bottom: 1em;
-}
-
-#sub_form_list .subFormContainer,
-#sub_form_list_publisher .subFormContainer {
-  width: 25em;
-}
-
-input[type="text"],
-textarea {
-  padding: 0.5em;
-  width: 100%;
-}
-
-.correct-width input[type="number"],
-textarea {
-  padding: 0.5em;
-  width: 5em;
-}
-
-input:read-only {
-  background-color: aliceblue;
-  border: 1px solid aliceblue;
-}
-
-input:read-write {
-  background-color: yellow;
-  border: 1px solid #ccc;
-}
-
-.subform-line {
-  margin-bottom: 0.5em;
-  display: flex;
-}
-
-.subform-line .label-column {
-  flex-basis: 25%;
-}
-
-.subform-line select {
-  width: 104%;
-  padding: 0.5em;
-  border: 1px solid #ccc;
-  background-color: yellow;
-}
-
-a.link-button,
-select.select-button {
-  text-decoration: none;
-  padding: 0.5em;
-  border: 1px solid #ccc;
-  background: floralwhite;
-}
-
-/* TODO: use .small-text */
-.label-text {
-  font-size: smaller;
-}
-
-.bold-label {
-  font-weight: 600;
-  font-size: medium;
-}
-
-.danger {
-  color: red;
-}
-
-.midline-offset {
-  position: relative;
-  top: 0.5em;
-}
-
-.clickable {
-  cursor: pointer;
-}
-
 /*
 CSS GRID
 
 https://webdesign.tutsplus.com/how-to-build-web-form-layouts-with-css-grid--cms-28776t
 
-TODO: Currently only on quote form.  Use this everywhere.
 */
 
-form.quote-form {
+form.table-form {
   display: grid;
   background: white;
-  border: 1px solid #ccc;
-  padding: 1rem;
+  max-width: 800px;
 }
 
 @media (min-width: 400px) {
-  form.quote-form {
+  form.table-form {
     grid-template-columns: 200px 1fr;
     grid-gap: 16px;
   }
 
-  form.quote-form label {
+  form.table-form > label,
+  form.table-form .label-group {
     text-align: right;
     grid-column: 1 / 2;
   }
 
-  form.quote-form input[type="number"],
-  form.quote-form input[type="text"],
-  form.quote-form textarea,
-  form.quote-form input[type="submit"] {
-    padding: 0.25rem;
-    grid-column: 2 / 3;
-    /* fix cascading */
-    width: unset;
+  form.table-form .label-group > label {
+    display: block;
+    margin-bottom: 1rem;
   }
 
-  form.quote-form textarea {
-    height: 80px;
+  form.table-form .label-group > .link-button,
+  form.table-form .label-group > .select-button {
+    display: block;
+    text-align: right;
+    margin-bottom: 0.5rem;
 
-    /* fix cascading */
+    /* DEBUG: do this with flex */
+    position: relative;
+    right: -1.7rem;
+  }
+
+  form.table-form input[type="number"],
+  form.table-form input[type="text"],
+  form.table-form textarea,
+  form.table-form input[type="submit"] {
+    padding: 0.5rem;
+    grid-column: 2 / 3;
     background-color: yellow;
     border: 1px solid #ccc;
+  }
+
+  form.table-form label {
+    position: relative;
+    top: 0.5rem;
+    font-weight: 600;
+  }
+
+  form.table-form textarea {
+    height: 80px;
     padding: 1rem;
   }
 
-  form.quote-form input[type="submit"] {
-    /* fix cascading */
-    background-color: yellow;
-    border: 1px solid #ccc;
-    padding: 0.5rem;
-    width: 20%;
+  form.table-form input[type="submit"] {
+    width: 10rem;
+    background-color: floralwhite;
+    font-weight: 600;
   }
 
-  form.quote-form input#quote_page,
-  form.quote-form input#quote_section {
+  form.table-form .correct-width {
     width: 5rem;
+  }
+
+  form.table-form .correct-width-2 {
+    /* width: 10rem; */
+    width: 8.9rem;
+  }
+
+  /* IMPROVE */
+  form.table-form .subFormContainer {
+    font-size: small;
+    padding: 0.75rem;
+  }
+
+  form.table-form .subform-line {
+    margin-bottom: 0.5em;
+    display: flex;
+  }
+
+  form.table-form .subform-line > b {
+    flex: 10%;
+    position: relative;
+    top: 0.5rem;
+  }
+
+  form.table-form .subform-line input {
+    flex: 90%;
+  }
+
+  form.table-form .subform-line select {
+    /* width: 104%;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    background-color: yellow; */
+  }
+
+  form.table-form hr {
+    width: 100%;
+  }
+
+  form.table-form .undo-label {
+    background-color: floralwhite;
+    padding: 0.25rem;
+    border: 1px solid #ccc;
+  }
+
+  form.table-form .undo-label b.danger {
+    position: relative;
+    bottom: 2px;
   }
 }
