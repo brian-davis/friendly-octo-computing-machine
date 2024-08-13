@@ -232,4 +232,28 @@ class ProducerTest < ActiveSupport::TestCase
     assert_equal 1, p1.works.count
     assert_equal 1, p1.works_count
   end
+
+  test "full-text indexed search with dmetaphone" do
+    p1 = Producer.create(name: "Jeff Davis")
+    p2 = Producer.create(name: "Geoff Davis")
+    p3 = Producer.create(name: "Jeffrey Davis")
+    p4 = Producer.create(name: "Geoffrey Davis")
+    p5 = Producer.create(name: "George Davis")
+
+    search1 = Producer.search_name("Jeff")
+
+    assert p1.in?(search1)
+    assert p2.in?(search1)
+    refute p3.in?(search1) # no prefix
+    refute p4.in?(search1) # no prefix
+    refute p5.in?(search1)
+
+    search2 = Producer.search_name("Jeffrey")
+
+    refute p1.in?(search2)
+    refute p2.in?(search2)
+    assert p3.in?(search2)
+    assert p4.in?(search2)
+    refute p5.in?(search2)
+  end
 end

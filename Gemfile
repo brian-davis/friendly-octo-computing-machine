@@ -70,3 +70,6 @@ gem "annotate", "~> 3.2"
 
 # https://github.com/tmiyamon/acts-as-taggable-array-on
 gem "acts-as-taggable-array-on", "~> 0.7.0"
+
+# https://github.com/Casecommons/pg_search
+gem "pg_search", "~> 2.3"

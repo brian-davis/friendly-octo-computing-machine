@@ -23,5 +23,8 @@ module Bookshelf
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # https://pganalyze.com/blog/full-text-search-ruby-rails-postgres
+    config.active_record.schema_format = :sql
   end
 end

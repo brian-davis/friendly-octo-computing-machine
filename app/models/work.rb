@@ -17,6 +17,8 @@
 #  tags                :string           default([]), is an Array
 #
 class Work < ApplicationRecord
+  include PgSearch::Model
+
   has_many :work_producers, dependent: :destroy
   has_many :producers, through: :work_producers
   has_many :quotes, dependent: :destroy
@@ -33,6 +35,22 @@ class Work < ApplicationRecord
   before_save :deduplicate_tags
 
   validates :title, presence: true
+
+  # Quote.search_text("a famous quote")
+  pg_search_scope(
+    :search_title, {
+      against: :title,
+      using: {
+        tsearch: {
+          prefix: true, # sl => sleep
+          negation: true, # !sleep
+          dictionary: "english", # sleep/sleeps/sleeping
+
+          tsvector_column: "searchable"
+        }
+      }
+    }
+  )
 
   scope :untagged, -> { where({ tags: [] }) }
 

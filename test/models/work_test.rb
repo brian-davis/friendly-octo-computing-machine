@@ -370,4 +370,17 @@ class WorkTest < ActiveSupport::TestCase
     assert work1.quotes.any?
     assert "Once Upon A Time...".in?(work1.quotes.pluck(:text))
   end
+
+  # https://github.com/Casecommons/pg_search?tab=readme-ov-file#pg_search_scope
+  test "full-text indexed search" do
+    work1 = Work.create(title: "Sandwiches are Delicious")
+    work2 = Work.create(title: "The Sandwich and the Hare")
+    work3 = Work.create(title: "The Sand In The Sallows")
+
+    search1 = Work.search_title("Sand")
+
+    assert work1.in?(search1)
+    assert work2.in?(search1)
+    assert work3.in?(search1)
+  end
 end

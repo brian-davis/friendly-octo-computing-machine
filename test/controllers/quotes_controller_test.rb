@@ -2,47 +2,47 @@ require "test_helper"
 
 class QuotesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @quote = quotes(:one)
+    @work = works(:one)
+    @quote = quotes(:one) # belongs to @work
   end
 
   test "should get index" do
-    get quotes_url
+    get work_quotes_url(@work)
     assert_response :success
   end
 
   test "should get new" do
-    get new_quote_url
+    get new_work_quote_url(@work)
     assert_response :success
   end
 
   test "should create quote" do
     assert_difference("Quote.count") do
-      post quotes_url, params: { quote: {  } }
+      post work_quotes_url(work_id: @work.id), params: { quote: { text: "new quote" } }
     end
-
-    assert_redirected_to quote_url(Quote.last)
+    assert_redirected_to work_quotes_url(work_id: @work.id)
   end
 
   test "should show quote" do
-    get quote_url(@quote)
+    get work_quote_url(work_id: @work.id, id: @quote.id)
     assert_response :success
   end
 
   test "should get edit" do
-    get edit_quote_url(@quote)
+    get edit_work_quote_url(work_id: @work.id, id: @quote.id)
     assert_response :success
   end
 
   test "should update quote" do
-    patch quote_url(@quote), params: { quote: {  } }
-    assert_redirected_to quote_url(@quote)
+    patch work_quote_url(work_id: @work.id, id: @quote.id), params: { quote: { text: "new text" } }
+    assert_redirected_to work_quotes_url(work_id: @work.id)
   end
 
   test "should destroy quote" do
     assert_difference("Quote.count", -1) do
-      delete quote_url(@quote)
+      delete work_quote_url(work_id: @work.id, id: @quote.id)
     end
 
-    assert_redirected_to quotes_url
+    assert_redirected_to work_quotes_url(work_id: @work.id)
   end
 end
