@@ -1,16 +1,19 @@
 import { Controller } from "@hotwired/stimulus";
-import { get } from "@rails/request.js";
 
+// Handle combinatory sort/search/filter functionality on index views.
 export default class extends Controller {
-  static values = {};
+  static values = {
+    endpoint: String,
+  };
+  static targets = ["search"];
   static outlets = ["request-helper"];
 
   connect() {
     // console.log("sortable connected");
-
     this.filterValue = "";
     this.orderValue = "";
     this.dirValue = "";
+    this.searchValue = "";
   }
 
   // index.html.erb
@@ -37,8 +40,16 @@ export default class extends Controller {
     if (this.filterValue) {
       url += `&tag=${this.filterValue}`;
     }
+
+    if (this.searchValue) {
+      url += `&search_term=${this.searchValue}`;
+    }
+
     // event.currentTarget.value = "";
 
+    // Started GET "/works?order=title&dir=desc" for ::1 at 2024-08-13 16:11:02 -0700
+    // Processing by WorksController#index as TURBO_STREAM
+    // Parameters: {"order"=>"title", "dir"=>"desc"}
     this.requestHelperOutlet.turboGet(url);
   }
 
@@ -63,6 +74,42 @@ export default class extends Controller {
       url += `&dir=${this.dirValue}`;
     }
 
+    if (this.searchValue) {
+      url += `&search_term=${this.searchValue}`;
+    }
+
+    this.requestHelperOutlet.turboGet(url);
+  }
+
+  search(event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    // console.log("search", event.currentTarget);
+
+    let searchTerm = this.searchTarget.value;
+    // console.log(searchTerm);
+    let url = this.endpointValue;
+    if (searchTerm) {
+      url += `?search_term=${searchTerm}`;
+
+      if (this.filterValue) {
+        url += `&tag=${this.filterValue}`;
+      }
+
+      if (this.orderValue) {
+        url += `&order=${this.orderValue}`;
+      }
+
+      if (this.orderValue && this.dirValue) {
+        url += `&dir=${this.dirValue}`;
+      }
+
+      // console.log("url", url);
+    }
+
+    this.searchValue = searchTerm;
+    // this.searchTarget.value = "";
     this.requestHelperOutlet.turboGet(url);
   }
 }

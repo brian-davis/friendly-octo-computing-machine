@@ -189,6 +189,8 @@ private
   end
 
   def filter_and_sort_works
+
+    # filter by tag
     @works = if params["tag"] == "untagged"
       Work.untagged
     elsif params["tag"].in?(Work.all_tags)
@@ -200,17 +202,19 @@ private
       Work.none
     end
 
+    # filter by search term
+    if params["search_term"]
+      @works = @works.search_title(params["search_term"]).unscope(:order)
+    end
+
+    # order by dropdown selection
     valid_order_params = ["title", "year"]
     valid_dir_params = ["asc", "desc"]
-
     order_param = params["order"].presence
     order_arg = (valid_order_params & [order_param])[0] || :title
-
     dir_param = params["dir"].presence
     dir_arg = (valid_dir_params & [dir_param])[0] || :asc
-
     @order_value = [order_arg, dir_arg].join("-");
-
     order_arg = "year_of_composition" if order_arg.to_s == "year"
     order_param = "#{order_arg} #{dir_arg.upcase}"
     order_params = [order_param]

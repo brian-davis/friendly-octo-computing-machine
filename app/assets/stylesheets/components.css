@@ -74,3 +74,19 @@ ul.associated-items li {
 .book-card {
   background-color: aliceblue;
 }
+
+a.search-button {
+  text-decoration: none;
+  padding: 0.18em 0.4em;
+  border: 1px solid #ccc;
+  margin-right: 0.5rem;
+  font-size: smaller;
+  background-color: honeydew;
+}
+
+input.search-box {
+  border: 1px solid #ccc;
+  background-color: yellow;
+  padding: 0.18rem;
+  font-size: smaller;
+}

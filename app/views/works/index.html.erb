@@ -1,6 +1,9 @@
 <p style="color: green"><%= notice %></p>
 
-<div id="books-index" data-controller="sortable" data-sortable-request-helper-outlet=".request-helper">
+<div id="books-index"
+     data-controller="sortable"
+     data-sortable-request-helper-outlet=".request-helper"
+     data-sortable-endpoint-value="/works">
   <h1>Books</h1>
 
   <div class="outline cloud-list">
@@ -41,6 +44,10 @@
   </div>
 
   <div class="outline" id="works-collection">
+    <%= text_field_tag(:search, nil, class: "search-box", data: { sortable_target: "search"}) %>
+    <%= link_to("Search", "#", class: "search-button", data: { action: "click->sortable#search" }) %>
+    <hr>
+
     <%=
     select_options = [
       ["Title ▲", "title-asc"],

@@ -1,10 +1,7 @@
-# https://www.postgresql.org/docs/current/fuzzystrmatch.html
-
-# https://www.freecodecamp.org/news/fuzzy-string-matching-with-postgresql/
-
-# https://thoughtbot.com/blog/optimizing-full-text-search-with-postgres-tsvector-columns-and-triggers
-
+# https://github.com/Casecommons/pg_search
 # https://pganalyze.com/blog/full-text-search-ruby-rails-postgres
+# https://www.freecodecamp.org/news/fuzzy-string-matching-with-postgresql/
+# https://www.postgresql.org/docs/current/fuzzystrmatch.html
 
 class AddPgSearchColumns < ActiveRecord::Migration[7.1]
   def up
