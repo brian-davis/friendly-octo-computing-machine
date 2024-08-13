@@ -29,8 +29,8 @@
 </div>
 
 <div class="nav-links outline">
-  <%= link_to "Back to authors", producers_path, class: "nav-button" %> |
-  <%= link_to "Back to top", root_path, class: "nav-button" %> |
-  <%= link_to "Edit this author", edit_producer_path(@producer), class: "link-button" %> |
-  <%= link_to "Destroy this author", @producer, method: :delete, class: "link-button", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %> |
+  <%= link_to "Back to authors", producers_path, class: "nav-button" %>
+  <%= link_to "Back to top", root_path, class: "nav-button" %>
+  <%= link_to "Edit this author", edit_producer_path(@producer), class: "nav-button nav-action" %>
+  <%= link_to "Destroy this author", @producer, method: :delete, class: "nav-button nav-action", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
 </div>

@@ -70,3 +70,7 @@ ul.associated-items li {
 .clickable {
   cursor: pointer;
 }
+
+.book-card {
+  background-color: aliceblue;
+}

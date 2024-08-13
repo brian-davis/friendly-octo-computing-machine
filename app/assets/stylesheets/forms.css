@@ -62,7 +62,7 @@ form.table-form {
 
   form.table-form input[type="submit"] {
     width: 10rem;
-    background-color: floralwhite;
+    background-color: honeydew;
     font-weight: 600;
   }
 
@@ -92,15 +92,21 @@ form.table-form {
     top: 0.5rem;
   }
 
-  form.table-form .subform-line input {
+  form.table-form .subform-line input,
+  form.table-form .subform-line select {
     flex: 90%;
   }
 
+  form.table-form .subform-line input:read-only {
+    background-color: aliceblue;
+  }
+
   form.table-form .subform-line select {
-    /* width: 104%;
     padding: 0.5em;
     border: 1px solid #ccc;
-    background-color: yellow; */
+    background-color: yellow;
+    position: relative;
+    left: -1px;
   }
 
   form.table-form hr {
@@ -109,7 +115,7 @@ form.table-form {
 
   form.table-form .undo-label {
     background-color: floralwhite;
-    padding: 0.25rem;
+    padding: 0.5rem;
     border: 1px solid #ccc;
   }
 

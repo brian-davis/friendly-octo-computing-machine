@@ -65,8 +65,8 @@
 </div>
 
 <div class="nav-links outline">
-  <%= link_to "Back to books", works_path, class: "nav-button" %> |
-  <%= link_to "Back to top", root_path, class: "nav-button" %> |
-  <%= link_to "Edit this work", edit_work_path(@work), class: "link-button" %> |
-  <%= link_to "Destroy this work", @work, method: :delete, class: "link-button", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+  <%= link_to "Back to books", works_path, class: "nav-button" %>
+  <%= link_to "Back to top", root_path, class: "nav-button" %>
+  <%= link_to "Edit this work", edit_work_path(@work), class: "nav-button nav-action" %>
+  <%= link_to "Destroy this work", @work, method: :delete, class: "nav-button nav-action", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
 </div>

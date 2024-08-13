@@ -18,13 +18,17 @@ a.index-link {
   opacity: 50%;
 }
 
-/* .link-button {} */
-
 .nav-button {
   text-decoration: none;
   padding: 0.5em;
   border: 1px solid #ccc;
   background: aliceblue;
+  margin-right: 0.5rem;
+}
+
+/* decorate .nav-button */
+.nav-action {
+  background: floralwhite;
 }
 
 a.link-button,
