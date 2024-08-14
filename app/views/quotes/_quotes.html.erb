@@ -1,9 +1,9 @@
-    <% if @quotes.empty? %>
-      <span class="empty-list">EMPTY</span>
-    <% else %>
-      <% @quotes.each do |quote| %>
-        <li>
-          <%= link_to quote.text.truncate(50), [@work, quote], class: "index-link" %>
-        </li>
-      <% end %>
-    <% end %>
+<% if @quotes.empty? %>
+  <span class="empty-list">EMPTY</span>
+<% else %>
+  <% @quotes.each do |quote| %>
+    <li>
+      <%= link_to quote.text.truncate(50), [@work, quote], class: "index-link" %>
+    </li>
+  <% end %>
+<% end %>

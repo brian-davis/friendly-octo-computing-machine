@@ -104,7 +104,8 @@ private
 
     # filter by search term
     if params["search_term"].present?
-      @producers = @producers.search_name(params["search_term"]).unscope(:order)
+      term = ActiveRecord::Base::sanitize_sql(params["search_term"])
+      @producers = @producers.search_name(term).unscope(:order)
     end
 
     # order by dropdown selection

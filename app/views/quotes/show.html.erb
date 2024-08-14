@@ -20,7 +20,8 @@
 </div>
 
 <div class="nav-links outline">
-  <%= link_to "Back to quotes", work_quotes_path(@work), class: "nav-button" %>
-  <%= link_to "Edit this quote", edit_work_quote_path([@work, @quote]), class: "nav-button nav-action" %>
-  <%= link_to "Destroy this quote", [@work, @quote], method: :delete, class: "nav-button nav-action", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+  <%= link_to "Back to Book Quotes", work_quotes_path(@work), class: "nav-button" %>
+  <%= link_to "Back to All Quotes", quotes_path, class: "nav-button" %>
+  <%= link_to "Edit this Quote", edit_work_quote_path([@work, @quote]), class: "nav-button nav-action" %>
+  <%= link_to "Destroy this Quote", [@work, @quote], method: :delete, class: "nav-button nav-action", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
 </div>

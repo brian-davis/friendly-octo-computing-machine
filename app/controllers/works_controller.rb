@@ -203,7 +203,8 @@ private
 
     # filter by search term
     if params["search_term"].present?
-      @works = @works.search_title(params["search_term"]).unscope(:order)
+      term = ActiveRecord::Base::sanitize_sql(params["search_term"])
+      @works = @works.search_title(term).unscope(:order)
     end
 
     # order by dropdown selection

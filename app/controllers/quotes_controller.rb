@@ -1,7 +1,7 @@
 class QuotesController < ApplicationController
-  before_action :set_work
+  before_action :set_work, except: %i[general_index]
   before_action :set_quote, only: %i[ show edit update destroy ]
-  before_action :filter_and_sort_quotes, only: %i[index]
+  before_action :filter_and_sort_quotes, only: %i[index general_index]
 
   # GET /quotes or /quotes.json
   def index
@@ -12,7 +12,10 @@ class QuotesController < ApplicationController
   end
 
   def general_index
-    # TODO
+    respond_to do |format|
+      format.html { }
+      format.turbo_stream { }
+    end
   end
 
   # GET /quotes/1 or /quotes/1.json
@@ -84,13 +87,29 @@ private
   end
 
   def filter_and_sort_quotes
-    @quotes = @work.quotes.all
+    if action_name == "general_index"
+      # top-level access.  search across all works.  match by work name or author name
 
-     # filter by search term
-    if params["search_term"].present?
-      @quotes = @quotes.search_text(params["search_term"]).unscope(:order)
+      @quotes = Quote.all
+      if params["search_term"].present?
+        term = ActiveRecord::Base::sanitize_sql(params["search_term"])
+        quote_ids1 = Quote.search_text(term).ids
+        quote_ids2 = Quote.joins(work: :producers).where(
+          "producers.name LIKE '#{term}%' OR works.title LIKE '#{term}%'"
+        ).ids # can't do `.or()` here
+        full_ids = (quote_ids1 + quote_ids2).uniq
+        @quotes = Quote.where({ id: full_ids }).includes(:work)
+      end
+    elsif @work
+      # nested resource index
+
+      @quotes = @work.quotes.all
+      # filter by search term
+      if params["search_term"].present?
+        @quotes = @quotes.search_text(params["search_term"]).unscope(:order)
+      end
+    else
+      raise("unauthorized")
     end
-
-    # order TODO
   end
 end
