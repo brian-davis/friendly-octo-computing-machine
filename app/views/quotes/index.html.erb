@@ -1,19 +1,22 @@
 <p style="color: green"><%= notice %></p>
 
-<b>Quotes for <%= @work.title %></b>
 
-<div class="outline">
-<ul id="quotes">
-  <% if @quotes.empty? %>
-    <span class="empty-list">EMPTY</span>
-  <% else %>
-    <% @quotes.each do |quote| %>
-      <li>
-        <%= link_to quote.text.truncate(30), [@work, quote], class: "index-link" %>
-      </li>
-    <% end %>
-  <% end %>
-</ul>
+<div id="quotes-index"
+     data-controller="sortable"
+     data-sortable-request-helper-outlet=".request-helper"
+     data-sortable-endpoint-value="<%= work_quotes_path(@work) %>">
+  <b>Quotes for <%= @work.title %></b>
+  <div class="outline">
+    <%= text_field_tag(:search, nil, class: "search-box", data: { sortable_target: "search"}) %>
+    <%= link_to("Search", "#", class: "search-button", data: { action: "click->sortable#search" }) %>
+    <hr>
+
+
+  </div>
+
+  <ul id="quotes">
+    <%= render("quotes") %>
+  </ul>
 </div>
 
 <div class="nav-links outline">

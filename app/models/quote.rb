@@ -1,6 +1,7 @@
 class Quote < ApplicationRecord
   include PgSearch::Model
 
+  # TODO: list, search by author
   belongs_to :work
   validates :text, presence: true
 

@@ -2,7 +2,7 @@ class ProducersController < ApplicationController
   before_action :set_producer, only: %i[ show edit update destroy ]
   before_action :build_or_set_producer, only: %i[build_work select_work]
   before_action :set_form_options, only: %i[new edit]
-  before_action :set_producers, only: %i[index]
+  before_action :filter_and_sort_producers, only: %i[index]
 
   # GET /producers or /producers.json
   def index
@@ -99,7 +99,15 @@ private
     @producer = Producer.find(params[:id])
   end
 
-  def set_producers
+  def filter_and_sort_producers
+    @producers = Producer.all
+
+    # filter by search term
+    if params["search_term"].present?
+      @producers = @producers.search_name(params["search_term"]).unscope(:order)
+    end
+
+    # order by dropdown selection
     valid_order_params = ["name", "works_count"]
     valid_dir_params = ["asc", "desc"]
 
@@ -113,7 +121,7 @@ private
     order_params = [order_param]
     order_params << "name ASC" unless order_arg == "name"
 
-    @producers = Producer.all.order(*order_params)
+    @producers = @producers.order(*order_params)
   end
 
   def set_form_options

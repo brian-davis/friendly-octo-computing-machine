@@ -27,7 +27,7 @@ export default class extends Controller {
     this.orderValue = order_param;
     this.dirValue = dir_param;
 
-    let url = event.currentTarget.dataset.actionUrl;
+    let url = this.endpointValue;
 
     if (this.orderValue) {
       url += `?order=${this.orderValue}`;
@@ -64,7 +64,7 @@ export default class extends Controller {
     // console.log(targetLink);
 
     // http://localhost:3000/works?tag=Classics
-    let url = targetLink.href;
+    let url = targetLink.href; // or this.endpointValue
 
     if (this.orderValue) {
       url += `&order=${this.orderValue}`;
@@ -87,28 +87,26 @@ export default class extends Controller {
 
     // console.log("search", event.currentTarget);
 
-    let searchTerm = this.searchTarget.value;
-    // console.log(searchTerm);
+    this.searchValue = this.searchTarget.value;
+
     let url = this.endpointValue;
-    if (searchTerm) {
-      url += `?search_term=${searchTerm}`;
 
-      if (this.filterValue) {
-        url += `&tag=${this.filterValue}`;
-      }
+    url += `?search_term=${this.searchValue}`; // blank OK
 
-      if (this.orderValue) {
-        url += `&order=${this.orderValue}`;
-      }
-
-      if (this.orderValue && this.dirValue) {
-        url += `&dir=${this.dirValue}`;
-      }
-
-      // console.log("url", url);
+    if (this.filterValue) {
+      url += `&tag=${this.filterValue}`;
     }
 
-    this.searchValue = searchTerm;
+    if (this.orderValue) {
+      url += `&order=${this.orderValue}`;
+    }
+
+    if (this.orderValue && this.dirValue) {
+      url += `&dir=${this.dirValue}`;
+    }
+
+    // console.log("url", url);
+
     // this.searchTarget.value = "";
     this.requestHelperOutlet.turboGet(url);
   }

@@ -1,10 +1,18 @@
 class QuotesController < ApplicationController
   before_action :set_work
   before_action :set_quote, only: %i[ show edit update destroy ]
+  before_action :filter_and_sort_quotes, only: %i[index]
 
   # GET /quotes or /quotes.json
   def index
-    @quotes = Quote.all
+    respond_to do |format|
+      format.html { }
+      format.turbo_stream { }
+    end
+  end
+
+  def general_index
+    # TODO
   end
 
   # GET /quotes/1 or /quotes/1.json
@@ -26,7 +34,9 @@ class QuotesController < ApplicationController
 
     respond_to do |format|
       if @quote.save
-        format.html { redirect_to work_quotes_url(@work), notice: "Quote was successfully created." }
+        format.html {
+          redirect_to work_quotes_url(@work), notice: "Quote was successfully created."
+        }
         format.json { render :show, status: :created, location: @quote }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -71,5 +81,16 @@ private
   # Only allow a list of trusted parameters through.
   def quote_params
     params.require(:quote).permit(:work_id, :page, :section, :text)
+  end
+
+  def filter_and_sort_quotes
+    @quotes = @work.quotes.all
+
+     # filter by search term
+    if params["search_term"].present?
+      @quotes = @quotes.search_text(params["search_term"]).unscope(:order)
+    end
+
+    # order TODO
   end
 end

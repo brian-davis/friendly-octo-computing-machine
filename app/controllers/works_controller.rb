@@ -189,7 +189,6 @@ private
   end
 
   def filter_and_sort_works
-
     # filter by tag
     @works = if params["tag"] == "untagged"
       Work.untagged
@@ -203,7 +202,7 @@ private
     end
 
     # filter by search term
-    if params["search_term"]
+    if params["search_term"].present?
       @works = @works.search_title(params["search_term"]).unscope(:order)
     end
 
