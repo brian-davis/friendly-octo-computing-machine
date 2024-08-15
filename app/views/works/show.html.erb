@@ -21,6 +21,11 @@
     <p class="small-text indented">
       <%= language_line(@work) %>
     </p>
+
+
+    <p class="small-text indented">
+      Rating: <%= rating_stars(@work) %>
+    </p>
   </div>
 
   <hr>
@@ -58,6 +63,7 @@
 
   <hr>
   <b>Quotes</b>
+  <br>
   <div>
     Count: <%= @work.quotes.count %>
     <%= link_to("Go To Quotes 👉", work_quotes_path(@work), class: "index-link") %>

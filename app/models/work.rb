@@ -15,6 +15,8 @@
 #  language            :string
 #  original_language   :string
 #  tags                :string           default([]), is an Array
+#  searchable          :tsvector
+#  rating              :integer
 #
 class Work < ApplicationRecord
   include PgSearch::Model
@@ -32,6 +34,8 @@ class Work < ApplicationRecord
   taggable_array :tags
 
   before_validation :clear_publisher
+  before_validation :reset_rating
+
   before_save :deduplicate_tags
 
   validates :title, presence: true
@@ -79,5 +83,12 @@ private
   def deduplicate_tags
     self.tags.delete("") # gem/db doesn't guard against this.
     self.tags.uniq!
+  end
+
+  def reset_rating
+    # set to -1 or 0 in form to mark unrated
+    if rating_changed?
+      self.rating = nil unless self.rating.in?(1..5)
+    end
   end
 end

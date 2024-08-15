@@ -212,7 +212,8 @@ CREATE TABLE public.works (
     language character varying,
     original_language character varying,
     tags character varying[] DEFAULT '{}'::character varying[],
-    searchable tsvector GENERATED ALWAYS AS (setweight(to_tsvector('english'::regconfig, (COALESCE(title, ''::character varying))::text), 'A'::"char")) STORED
+    searchable tsvector GENERATED ALWAYS AS (setweight(to_tsvector('english'::regconfig, (COALESCE(title, ''::character varying))::text), 'A'::"char")) STORED,
+    rating integer
 );
 
 
@@ -428,6 +429,7 @@ ALTER TABLE ONLY public.work_producers
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240814232714'),
 ('20240813213517'),
 ('20240813212558'),
 ('20240813204618'),

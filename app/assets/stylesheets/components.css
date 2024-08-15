@@ -90,3 +90,11 @@ input.search-box {
   padding: 0.18rem;
   font-size: smaller;
 }
+
+.stars {
+  background-color: aliceblue;
+  padding: 0.1rem;
+  border: 1px solid #ccc;
+  font-size: smaller;
+  color: mediumpurple;
+}

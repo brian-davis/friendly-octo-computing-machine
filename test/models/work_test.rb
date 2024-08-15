@@ -15,6 +15,8 @@
 #  language            :string
 #  original_language   :string
 #  tags                :string           default([]), is an Array
+#  searchable          :tsvector
+#  rating              :integer
 #
 require "test_helper"
 

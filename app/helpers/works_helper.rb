@@ -50,4 +50,9 @@ module WorksHelper
       "#{work.original_language.presence || work.language.presence} language"
     end
   end
+
+  def rating_stars(work)
+    return "" if work.rating.nil?
+    tag.span(("★" * work.rating), class: "stars")
+  end
 end

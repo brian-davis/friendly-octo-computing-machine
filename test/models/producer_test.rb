@@ -11,6 +11,7 @@
 #  bio_link    :string
 #  nationality :string
 #  works_count :integer          default(0)
+#  searchable  :tsvector
 #
 require "test_helper"
 

@@ -164,6 +164,7 @@ private
       :language,
       :original_language,
       :publisher_id,
+      :rating,
       :_clear_publisher,
       tags: [],
       publisher_attributes: [:name],
@@ -208,19 +209,27 @@ private
     end
 
     # order by dropdown selection
-    valid_order_params = ["title", "year"]
+    valid_order_params = ["title", "year", "rating"]
     valid_dir_params = ["asc", "desc"]
     order_param = params["order"].presence
-    order_arg = (valid_order_params & [order_param])[0] || :title
+    order_arg = (valid_order_params & [order_param])[0] || "title"
     dir_param = params["dir"].presence
-    dir_arg = (valid_dir_params & [dir_param])[0] || :asc
+    dir_arg = (valid_dir_params & [dir_param])[0] || "asc"
+
+    # always put unrated works at end
+    if order_arg == "rating" && dir_arg == "desc"
+      order_arg = "COALESCE(works.rating, -1)"
+    elsif order_arg == "rating" && dir_arg == "asc"
+      order_arg = "COALESCE(works.rating, 9999999)"
+    end
+
     @order_value = [order_arg, dir_arg].join("-");
     order_arg = "year_of_composition" if order_arg.to_s == "year"
     order_param = "#{order_arg} #{dir_arg.upcase}"
     order_params = [order_param]
     order_params << "title ASC" unless order_arg == "title"
-    order_params.uniq!
+    order_params = order_params.uniq.join(", ")
 
-    @works = @works.order(*order_params)
+    @works = @works.order(Arel.sql(order_params))
   end
 end
