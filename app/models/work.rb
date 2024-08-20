@@ -24,6 +24,8 @@ class Work < ApplicationRecord
   has_many :work_producers, dependent: :destroy
   has_many :producers, through: :work_producers
   has_many :quotes, dependent: :destroy
+  has_many :notes, dependent: :destroy
+
   belongs_to :publisher, optional: true, counter_cache: true
 
   attr_accessor :_clear_publisher

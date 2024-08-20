@@ -1,0 +1,12 @@
+<p style="color: green"><%= notice %></p>
+
+<div id="<%= dom_id @note %>" class="outline">
+  <%= render @note %>
+</div>
+
+<div class="nav-links outline" data-controller="confirmable">
+  <%= link_to "Edit this note", edit_work_note_path([@work, @note]), class: "nav-button nav-action" %>
+  <%= link_to "Back to notes", work_notes_path(@work), class: "nav-button" %>
+
+  <%= html_delete_button [@work, @note], "Destroy this note" %>
+</div>

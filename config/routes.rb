@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
   get 'home/index'
-  get 'home/append'
-
 
   resources :producers do
     collection do
@@ -25,6 +23,7 @@ Rails.application.routes.draw do
     end
 
     resources :quotes
+    resources :notes
   end
 
   get "quotes", to: "quotes#general_index", as: "quotes"

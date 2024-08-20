@@ -49,6 +49,38 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: notes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.notes (
+    id bigint NOT NULL,
+    text text,
+    work_id bigint NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: notes_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.notes_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: notes_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.notes_id_seq OWNED BY public.notes.id;
+
+
+--
 -- Name: producers; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -237,6 +269,13 @@ ALTER SEQUENCE public.works_id_seq OWNED BY public.works.id;
 
 
 --
+-- Name: notes id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notes ALTER COLUMN id SET DEFAULT nextval('public.notes_id_seq'::regclass);
+
+
+--
 -- Name: producers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -277,6 +316,14 @@ ALTER TABLE ONLY public.works ALTER COLUMN id SET DEFAULT nextval('public.works_
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: notes notes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notes
+    ADD CONSTRAINT notes_pkey PRIMARY KEY (id);
 
 
 --
@@ -325,6 +372,13 @@ ALTER TABLE ONLY public.work_producers
 
 ALTER TABLE ONLY public.works
     ADD CONSTRAINT works_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: index_notes_on_work_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_notes_on_work_id ON public.notes USING btree (work_id);
 
 
 --
@@ -423,12 +477,21 @@ ALTER TABLE ONLY public.work_producers
 
 
 --
+-- Name: notes fk_rails_9fa473ac93; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notes
+    ADD CONSTRAINT fk_rails_9fa473ac93 FOREIGN KEY (work_id) REFERENCES public.works(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240815004339'),
 ('20240814232714'),
 ('20240813213517'),
 ('20240813212558'),

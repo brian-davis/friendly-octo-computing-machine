@@ -1,0 +1,18 @@
+# == Schema Information
+#
+# Table name: notes
+#
+#  id         :bigint           not null, primary key
+#  text       :text
+#  work_id    :bigint           not null
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+one:
+  text: MyText
+  work: one
+
+two:
+  text: MyText
+  work: two

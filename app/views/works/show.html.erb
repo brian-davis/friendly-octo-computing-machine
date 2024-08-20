@@ -68,11 +68,19 @@
     Count: <%= @work.quotes.count %>
     <%= link_to("Go To Quotes 👉", work_quotes_path(@work), class: "index-link") %>
   </div>
+
+  <hr>
+  <b>Notes</b>
+  <br>
+  <div>
+    Count: <%= @work.notes.count %>
+    <%= link_to("Go To Notes 👉", work_notes_path(@work), class: "index-link") %>
+  </div>
 </div>
 
-<div class="nav-links outline">
+<div class="nav-links outline" data-controller="confirmable">
   <%= link_to "Back to books", works_path, class: "nav-button" %>
   <%= link_to "Back to top", root_path, class: "nav-button" %>
   <%= link_to "Edit this work", edit_work_path(@work), class: "nav-button nav-action" %>
-  <%= link_to "Destroy this work", @work, method: :delete, class: "nav-button nav-action", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+  <%= html_delete_button(@work, "Destroy Book") %>
 </div>

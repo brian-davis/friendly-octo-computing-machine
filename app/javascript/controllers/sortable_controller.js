@@ -9,7 +9,7 @@ export default class extends Controller {
   static outlets = ["request-helper"];
 
   connect() {
-    // console.log("sortable connected");
+    console.log("sortable connected");
     this.filterValue = "";
     this.orderValue = "";
     this.dirValue = "";

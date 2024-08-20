@@ -1,0 +1,19 @@
+<p style="color: green"><%= notice %></p>
+
+<b>Notes for <%= @work.title %></b>
+<hr>
+<div class="outline">
+  <div id="notes">
+    <% @notes.each do |note| %>
+      <%= render note %>
+      <p>
+        <%= link_to "Show this note", [@work, note] %>
+      </p>
+    <% end %>
+  </div>
+</div>
+
+<div class="nav-links outline">
+  <%= link_to "Back to Book", @work, class: "nav-button" %>
+  <%= link_to "New note", new_work_note_path(@work), class: "nav-button nav-action"  %>
+</div>

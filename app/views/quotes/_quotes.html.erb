@@ -2,8 +2,16 @@
   <span class="empty-list">EMPTY</span>
 <% else %>
   <% @quotes.each do |quote| %>
-    <li>
-      <%= link_to quote.text.truncate(50), [@work, quote], class: "index-link" %>
-    </li>
+    <div style="margin-bottom: 1rem;">
+      <span class="small-text">
+        <%= full_title_line(quote.work) %>
+      </span>
+
+      <div class="indented small-text">
+        <i><%= quote.text.truncate(100) %></i> |
+        <% quote_resource = [@work, quote] %>
+        <%= link_to "👉", quote_resource, class: "index-link" %>
+      </div>
+    </div>
   <% end %>
 <% end %>

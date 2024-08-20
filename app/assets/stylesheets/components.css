@@ -66,6 +66,9 @@ ul.associated-items li {
 .danger {
   color: red;
 }
+button.danger {
+  border-color: red;
+}
 
 .clickable {
   cursor: pointer;
@@ -97,4 +100,9 @@ input.search-box {
   border: 1px solid #ccc;
   font-size: smaller;
   color: mediumpurple;
+}
+
+/* actual <button> tag required for delete links */
+button.nav-button.nav-action.nav-button-to {
+  font-size: unset;
 }
