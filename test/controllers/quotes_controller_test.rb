@@ -20,7 +20,8 @@ class QuotesControllerTest < ActionDispatch::IntegrationTest
     assert_difference("Quote.count") do
       post work_quotes_url(work_id: @work.id), params: { quote: { text: "new quote" } }
     end
-    assert_redirected_to work_quotes_url(work_id: @work.id)
+    quote = @work.quotes.last
+    assert_redirected_to work_quote_url(@work, quote)
   end
 
   test "should show quote" do
@@ -35,7 +36,7 @@ class QuotesControllerTest < ActionDispatch::IntegrationTest
 
   test "should update quote" do
     patch work_quote_url(work_id: @work.id, id: @quote.id), params: { quote: { text: "new text" } }
-    assert_redirected_to work_quotes_url(work_id: @work.id)
+    assert_redirected_to work_quote_url(@work, @quote)
   end
 
   test "should destroy quote" do

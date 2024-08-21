@@ -153,7 +153,17 @@ class Work < ApplicationRecord
     end
   end
 
-private
+  def title_and_subtitle
+    return self.title unless self.subtitle.present?
+    "#{self.title}: #{self.subtitle}"
+  end
+
+  # remove initial "The"
+  def short_title
+    title.sub("The ", "")
+  end
+
+  private
 
   # remove association, not associated record
   def clear_publisher

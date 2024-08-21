@@ -1,23 +1,25 @@
 <p style="color: green"><%= notice %></p>
 
 <div id="<%= dom_id @quote %>" class="outline">
-  <%# TODO: remove these %>
-  <div>
-    <b>Page: </b>
-    <%= @quote.page %>
-  </div>
-  <div>
-    <b>Custom Citation: </b>
-    <%= @quote.custom_citation %>
-  </div>
-  <br>
 
+  <b class="label-above small-text">Custom Citation</b>
   <div class="book-card outline bibliography-citation small-text">
-    <%= raw markdown.render(@quote.citation_markdown) %>
+    <%= raw markdown.render(@quote.custom_citation) %>
   </div>
 
-  <div class="quote-card outline bibliography-citation">
-    <%= @quote.text %>
+  <b class="label-above small-text">Long Citation</b>
+  <div class="book-card outline bibliography-citation small-text">
+    <%= raw markdown.render(@quote.long_citation_markdown) %>
+  </div>
+
+  <b class="label-above small-text">Short Citation</b>
+  <div class="book-card outline bibliography-citation small-text">
+    <%= raw markdown.render(@quote.short_citation_markdown) %>
+  </div>
+
+  <b class="label-above small-text">Quote</b>
+  <div class="quote-card outline">
+    <%= raw markdown.render(@quote.text) %>
   </div>
 </div>
 

@@ -2,7 +2,7 @@
   <%= render("shared/form_errors", form: form) %>
 
   <%= form.label(:page) %>
-  <%= form.number_field(:page, class: "correct-width") %>
+  <%= form.text_field(:page, class: "correct-width") %><%# String %>
 
   <%= form.label(:custom_citation, "Custom Citation (Markdown)", class: "small-text") %>
   <%= form.text_field(:custom_citation, class: "correct-width") %>

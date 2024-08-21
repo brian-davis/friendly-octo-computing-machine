@@ -111,6 +111,19 @@ button.nav-button.nav-action.nav-button-to {
   font-size: unset;
 }
 
-.bibliography-citation {
+.bibliography-citation,
+.quote-card {
   font-family: "Times New Roman", Times, serif;
+
+  /* space under label */
+  margin-top: 0.5rem;
+}
+
+.quote-card p,
+.bibliography-citation p {
+  margin: unset;
+}
+
+b.label-above {
+  /* can't do margin-bottom */
 }

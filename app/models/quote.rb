@@ -35,7 +35,40 @@ class Quote < ApplicationRecord
     }
   )
 
-  def citation_markdown
-    "TODO: CITATION"
+  # Charles Yu, _Interior Chinatown_ (Pantheon Books, 2020), 45.
+  def long_citation_markdown
+    return "" unless work.publisher && work.authors.any?
+
+    sections = []
+    author_names = self.work.authors.pluck(:name).to_sentence # no alphabetizing by last name
+    sections << author_names
+
+    title_and_publication = "_#{self.work.title_and_subtitle}_ (#{self.work.publisher.name}, #{self.work.year_of_publication})" # no comma
+    sections << title_and_publication
+
+    page = self.page # TODO: String
+    sections << page
+
+    result = sections.join(", ") + "."
+    result
+  end
+
+  # "Yu, Interior Chinatown, 48."
+  def short_citation_markdown
+    return "" unless work.authors.any?
+
+    sections = []
+
+    author_last_names = self.work.authors.pluck(:name).map { |name| name.split(/\s/).last }.to_sentence
+    sections << author_last_names
+
+    title = "_#{self.work.short_title}_"
+    sections << title
+
+    page = self.page # TODO: String
+    sections << page
+
+    result = sections.join(", ") + "."
+    result
   end
 end
