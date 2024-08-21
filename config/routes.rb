@@ -20,6 +20,9 @@ Rails.application.routes.draw do
 
       get :build_tag, format: :turbo_stream
       get :select_tag, format: :turbo_stream
+
+      get :build_parent, format: :turbo_stream
+      get :select_parent, format: :turbo_stream
     end
 
     resources :quotes

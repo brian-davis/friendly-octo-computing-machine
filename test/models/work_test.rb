@@ -410,4 +410,27 @@ class WorkTest < ActiveSupport::TestCase
 
     assert_equal ["ProducerThree"], work.authors.pluck(:name)
   end
+
+  test "self-join" do
+    parent = Work.create({
+      format: "book",
+      title: "A Compilation"
+    })
+
+    child1 = Work.create({
+      format: "chapter",
+      title: "Chapter 1",
+      parent_id: parent.id
+    })
+
+    child2 = Work.create({
+      format: "chapter",
+      title: "Chapter 2",
+      parent_id: parent.id
+    })
+
+    assert child1.in?(parent.children)
+    assert_equal parent, child1.parent
+    assert_equal parent, child2.parent
+  end
 end

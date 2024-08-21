@@ -19,8 +19,17 @@
   <%= form.label :year_of_publication %>
   <%= form.number_field :year_of_publication, class: "correct-width" %>
 
-  <%= form.label :language %>
+  <%= form.label :rating %>
+  <%= form.number_field(:rating, class: "correct-width", in: (-1..5)) %>
 
+  <%= form.label :format %>
+  <%= form.select(:format, options_for_select(Work.formats.keys, @work.format), class: "correct-width") %>
+
+  <%= form.label :custom_citation, "Custom Citation (Markdown)", class: "small-text" %>
+  <%= form.text_field :custom_citation %>
+
+  <%# LANGUAGE DROPDOWN %>
+  <%= form.label :language %>
   <%# https://github.com/rails/rails/pull/52137 %>
   <%= form.text_field :language, { list: "work_languages_datalist", class: "correct-width-2" } %>
   <%=
@@ -43,6 +52,7 @@
     <% end %>
   <% end %>
 
+  <%# ORIGINAL LANGUAGE DROPDOWN %>
   <%= form.label :original_language %>
   <%# https://github.com/rails/rails/pull/52137 %>
   <%= form.text_field :original_language, { list: "work_original_languages_datalist", class: "correct-width-2" } %>
@@ -59,18 +69,10 @@
     <% end %>
   <% end %>
 
-  <%= form.label :rating %>
-  <%= form.number_field(:rating, class: "correct-width", in: (-1..5)) %>
-
-  <%= form.label :format %>
-  <%= form.select(:format, options_for_select(Work.formats), {}, class: "correct-width") %>
-
-  <%= form.label :custom_citation, "Custom Citation (Markdown)", class: "small-text" %>
-  <%= form.text_field :custom_citation %>
-
   <hr>
   <hr>
 
+  <%# PUBLISHER DROPDOWN %>
   <div class="label-group">
     <%= form.label :publisher %>
     <%= link_to(build_publisher_works_path(work_id: @work.try(:id)), class: "link-button", data: { turbo_stream: true }) do %>
@@ -103,6 +105,7 @@
   <hr>
   <hr>
 
+  <%# PRODUCER DROPDOWN %>
   <div class="label-group">
     <%= form.label :producers do %>
       Authors
@@ -112,7 +115,6 @@
     <% end %>
     <%= select_tag("authors", options_for_select(@producer_options), { include_blank: "Select Author", class: "select-button", data: { action: "change->works#selectProducer" }}) %>
   </div>
-
   <div id="sub_form_list_producers" data-controller="dismissable">
     <% @work_producers.each do |work_producer| %>
       <div class="outline subFormContainer" data-dismissable-target="subForm">
@@ -149,6 +151,7 @@
   <hr>
   <hr>
 
+  <%# GENRE DROPDOWN %>
   <div class="label-group">
     <%= form.label :tags do %>
       Genre
@@ -180,5 +183,60 @@
 
   <hr>
   <hr>
+
+  <%# PARENT DROPDOWN %>
+  <div class="label-group">
+    <%= form.label :parent do %>
+      Parent Work
+    <% end %>
+    <%=
+      link_to(
+        build_parent_works_path(work_id: @work.try(:id)),
+        class: "link-button", data: { turbo_stream: true }
+      ) do
+    %>
+      New Parent Work &nbsp;+
+    <% end %>
+
+    <%=
+      select_tag(
+        "parent_work",
+        options_for_select(@parent_options),
+        {
+          include_blank: "Select Parent Work",
+          class: "select-button",
+          data: { action: "change->works#selectParent" }
+        }
+      )
+    %>
+  </div>
+
+  <div id="sub_form_list_parent" data-controller="dismissable">
+    <% if work.parent %>
+      <%# ONLY 1 %>
+      <div class="outline subFormContainer" data-dismissable-target="subForm">
+        <%= form.hidden_field :parent_id, value: work.parent_id %>
+        <div class="subform-line">
+          <%# COLUMN 1 %>
+          <b>Title:</b>
+          <%# COLUMN 2 %>
+          <%# display only; ignore on submit %>
+          <%= text_field_tag(:_parent_title, work.parent&.title, readonly: true) %>
+        </div>
+
+        <%# FULL COLUMN %>
+        <div class="undo-label">
+          <%= form.check_box :_clear_parent %>
+          <b class="danger">Undo</b>
+        </div>
+      </div>
+    <% end %>
+
+    <%# turbo_stream.append %>
+  </div>
+
+  <hr>
+  <hr>
+
   <%= form.submit %>
 <% end %>

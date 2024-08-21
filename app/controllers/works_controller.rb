@@ -1,7 +1,7 @@
 class WorksController < ApplicationController
   before_action :set_work, only: %i[show edit update destroy]
   before_action :build_or_set_work, only: %i[
-    build_producer select_producer build_publisher select_publisher build_tag select_tag
+    build_producer select_producer build_publisher select_publisher build_tag select_tag build_parent select_parent
   ]
   before_action :set_form_options, only: %i[new edit]
 
@@ -31,49 +31,6 @@ class WorksController < ApplicationController
 
   # GET /works/new
   def new
-  end
-
-  def build_producer
-    respond_to do |format|
-      format.turbo_stream
-    end
-  end
-
-  # join an existing Producer record to a Work record with new WorkProducer record
-  def select_producer
-    @producer = Producer.find(params["producer_id"])
-    respond_to do |format|
-      format.turbo_stream
-    end
-  end
-
-  def build_tag
-    respond_to do |format|
-      format.turbo_stream
-    end
-  end
-
-  # join an existing Producer record to a Work record with new WorkProducer record
-  def select_tag
-    @tag = params["tag"]
-    respond_to do |format|
-      format.turbo_stream
-    end
-  end
-
-  def build_publisher
-    @tag = String.new
-    respond_to do |format|
-      format.turbo_stream
-    end
-  end
-
-  # join an existing Producer record to a Work record with new WorkProducer record
-  def select_publisher
-    @publisher = Publisher.find(params["publisher_id"])
-    respond_to do |format|
-      format.turbo_stream
-    end
   end
 
   # GET /works/1/edit
@@ -140,6 +97,58 @@ class WorksController < ApplicationController
     end
   end
 
+  def build_producer
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
+  # join an existing Producer record to a Work record with new WorkProducer record
+  def select_producer
+    @producer = Producer.find(params["producer_id"])
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
+  def build_tag
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
+  # join an existing Producer record to a Work record with new WorkProducer record
+  def select_tag
+    @tag = params["tag"]
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
+  def build_publisher
+    @tag = String.new
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
+  # join an existing Producer record to a Work record with new WorkProducer record
+  def select_publisher
+    @publisher = Publisher.find(params["publisher_id"])
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
+  def build_parent
+    @parent = @work.build_parent
+  end
+
+  def select_parent
+    ids = Work.compilation.ids - [@work.id]
+    @parent = Work.where(id: ids).find(params["parent_id"])
+  end
+
 private
   def set_work
     @work = Work.find(params[:id])
@@ -151,6 +160,9 @@ private
     @producer_options = Producer.order(:name).pluck(:name, :id).uniq
     @publisher_options = Publisher.order(:name).pluck(:name, :id).uniq
     @tag_options = Work.all_tags.sort
+
+    parent_ids = Work.compilation.ids - [@work.id]
+    @parent_options = Work.where(id: parent_ids).pluck(:title, :id)
   end
 
   # TODO: combine with set_form_options
@@ -169,11 +181,18 @@ private
       :language,
       :original_language,
       :custom_citation,
+      :format,
       :publisher_id,
+      :parent_id,
       :rating,
       :_clear_publisher,
+      :_clear_parent,
       tags: [],
       publisher_attributes: [:name],
+      parent_attributes: [
+        :title,
+        :format
+      ],
       work_producers_attributes: [
         :id,
         :_destroy,

@@ -46,14 +46,22 @@ class Work < ApplicationRecord
 
   belongs_to :publisher, optional: true, counter_cache: true
 
+  has_many :children, class_name: "Work", foreign_key: "parent_id"
+  belongs_to :parent, class_name: "Work", optional: true
+
   attr_accessor :_clear_publisher
+  attr_accessor :_clear_parent
+
   accepts_nested_attributes_for :work_producers, allow_destroy: true
-  accepts_nested_attributes_for :publisher # destroy false
   accepts_nested_attributes_for :quotes, allow_destroy: true
+  accepts_nested_attributes_for :publisher # destroy false
+  accepts_nested_attributes_for :parent # destroy false
 
   taggable_array :tags
 
   before_validation :clear_publisher
+  before_validation :clear_parent
+
   before_validation :reset_rating
 
   before_save :deduplicate_tags
@@ -78,7 +86,7 @@ class Work < ApplicationRecord
 
   scope :untagged, -> { where({ tags: [] }) }
 
-  enum format: [:book, :article, :chapter]
+  enum format: [:book, :article, :chapter, :compilation]
 
   class << self
     # pseudo-enum
@@ -171,6 +179,13 @@ class Work < ApplicationRecord
       self.publisher_id = nil
     end
   end
+
+    # remove association, not associated record
+    def clear_parent
+      if self._clear_parent == "1"
+        self.parent_id = nil
+      end
+    end
 
   # use empty array attr to clear tags (nil attr will be no-op/keep)
   def deduplicate_tags

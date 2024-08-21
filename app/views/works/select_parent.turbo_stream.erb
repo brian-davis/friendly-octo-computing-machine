@@ -1,0 +1,23 @@
+<%= form_with(model: @work) do |form| %>
+  <%= turbo_stream.update "sub_form_list_parent" do %>
+    <div class="outline subFormContainer" data-dismissable-target="subForm">
+      <%= form.hidden_field :parent_id, value: @parent.id %>
+      <div class="subform-line">
+        <%# COLUMN 1 %>
+        <b>Title:</b>
+
+        <%# COLUMN 2 %>
+        <%# display only; ignore on submit %>
+        <%= text_field_tag(:_parent_name, @parent.title, readonly: true) %>
+      </div>
+
+      <%# FULL COLUMN %>
+      <div class="undo-label">
+        <span class="clickable" data-action="click->dismissable#formDismiss">
+          <b class="danger">ⓧ</b>
+          <b class="danger">Cancel</b>
+        </span>
+      </div>
+    </div>
+  <% end %>
+<% end %>

@@ -53,7 +53,7 @@ class Quote < ApplicationRecord
     result
   end
 
-  # "Yu, Interior Chinatown, 48."
+  # "Yu, _Interior Chinatown_, 48."
   def short_citation_markdown
     return "" unless work.authors.any?
 

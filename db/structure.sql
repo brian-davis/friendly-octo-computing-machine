@@ -247,7 +247,8 @@ CREATE TABLE public.works (
     searchable tsvector GENERATED ALWAYS AS (setweight(to_tsvector('english'::regconfig, (COALESCE(title, ''::character varying))::text), 'A'::"char")) STORED,
     rating integer,
     format integer DEFAULT 0,
-    custom_citation character varying
+    custom_citation character varying,
+    parent_id integer
 );
 
 
@@ -426,6 +427,13 @@ CREATE UNIQUE INDEX index_work_producers_on_work_id_and_producer_id_and_role ON 
 
 
 --
+-- Name: index_works_on_parent_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_works_on_parent_id ON public.works USING btree (parent_id);
+
+
+--
 -- Name: index_works_on_publisher_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -493,6 +501,7 @@ ALTER TABLE ONLY public.notes
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240821205656'),
 ('20240821200516'),
 ('20240821181310'),
 ('20240821030845'),

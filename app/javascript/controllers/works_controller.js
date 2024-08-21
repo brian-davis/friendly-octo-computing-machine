@@ -66,17 +66,15 @@ export default class extends Controller {
   }
 
   // _form.html.erb
-  selectProducer(event) {
+  selectParent(event) {
     event.preventDefault();
     event.stopPropagation();
 
-    // console.log("selectProducer", event.currentTarget.value);
-    let url = "/works/select_producer";
-    url += `?producer_id=${event.currentTarget.value}`;
+    console.log("selectParent", event.currentTarget.value);
+    let url = "/works/select_parent";
+    url += `?parent_id=${event.currentTarget.value}`;
 
-    if (this.idValue != "") {
-      url += `&work_id=${this.idValue}`;
-    }
+    // TODO
 
     this.requestHelperOutlet.turboGet(url);
 

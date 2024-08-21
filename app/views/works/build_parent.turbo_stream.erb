@@ -1,0 +1,29 @@
+<%= form_with(model: @work) do |form| %>
+  <%= turbo_stream.update "sub_form_list_parent" do %>
+    <div class="outline subFormContainer" data-dismissable-target="subForm">
+
+      <%= form.fields_for :parent_attributes, @work.build_parent do |t| %>
+        <%= t.hidden_field :format, value: "compilation" %>
+
+        <div class="subform-line">
+          <%# COLUMN 1 %>
+          <b>Title:</b>
+
+          <%# COLUMN 2 %>
+          <%= t.text_field(:title) %>
+
+          <%# TODO: more columns? %>
+        </div>
+      <% end %>
+
+
+      <%# FULL COLUMN %>
+      <div class="undo-label">
+        <span class="clickable" data-action="click->dismissable#formDismiss">
+          <b class="danger">ⓧ</b>
+          <b class="danger">Cancel</b>
+        </span>
+      </div>
+    </div>
+  <% end %>
+<% end %>
