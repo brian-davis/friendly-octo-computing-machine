@@ -120,7 +120,7 @@ class WorkTest < ActiveSupport::TestCase
 
   test "create a producer through work_producer" do
     work1 = works(:one)
-    new_name_param = "ProducerThree"
+    new_name_param = "apoinvwljnawlk3tnq2l3kn"
     params1 = ActionController::Parameters.new({
       work: {
         title: work1.title,
@@ -357,7 +357,7 @@ class WorkTest < ActiveSupport::TestCase
           "0" => {
             text: "Once Upon A Time...",
             page: 1,
-            section: "1a"
+            custom_citation: "1a"
           }
         }
       }
@@ -366,7 +366,7 @@ class WorkTest < ActiveSupport::TestCase
       :_destroy,
       :text,
       :page,
-      :section
+      :custom_citation
     ])
 
     refute "Once Upon A Time...".in?(work1.quotes.pluck(:text))

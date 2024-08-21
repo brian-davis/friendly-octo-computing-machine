@@ -2,24 +2,24 @@
 #
 # Table name: quotes
 #
-#  id         :bigint           not null, primary key
-#  text       :text
-#  page       :integer
-#  section    :string
-#  work_id    :bigint           not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  searchable :tsvector
+#  id              :bigint           not null, primary key
+#  text            :text
+#  page            :integer
+#  custom_citation :string
+#  work_id         :bigint           not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  searchable      :tsvector
 #
 
 one:
   text: MyText
   page: 1
-  section: MyString
+  custom_citation: MyString
   work: one
 
 two:
   text: MyText
   page: 1
-  section: MyString
+  custom_citation: MyString
   work: two

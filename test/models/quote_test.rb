@@ -2,14 +2,14 @@
 #
 # Table name: quotes
 #
-#  id         :bigint           not null, primary key
-#  text       :text
-#  page       :integer
-#  section    :string
-#  work_id    :bigint           not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  searchable :tsvector
+#  id              :bigint           not null, primary key
+#  text            :text
+#  page            :integer
+#  custom_citation :string
+#  work_id         :bigint           not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  searchable      :tsvector
 #
 require "test_helper"
 
@@ -17,7 +17,7 @@ class QuoteTest < ActiveSupport::TestCase
   test "validates text" do
     q1 = works(:one).quotes.build({
       text: "",
-      section: "1a",
+      custom_citation: "1a",
       page: 1
     })
     refute q1.valid?

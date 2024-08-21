@@ -157,7 +157,7 @@ CREATE TABLE public.quotes (
     id bigint NOT NULL,
     text text,
     page integer,
-    section character varying,
+    custom_citation character varying,
     work_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -493,6 +493,7 @@ ALTER TABLE ONLY public.notes
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240821181310'),
 ('20240821030845'),
 ('20240820231558'),
 ('20240815004339'),

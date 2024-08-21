@@ -1,14 +1,14 @@
 <p style="color: green"><%= notice %></p>
 
 <h3><%= @work.title %></h3>
-<div id="<%= dom_id @work %>" class="outline">
+  <div id="<%= dom_id @work %>" class="outline">
     <% if @work.custom_citation.present? %>
       <div class="book-card outline bibliography-citation small-text">
         <%= raw markdown.render(@work.custom_citation) %>
       </div>
     <% elsif @work.book_bibliography? %>
       <div class="book-card outline bibliography-citation small-text">
-        <%= raw markdown.render(@work.bibliography_markdown(:book)) %>
+        <%= raw markdown.render(@work.bibliography_markdown) %>
       </div>
     <% end %>
 

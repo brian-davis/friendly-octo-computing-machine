@@ -3,46 +3,48 @@ require "test_helper"
 class NotesControllerTest < ActionDispatch::IntegrationTest
   setup do
     @note = notes(:one)
+    @work = @note.work
   end
 
   test "should get index" do
-    get notes_url
+    get work_notes_url(@work)
     assert_response :success
   end
 
   test "should get new" do
-    get new_note_url
+    get new_work_note_url(@work)
     assert_response :success
   end
 
   test "should create note" do
     assert_difference("Note.count") do
-      post notes_url, params: { note: { text: @note.text, work_id: @note.work_id } }
+      post work_notes_url(@work), params: { note: { text: @note.text } }
     end
 
-    assert_redirected_to note_url(Note.last)
+    note = @work.notes.last
+    assert_redirected_to work_note_url(@work, note)
   end
 
   test "should show note" do
-    get note_url(@note)
+    get work_note_url(@work, @note)
     assert_response :success
   end
 
   test "should get edit" do
-    get edit_note_url(@note)
+    get edit_work_note_url(@work, @note)
     assert_response :success
   end
 
   test "should update note" do
-    patch note_url(@note), params: { note: { text: @note.text, work_id: @note.work_id } }
-    assert_redirected_to note_url(@note)
+    patch work_note_url(@work, @note), params: { note: { text: @note.text } }
+    assert_redirected_to work_note_url(@work, @note)
   end
 
   test "should destroy note" do
     assert_difference("Note.count", -1) do
-      delete note_url(@note)
+      delete work_note_url(@work, @note)
     end
 
-    assert_redirected_to notes_url
+    assert_redirected_to work_notes_url(@work)
   end
 end

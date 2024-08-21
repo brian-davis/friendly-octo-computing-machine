@@ -78,6 +78,10 @@ button.danger {
   background-color: aliceblue;
 }
 
+.quote-card {
+  background-color: antiquewhite;
+}
+
 a.search-button {
   text-decoration: none;
   padding: 0.18em 0.4em;

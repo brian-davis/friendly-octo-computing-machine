@@ -186,7 +186,7 @@ private
         :_destroy,
         :text,
         :page,
-        :section
+        :custom_citation
       ]
     )
 

@@ -1,20 +1,22 @@
 <p style="color: green"><%= notice %></p>
 
 <div id="<%= dom_id @quote %>" class="outline">
-  <div>
-    <%= @work.title %>
-  </div>
-  <br>
+  <%# TODO: remove these %>
   <div>
     <b>Page: </b>
     <%= @quote.page %>
   </div>
   <div>
-    <b>Section: </b>
-    <%= @quote.section %>
+    <b>Custom Citation: </b>
+    <%= @quote.custom_citation %>
   </div>
   <br>
-  <div>
+
+  <div class="book-card outline bibliography-citation small-text">
+    <%= raw markdown.render(@quote.citation_markdown) %>
+  </div>
+
+  <div class="quote-card outline bibliography-citation">
     <%= @quote.text %>
   </div>
 </div>

@@ -2,14 +2,14 @@
 #
 # Table name: quotes
 #
-#  id         :bigint           not null, primary key
-#  text       :text
-#  page       :integer
-#  section    :string
-#  work_id    :bigint           not null
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  searchable :tsvector
+#  id              :bigint           not null, primary key
+#  text            :text
+#  page            :integer
+#  custom_citation :string
+#  work_id         :bigint           not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  searchable      :tsvector
 #
 class Quote < ApplicationRecord
   include PgSearch::Model
@@ -34,4 +34,8 @@ class Quote < ApplicationRecord
       }
     }
   )
+
+  def citation_markdown
+    "TODO: CITATION"
+  end
 end

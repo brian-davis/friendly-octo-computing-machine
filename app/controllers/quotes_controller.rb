@@ -85,7 +85,7 @@ private
 
   # Only allow a list of trusted parameters through.
   def quote_params
-    params.require(:quote).permit(:work_id, :page, :section, :text)
+    params.require(:quote).permit(:work_id, :page, :custom_citation, :text)
   end
 
   def filter_and_sort_quotes

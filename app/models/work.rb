@@ -120,8 +120,8 @@ class Work < ApplicationRecord
   #   chapter?
   # end
 
-  def bibliography_markdown(format = :book)
-    if format == :book
+  def bibliography_markdown
+    if self.format == "book"
       sections = []
 
       author_names = authors.pluck(:name) # order by WorkProducer create
