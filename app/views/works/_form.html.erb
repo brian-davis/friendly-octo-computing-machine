@@ -65,6 +65,9 @@
   <%= form.label :format %>
   <%= form.select(:format, options_for_select(Work.formats), {}, class: "correct-width") %>
 
+  <%= form.label :custom_citation, "Custom Citation (Markdown)", class: "small-text" %>
+  <%= form.text_field :custom_citation %>
+
   <hr>
   <hr>
 

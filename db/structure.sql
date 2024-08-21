@@ -246,7 +246,8 @@ CREATE TABLE public.works (
     tags character varying[] DEFAULT '{}'::character varying[],
     searchable tsvector GENERATED ALWAYS AS (setweight(to_tsvector('english'::regconfig, (COALESCE(title, ''::character varying))::text), 'A'::"char")) STORED,
     rating integer,
-    format integer DEFAULT 0
+    format integer DEFAULT 0,
+    custom_citation character varying
 );
 
 
@@ -492,6 +493,7 @@ ALTER TABLE ONLY public.notes
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240821030845'),
 ('20240820231558'),
 ('20240815004339'),
 ('20240814232714'),

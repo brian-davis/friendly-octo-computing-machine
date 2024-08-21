@@ -75,3 +75,5 @@ gem "acts-as-taggable-array-on", "~> 0.7.0"
 gem "pg_search", "~> 2.3"
 
 gem "titleize", "~> 1.4"
+
+gem "redcarpet", "~> 3.6"

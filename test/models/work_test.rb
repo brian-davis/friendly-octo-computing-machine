@@ -17,6 +17,8 @@
 #  tags                :string           default([]), is an Array
 #  searchable          :tsvector
 #  rating              :integer
+#  format              :integer          default("book")
+#  custom_citation     :string
 #
 require "test_helper"
 
@@ -395,5 +397,17 @@ class WorkTest < ActiveSupport::TestCase
     work.save & work.reload
 
     assert_equal ["ProducerThree", "ProducerOne", "ProducerTwo"], work.producers.pluck(:name)
+  end
+
+  # no translators, editors, etc.
+  test "authors scope" do
+    work = works(:no_authors)
+    work.work_producers.build producer: producers(:three), role: :author
+    work.work_producers.build producer: producers(:two), role: :editor
+    work.work_producers.build producer: producers(:one), role: :translator
+
+    work.save & work.reload
+
+    assert_equal ["ProducerThree"], work.authors.pluck(:name)
   end
 end

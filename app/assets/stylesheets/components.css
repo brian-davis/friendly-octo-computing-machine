@@ -106,3 +106,7 @@ input.search-box {
 button.nav-button.nav-action.nav-button-to {
   font-size: unset;
 }
+
+.bibliography-citation {
+  font-family: "Times New Roman", Times, serif;
+}

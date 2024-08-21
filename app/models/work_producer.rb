@@ -20,6 +20,10 @@ class WorkProducer < ApplicationRecord
 
   validate :validate_parent_role_uniqueness
 
+  scope :authors, -> {
+    where({ role: [:author, :co_author] })
+  }
+
   class << self
     def role_options
       roles.keys.map { |k| [k.sub("_", "-").capitalize, k] }

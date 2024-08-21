@@ -17,6 +17,8 @@
 #  tags                :string           default([]), is an Array
 #  searchable          :tsvector
 #  rating              :integer
+#  format              :integer          default("book")
+#  custom_citation     :string
 #
 class Work < ApplicationRecord
   include PgSearch::Model
@@ -26,6 +28,21 @@ class Work < ApplicationRecord
 
   has_many :quotes, dependent: :destroy
   has_many :notes, dependent: :destroy
+
+  has_many :authors, -> { merge(WorkProducer.authors) }, **{
+    through: :work_producers,
+    source: :producer
+  }
+
+  has_many :editors, -> { merge(WorkProducer.editor) }, **{
+    through: :work_producers,
+    source: :producer
+  }
+
+  has_many :translators, -> { merge(WorkProducer.translator) }, **{
+    through: :work_producers,
+    source: :producer
+  }
 
   belongs_to :publisher, optional: true, counter_cache: true
 
@@ -84,23 +101,56 @@ class Work < ApplicationRecord
     book?
   end
 
-  # guard rendering bibliography view
-  def chapter_bibliography?
-    publisher&.name &&
-    producers.any? &&
-    title.present? &&
-    year_of_publication.present? &&
-    chapter?
+  def translator?
+    translators.any?
   end
 
-  def bibliography_authors
-    author_names = producers.pluck(:name) # order by WorkProducer create
-    first_author = author_names.shift
-    _split = first_author.split(/\s/)
-    _split.unshift(_split.pop) # last name first
-    reversed_first_author = _split.join(", ")
-    author_names.unshift(reversed_first_author)
-    author_names
+  # TODO
+  def editor_bibliography?
+    # Doyle, Kathleen. “The Queen Mary Psalter.” In The Book by Design: The Remarkable Story of the World’s Greatest Invention, edited by P. J. M. Marks and Stephen Parkin. University of Chicago Press, 2023.
+  end
+
+  # TODO
+  # # guard rendering bibliography view
+  # def chapter_bibliography?
+  #   publisher&.name &&
+  #   producers.any? &&
+  #   title.present? &&
+  #   year_of_publication.present? &&
+  #   chapter?
+  # end
+
+  def bibliography_markdown(format = :book)
+    if format == :book
+      sections = []
+
+      author_names = authors.pluck(:name) # order by WorkProducer create
+      first_author = author_names.shift
+      _split = first_author.split(/\s/)
+      _split.unshift(_split.pop) # last name first
+      reversed_first_author = _split.join(", ")
+      author_names.unshift(reversed_first_author)
+      formatted_authors = author_names.to_sentence
+      sections << formatted_authors
+
+      formatted_title = Titleize.titleize(
+        [self.title, self.subtitle].map(&:presence).compact.join(": ")
+      )
+      formatted_title = "_#{formatted_title}_"
+      sections << formatted_title
+
+      if self.translator?
+        formatted_translators = "Translated by #{self.translators.pluck(:name).to_sentence}"
+        sections << formatted_translators
+      end
+
+      formatted_publishing = "#{self.publisher.name}, #{self.year_of_publication}"
+      sections << formatted_publishing
+
+      "#{sections.join(". ")}."
+    else
+      # TODO
+    end
   end
 
 private

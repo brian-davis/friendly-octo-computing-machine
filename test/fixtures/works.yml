@@ -17,6 +17,8 @@
 #  tags                :string           default([]), is an Array
 #  searchable          :tsvector
 #  rating              :integer
+#  format              :integer          default("book")
+#  custom_citation     :string
 #
 
 one:

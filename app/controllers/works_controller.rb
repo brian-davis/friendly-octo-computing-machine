@@ -168,6 +168,7 @@ private
       :year_of_publication,
       :language,
       :original_language,
+      :custom_citation,
       :publisher_id,
       :rating,
       :_clear_publisher,

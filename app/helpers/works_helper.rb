@@ -17,7 +17,7 @@ module WorksHelper
   end
 
   def byline(work)
-    authors = work.producers.merge(WorkProducer.where({ role: [:author, :co_author] })) # TODO: move to model
+    authors = work.authors
     author_names = authors.pluck(:name).map do |name|
       first_name, last_name = name.split(" ")
       formal_name = last_name || first_name
