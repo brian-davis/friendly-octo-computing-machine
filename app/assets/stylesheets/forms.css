@@ -42,7 +42,8 @@ form.table-form {
   form.table-form input[type="number"],
   form.table-form input[type="text"],
   form.table-form textarea,
-  form.table-form input[type="submit"] {
+  form.table-form input[type="submit"],
+  form.table-form select {
     padding: 0.5rem;
     grid-column: 2 / 3;
     background-color: yellow;

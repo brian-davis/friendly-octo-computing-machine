@@ -2,26 +2,21 @@
 
 <div id="<%= dom_id @work %>" class="outline">
   <div class="book-card outline">
-    <b>
-      <%= title_line(@work) %>
-    </b>
+    <% if @work.book_bibliography? %>
+      <div class="bibliography-citation small-text">
+        <%= @work.bibliography_authors.to_sentence %>.&nbsp;<i><%= title_line(@work) %></i>.&nbsp;<%= @work.publisher.name %>, <%= @work.year_of_publication %>
+      </div>
+    <% else %>
+      <%= @work.title %>
+    <% end %>
 
     <p class="small-text indented">
       <%= alternate_title_line(@work) %>
     </p>
 
     <p class="small-text indented">
-      <%= byline(@work) %>
-    </p>
-
-    <p class="small-text indented">
-      <%= publishing_line(@work) %>
-    </p>
-
-    <p class="small-text indented">
       <%= language_line(@work) %>
     </p>
-
 
     <p class="small-text indented">
       Rating: <%= rating_stars(@work) %>

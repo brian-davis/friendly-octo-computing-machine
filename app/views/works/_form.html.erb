@@ -61,6 +61,10 @@
 
   <%= form.label :rating %>
   <%= form.number_field(:rating, class: "correct-width", in: (-1..5)) %>
+
+  <%= form.label :format %>
+  <%= form.select(:format, options_for_select(Work.formats), {}, class: "correct-width") %>
+
   <hr>
   <hr>
 

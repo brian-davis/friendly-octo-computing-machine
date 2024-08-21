@@ -23,6 +23,7 @@ class Work < ApplicationRecord
 
   has_many :work_producers, dependent: :destroy
   has_many :producers, through: :work_producers
+
   has_many :quotes, dependent: :destroy
   has_many :notes, dependent: :destroy
 
@@ -60,6 +61,8 @@ class Work < ApplicationRecord
 
   scope :untagged, -> { where({ tags: [] }) }
 
+  enum format: [:book, :article, :chapter]
+
   class << self
     # pseudo-enum
     def language_options
@@ -70,6 +73,34 @@ class Work < ApplicationRecord
     def original_language_options
       distinct.pluck(:original_language).compact.sort
     end
+  end
+
+  # guard rendering bibliography view
+  def book_bibliography?
+    publisher&.name &&
+    producers.any? &&
+    title.present? &&
+    year_of_publication.present? &&
+    book?
+  end
+
+  # guard rendering bibliography view
+  def chapter_bibliography?
+    publisher&.name &&
+    producers.any? &&
+    title.present? &&
+    year_of_publication.present? &&
+    chapter?
+  end
+
+  def bibliography_authors
+    author_names = producers.pluck(:name) # order by WorkProducer create
+    first_author = author_names.shift
+    _split = first_author.split(/\s/)
+    _split.unshift(_split.pop) # last name first
+    reversed_first_author = _split.join(", ")
+    author_names.unshift(reversed_first_author)
+    author_names
   end
 
 private

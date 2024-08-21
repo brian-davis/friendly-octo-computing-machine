@@ -19,3 +19,6 @@ one:
 
 two:
   name: ProducerTwo
+
+three:
+  name: ProducerThree

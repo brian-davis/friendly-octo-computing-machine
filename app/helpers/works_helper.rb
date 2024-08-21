@@ -1,6 +1,8 @@
 module WorksHelper
   def title_line(work)
-    [work.title, work.subtitle].map(&:presence).compact.join(": ")
+    Titleize.titleize(
+      [work.title, work.subtitle].map(&:presence).compact.join(": ")
+    )
   end
 
   def alternate_title_line(work)
@@ -30,7 +32,9 @@ module WorksHelper
   end
 
   def full_title_line(work)
-    "#{work.title} (#{byline(work)})"
+    byline = byline(work)
+    return work.title if byline.blank?
+    "#{work.title} (#{byline})"
   end
 
   def publishing_line(work)

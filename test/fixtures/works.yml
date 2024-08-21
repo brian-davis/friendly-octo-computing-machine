@@ -24,3 +24,6 @@ one:
 
 two:
   title: WorkTwo
+
+no_authors:
+  title: "No Authors"

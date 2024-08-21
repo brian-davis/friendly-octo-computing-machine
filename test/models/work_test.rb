@@ -385,4 +385,15 @@ class WorkTest < ActiveSupport::TestCase
     assert work2.in?(search1)
     assert work3.in?(search1)
   end
+
+  test "authors are returned in the order the join model is created" do
+    work = works(:no_authors)
+    work.producers << producers(:three)
+    work.producers << producers(:one)
+    work.producers << producers(:two)
+
+    work.save & work.reload
+
+    assert_equal ["ProducerThree", "ProducerOne", "ProducerTwo"], work.producers.pluck(:name)
+  end
 end
