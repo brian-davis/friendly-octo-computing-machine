@@ -106,11 +106,6 @@ input.search-box {
   color: mediumpurple;
 }
 
-/* actual <button> tag required for delete links */
-button.nav-button.nav-action.nav-button-to {
-  font-size: unset;
-}
-
 .bibliography-citation,
 .quote-card {
   font-family: "Times New Roman", Times, serif;

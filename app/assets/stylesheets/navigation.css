@@ -1,5 +1,5 @@
 .nav-links {
-  /* padding ok */
+  padding: 0.8em;
 }
 
 .nav-links a,
@@ -7,6 +7,9 @@ a.index-link {
   color: darkseagreen;
   text-decoration-thickness: 2px;
   text-decoration-skip: edges;
+
+  /* ensure consistency between <%= link_to() %> and <%= button_to() %> */
+  display: inline-block;
 }
 
 .nav-links a[data-method="delete"] {
@@ -43,4 +46,9 @@ select.select-button {
 
 select.select-button {
   width: 10.9rem;
+}
+
+/* actual <button> tag required for delete links */
+button.nav-button.nav-action.nav-button-to {
+  font-size: unset;
 }

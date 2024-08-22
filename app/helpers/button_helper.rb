@@ -11,7 +11,7 @@ module ButtonHelper
           action: "click->confirmable#confirm"
         },
         form: {
-          style: "display: inline"
+          style: "display: inline-block;"
         }
       }
     )
