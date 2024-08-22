@@ -2,63 +2,74 @@ module Citationable
   extend ActiveSupport::Concern
 
   included do
-
-    # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-chapter
-    def bibliography_markdown
-      return unless self.is_a?(Work)
-      sections = []
-
+    private def alpha_author_names
       author_names = authors.pluck(:name) # order by WorkProducer create
       first_author = author_names.shift
-
       _split = first_author.split(/\s/)
       last_name = _split.pop
       rest = _split.join(" ") # "Amy J."
-      reversed_first_author = [last_name, rest].join(", ")
-
+      reversed_first_author = [last_name, rest].map(&:presence).compact.join(", ")
       author_names.unshift(reversed_first_author)
       formatted_authors = author_names.to_sentence
-
       # first "and" needs a comma too
       formatted_authors.sub!(" and", ", and")
+      return formatted_authors
+    end
 
-      sections << formatted_authors
+    def bibliography_markdown
+      return unless self.is_a?(Work)
 
-      if self.translators.any?
-        formatted_translators = "Translated by #{self.translators.pluck(:name).to_sentence}"
-        sections << formatted_translators
-      end
+      if self.compilation?
+        editor_names = self.editors.pluck(:name).to_sentence
+        editor_status = self.editors.count > 1 ? "eds." : "ed."
+        title = self.title_and_subtitle
+        publisher = self.publisher.name
+        year = self.year_of_publication
+        result = "#{editor_names}, #{editor_status}, _#{title}_ (#{publisher}, #{year})."
+        return result
+      elsif self.book?
+        formatted_authors = self.alpha_author_names
 
-      if self.format == "book"
-        formatted_title = "_#{self.title_and_subtitle}_"
-        sections << formatted_title
+        title = self.title_and_subtitle
+        publisher = self.publisher.name
+        year = self.year_of_publication
 
-        formatted_publishing = "#{self.publisher.name}, #{self.year_of_publication}"
-        sections << formatted_publishing
+        result = if self.translators.any?
+          translator_names = self.translators.pluck(:name).to_sentence
+          "#{formatted_authors}. _#{title}_. Translated by #{translator_names}. #{publisher}, #{year}."
+        else
+          "#{formatted_authors}. _#{title}_. #{publisher}, #{year}."
+        end
+        return result
+      elsif self.chapter?
+        formatted_authors = self.alpha_author_names
+        title = self.title_and_subtitle
 
-        "#{sections.join(". ")}."
-      elsif self.format == "chapter"
-        self_title = self.title_and_subtitle
-        parent_title = parent.title_and_subtitle
-        formatted_title = "“#{self_title}.” In _#{parent_title}_"
-        editor_names = parent.editors.pluck(:name).to_sentence
-        formatted_title += ", edited by #{editor_names}"
+        parent_year = self.parent.year_of_publication
+        parent_title = self.parent.title_and_subtitle
+        parent_editors = self.parent.editors.pluck(:name).to_sentence
+        parent_publisher = self.parent.publisher.name
 
-        sections << formatted_title
+        result = if self.translators.any?
+          translator_names = self.translators.pluck(:name).to_sentence
 
-        formatted_publishing = "#{parent.publisher.name}, #{parent.year_of_publication}"
-        sections << formatted_publishing
+          "#{formatted_authors}. “#{title}.” Translated by #{translator_names}. In _#{parent_title}_, edited by #{parent_editors}. #{parent_publisher}, #{parent_year}."
+        else
+          "#{formatted_authors}. “#{title}.” In _#{parent_title}_, edited by #{parent_editors}. #{parent_publisher}, #{parent_year}."
+        end
 
-        "#{sections.join(". ")}."
+        return result
       end
     end
 
     # Charles Yu, _Interior Chinatown_ (Pantheon Books, 2020), 45.
     def long_citation_markdown
       if work.book?
-        author_names = work.authors.pluck(:name).to_sentence # no alphabetizing by last name
-        title_and_publication = "_#{}_ ()" # no comma
-        result = "#{author_names}, _#{work.title_and_subtitle}_ (#{work.publisher.name}, #{work.year_of_publication}), #{self.page}."
+        author_names = work.authors.pluck(:name).to_sentence
+        work_title = work.title_and_subtitle
+        publisher = work.publisher.name
+        year = work.year_of_publication
+        result = "#{author_names}, _#{work_title}_ (#{publisher}, #{year}), #{self.page}."
         return result
       elsif work.chapter?
         author_names = work.authors.pluck(:name).to_sentence # no alphabetizing by last name
@@ -78,19 +89,10 @@ module Citationable
     # "Yu, _Interior Chinatown_, 48."
     def short_citation_markdown
       if work.book?
-        sections = []
-
         author_last_names = work.authors.pluck(:name).map { |name| name.split(/\s/).last }.to_sentence
-        sections << author_last_names
-
         short_title = work.title.sub("The ", "")
-        title = "_#{short_title}_"
-        sections << title
-
         page = self.page # String
-        sections << page
-
-        result = sections.join(", ") + "."
+        result = "#{author_last_names}, _#{short_title}_, #{page}."
         return result
       elsif work.chapter?
         author_last_names = work.authors.pluck(:name).map { |name| name.split(/\s/).last }.to_sentence # no alphabetizing by last name
@@ -115,7 +117,11 @@ module Citationable
       when Work
         if book?
           publisher &&
-          producers.any? &&
+          authors.any? &&
+          year_of_publication.present?
+        elsif compilation?
+          publisher &&
+          editors.any? &&
           year_of_publication.present?
         elsif chapter?
           producers.any? &&

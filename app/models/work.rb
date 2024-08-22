@@ -25,22 +25,25 @@ class Work < ApplicationRecord
   include Citationable
 
   has_many :work_producers, dependent: :destroy
-  has_many :producers, through: :work_producers
+  has_many :producers, -> { merge(WorkProducer.order(:created_at)) }, **{
+    through: :work_producers,
+    source: :producer
+  }
 
   has_many :quotes, dependent: :destroy
   has_many :notes, dependent: :destroy
 
-  has_many :authors, -> { merge(WorkProducer.authors) }, **{
+  has_many :authors, -> { merge(WorkProducer.authors).merge(WorkProducer.order(:created_at)) }, **{
     through: :work_producers,
     source: :producer
   }
 
-  has_many :editors, -> { merge(WorkProducer.editor) }, **{
+  has_many :editors, -> { merge(WorkProducer.editor).merge(WorkProducer.order(:created_at)) }, **{
     through: :work_producers,
     source: :producer
   }
 
-  has_many :translators, -> { merge(WorkProducer.translator) }, **{
+  has_many :translators, -> { merge(WorkProducer.translator).merge(WorkProducer.order(:created_at)) }, **{
     through: :work_producers,
     source: :producer
   }

@@ -496,12 +496,15 @@ class WorkTest < ActiveSupport::TestCase
   end
 
   test "bibliography citation chapter in compilation" do
-    # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-book
+    # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-chapter
+    # In some cases, you may want to cite the collection as a whole instead.
+    # P. J. M. Marks and Stephen Parkin, eds., The Book by Design: The Remarkable Story of the World’s Greatest Invention (University of Chicago Press, 2023).
 
-    parent = Work.create({
+    compilation = Work.create({
       title: "The Book by Design",
       subtitle: "The Remarkable Story of the World’s Greatest Invention",
       year_of_publication: 2023,
+      format: :compilation,
 
       publisher: Publisher.new({
         name: "University of Chicago Press"
@@ -523,24 +526,38 @@ class WorkTest < ActiveSupport::TestCase
       ]
     })
 
-    child = Work.create({
-      title: "The Queen Mary Psalter",
-      format: "chapter",
-      parent: parent,
+    expected = "P. J. M. Marks and Stephen Parkin, eds., _The Book by Design: The Remarkable Story of the World’s Greatest Invention_ (University of Chicago Press, 2023)."
+
+    result = compilation.bibliography_markdown
+
+    assert_equal expected, result
+  end
+
+  test "bibliography for translated book (western name)" do
+    work = Work.create({
+      title: "The Wedding Party",
+      format: "book",
+      year_of_publication: 2021,
+      publisher: Publisher.new({
+        name: "Amazon Crossing"
+      }),
       work_producers: [
         WorkProducer.new({
-          role: :author,
+          role: "translator",
           producer: Producer.new({
-            name: "Kathleen Doyle"
+            name: "Jeremy Tiang"
+          })
+        }),
+        WorkProducer.new({
+          role: "author",
+          producer: Producer.new({
+            name: "John Smith"
           })
         })
       ]
     })
-
-    expected = "Doyle, Kathleen. “The Queen Mary Psalter.” In _The Book by Design: The Remarkable Story of the World’s Greatest Invention_, edited by P. J. M. Marks and Stephen Parkin. University of Chicago Press, 2023."
-
-    result = child.bibliography_markdown
-
-    assert_equal expected, result
+    result = work.bibliography_markdown
+    expected = "Smith, John. _The Wedding Party_. Translated by Jeremy Tiang. Amazon Crossing, 2021."
+    assert_equal(expected, result)
   end
 end
