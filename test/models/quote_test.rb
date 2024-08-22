@@ -160,7 +160,6 @@ class QuoteTest < ActiveSupport::TestCase
   test "long citation multiple authors" do
     # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-book
 
-    # TODO
     expected = "Amy J. Binder and Jeffrey L. Kidder, _The Channels of Student Activism: How the Left and Right Are Winning (and Losing) in Campus Politics Today_ (University of Chicago Press, 2022), 117–18."
     result = citation_quote_fixture2.long_citation_markdown
     assert_equal expected, result
@@ -169,8 +168,117 @@ class QuoteTest < ActiveSupport::TestCase
   test "short citation multiple authors" do
     # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-book
 
-    # TODO
     expected = "Binder and Kidder, _Channels of Student Activism_, 117–18."
     assert_equal expected, citation_quote_fixture2.short_citation_markdown
+  end
+
+  test "bibliography citation chapter in compilation" do
+    # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-book
+
+    parent = Work.create({
+      title: "The Book by Design",
+      subtitle: "The Remarkable Story of the World’s Greatest Invention",
+      year_of_publication: 2023,
+      format: "compilation",
+
+      publisher: Publisher.new({
+        name: "University of Chicago Press"
+      }),
+
+      work_producers: [
+        WorkProducer.new({
+          role: :editor,
+          producer: Producer.new({
+            name: "P. J. M. Marks"
+          })
+        }),
+        WorkProducer.new({
+          role: :editor,
+          producer: Producer.new({
+            name: "Stephen Parkin"
+          })
+        }),
+      ]
+    })
+
+    child = Work.create({
+      title: "The Queen Mary Psalter",
+      format: "chapter",
+      parent: parent,
+      work_producers: [
+        WorkProducer.new({
+          role: :author,
+          producer: Producer.new({
+            name: "Kathleen Doyle"
+          })
+        })
+      ]
+    })
+
+    quote = child.quotes.create({
+      page: "64",
+      text: "A quote"
+    })
+
+    expected = "Kathleen Doyle, “The Queen Mary Psalter,” in _The Book by Design: The Remarkable Story of the World’s Greatest Invention_, ed. P. J. M. Marks and Stephen Parkin (University of Chicago Press, 2023), 64."
+
+    result = quote.long_citation_markdown
+
+    assert_equal expected, result
+  end
+
+  test "short bibliography citation chapter in compilation" do
+    # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-book
+
+    parent = Work.create({
+      title: "The Book by Design",
+      subtitle: "The Remarkable Story of the World’s Greatest Invention",
+      year_of_publication: 2023,
+      format: "compilation",
+
+      publisher: Publisher.new({
+        name: "University of Chicago Press"
+      }),
+
+      work_producers: [
+        WorkProducer.new({
+          role: :editor,
+          producer: Producer.new({
+            name: "P. J. M. Marks"
+          })
+        }),
+        WorkProducer.new({
+          role: :editor,
+          producer: Producer.new({
+            name: "Stephen Parkin"
+          })
+        }),
+      ]
+    })
+
+    child = Work.create({
+      title: "The Queen Mary Psalter",
+      format: "chapter",
+      parent: parent,
+      work_producers: [
+        WorkProducer.new({
+          role: :author,
+          producer: Producer.new({
+            name: "Kathleen Doyle"
+          })
+        })
+      ]
+    })
+
+    quote = child.quotes.create({
+      page: "64",
+      text: "A quote"
+    })
+
+    expected = "Doyle, “Queen Mary Psalter,” 64."
+
+    result = quote.short_citation_markdown
+
+    assert_equal expected, result
   end
 end

@@ -10,6 +10,8 @@
       <div class="book-card outline bibliography-citation small-text">
         <%= raw markdown.render(@work.bibliography_markdown) %>
       </div>
+    <% elsif @work.chapter_bibliography? %>
+      TODO
     <% end %>
 
     <p class="small-text indented">

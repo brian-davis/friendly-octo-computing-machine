@@ -433,4 +433,114 @@ class WorkTest < ActiveSupport::TestCase
     assert_equal parent, child1.parent
     assert_equal parent, child2.parent
   end
+
+  # CITATIONS
+
+  def citation_work_fixture
+    @citation_work_fixture ||= Work.create({
+      title: "Interior Chinatown",
+      format: "book",
+      year_of_publication: 2020,
+      publisher: Publisher.new({
+        name: "Pantheon Books"
+      }),
+      work_producers: [
+        WorkProducer.new({
+          role: :author,
+          producer: Producer.new({
+            name: "Charles Yu"
+          })
+        })
+      ]
+    })
+  end
+
+  test "bibliography citation" do
+    # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-book
+
+    expected = "Yu, Charles. _Interior Chinatown_. Pantheon Books, 2020."
+    assert_equal expected, citation_work_fixture.bibliography_markdown
+  end
+
+  def citation_work_fixture2
+    @citation_work_fixture2 ||= Work.create({
+      title: "The Channels of Student Activism",
+      subtitle: "How the Left and Right Are Winning (and Losing) in Campus Politics Today",
+      year_of_publication: 2022,
+      publisher: Publisher.new({
+        name: "University of Chicago Press"
+      }),
+      work_producers: [
+        WorkProducer.new({
+          role: :co_author,
+          producer: Producer.new({
+            name: "Amy J. Binder"
+          })
+        }),
+        WorkProducer.new({
+          role: :co_author,
+          producer: Producer.new({
+            name: "Jeffrey L. Kidder"
+          })
+        })
+      ]
+    })
+  end
+
+  test "bibliography citation multiple authors" do
+    # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-book
+
+    expected = "Binder, Amy J., and Jeffrey L. Kidder. _The Channels of Student Activism: How the Left and Right Are Winning (and Losing) in Campus Politics Today_. University of Chicago Press, 2022."
+    result = citation_work_fixture2.bibliography_markdown
+    assert_equal expected, result
+  end
+
+  test "bibliography citation chapter in compilation" do
+    # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-book
+
+    parent = Work.create({
+      title: "The Book by Design",
+      subtitle: "The Remarkable Story of the World’s Greatest Invention",
+      year_of_publication: 2023,
+
+      publisher: Publisher.new({
+        name: "University of Chicago Press"
+      }),
+
+      work_producers: [
+        WorkProducer.new({
+          role: :editor,
+          producer: Producer.new({
+            name: "P. J. M. Marks"
+          })
+        }),
+        WorkProducer.new({
+          role: :editor,
+          producer: Producer.new({
+            name: "Stephen Parkin"
+          })
+        }),
+      ]
+    })
+
+    child = Work.create({
+      title: "The Queen Mary Psalter",
+      format: "chapter",
+      parent: parent,
+      work_producers: [
+        WorkProducer.new({
+          role: :author,
+          producer: Producer.new({
+            name: "Kathleen Doyle"
+          })
+        })
+      ]
+    })
+
+    expected = "Doyle, Kathleen. “The Queen Mary Psalter.” In _The Book by Design: The Remarkable Story of the World’s Greatest Invention_, edited by P. J. M. Marks and Stephen Parkin. University of Chicago Press, 2023."
+
+    result = child.bibliography_markdown
+
+    assert_equal expected, result
+  end
 end

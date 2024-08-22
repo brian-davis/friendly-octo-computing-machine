@@ -118,15 +118,14 @@ class Work < ApplicationRecord
     # Doyle, Kathleen. “The Queen Mary Psalter.” In The Book by Design: The Remarkable Story of the World’s Greatest Invention, edited by P. J. M. Marks and Stephen Parkin. University of Chicago Press, 2023.
   end
 
-  # TODO
-  # # guard rendering bibliography view
-  # def chapter_bibliography?
-  #   publisher&.name &&
-  #   producers.any? &&
-  #   title.present? &&
-  #   year_of_publication.present? &&
-  #   chapter?
-  # end
+  # guard rendering bibliography view
+  def chapter_bibliography?
+    publisher&.name &&
+    producers.any? &&
+    title.present? &&
+    year_of_publication.present? &&
+    chapter?
+  end
 
   def bibliography_markdown
     if self.format == "book"
@@ -134,16 +133,22 @@ class Work < ApplicationRecord
 
       author_names = authors.pluck(:name) # order by WorkProducer create
       first_author = author_names.shift
+
       _split = first_author.split(/\s/)
-      _split.unshift(_split.pop) # last name first
-      reversed_first_author = _split.join(", ")
+      last_name = _split.pop
+      rest = _split.join(" ") # "Amy J."
+      reversed_first_author = [last_name, rest].join(", ")
+
       author_names.unshift(reversed_first_author)
       formatted_authors = author_names.to_sentence
+
+      # first "and" needs a comma too
+      formatted_authors.sub!(" and", ", and")
+
       sections << formatted_authors
 
-      formatted_title = Titleize.titleize(
-        [self.title, self.subtitle].map(&:presence).compact.join(": ")
-      )
+      formatted_title = [self.title, self.subtitle].map(&:presence).compact.join(": ")
+
       formatted_title = "_#{formatted_title}_"
       sections << formatted_title
 
@@ -156,8 +161,41 @@ class Work < ApplicationRecord
       sections << formatted_publishing
 
       "#{sections.join(". ")}."
-    else
-      # TODO
+    elsif self.format == "chapter"
+      # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-chapter
+
+      # "Doyle, Kathleen. \“The Queen Mary Psalter.\” In _The Book by Design: The Remarkable Story of the World’s Greatest Invention_, edited by P. J. M. Marks and Stephen Parkin. University of Chicago Press, 2023."
+
+      sections = []
+
+      author_names = authors.pluck(:name) # order by WorkProducer create
+      first_author = author_names.shift
+
+      _split = first_author.split(/\s/)
+      last_name = _split.pop
+      rest = _split.join(" ") # "Amy J."
+      reversed_first_author = [last_name, rest].join(", ")
+
+      author_names.unshift(reversed_first_author)
+      formatted_authors = author_names.to_sentence
+
+      # first "and" needs a comma too
+      formatted_authors.sub!(" and", ", and")
+
+      sections << formatted_authors
+
+      self_title = [self.title, self.subtitle].map(&:presence).compact.join(": ")
+      parent_title = [parent.title, parent.subtitle].map(&:presence).compact.join(": ")
+      formatted_title = "“#{self_title}.” In _#{parent_title}_"
+      editor_names = parent.editors.pluck(:name).to_sentence
+      formatted_title += ", edited by #{editor_names}"
+
+      sections << formatted_title
+
+      formatted_publishing = "#{parent.publisher.name}, #{parent.year_of_publication}"
+      sections << formatted_publishing
+
+      "#{sections.join(". ")}."
     end
   end
 
@@ -180,12 +218,12 @@ class Work < ApplicationRecord
     end
   end
 
-    # remove association, not associated record
-    def clear_parent
-      if self._clear_parent == "1"
-        self.parent_id = nil
-      end
+  # remove association, not associated record
+  def clear_parent
+    if self._clear_parent == "1"
+      self.parent_id = nil
     end
+  end
 
   # use empty array attr to clear tags (nil attr will be no-op/keep)
   def deduplicate_tags
