@@ -22,6 +22,7 @@
 #
 class Work < ApplicationRecord
   include PgSearch::Model
+  include Citationable
 
   has_many :work_producers, dependent: :destroy
   has_many :producers, through: :work_producers
@@ -62,7 +63,7 @@ class Work < ApplicationRecord
   before_validation :clear_publisher
   before_validation :clear_parent
 
-  before_validation :reset_rating
+  before_validation :constrain_rating
 
   before_save :deduplicate_tags
 
@@ -100,115 +101,6 @@ class Work < ApplicationRecord
     end
   end
 
-  # guard rendering bibliography view
-  def book_bibliography?
-    publisher&.name &&
-    producers.any? &&
-    title.present? &&
-    year_of_publication.present? &&
-    book?
-  end
-
-  def translator?
-    translators.any?
-  end
-
-  # TODO
-  def editor_bibliography?
-    # Doyle, Kathleen. “The Queen Mary Psalter.” In The Book by Design: The Remarkable Story of the World’s Greatest Invention, edited by P. J. M. Marks and Stephen Parkin. University of Chicago Press, 2023.
-  end
-
-  # guard rendering bibliography view
-  def chapter_bibliography?
-    publisher&.name &&
-    producers.any? &&
-    title.present? &&
-    year_of_publication.present? &&
-    chapter?
-  end
-
-  def bibliography_markdown
-    if self.format == "book"
-      sections = []
-
-      author_names = authors.pluck(:name) # order by WorkProducer create
-      first_author = author_names.shift
-
-      _split = first_author.split(/\s/)
-      last_name = _split.pop
-      rest = _split.join(" ") # "Amy J."
-      reversed_first_author = [last_name, rest].join(", ")
-
-      author_names.unshift(reversed_first_author)
-      formatted_authors = author_names.to_sentence
-
-      # first "and" needs a comma too
-      formatted_authors.sub!(" and", ", and")
-
-      sections << formatted_authors
-
-      formatted_title = [self.title, self.subtitle].map(&:presence).compact.join(": ")
-
-      formatted_title = "_#{formatted_title}_"
-      sections << formatted_title
-
-      if self.translator?
-        formatted_translators = "Translated by #{self.translators.pluck(:name).to_sentence}"
-        sections << formatted_translators
-      end
-
-      formatted_publishing = "#{self.publisher.name}, #{self.year_of_publication}"
-      sections << formatted_publishing
-
-      "#{sections.join(". ")}."
-    elsif self.format == "chapter"
-      # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-chapter
-
-      # "Doyle, Kathleen. \“The Queen Mary Psalter.\” In _The Book by Design: The Remarkable Story of the World’s Greatest Invention_, edited by P. J. M. Marks and Stephen Parkin. University of Chicago Press, 2023."
-
-      sections = []
-
-      author_names = authors.pluck(:name) # order by WorkProducer create
-      first_author = author_names.shift
-
-      _split = first_author.split(/\s/)
-      last_name = _split.pop
-      rest = _split.join(" ") # "Amy J."
-      reversed_first_author = [last_name, rest].join(", ")
-
-      author_names.unshift(reversed_first_author)
-      formatted_authors = author_names.to_sentence
-
-      # first "and" needs a comma too
-      formatted_authors.sub!(" and", ", and")
-
-      sections << formatted_authors
-
-      self_title = [self.title, self.subtitle].map(&:presence).compact.join(": ")
-      parent_title = [parent.title, parent.subtitle].map(&:presence).compact.join(": ")
-      formatted_title = "“#{self_title}.” In _#{parent_title}_"
-      editor_names = parent.editors.pluck(:name).to_sentence
-      formatted_title += ", edited by #{editor_names}"
-
-      sections << formatted_title
-
-      formatted_publishing = "#{parent.publisher.name}, #{parent.year_of_publication}"
-      sections << formatted_publishing
-
-      "#{sections.join(". ")}."
-    end
-  end
-
-  def title_and_subtitle
-    return self.title unless self.subtitle.present?
-    "#{self.title}: #{self.subtitle}"
-  end
-
-  # remove initial "The"
-  def short_title
-    title.sub("The ", "")
-  end
-
   private
 
   # remove association, not associated record
@@ -231,7 +123,7 @@ class Work < ApplicationRecord
     self.tags.uniq!
   end
 
-  def reset_rating
+  def constrain_rating
     # set to -1 or 0 in form to mark unrated
     if rating_changed?
       self.rating = nil unless self.rating.in?(1..5)

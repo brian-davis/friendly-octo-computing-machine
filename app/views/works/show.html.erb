@@ -6,12 +6,12 @@
       <div class="book-card outline bibliography-citation small-text">
         <%= raw markdown.render(@work.custom_citation) %>
       </div>
-    <% elsif @work.book_bibliography? %>
+    <% end %>
+
+    <% if @work.citation? %>
       <div class="book-card outline bibliography-citation small-text">
         <%= raw markdown.render(@work.bibliography_markdown) %>
       </div>
-    <% elsif @work.chapter_bibliography? %>
-      TODO
     <% end %>
 
     <p class="small-text indented">

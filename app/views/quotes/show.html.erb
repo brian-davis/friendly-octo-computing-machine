@@ -1,21 +1,24 @@
 <p style="color: green"><%= notice %></p>
 
 <div id="<%= dom_id @quote %>" class="outline">
+  <% if @quote.custom_citation %>
+    <b class="label-above small-text">Custom Citation</b>
+    <div class="book-card outline bibliography-citation small-text">
+      <%= raw markdown.render(@quote.custom_citation) %>
+    </div>
+  <% end %>
 
-  <b class="label-above small-text">Custom Citation</b>
-  <div class="book-card outline bibliography-citation small-text">
-    <%= raw markdown.render(@quote.custom_citation) %>
-  </div>
+  <% if @quote.citation? %>
+    <b class="label-above small-text">Long Citation</b>
+    <div class="book-card outline bibliography-citation small-text">
+      <%= raw markdown.render(@quote.long_citation_markdown) %>
+    </div>
 
-  <b class="label-above small-text">Long Citation</b>
-  <div class="book-card outline bibliography-citation small-text">
-    <%= raw markdown.render(@quote.long_citation_markdown) %>
-  </div>
-
-  <b class="label-above small-text">Short Citation</b>
-  <div class="book-card outline bibliography-citation small-text">
-    <%= raw markdown.render(@quote.short_citation_markdown) %>
-  </div>
+    <b class="label-above small-text">Short Citation</b>
+    <div class="book-card outline bibliography-citation small-text">
+      <%= raw markdown.render(@quote.short_citation_markdown) %>
+    </div>
+  <% end %>
 
   <b class="label-above small-text">Quote</b>
   <div class="quote-card outline">
