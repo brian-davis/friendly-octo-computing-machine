@@ -22,7 +22,7 @@
 #
 class Work < ApplicationRecord
   include PgSearch::Model
-  include Citationable
+  include Citable
 
   has_many :work_producers, dependent: :destroy
   has_many :producers, -> { merge(WorkProducer.order(:created_at)) }, **{

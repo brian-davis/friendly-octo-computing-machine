@@ -1,4 +1,4 @@
-module Citationable
+module Citable
   extend ActiveSupport::Concern
 
   included do
