@@ -4,7 +4,7 @@
 #
 #  id              :bigint           not null, primary key
 #  text            :text
-#  page            :integer
+#  page            :string
 #  custom_citation :string
 #  work_id         :bigint           not null
 #  created_at      :datetime         not null

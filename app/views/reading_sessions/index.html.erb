@@ -1,0 +1,26 @@
+<p style="color: green"><%= notice %></p>
+
+<b>Reading Sessions for <i><%= @work.title %></i></b><br><br>
+Count: <b class="stars"><%= @work.reading_sessions.count %></b><br>
+Aggregate Time: <b class="stars"><%= human_duration(@work.reading_sessions_minutes) %></b>
+
+<hr>
+
+<div id="reading_sessions">
+  <% @reading_sessions.each_with_index do |reading_session, i| %>
+    <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
+    <%= tag.div(**{ class: class_list }) do %>
+      <%= render reading_session %>
+      <div>
+        <%= link_to "👉", [@work, reading_session], class: "index-link" %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<hr>
+
+<div class="nav-links outline">
+  <%= link_to "Back to Book", @work, class: "nav-button" %>
+  <%= link_to "New reading session", new_work_reading_session_path(@work), class: "nav-button nav-action" %>
+</div>

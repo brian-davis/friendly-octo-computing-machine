@@ -19,6 +19,7 @@
 #  rating              :integer
 #  format              :integer          default("book")
 #  custom_citation     :string
+#  parent_id           :integer
 #
 require "test_helper"
 
@@ -432,5 +433,25 @@ class WorkTest < ActiveSupport::TestCase
     assert child1.in?(parent.children)
     assert_equal parent, child1.parent
     assert_equal parent, child2.parent
+  end
+
+  test "reading session aggregate minutes" do
+    work = Work.create({ title: "aggregate counter" })
+
+    _baseline = 1.year.ago
+
+    rs1 = work.reading_sessions.create({
+      pages: 10,
+      started_at: _baseline,
+      ended_at: _baseline + 10.minutes
+    })
+
+    rs2 = work.reading_sessions.create({
+      pages: 10,
+      started_at: _baseline + 1.day,
+      ended_at: _baseline + 1.day + 10.minutes
+    })
+
+    assert_equal(20, work.reading_sessions_minutes)
   end
 end

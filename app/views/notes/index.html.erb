@@ -1,20 +1,20 @@
 <p style="color: green"><%= notice %></p>
 
-<b>Notes for <%= @work.title %></b>
-
+<b>Notes for <i><%= @work.title %></i></b>
 <hr>
 
-<div class="outline">
-  <div id="notes">
-    <% @notes.each do |note| %>
+<div id="notes">
+  <% @notes.each.with_index do |note, i| %>
+    <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
+    <%= tag.div(**{ class: class_list }) do %>
       <%= render note %>
-      <p>
-        <%= link_to "Show this note", [@work, note] %>
-      </p>
+      <div>
+        <%= link_to "👉", [@work, note], class: "index-link" %>
+      </div>
     <% end %>
-  </div>
+  <% end %>
 </div>
-
+<hr>
 <div class="nav-links outline">
   <%= link_to "Back to Book", @work, class: "nav-button" %>
   <%= link_to "New note", new_work_note_path(@work), class: "nav-button nav-action"  %>

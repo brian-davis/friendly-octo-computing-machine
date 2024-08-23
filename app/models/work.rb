@@ -19,10 +19,16 @@
 #  rating              :integer
 #  format              :integer          default("book")
 #  custom_citation     :string
+#  parent_id           :integer
 #
 class Work < ApplicationRecord
   include PgSearch::Model
   include Citable
+
+  belongs_to :publisher, optional: true, counter_cache: true
+  belongs_to :parent, class_name: "Work", optional: true # self join
+
+  has_many :children, class_name: "Work", foreign_key: "parent_id" # self join
 
   has_many :work_producers, dependent: :destroy
   has_many :producers, -> { merge(WorkProducer.order(:created_at)) }, **{
@@ -32,26 +38,20 @@ class Work < ApplicationRecord
 
   has_many :quotes, dependent: :destroy
   has_many :notes, dependent: :destroy
+  has_many :reading_sessions, dependent: :destroy
 
   has_many :authors, -> { merge(WorkProducer.authors).merge(WorkProducer.order(:created_at)) }, **{
     through: :work_producers,
     source: :producer
   }
-
   has_many :editors, -> { merge(WorkProducer.editor).merge(WorkProducer.order(:created_at)) }, **{
     through: :work_producers,
     source: :producer
   }
-
   has_many :translators, -> { merge(WorkProducer.translator).merge(WorkProducer.order(:created_at)) }, **{
     through: :work_producers,
     source: :producer
   }
-
-  belongs_to :publisher, optional: true, counter_cache: true
-
-  has_many :children, class_name: "Work", foreign_key: "parent_id"
-  belongs_to :parent, class_name: "Work", optional: true
 
   attr_accessor :_clear_publisher
   attr_accessor :_clear_parent
@@ -102,6 +102,10 @@ class Work < ApplicationRecord
     def original_language_options
       distinct.pluck(:original_language).compact.sort
     end
+  end
+
+  def reading_sessions_minutes
+    reading_sessions.sum(:duration)
   end
 
   private

@@ -1,0 +1,21 @@
+<div id="<%= dom_id reading_session %>">
+  <div>
+    <b class="small-text">Started at:</b>
+    <span class="stars"><%= human_time_for(reading_session.started_at) %></span>
+    ,
+    <b class="small-text">Ended at:</b>
+    <span class="stars"><%= human_time_for(reading_session.ended_at) %></span>
+  </div>
+
+  <div>
+    <b class="small-text">Pages:</b>
+    <span class="stars"><%= reading_session.pages %></span>
+  </div>
+
+  <div>
+    <b class="small-text">Duration:</b>
+    <span class="stars">
+      <%= human_duration(reading_session.duration) %>
+    </span>
+  </div>
+</div>

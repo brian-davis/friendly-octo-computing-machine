@@ -1,0 +1,12 @@
+<p style="color: green"><%= notice %></p>
+
+<div id="<%= dom_id @reading_session %>" class="outline">
+  <%= render @reading_session %>
+</div>
+
+<div class="nav-links outline" data-controller="confirmable">
+  <%= link_to "Back to Book Reading Sessions", work_reading_sessions_path(@work), class: "nav-button" %>
+  <%= link_to "Edit this Reading Session", edit_work_reading_session_path([@work, @reading_session]), class: "nav-button nav-action" %>
+
+  <%= html_delete_button [@work, @reading_session], "Destroy this reading_session" %>
+</div>

@@ -185,6 +185,41 @@ ALTER SEQUENCE public.quotes_id_seq OWNED BY public.quotes.id;
 
 
 --
+-- Name: reading_sessions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.reading_sessions (
+    id bigint NOT NULL,
+    started_at timestamp(6) without time zone,
+    ended_at timestamp(6) without time zone,
+    work_id bigint NOT NULL,
+    pages integer,
+    duration integer,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: reading_sessions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.reading_sessions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: reading_sessions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.reading_sessions_id_seq OWNED BY public.reading_sessions.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -300,6 +335,13 @@ ALTER TABLE ONLY public.quotes ALTER COLUMN id SET DEFAULT nextval('public.quote
 
 
 --
+-- Name: reading_sessions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reading_sessions ALTER COLUMN id SET DEFAULT nextval('public.reading_sessions_id_seq'::regclass);
+
+
+--
 -- Name: work_producers id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -351,6 +393,14 @@ ALTER TABLE ONLY public.publishers
 
 ALTER TABLE ONLY public.quotes
     ADD CONSTRAINT quotes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: reading_sessions reading_sessions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reading_sessions
+    ADD CONSTRAINT reading_sessions_pkey PRIMARY KEY (id);
 
 
 --
@@ -406,6 +456,13 @@ CREATE INDEX index_quotes_on_work_id ON public.quotes USING btree (work_id);
 
 
 --
+-- Name: index_reading_sessions_on_work_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_reading_sessions_on_work_id ON public.reading_sessions USING btree (work_id);
+
+
+--
 -- Name: index_work_producers_on_producer_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -455,6 +512,14 @@ CREATE INDEX index_works_on_tags ON public.works USING gin (tags);
 
 
 --
+-- Name: reading_sessions fk_rails_0de1d5975c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reading_sessions
+    ADD CONSTRAINT fk_rails_0de1d5975c FOREIGN KEY (work_id) REFERENCES public.works(id);
+
+
+--
 -- Name: work_producers fk_rails_2cc1957f2c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -501,6 +566,7 @@ ALTER TABLE ONLY public.notes
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240823201941'),
 ('20240821205656'),
 ('20240821200516'),
 ('20240821181310'),

@@ -1,10 +1,11 @@
 <h1>Editing note</h1>
 
-<%= render "form", note: @note %>
+<div class="outline">
+  <%= render "form", note: @note %>
+</div>
 
-<br>
 
-<div>
-  <%= link_to "Show this note", [@work, @note] %> |
-  <%= link_to "Back to notes", work_notes_path(@work) %>
+<div class="nav-links outline">
+  <%= link_to "Show this note", [@work, @note], class: "nav-button"  %>
+  <%= link_to "Back to notes", work_notes_path(@work), class: "nav-button"  %>
 </div>

@@ -15,15 +15,15 @@
     </div>
   <% end %>
 
-  <p class="small-text indented">
+  <p class="small-text">
     <%= alternate_title_line(@work) %>
   </p>
 
-  <p class="small-text indented">
+  <p class="small-text">
     <%= language_line(@work) %>
   </p>
 
-  <p class="small-text indented">
+  <p class="small-text">
     Rating: <%= rating_stars(@work) %>
   </p>
 
@@ -33,7 +33,7 @@
     <b>Tags</b>
   </div>
 
-  <div style="margin-bottom: 1em;" class="cloud-list">
+  <div class="cloud-list">
     <% @work.tags.each do |tag| %>
       <%= link_to(works_path({ tag: tag }), style: "text-decoration: none;", data: { turbo_stream: true, action: "click->sortable#decorateTagClick", filter_value: tag }) do %>
         <span class="model-tag">
@@ -47,15 +47,18 @@
 
   <hr>
 
-  <b>Authors</b>
+  <div style="margin-bottom: 0.5rem;">
+    <b>Authors</b>
+  </div>
+
   <ul class="associated-items">
     <% if @work.work_producers.empty? %>
       <span class="empty-list">EMPTY</span>
     <% else %>
       <% @work.work_producers.joins(:producer).merge(Producer.order(:name)).each do |wp| %>
         <li>
-          <%= wp.role.titleize.split(" ").join("-") %>:
-          <%= link_to wp.producer.name, wp.producer, class: "index-link" %>
+          <span class="small-text"><%= wp.role.titleize.split(" ").join("-") %>: <%= wp.producer.name %></span>
+          <%= link_to "👉", wp.producer, class: "index-link" %>
         </li>
       <% end %>
     <% end %>
@@ -63,20 +66,31 @@
 
   <hr>
 
-  <b>Quotes</b>
-  <br>
+  <div style="margin-bottom: 0.5rem;">
+    <b>Quotes</b>
+    <%= link_to("👉", work_quotes_path(@work), class: "index-link") %>
+  </div>
   <div>
-    Count: <%= @work.quotes.count %>
-    <%= link_to("Go To Quotes 👉", work_quotes_path(@work), class: "index-link") %>
+    Count: <b class="stars"><%= @work.quotes.count %></b>
   </div>
 
   <hr>
-
-  <b>Notes</b>
-  <br>
+  <div style="margin-bottom: 0.5rem;">
+    <b>Notes</b>
+    <%= link_to("👉", work_notes_path(@work), class: "index-link") %>
+  </div>
   <div>
-    Count: <%= @work.notes.count %>
-    <%= link_to("Go To Notes 👉", work_notes_path(@work), class: "index-link") %>
+    Count: <b class="stars"><%= @work.notes.count %></b>
+  </div>
+  <hr>
+
+  <div style="margin-bottom: 0.5rem;">
+    <b>Reading Sessions</b>
+    <%= link_to("👉", work_reading_sessions_path(@work), class: "index-link") %>
+  </div>
+  <div>
+    Count: <b class="stars"><%= @work.reading_sessions.count %></b><br>
+    Aggregate Time: <b class="stars"><%= human_duration(@work.reading_sessions_minutes) %></b>
   </div>
 </div>
 

@@ -1,15 +1,15 @@
 <% if @quotes.empty? %>
   <span class="empty-list">EMPTY</span>
 <% else %>
-  <% @quotes.each do |quote| %>
-    <div style="margin-bottom: 1rem;">
-      <span class="small-text"><%= full_title_line(quote.work) %></span>
-
-      <div class="indented small-text">
-        <i><%= quote.text.truncate(100) %></i> |
-        <% quote_resource = [quote.work, quote] # .includes %>
+  <% @quotes.each_with_index do |quote, i| %>
+    <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
+    <%= tag.div(**{ class: class_list }) do %>
+      <div><%= full_title_line(quote.work) %></div>
+      <i><%= quote.text.truncate(100) %></i>
+      <% quote_resource = [quote.work, quote] %>
+      <div>
         <%= link_to "👉", quote_resource, class: "index-link" %>
       </div>
-    </div>
+    <% end %>
   <% end %>
 <% end %>

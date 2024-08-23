@@ -19,6 +19,7 @@
 #  rating              :integer
 #  format              :integer          default("book")
 #  custom_citation     :string
+#  parent_id           :integer
 #
 
 one:

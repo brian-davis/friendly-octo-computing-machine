@@ -123,3 +123,19 @@ input.search-box {
 b.label-above {
   /* can't do margin-bottom */
 }
+
+ul.associated-items {
+  margin: auto;
+}
+
+ul.associated-items li {
+  margin-bottom: auto;
+}
+
+.div-list-row {
+  padding: 1rem;
+}
+
+.div-list-row.alt-row {
+  background-color: beige;
+}

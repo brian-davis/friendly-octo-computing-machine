@@ -5,18 +5,18 @@
      data-sortable-request-helper-outlet=".request-helper"
      data-sortable-endpoint-value="<%= work_quotes_path(@work) %>">
 
-
-  <b>Quotes for <%= @work.title %></b>
+  <b>Quotes for <i><%= @work.title %></i></b>
+  <br>
+  <br>
+  <%= text_field_tag(:search, nil, class: "search-box", data: { sortable_target: "search"}) %>
+  <%= link_to("Search", "#", class: "search-button", data: { action: "click->sortable#search" }) %>
   <hr>
 
-  <div class="outline">
-    <%= text_field_tag(:search, nil, class: "search-box", data: { sortable_target: "search"}) %>
-    <%= link_to("Search", "#", class: "search-button", data: { action: "click->sortable#search" }) %>
-  </div>
-
-  <div id="quotes" class="outline">
+  <div id="quotes">
     <%= render("quotes") %>
   </div>
+
+  <hr>
 </div>
 
 <div class="nav-links outline">

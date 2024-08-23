@@ -1,0 +1,25 @@
+# == Schema Information
+#
+# Table name: reading_sessions
+#
+#  id         :bigint           not null, primary key
+#  started_at :datetime
+#  ended_at   :datetime
+#  work_id    :bigint           not null
+#  pages      :integer
+#  duration   :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+one:
+  started_at: 2024-08-23 13:19:41
+  ended_at: 2024-08-23 13:19:41
+  work: one
+  pages: 1
+
+two:
+  started_at: 2024-08-23 13:19:41
+  ended_at: 2024-08-23 13:19:41
+  work: two
+  pages: 1

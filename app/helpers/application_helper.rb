@@ -9,4 +9,18 @@ module ApplicationHelper
     # https://github.com/vmg/redcarpet
     @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true)
   end
+
+  def human_time_for(timestamp)
+    timestamp.strftime("%A, %B #{timestamp.day.ordinalize}, %Y @ %l:%M %p")
+  end
+
+  def human_updated_at(object)
+    human_time_for(object.updated_at)
+  end
+
+  def human_duration(int)
+    from_time = Time.now
+    to_time = from_time + int.minutes
+    distance_of_time_in_words(from_time, to_time)
+  end
 end
