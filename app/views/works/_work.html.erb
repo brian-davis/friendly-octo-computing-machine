@@ -1,15 +1,10 @@
 <%# index views %>
 <div id="<%= dom_id work %>">
-  <p>
-    <%= full_title_line(work) %> |
-
-    <%= rating = rating_stars(work) %>
-
-    <% if rating.present? %>
-      |
-    <% end %>
-
-    <%= link_to "👉", work, class: "index-link" %>
-    &nbsp;
-  </p>
+  <%= full_title_line(work) %> |
+  <%= rating = rating_stars(work) %>
+  <% if rating.present? %>
+    |
+  <% end %>
+  <%= link_to "👉", work, class: "index-link" %>
+  &nbsp;
 </div>

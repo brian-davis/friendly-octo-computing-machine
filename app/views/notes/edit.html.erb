@@ -4,8 +4,8 @@
   <%= render "form", note: @note %>
 </div>
 
-
-<div class="nav-links outline">
+<hr>
+<div class="nav-links">
   <%= link_to "Show this note", [@work, @note], class: "nav-button"  %>
   <%= link_to "Back to notes", work_notes_path(@work), class: "nav-button"  %>
 </div>

@@ -35,7 +35,6 @@ ul.associated-items li {
   color: darkseagreen;
   border-radius: 8px;
   margin-right: 0.5em;
-  margin-bottom: 0.5em;
   display: flex;
   width: fit-content;
 }

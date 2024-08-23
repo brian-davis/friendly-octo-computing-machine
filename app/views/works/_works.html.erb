@@ -1,9 +1,10 @@
 <% if @works.empty? %>
   <span class="empty-list">EMPTY</span>
 <% else %>
-  <% @works.each do |work| %>
-    <li>
+  <% @works.each_with_index do |work, i| %>
+    <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
+    <%= tag.div(**{ class: class_list }) do %>
       <%= render work %>
-    </li>
+    <% end %>
   <% end %>
 <% end %>

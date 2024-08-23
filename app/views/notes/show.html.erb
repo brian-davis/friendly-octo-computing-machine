@@ -3,8 +3,8 @@
 <div id="<%= dom_id @note %>" class="outline">
   <%= render @note %>
 </div>
-
-<div class="nav-links outline" data-controller="confirmable">
+<hr>
+<div class="nav-links" data-controller="confirmable">
   <%= link_to "Edit this note", edit_work_note_path([@work, @note]), class: "nav-button nav-action" %>
   <%= link_to "Back to notes", work_notes_path(@work), class: "nav-button" %>
 

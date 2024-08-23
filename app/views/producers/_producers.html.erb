@@ -1,9 +1,10 @@
 <% if @producers.empty? %>
   <span class="empty-list">EMPTY</span>
 <% else %>
-  <% @producers.each do |producer| %>
-    <li>
+  <% @producers.each_with_index do |producer, i| %>
+    <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
+    <%= tag.div(**{ class: class_list }) do %>
       <%= render producer %>
-    </li>
+    <% end %>
   <% end %>
 <% end %>

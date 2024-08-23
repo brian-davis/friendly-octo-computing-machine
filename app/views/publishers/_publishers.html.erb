@@ -1,9 +1,10 @@
 <% if @publishers.empty? %>
   <span class="empty-list">EMPTY</span>
 <% else %>
-  <% @publishers.each do |publisher| %>
-    <li>
+  <% @publishers.each.with_index do |publisher, i| %>
+    <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
+    <%= tag.div(**{ class: class_list }) do %>
       <%= render publisher %>
-    </li>
+    <% end %>
   <% end %>
 <% end %>

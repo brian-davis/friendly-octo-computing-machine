@@ -5,8 +5,8 @@
      data-sortable-request-helper-outlet=".request-helper"
      data-sortable-endpoint-value="/works">
   <h1>Books</h1>
-
-  <div class="outline cloud-list">
+  <hr>
+  <div class="cloud-list">
     <%= link_to(works_path({ tag: "all" }), style: "text-decoration: none;", data: { turbo_stream: true, action: "click->sortable#decorateTagClick", filter_value: "all" }) do %>
       <span class="model-tag all-tag">
         <span class="model-tag-name">
@@ -42,12 +42,10 @@
       </span>
     <% end %>
   </div>
-
-  <div class="outline" id="works-collection">
+  <hr>
+  <div id="works-collection">
     <%= text_field_tag(:search, nil, class: "search-box", data: { sortable_target: "search"}) %>
     <%= link_to("Search", "#", class: "search-button", data: { action: "click->sortable#search" }) %>
-    <hr>
-
     <%=
     select_options = [
       ["Title ▲", "title-asc"],
@@ -67,13 +65,14 @@
         }
       })
     %>
+    <hr>
 
-    <ul id="works">
+    <div id="works">
       <%= render "works" %>
-    </ul>
+    </div>
   </div>
-
-  <div class="nav-links outline">
+  <hr>
+  <div class="nav-links">
     <%= link_to "Back to top", root_path, class:"nav-button" %>
     <%= link_to "New Book", new_work_path, class: "nav-button nav-action" %>
   </div>

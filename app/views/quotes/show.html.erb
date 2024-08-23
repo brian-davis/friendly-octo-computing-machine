@@ -25,8 +25,8 @@
     <%= raw markdown.render(@quote.text) %>
   </div>
 </div>
-
-<div class="nav-links outline" data-controller="confirmable">
+<hr>
+<div class="nav-links" data-controller="confirmable">
   <%= link_to "Back to Book Quotes", work_quotes_path(@work), class: "nav-button" %>
   <%= link_to "Back to All Quotes", quotes_path, class: "nav-button" %>
   <%= link_to "Edit this Quote", edit_work_quote_path([@work, @quote]), class: "nav-button nav-action" %>
