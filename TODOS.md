@@ -1,7 +1,4 @@
 # TODOS
 
-- quotes general_index, search
-
-- work has_many reviews/readings/notes
-
+- daily reading journal/tracker, with chartkick viz.
 - gem for n + 1 query finding (bullet?)
