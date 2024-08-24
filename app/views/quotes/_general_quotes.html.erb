@@ -4,6 +4,7 @@
   <% @quotes.each_with_index do |quote, i| %>
     <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
     <%= tag.div(**{ class: class_list }) do %>
+      <%# TODO: flex %>
       <div><%= full_title_line(quote.work) %></div>
       <i><%= quote.text.truncate(100) %></i>
       <% quote_resource = [quote.work, quote] %>

@@ -119,10 +119,6 @@ input.search-box {
   margin: unset;
 }
 
-b.label-above {
-  /* can't do margin-bottom */
-}
-
 ul.associated-items {
   margin: auto;
 }
@@ -132,9 +128,34 @@ ul.associated-items li {
 }
 
 .div-list-row {
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 .div-list-row.alt-row {
   background-color: beige;
+}
+
+#metrics {
+  /* outline: 1px solid red; */
+}
+
+#metrics .div-list-row {
+  /* outline: 1px solid orange; */
+  padding: 0.5rem;
+}
+
+/* TODO: flex */
+#metrics .div-list-row .metric-label {
+  text-align: right;
+  width: 15%;
+  display: inline-block;
+  /* outline: 1px solid pink; */
+}
+
+#metrics .div-list-row .metric-label::after {
+  content: ":";
+}
+
+#metrics .div-list-row .metric-result {
+  /* outline: 1px solid pink; */
 }

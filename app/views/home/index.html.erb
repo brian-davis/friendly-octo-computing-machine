@@ -3,6 +3,18 @@
 <p>A personal library catalog app</p>
 
 <hr>
+
+<div id="metrics">
+  <% @metrics.each.with_index do |metric, i| %>
+    <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
+    <%= tag.div(**{ class: class_list }) do %>
+      <b class="metric-label small-text"><%= metric[:label] %></b>
+      <span class="metric-result"><%= metric[:result] %></span>
+    <% end %>
+  <% end %>
+</div>
+
+<hr>
 <div class="nav-links">
   <%= link_to("Books", works_path, class: "nav-button") %>
   <%= link_to("Authors", producers_path, class: "nav-button") %>
