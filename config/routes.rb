@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :reading_sessions
+
   get 'home/index'
 
   resources :producers do

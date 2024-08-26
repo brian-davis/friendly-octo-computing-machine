@@ -77,3 +77,5 @@ gem "pg_search", "~> 2.3"
 gem "titleize", "~> 1.4"
 
 gem "redcarpet", "~> 3.6"
+
+gem "chartkick", "~> 5.1"

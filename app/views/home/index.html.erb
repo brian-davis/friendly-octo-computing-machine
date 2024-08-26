@@ -1,23 +1,51 @@
-<h1>BOOKSHELF</h1>
+<div data-controller="homepage"
+  data-homepage-request-helper-outlet=".request-helper"
+  data-homepage-endpoint-value="/">
+  <h1>BOOKSHELF</h1>
+  <p>A personal library catalog app</p>
+  <hr>
+  <div class="nav-links">
+    <%= link_to("Books", works_path, class: "nav-button") %>
+    <%= link_to("Authors", producers_path, class: "nav-button") %>
+    <%= link_to("Publishers", publishers_path, class: "nav-button") %>
+    <%= link_to("Quotes", quotes_path, class: "nav-button") %>
+  </div>
 
-<p>A personal library catalog app</p>
+  <hr>
 
-<hr>
-
-<div id="metrics">
-  <% @metrics.each.with_index do |metric, i| %>
-    <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
-    <%= tag.div(**{ class: class_list }) do %>
-      <b class="metric-label small-text"><%= metric[:label] %></b>
-      <span class="metric-result"><%= metric[:result] %></span>
+  <div id="metrics">
+    <% @summary.each.with_index do |metric, i| %>
+      <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
+      <%= tag.div(**{ class: class_list }) do %>
+        <b class="metric-label small-text"><%= metric[:label] %></b>
+        <span class="metric-result"><%= metric[:result] %></span>
+      <% end %>
     <% end %>
-  <% end %>
-</div>
+  </div>
 
-<hr>
-<div class="nav-links">
-  <%= link_to("Books", works_path, class: "nav-button") %>
-  <%= link_to("Authors", producers_path, class: "nav-button") %>
-  <%= link_to("Publishers", publishers_path, class: "nav-button") %>
-  <%= link_to("Quotes", quotes_path, class: "nav-button") %>
+  <hr>
+
+  <%=
+  select_options = [
+    ["past week",  "week"],
+    ["past month", "month"],
+    ["past year",  "year"],
+    ["all time",   "all"]
+  ]
+  select_tag(
+    "_chart_usage",
+    options_for_select(select_options), {
+      class: "select-button small-text",
+      style: "margin-bottom: 0.5rem;",
+      # include_blank: "Period",
+      data: {
+        action: "change->homepage#selectPeriod"
+      }
+    })
+  %>
+
+  <div id="chartkick-chart-usage" class="outline">
+    <%#= debug(@chart_usage) %>
+    <%= column_chart(@chart_usage) %>
+  </div>
 </div>

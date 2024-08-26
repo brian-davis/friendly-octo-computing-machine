@@ -5,7 +5,7 @@ class BookshelfMetrics
   extend ApplicationHelper
 
   class << self
-    def all
+    def summary
       [
         {
           label: "Current Book",
@@ -40,6 +40,29 @@ class BookshelfMetrics
           result: longest_author_reading_time
         }
       ]
+    end
+
+    def chart_usage(scale, max = 100)
+      scale ||= :week
+      days_count = case scale.to_sym
+      when :week
+        7
+      when :month
+        31
+      when :year
+        366
+      when :all
+        (Time.now - (ReadingSession.minimum(:ended_at).to_datetime - 1.day)).to_i / 86400
+      end
+
+      days_template = (1..days_count).map { |i| [i.days.ago.to_date, 0] }.to_h
+      results = ReadingSession
+                  .where(ended_at: (days_count.days.ago..1.second.ago))
+                  .group("DATE(ended_at)")
+                  .sum(:duration)
+      days_results = days_template.merge(results).sort_by { |a, b| a }
+
+      days_results.downsample(max).to_h
     end
 
     private
@@ -109,8 +132,8 @@ class BookshelfMetrics
                   .group("work_producers.producer_id")
                   .sum("reading_sessions.duration")
                   .max_by { |w, d| d }
+      return unless id
       producer = Producer.find_by({ id: id })
-      return unless producer
       producer.name + ", #{human_duration(sum)}"
     end
   end

@@ -7,6 +7,7 @@ class HomeController < ApplicationController
 private
 
   def set_metrics
-    @metrics = BookshelfMetrics.all
+    @summary = BookshelfMetrics.summary
+    @chart_usage = BookshelfMetrics.chart_usage(params["period"].presence, 200)
   end
 end

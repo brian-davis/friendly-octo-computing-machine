@@ -1,0 +1,6 @@
+<%= form_with(model: @work) do |form| %>
+  <%= turbo_stream.update "chartkick-chart-usage" do %>
+    <%#= debug(@chart_usage) %>
+    <%= column_chart(@chart_usage) %>
+  <% end %>
+<% end %>

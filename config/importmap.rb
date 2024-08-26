@@ -10,3 +10,6 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 # $ ./bin/importmap pin @rails/request.js
 pin "@rails/request.js", to: "@rails--request.js.js" # @0.0.9
 
+# https://chartkick.com/
+pin "chartkick", to: "chartkick.js"
+pin "Chart.bundle", to: "Chart.bundle.js"
