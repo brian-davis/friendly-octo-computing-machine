@@ -11,6 +11,7 @@ export default class extends Controller {
   connect() {
     console.log("sortable connected");
     this.filterValue = "";
+    this.frmtValue = "";
     this.orderValue = "";
     this.dirValue = "";
     this.searchValue = "";
@@ -45,11 +46,47 @@ export default class extends Controller {
       url += `&search_term=${this.searchValue}`;
     }
 
+    if (this.frmtValue) {
+      url += `&frmt=${this.frmtValue}`;
+    }
+
     // event.currentTarget.value = "";
 
-    // Started GET "/works?order=title&dir=desc" for ::1 at 2024-08-13 16:11:02 -0700
-    // Processing by WorksController#index as TURBO_STREAM
-    // Parameters: {"order"=>"title", "dir"=>"desc"}
+    this.requestHelperOutlet.turboGet(url);
+  }
+
+  selectFormat(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    console.log("selectFormat");
+
+    this.frmtValue = event.currentTarget.value;
+    // console.log(this.frmtValue);
+
+    const targetLink = event.currentTarget.closest("a");
+    // console.log(targetLink);
+
+    // http://localhost:3000/works?tag=Classics
+    let url = this.endpointValue; // or this.endpointValue
+
+    url += `?frmt=${this.frmtValue}`;
+
+    if (this.orderValue) {
+      url += `&order=${this.orderValue}`;
+    }
+
+    if (this.orderValue && this.dirValue) {
+      url += `&dir=${this.dirValue}`;
+    }
+
+    if (this.filterValue) {
+      url += `&tag=${this.filterValue}`;
+    }
+
+    if (this.searchValue) {
+      url += `&search_term=${this.searchValue}`;
+    }
+
     this.requestHelperOutlet.turboGet(url);
   }
 
@@ -78,6 +115,10 @@ export default class extends Controller {
       url += `&search_term=${this.searchValue}`;
     }
 
+    if (this.frmtValue) {
+      url += `&frmt=${this.frmtValue}`;
+    }
+
     this.requestHelperOutlet.turboGet(url);
   }
 
@@ -103,6 +144,10 @@ export default class extends Controller {
 
     if (this.orderValue && this.dirValue) {
       url += `&dir=${this.dirValue}`;
+    }
+
+    if (this.frmtValue) {
+      url += `&frmt=${this.frmtValue}`;
     }
 
     // console.log("url", url);

@@ -11,7 +11,7 @@ export default class extends Controller {
   }
 
   async turboGet(url) {
-    // console.log("turboGet", url);
+    console.log("turboGet", url);
 
     // https://github.com/hotwired/stimulus/issues/689
     // https://fly.io/ruby-dispatch/turbostream-fetch/

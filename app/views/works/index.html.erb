@@ -46,6 +46,7 @@
   <div id="works-collection">
     <%= text_field_tag(:search, nil, class: "search-box", data: { sortable_target: "search"}) %>
     <%= link_to("Search", "#", class: "search-button", data: { action: "click->sortable#search" }) %>
+    |
     <%=
     select_options = [
       ["Title ▲", "title-asc"],
@@ -65,6 +66,20 @@
         }
       })
     %>
+    |
+    <%=
+    select_options = Work.formats.keys
+    select_tag(
+      "_order",
+      options_for_select(select_options), {
+        class: "select-button small-text",
+        include_blank: "Format",
+        data: {
+          action: "change->sortable#selectFormat"
+        }
+      })
+    %>
+
     <hr>
 
     <div id="works">

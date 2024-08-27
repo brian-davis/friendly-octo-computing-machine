@@ -255,6 +255,15 @@ private
     order_params << "title ASC" unless order_arg == "title"
     order_params = order_params.uniq.join(", ")
 
+    format_param = params["frmt"]
+    valid_formats = Work.formats.keys
+# binding.irb
+    if format_param.in?(valid_formats)
+      @works = @works.send(format_param)
+    else
+      @works = @works.send(:all) # keeps previous
+    end
+
     @works = @works.order(Arel.sql(order_params))
   end
 end
