@@ -4,7 +4,7 @@ class WorksController < ApplicationController
     build_producer select_producer build_publisher select_publisher build_tag select_tag build_parent select_parent
   ]
   before_action :set_form_options, only: %i[new edit]
-
+  before_action :set_select_options, only: %i[index]
   before_action :filter_and_sort_works, only: %i[index]
 
   # GET /works or /works.json
@@ -214,6 +214,10 @@ private
     permitted_params
   end
 
+  def set_select_options
+    @language_options = (Work.pluck(:language).compact.uniq + ["[unspecified]"]).sort
+  end
+
   def filter_and_sort_works
     # filter by tag
     @works = if params["tag"] == "untagged"
@@ -262,6 +266,15 @@ private
       @works = @works.send(format_param)
     else
       @works = @works.send(:all) # keeps previous
+    end
+
+    lang_param = params["lang"]
+    if lang_param.in?(@language_options)
+      if lang_param == "[unspecified]"
+        @works = @works.where(language: nil)
+      else
+        @works = @works.where(language: lang_param)
+      end
     end
 
     @works = @works.order(Arel.sql(order_params))

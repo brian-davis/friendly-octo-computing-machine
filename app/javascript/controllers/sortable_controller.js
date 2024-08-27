@@ -15,6 +15,7 @@ export default class extends Controller {
     this.orderValue = "";
     this.dirValue = "";
     this.searchValue = "";
+    this.languageValue = "";
   }
 
   // index.html.erb
@@ -47,8 +48,25 @@ export default class extends Controller {
     this.frmtValue = event.currentTarget.value;
     // console.log(this.frmtValue);
 
-    const targetLink = event.currentTarget.closest("a");
-    // console.log(targetLink);
+    // http://localhost:3000/works?tag=Classics
+    let url = this.endpointValue; // or this.endpointValue
+
+    let newQuery = this._buildUrlQuery().toString();
+    // console.log(newQuery);
+    if (newQuery) {
+      url += `?${newQuery}`;
+    }
+
+    this.requestHelperOutlet.turboGet(url);
+  }
+
+  selectLanguage(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    // console.log("selectLanguage");
+
+    this.languageValue = event.currentTarget.value;
+    // console.log(this.languageValue);
 
     // http://localhost:3000/works?tag=Classics
     let url = this.endpointValue; // or this.endpointValue
@@ -124,6 +142,10 @@ export default class extends Controller {
 
     if (this.searchValue) {
       queryData.search_term = this.searchValue;
+    }
+
+    if (this.languageValue) {
+      queryData.lang = this.languageValue;
     }
 
     const searchParams = new URLSearchParams(queryData);

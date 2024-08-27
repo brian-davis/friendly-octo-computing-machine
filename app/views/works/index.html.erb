@@ -79,6 +79,19 @@
         }
       })
     %>
+    |
+    <%=
+    select_options = @language_options
+    select_tag(
+      "_order",
+      options_for_select(select_options), {
+        class: "select-button small-text",
+        include_blank: "Language",
+        data: {
+          action: "change->sortable#selectLanguage"
+        }
+      })
+    %>
 
     <hr>
 
