@@ -9,7 +9,7 @@ export default class extends Controller {
   static outlets = ["request-helper"];
 
   connect() {
-    console.log("sortable connected");
+    // console.log("sortable connected");
     this.filterValue = "";
     this.frmtValue = "";
     this.orderValue = "";
@@ -30,27 +30,11 @@ export default class extends Controller {
 
     let url = this.endpointValue;
 
-    if (this.orderValue) {
-      url += `?order=${this.orderValue}`;
+    let newQuery = this._buildUrlQuery().toString();
+    // console.log(newQuery);
+    if (newQuery) {
+      url += `?${newQuery}`;
     }
-
-    if (this.orderValue && this.dirValue) {
-      url += `&dir=${this.dirValue}`;
-    }
-
-    if (this.filterValue) {
-      url += `&tag=${this.filterValue}`;
-    }
-
-    if (this.searchValue) {
-      url += `&search_term=${this.searchValue}`;
-    }
-
-    if (this.frmtValue) {
-      url += `&frmt=${this.frmtValue}`;
-    }
-
-    // event.currentTarget.value = "";
 
     this.requestHelperOutlet.turboGet(url);
   }
@@ -58,7 +42,7 @@ export default class extends Controller {
   selectFormat(event) {
     event.preventDefault();
     event.stopPropagation();
-    console.log("selectFormat");
+    // console.log("selectFormat");
 
     this.frmtValue = event.currentTarget.value;
     // console.log(this.frmtValue);
@@ -69,22 +53,10 @@ export default class extends Controller {
     // http://localhost:3000/works?tag=Classics
     let url = this.endpointValue; // or this.endpointValue
 
-    url += `?frmt=${this.frmtValue}`;
-
-    if (this.orderValue) {
-      url += `&order=${this.orderValue}`;
-    }
-
-    if (this.orderValue && this.dirValue) {
-      url += `&dir=${this.dirValue}`;
-    }
-
-    if (this.filterValue) {
-      url += `&tag=${this.filterValue}`;
-    }
-
-    if (this.searchValue) {
-      url += `&search_term=${this.searchValue}`;
+    let newQuery = this._buildUrlQuery().toString();
+    // console.log(newQuery);
+    if (newQuery) {
+      url += `?${newQuery}`;
     }
 
     this.requestHelperOutlet.turboGet(url);
@@ -98,25 +70,15 @@ export default class extends Controller {
     this.filterValue = event.currentTarget.dataset.filterValue;
 
     const targetLink = event.currentTarget.closest("a");
-    // console.log(targetLink);
+    // console.log("targetLink", targetLink);
 
     // http://localhost:3000/works?tag=Classics
     let url = targetLink.href; // or this.endpointValue
 
-    if (this.orderValue) {
-      url += `&order=${this.orderValue}`;
-    }
-
-    if (this.orderValue && this.dirValue) {
-      url += `&dir=${this.dirValue}`;
-    }
-
-    if (this.searchValue) {
-      url += `&search_term=${this.searchValue}`;
-    }
-
-    if (this.frmtValue) {
-      url += `&frmt=${this.frmtValue}`;
+    let newQuery = this._buildUrlQuery().toString();
+    // console.log(newQuery);
+    if (newQuery) {
+      url += `?${newQuery}`;
     }
 
     this.requestHelperOutlet.turboGet(url);
@@ -132,27 +94,39 @@ export default class extends Controller {
 
     let url = this.endpointValue;
 
-    url += `?search_term=${this.searchValue}`; // blank OK
-
-    if (this.filterValue) {
-      url += `&tag=${this.filterValue}`;
+    let newQuery = this._buildUrlQuery().toString();
+    // console.log(newQuery);
+    if (newQuery) {
+      url += `?${newQuery}`;
     }
-
-    if (this.orderValue) {
-      url += `&order=${this.orderValue}`;
-    }
-
-    if (this.orderValue && this.dirValue) {
-      url += `&dir=${this.dirValue}`;
-    }
-
-    if (this.frmtValue) {
-      url += `&frmt=${this.frmtValue}`;
-    }
-
-    // console.log("url", url);
 
     // this.searchTarget.value = "";
     this.requestHelperOutlet.turboGet(url);
+  }
+
+  _buildUrlQuery() {
+    let queryData = {};
+    if (this.filterValue) {
+      queryData.tag = this.filterValue;
+    }
+
+    if (this.frmtValue) {
+      queryData.frmt = this.frmtValue;
+    }
+
+    if (this.orderValue) {
+      queryData.order = this.orderValue;
+    }
+
+    if (this.dirValue) {
+      queryData.dir = this.dirValue;
+    }
+
+    if (this.searchValue) {
+      queryData.search_term = this.searchValue;
+    }
+
+    const searchParams = new URLSearchParams(queryData);
+    return searchParams;
   }
 }

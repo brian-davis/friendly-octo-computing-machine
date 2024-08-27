@@ -257,7 +257,7 @@ private
 
     format_param = params["frmt"]
     valid_formats = Work.formats.keys
-# binding.irb
+
     if format_param.in?(valid_formats)
       @works = @works.send(format_param)
     else

@@ -7,7 +7,7 @@
   <h1>Books</h1>
   <hr>
   <div class="cloud-list">
-    <%= link_to(works_path({ tag: "all" }), style: "text-decoration: none;", data: { turbo_stream: true, action: "click->sortable#decorateTagClick", filter_value: "all" }) do %>
+    <%= link_to(works_path, style: "text-decoration: none;", data: { turbo_stream: true, action: "click->sortable#decorateTagClick", filter_value: "all" }) do %>
       <span class="model-tag all-tag">
         <span class="model-tag-name">
           All
@@ -19,7 +19,7 @@
     <% end %>
 
     <% @tags_cloud.each do |tag, count| %>
-      <%= link_to(works_path({ tag: tag }), style: "text-decoration: none;", data: { turbo_stream: true, action: "click->sortable#decorateTagClick", filter_value: tag }) do %>
+      <%= link_to(works_path, style: "text-decoration: none;", data: { turbo_stream: true, action: "click->sortable#decorateTagClick", filter_value: tag }) do %>
         <span class="model-tag">
           <span class="model-tag-name">
             <%= tag %>
@@ -31,7 +31,7 @@
       <% end %>
     <% end %>
 
-    <%= link_to(works_path({ tag: "untagged" }), style: "text-decoration: none;", data: { turbo_stream: true, action: "click->sortable#decorateTagClick", filter_value: "untagged" }) do %>
+    <%= link_to(works_path, style: "text-decoration: none;", data: { turbo_stream: true, action: "click->sortable#decorateTagClick", filter_value: "untagged" }) do %>
       <span class="model-tag all-tag">
         <span class="model-tag-name">
           Untagged
