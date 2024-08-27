@@ -79,3 +79,5 @@ gem "titleize", "~> 1.4"
 gem "redcarpet", "~> 3.6"
 
 gem "chartkick", "~> 5.1"
+
+gem "faker", "~> 3.4"
