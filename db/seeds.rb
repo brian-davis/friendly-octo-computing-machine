@@ -1,5 +1,6 @@
 Producer.destroy_all
 Work.destroy_all
+Publisher.destroy_all
 
 5.times {
   Producer.create({
@@ -10,8 +11,8 @@ Work.destroy_all
 10.times {
   Work.create({
     title: Faker::Book.title,
-    rating: rand(5),
-    format: (Work.formats.keys - ["article", "chapter"]).sample,
+    rating: rand(1..5),
+    format: (Work.formats.keys - ["article", "chapter", "compilation"]).sample,
     year_of_publication: (Time.now.year - rand(100)),
 
     language: ["English", "Spanish", "French", "German", "Latin", "Greek"].sample,
@@ -24,7 +25,7 @@ Work.destroy_all
 
     work_producers: [
       WorkProducer.new({
-        role: WorkProducer.roles.keys.sample,
+        role: (WorkProducer.roles.keys - ["translator"]).sample,
         producer_id: Producer.all.ids.sample
       })
     ],
@@ -47,7 +48,7 @@ Work.destroy_all
 parent = Work.create({
   title: Faker::Book.title,
   format: "compilation",
-  rating: rand(5),
+  rating: rand(1..5),
   year_of_publication: (Time.now.year - rand(100)),
   publisher: Publisher.new({
     name: Faker::Book.publisher
@@ -66,7 +67,7 @@ parent = Work.create({
   Work.create({
     title: Faker::Book.title,
     format: "chapter",
-    rating: rand(5),
+    rating: rand(1..5),
     parent_id: parent.id,
     work_producers: [
       WorkProducer.new({
@@ -79,7 +80,7 @@ parent = Work.create({
 
 1000.downto(1) do |i|
   ReadingSession.create({
-    pages: rand(100),
+    pages: rand(1..100),
     started_at: i.days.ago,
     ended_at: (i.days.ago + rand(180).minutes),
     work_id: Work.all.ids.sample

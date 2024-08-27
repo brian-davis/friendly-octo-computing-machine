@@ -4,17 +4,19 @@
   <%= render @publisher %>
 
   <b>Books</b>
-  <ul class="associated-items">
+  <div class="associated-items">
     <% if @publisher.works.empty? %>
       <span class="empty-list">EMPTY</span>
     <% else %>
-      <% @publisher.works.order(:title).each do |work| %>
-        <li>
-          <%= link_to work.title, work, class: "index-link" %>
-        </li>
+      <% @publisher.works.order(:title).each.with_index do |work, i| %>
+        <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
+        <%= tag.div(**{ class: class_list }) do %>
+          <%= work.title %> |
+          <%= link_to "👉", work, class: "index-link" %>
+        <% end %>
       <% end %>
     <% end %>
-  </ul>
+  </div>
 </div>
 <hr>
 <div class="nav-links" data-controller="confirmable">

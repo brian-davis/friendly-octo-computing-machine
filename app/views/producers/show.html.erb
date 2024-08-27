@@ -15,17 +15,18 @@
 
   <hr>
   <b>Books</b>
-  <ul class="associated-items">
+  <div class="associated-items">
     <% if @producer.works.empty? %>
       <span class="empty-list">EMPTY</span>
     <% else %>
-      <% @producer.work_producers.joins(:work).merge(Work.order(:title)).each do |wp| %>
-        <li>
-          <%= wp.role.capitalize %>: <%= link_to(wp.work.title, wp.work, class: "index-link") %>
-        </li>
+      <% @producer.work_producers.joins(:work).merge(Work.order(:title)).each.with_index do |wp, i| %>
+        <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
+        <%= tag.div(**{ class: class_list }) do %>
+          <%= wp.role.capitalize %>: <%= wp.work.title %> | <%= link_to "👉", wp.work, class: "index-link" %>
+        <% end %>
       <% end %>
     <% end %>
-  </ul>
+  </div>
 </div>
 <hr>
 <div class="nav-links" data-controller="confirmable">

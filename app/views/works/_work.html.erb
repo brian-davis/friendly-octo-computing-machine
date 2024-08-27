@@ -1,6 +1,10 @@
 <%# index views %>
 <div id="<%= dom_id work %>">
-  <%= full_title_line(work) %> |
+  <%= full_title_line(work) %>
+  <% if work.article? || work.chapter? || work.compilation? %>
+    <span class="stars"><%= work.format %></span>
+  <% end %>
+  |
   <%= rating = rating_stars(work) %>
   <% if rating.present? %>
     |

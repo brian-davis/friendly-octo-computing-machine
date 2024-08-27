@@ -15,6 +15,12 @@
     </div>
   <% end %>
 
+  <% if @work.parent_id %>
+    <div>
+    <span class="small-text"><%= @work.parent.format %>: <%= @work.parent.title %></span> <%= link_to "👉", @work.parent, class: "index-link" %>
+    </div>
+  <% end %>
+
   <p class="small-text">
     <%= alternate_title_line(@work) %>
   </p>
@@ -24,7 +30,7 @@
   </p>
 
   <p class="small-text">
-    Rating: <%= rating_stars(@work) %>
+    rating: <%= rating_stars(@work) %>
   </p>
 
   <hr>
@@ -51,18 +57,39 @@
     <b>Authors</b>
   </div>
 
-  <ul class="associated-items">
+  <div class="associated-items">
     <% if @work.work_producers.empty? %>
       <span class="empty-list">EMPTY</span>
     <% else %>
-      <% @work.work_producers.joins(:producer).merge(Producer.order(:name)).each do |wp| %>
-        <li>
+      <% @work.work_producers.joins(:producer).merge(Producer.order(:name)).each.with_index do |wp, i| %>
+        <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
+        <%= tag.div(**{ class: class_list }) do %>
           <span class="small-text"><%= wp.role.titleize.split(" ").join("-") %>: <%= wp.producer.name %></span>
           <%= link_to "👉", wp.producer, class: "index-link" %>
-        </li>
+        <% end %>
       <% end %>
     <% end %>
-  </ul>
+  </div>
+
+  <% if @work.compilation? %>
+    <hr>
+    <div style="margin-bottom: 0.5rem;">
+      <b>Parts</b>
+    </div>
+    <div class="associated-items">
+      <% if @work.children.empty? %>
+        <span class="empty-list">EMPTY</span>
+      <% else %>
+        <% @work.children.each.with_index do |child, i| %>
+          <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
+          <%= tag.div(**{ class: class_list }) do %>
+            <span class="small-text"><%= child.format %>: <%= child.title %></span>
+            <%= link_to "👉", child, class: "index-link" %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
 
   <hr>
 
