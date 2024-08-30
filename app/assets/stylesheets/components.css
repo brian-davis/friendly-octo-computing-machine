@@ -8,7 +8,7 @@ body {
 }
 
 .outline {
-  border: 1px solid #ccc;
+  border: 1px solid cadetblue;
   padding: 1em;
   margin-bottom: 1em;
 }
@@ -87,14 +87,14 @@ button.danger {
 a.search-button {
   text-decoration: none;
   padding: 0.18em 0.4em;
-  border: 1px solid #ccc;
+  border: 1px solid cadetblue;
   margin-right: 0.5rem;
   font-size: smaller;
   background-color: honeydew;
 }
 
 input.search-box {
-  border: 1px solid #ccc;
+  border: 1px solid cadetblue;
   background-color: yellow;
   padding: 0.18rem;
   font-size: smaller;
@@ -103,7 +103,7 @@ input.search-box {
 .stars {
   background-color: aliceblue;
   padding: 0.1rem;
-  border: 1px solid #ccc;
+  border: 1px solid cadetblue;
   font-size: smaller;
   color: mediumpurple;
 }
@@ -135,6 +135,11 @@ ul.associated-items li {
 
 .div-list-row.alt-row {
   background-color: beige;
+}
+
+.div-list-row.empty-list {
+  background-color: aliceblue;
+  color: cadetblue;
 }
 
 #metrics {

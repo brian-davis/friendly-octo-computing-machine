@@ -23,7 +23,7 @@ a.index-link {
 .nav-button {
   text-decoration: none;
   padding: 0.5em;
-  border: 1px solid #ccc;
+  border: 1px solid cadetblue;
   background: aliceblue;
   margin-right: 0.29rem;
 }
@@ -40,7 +40,7 @@ select.select-button {
   width: 10rem;
   text-decoration: none;
   padding: 0.5em;
-  border: 1px solid #ccc;
+  border: 1px solid cadetblue;
   background: floralwhite;
 }
 

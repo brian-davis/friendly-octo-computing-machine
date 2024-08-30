@@ -17,7 +17,7 @@
   <b>Books</b>
   <div class="associated-items">
     <% if @producer.works.empty? %>
-      <span class="empty-list">EMPTY</span>
+      <div class="div-list-row empty-list">EMPTY</div>
     <% else %>
       <% @producer.work_producers.joins(:work).merge(Work.order(:title)).each.with_index do |wp, i| %>
         <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>

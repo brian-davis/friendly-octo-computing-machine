@@ -1,5 +1,5 @@
 <% if @publishers.empty? %>
-  <span class="empty-list">EMPTY</span>
+  <div class="div-list-row empty-list">EMPTY</div>
 <% else %>
   <% @publishers.each.with_index do |publisher, i| %>
     <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>

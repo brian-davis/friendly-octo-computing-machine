@@ -48,7 +48,7 @@ form.table-form {
     padding: 0.5rem;
     grid-column: 2 / 3;
     background-color: yellow;
-    border: 1px solid #ccc;
+    border: 1px solid cadetblue;
   }
 
   form.table-form label {
@@ -105,7 +105,7 @@ form.table-form {
 
   form.table-form .subform-line select {
     padding: 0.5em;
-    border: 1px solid #ccc;
+    border: 1px solid cadetblue;
     background-color: yellow;
     position: relative;
     left: -1px;
@@ -118,7 +118,7 @@ form.table-form {
   form.table-form .undo-label {
     background-color: floralwhite;
     padding: 0.5rem;
-    border: 1px solid #ccc;
+    border: 1px solid cadetblue;
   }
 
   form.table-form .undo-label b.danger {

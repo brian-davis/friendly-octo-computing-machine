@@ -6,7 +6,7 @@
   <b>Books</b>
   <div class="associated-items">
     <% if @publisher.works.empty? %>
-      <span class="empty-list">EMPTY</span>
+      <div class="div-list-row empty-list">EMPTY</div>
     <% else %>
       <% @publisher.works.order(:title).each.with_index do |work, i| %>
         <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>

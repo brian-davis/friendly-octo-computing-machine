@@ -1,5 +1,5 @@
 <% if @quotes.empty? %>
-  <span class="empty-list">EMPTY</span>
+  <div class="div-list-row empty-list">EMPTY</div>
 <% else %>
   <% @quotes.each_with_index do |quote, i| %>
     <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>

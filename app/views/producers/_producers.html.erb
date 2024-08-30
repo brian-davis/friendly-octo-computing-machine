@@ -1,7 +1,9 @@
 <% if @producers.empty? %>
-  <span class="empty-list">EMPTY</span>
+  <div class="div-list-row empty-list">EMPTY</div>
 <% else %>
   <% @producers.each_with_index do |producer, i| %>
+
+    <%# TODO: `cycle`` method%>
     <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
     <%= tag.div(**{ class: class_list }) do %>
       <%= render producer %>

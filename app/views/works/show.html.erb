@@ -59,7 +59,7 @@
 
   <div class="associated-items">
     <% if @work.work_producers.empty? %>
-      <span class="empty-list">EMPTY</span>
+      <div class="div-list-row empty-list">EMPTY</div>
     <% else %>
       <% @work.work_producers.joins(:producer).merge(Producer.order(:name)).each.with_index do |wp, i| %>
         <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
@@ -78,7 +78,7 @@
     </div>
     <div class="associated-items">
       <% if @work.children.empty? %>
-        <span class="empty-list">EMPTY</span>
+        <div class="div-list-row empty-list">EMPTY</div>
       <% else %>
         <% @work.children.each.with_index do |child, i| %>
           <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
