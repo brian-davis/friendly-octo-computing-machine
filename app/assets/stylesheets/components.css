@@ -27,6 +27,8 @@ ul.associated-items li {
 
 .cloud-list {
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 .model-tag {
@@ -34,7 +36,7 @@ ul.associated-items li {
   border: 2px solid darkseagreen;
   color: darkseagreen;
   border-radius: 8px;
-  margin-right: 0.5em;
+  /* margin-right: 0.5em; */
   display: flex;
   width: fit-content;
 }
