@@ -134,11 +134,10 @@ ul.associated-items li {
 }
 
 .div-list-row.alt-row {
-  background-color: beige;
+  background-color: aliceblue;
 }
 
 .div-list-row.empty-list {
-  background-color: aliceblue;
   color: cadetblue;
 }
 

@@ -61,11 +61,14 @@
             <%= text_field_tag(:_work_producer_role, work_producer.role.titleize, readonly: true) %>
           </div>
 
-          <%# FULL COLUMN %>
-          <div class="undo-label">
-            <%= t.check_box :_destroy %>
-            <b class="danger">Undo</b>
+          <div class="subform-line">
+            <b><%# spacer %></b>
+            <span class="undo-label">
+              <%= t.check_box :_destroy %>
+              <b class="danger">Undo</b>
+            </span>
           </div>
+
         <% end %>
       </div>
     <% end %>

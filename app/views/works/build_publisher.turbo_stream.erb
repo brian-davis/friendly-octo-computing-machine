@@ -1,7 +1,6 @@
 <%= form_with(model: @work) do |form| %>
   <%= turbo_stream.update "sub_form_list_publisher" do %>
     <div class="outline subFormContainer" data-dismissable-target="subForm">
-
       <%= form.fields_for :publisher, @work.build_publisher do |t| %>
         <div class="subform-line">
           <%# COLUMN 1 %>
@@ -12,12 +11,13 @@
         </div>
       <% end %>
 
-
-      <%# FULL COLUMN %>
-      <div class="undo-label">
-        <span class="clickable" data-action="click->dismissable#formDismiss">
-          <b class="danger">ⓧ</b>
-          <b class="danger">Cancel</b>
+      <div class="subform-line">
+        <b><%# spacer %></b>
+        <span class="undo-label">
+          <span class="clickable" data-action="click->dismissable#formDismiss">
+            <b class="danger">ⓧ</b>
+            <b class="danger">Cancel</b>
+          </span>
         </span>
       </div>
     </div>

@@ -11,11 +11,13 @@
         <%= text_field_tag(:_publisher_name, @publisher.name, readonly: true) %>
       </div>
 
-      <%# FULL COLUMN %>
-      <div class="undo-label">
-        <span class="clickable" data-action="click->dismissable#formDismiss">
-          <b class="danger">ⓧ</b>
-          <b class="danger">Cancel</b>
+      <div class="subform-line">
+        <b><%# spacer %></b>
+        <span class="undo-label">
+          <span class="clickable" data-action="click->dismissable#formDismiss">
+            <b class="danger">ⓧ</b>
+            <b class="danger">Cancel</b>
+          </span>
         </span>
       </div>
     </div>

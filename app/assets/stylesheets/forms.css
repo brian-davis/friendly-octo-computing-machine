@@ -95,7 +95,12 @@ form.table-form {
   }
 
   form.table-form .subform-line input,
-  form.table-form .subform-line select {
+  form.table-form
+    .subform-line
+    select
+    form.table-form
+    .subform-line
+    .undo-label {
     flex: 90%;
   }
 
@@ -105,6 +110,7 @@ form.table-form {
 
   form.table-form .subform-line select {
     padding: 0.5em;
+    width: 90%;
     border: 1px solid cadetblue;
     background-color: yellow;
     position: relative;
@@ -115,10 +121,16 @@ form.table-form {
     width: 100%;
   }
 
-  form.table-form .undo-label {
+  form.table-form .subform-line .undo-label {
+    width: 90%;
     background-color: floralwhite;
     padding: 0.5rem;
     border: 1px solid cadetblue;
+  }
+
+  form.table-form .subform-line .undo-label .clickable {
+    position: relative;
+    top: 0.1rem;
   }
 
   form.table-form .undo-label b.danger {

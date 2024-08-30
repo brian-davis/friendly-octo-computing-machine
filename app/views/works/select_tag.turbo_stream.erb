@@ -1,13 +1,18 @@
 <%= turbo_stream.append "sub_form_list_tags" do %>
   <div class="outline subFormContainer" data-dismissable-target="subForm">
     <div class="subform-line">
+      <b>Tag:</b>
       <%= text_field_tag("work[tags][]", @tag, readonly: true) %>
     </div>
 
-    <%# FULL COLUMN %>
-    <div class="undo-label">
-      <%= check_box_tag :_destroy, { data: { action: "click->dismissable#formDismiss"}} %>
-      <b class="danger">Undo</b>
+    <div class="subform-line">
+      <b><%# spacer %></b>
+      <span class="undo-label">
+        <span class="clickable" data-action="click->dismissable#formDismiss">
+          <b class="danger">ⓧ</b>
+          <b class="danger">Cancel</b>
+        </span>
+      </span>
     </div>
   </div>
 <% end %>
