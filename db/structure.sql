@@ -9,29 +9,6 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- Name: fuzzystrmatch; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS fuzzystrmatch WITH SCHEMA public;
-
-
---
--- Name: EXTENSION fuzzystrmatch; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION fuzzystrmatch IS 'determine similarities and distance between strings';
-
-
---
--- Name: pg_search_dmetaphone(text); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.pg_search_dmetaphone(text) RETURNS text
-    LANGUAGE sql IMMUTABLE STRICT
-    AS $_$ SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\\s+')))), ' ') $_$;
-
-
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -576,7 +553,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20240814232714'),
 ('20240813213517'),
 ('20240813212558'),
-('20240813204618'),
 ('20240811224747'),
 ('20240809193141'),
 ('20240809174729'),

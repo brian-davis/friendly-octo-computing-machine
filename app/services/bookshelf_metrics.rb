@@ -69,14 +69,14 @@ class BookshelfMetrics
 
     def current_book
       session = ReadingSession.find_by(ended_at: ReadingSession.maximum(:ended_at))
-      return "" unless session
+      return unless session
       work = session.work
       tag.i(title_line(work)) + ", #{time_ago_in_words(session.ended_at)} ago"
     end
 
     def newest_book
       work = Work.find_by(created_at: Work.maximum(:created_at))
-      return "" unless work
+      return unless work
       tag.i(title_line(work)) + ", #{time_ago_in_words(work.created_at)} ago"
     end
 
@@ -87,6 +87,7 @@ class BookshelfMetrics
                     .count
                     .max_by { |w, c| c }
       work = Work.find_by({ id: id })
+      return unless work
       tag.i(title_line(work)) + ", #{count} quotes"
     end
 
@@ -97,6 +98,7 @@ class BookshelfMetrics
                     .count
                     .max_by { |w, c| c }
       work = Work.find_by({ id: id })
+      return unless work
       tag.i(title_line(work)) + ", #{count} notes"
     end
 
@@ -107,6 +109,7 @@ class BookshelfMetrics
                     .count
                     .max_by { |p, c| c }
       producer = Producer.find_by({ id: id })
+      return unless producer
       producer.name + ", #{count} works"
     end
 
@@ -134,6 +137,7 @@ class BookshelfMetrics
                   .max_by { |w, d| d }
       return unless id
       producer = Producer.find_by({ id: id })
+      return unless producer
       producer.name + ", #{human_duration(sum)}"
     end
   end
