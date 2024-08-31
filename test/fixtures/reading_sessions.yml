@@ -17,9 +17,11 @@ one:
   ended_at: 2024-08-23 13:19:41
   work: one
   pages: 1
+  duration: 0
 
 two:
   started_at: 2024-08-23 13:19:41
   ended_at: 2024-08-23 13:19:41
   work: two
   pages: 1
+  duration: 0
