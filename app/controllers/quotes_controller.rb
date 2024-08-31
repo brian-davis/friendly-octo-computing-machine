@@ -100,16 +100,22 @@ private
           "producers.name LIKE '#{term}%' OR works.title LIKE '#{term}%'"
         ).ids # can't do `.or()` here
         full_ids = (quote_ids1 + quote_ids2).uniq
-        @quotes = Quote.where({ id: full_ids }).includes(:work)
+        @quotes = Quote.where({ id: full_ids })
       end
+
+      # Bullet: use eager loading here
+      @quotes = @quotes.includes(:work)
     elsif @work
       # nested resource index
 
       @quotes = @work.quotes.all
+
       # filter by search term
       if params["search_term"].present?
         @quotes = @quotes.search_text(params["search_term"]).unscope(:order)
       end
+
+      # Bullet: avoid eager loading here
     else
       raise("unauthorized")
     end

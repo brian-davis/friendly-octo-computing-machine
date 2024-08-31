@@ -14,7 +14,7 @@ class ProducersController < ApplicationController
 
   # GET /producers/1 or /producers/1.json
   def show
-    @work_credits = @producer.work_producers.includes(:work).pluck(:role, :title)
+    @work_producers = @producer.work_producers.includes(:work).order("works.title ASC")
   end
 
   # GET /producers/new

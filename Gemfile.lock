@@ -87,6 +87,9 @@ GEM
     bigdecimal (3.1.8)
     bindex (0.8.1)
     builder (3.3.0)
+    bullet (7.2.0)
+      activesupport (>= 3.0.0)
+      uniform_notifier (~> 1.11)
     capybara (3.40.0)
       addressable
       matrix
@@ -244,6 +247,7 @@ GEM
       railties (>= 6.0.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
+    uniform_notifier (1.16.0)
     web-console (4.2.1)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -266,6 +270,7 @@ PLATFORMS
 DEPENDENCIES
   acts-as-taggable-array-on (~> 0.7.0)
   annotate (~> 3.2)
+  bullet
   capybara
   chartkick (~> 5.1)
   debug
