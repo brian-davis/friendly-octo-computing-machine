@@ -8,9 +8,8 @@
     <% if @publisher.works.empty? %>
       <div class="div-list-row empty-list">EMPTY</div>
     <% else %>
-      <% @publisher.works.order(:title).each.with_index do |work, i| %>
-        <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
-        <%= tag.div(**{ class: class_list }) do %>
+      <% @publisher.works.order(:title).each do |work| %>
+        <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
           <%= work.title %> |
           <%= link_to "👉", work, class: "index-link" %>
         <% end %>

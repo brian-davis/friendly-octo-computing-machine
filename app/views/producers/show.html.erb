@@ -19,9 +19,8 @@
     <% if @producer.works.empty? %>
       <div class="div-list-row empty-list">EMPTY</div>
     <% else %>
-      <% @producer.work_producers.joins(:work).merge(Work.order(:title)).each.with_index do |wp, i| %>
-        <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
-        <%= tag.div(**{ class: class_list }) do %>
+      <% @producer.work_producers.joins(:work).merge(Work.order(:title)).each do |wp| %>
+        <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
           <%= wp.role.capitalize %>: <%= wp.work.title %> | <%= link_to "👉", wp.work, class: "index-link" %>
         <% end %>
       <% end %>

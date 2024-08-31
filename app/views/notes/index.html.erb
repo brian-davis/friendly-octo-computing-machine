@@ -4,13 +4,9 @@
 <hr>
 
 <div id="notes">
-  <% @notes.each.with_index do |note, i| %>
-    <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
-    <%= tag.div(**{ class: class_list }) do %>
-      <%= render note %>
-      <div>
-        <%= link_to "👉", [@work, note], class: "index-link" %>
-      </div>
+  <% @notes.each do |note| %>
+    <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
+      <i class="small-text stars"><%= human_updated_at(note) %></i> : <%= note.text.truncate(100) %> | <%= link_to "👉", [@work, note], class: "index-link" %>
     <% end %>
   <% end %>
 </div>

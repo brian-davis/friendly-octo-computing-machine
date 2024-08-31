@@ -7,9 +7,8 @@ Aggregate Time: <b class="stars"><%= human_duration(@work.reading_sessions_minut
 <hr>
 
 <div id="reading_sessions">
-  <% @reading_sessions.each_with_index do |reading_session, i| %>
-    <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
-    <%= tag.div(**{ class: class_list }) do %>
+  <% @reading_sessions.each do |reading_session| %>
+    <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
       <%= render reading_session %>
       <div>
         <%= link_to "👉", [@work, reading_session], class: "index-link" %>

@@ -1,16 +1,11 @@
 <% if @quotes.empty? %>
   <div class="div-list-row empty-list">EMPTY</div>
 <% else %>
-  <% @quotes.each_with_index do |quote, i| %>
-    <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
-    <%= tag.div(**{ class: class_list }) do %>
-      <%# TODO: flex %>
-      <div><%= full_title_line(quote.work) %></div>
-      <i><%= quote.text.truncate(100) %></i>
-      <% quote_resource = [quote.work, quote] %>
-      <div>
-        <%= link_to "👉", quote_resource, class: "index-link" %>
-      </div>
+  <% @quotes.each do |quote| %>
+    <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
+      <i class="small-text"><%= full_title_line(quote.work) %>, p. <%= [quote.page, quote.custom_citation].map(&:presence).compact.join(", ") %></i>:
+      <%= quote.text.truncate(100) %>
+      <% quote_resource = [quote.work, quote] %> | <%= link_to "👉", quote_resource, class: "index-link" %>
     <% end %>
   <% end %>
 <% end %>

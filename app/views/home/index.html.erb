@@ -14,9 +14,8 @@
   <hr>
 
   <div id="metrics">
-    <% @summary.each.with_index do |metric, i| %>
-      <% class_list = ["div-list-row"]; class_list << "alt-row" if i.even? %>
-      <%= tag.div(**{ class: class_list }) do %>
+    <% @summary.each do |metric| %>
+      <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
         <b class="metric-label small-text"><%= metric[:label] %></b>
         <span class="metric-result"><%= metric[:result] %></span>
       <% end %>
