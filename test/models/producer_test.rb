@@ -2,58 +2,72 @@
 #
 # Table name: producers
 #
-#  id          :bigint           not null, primary key
-#  name        :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  birth_year  :integer
-#  death_year  :integer
-#  bio_link    :string
-#  nationality :string
-#  works_count :integer          default(0)
-#  searchable  :tsvector
+#  id           :bigint           not null, primary key
+#  custom_name  :string
+#  given_name   :string
+#  middle_name  :string
+#  family_name  :string
+#  foreign_name :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  birth_year   :integer
+#  death_year   :integer
+#  bio_link     :string
+#  nationality  :string
+#  works_count  :integer          default(0)
+#  searchable   :tsvector
 #
 require "test_helper"
 
 class ProducerTest < ActiveSupport::TestCase
-  test "attribute validation" do
+  test "attribute presence validation" do
     pr1 = Producer.new({
       # empty
     })
     refute pr1.valid?
-    assert_equal ["Name can't be blank"], pr1.errors.full_messages
-    pr1.name = ""
+
+    errors = ["Custom name can't be blank", "Given name can't be blank", "Family name can't be blank"]
+
+    assert_equal errors, pr1.errors.full_messages
+    pr1.custom_name = ""
     refute pr1.valid?
-    assert_equal ["Name can't be blank"], pr1.errors.full_messages
+    assert_equal errors, pr1.errors.full_messages
+  end
+
+  test "either custom_name or given_name and family_name presence validation" do
+    pr1 = Producer.new({
+      custom_name: "OK",
+      given_name: "",
+      family_name: ""
+    })
+    assert pr1.valid?
+
+    pr2 = Producer.new({
+      custom_name: "",
+      given_name: "OK",
+      family_name: "OK"
+    })
+    assert pr2.valid?
   end
 
   test "build a new work_producer and link to existing work" do
-    producer = producers(:one)
-    work = works(:two)
+    work = Work.create({
+      title: "Physics"
+    })
 
-    params1 = ActionController::Parameters.new({
-      producer: {
-        name: producer.name,
-        work_producers_attributes: {
-          "0" => {
-            role: "translator",
-            work_id: work.id
-          }
-        }
-      }
-    }).require(:producer).permit(:name, work_producers_attributes: [
-      :id,
-      :role,
-      :_destroy,
-      :work_id,
-      work_attributes: [:title]
-    ])
+    producer = Producer.new({
+      custom_name: "Aristotle",
+      work_producers: [WorkProducer.new({
+        role: "author",
+        work: work
+      })]
+    })
 
     refute producer.works.include?(work)
-    producer.update(params1)
+    producer.save
 
     assert producer.works.include?(work)
-    assert_equal "translator", producer.work_producers.find_by(work: work).role
+    assert_equal "author", producer.work_producers.find_by(work: work).role
   end
 
   test "remove existing work_producer" do
@@ -65,7 +79,7 @@ class ProducerTest < ActiveSupport::TestCase
 
     params = ActionController::Parameters.new({
       producer: {
-        name: producer.name,
+        custom_name: producer.custom_name,
         work_producers_attributes: {
           "0" => {
             :id => work_producer.id,
@@ -73,7 +87,7 @@ class ProducerTest < ActiveSupport::TestCase
           }
         }
       }
-    }).require(:producer).permit(:name, work_producers_attributes: [
+    }).require(:producer).permit(:custom_name, work_producers_attributes: [
       :id,
       :role,
       :_destroy,
@@ -94,7 +108,7 @@ class ProducerTest < ActiveSupport::TestCase
 
     params = ActionController::Parameters.new({
       producer: {
-        name: producer.name,
+        custom_name: producer.custom_name,
         work_producers_attributes: {
           "0" => {
             # no id
@@ -103,7 +117,7 @@ class ProducerTest < ActiveSupport::TestCase
           }
         }
       }
-    }).require(:producer).permit(:name, work_producers_attributes: [
+    }).require(:producer).permit(:custom_name, work_producers_attributes: [
       :id,
       :role,
       :_destroy,
@@ -120,7 +134,7 @@ class ProducerTest < ActiveSupport::TestCase
     new_title_param = "New Work"
     params = ActionController::Parameters.new({
       producer: {
-        name: producer.name,
+        custom_name: producer.custom_name,
         work_producers_attributes: {
           "0" => {
             role: "editor",
@@ -130,7 +144,7 @@ class ProducerTest < ActiveSupport::TestCase
           }
         }
       }
-    }).require(:producer).permit(:name, work_producers_attributes: [
+    }).require(:producer).permit(:custom_name, work_producers_attributes: [
       :id,
       :role,
       :_destroy,
@@ -147,7 +161,7 @@ class ProducerTest < ActiveSupport::TestCase
   test "create a work through new work_producer" do
     params = ActionController::Parameters.new({
       producer: {
-        name: "Plato",
+        custom_name: "Plato",
         work_producers_attributes: {
           "0" => {
             role: "author",
@@ -163,7 +177,7 @@ class ProducerTest < ActiveSupport::TestCase
           }
         }
       }
-    }).require(:producer).permit(:name, work_producers_attributes: [
+    }).require(:producer).permit(:custom_name, work_producers_attributes: [
       :id,
       :role,
       :_destroy,
@@ -173,13 +187,13 @@ class ProducerTest < ActiveSupport::TestCase
 
     producer = Producer.new(params)
 
-    refute Producer.where(name: "Plato").exists?
+    refute Producer.where(custom_name: "Plato").exists?
     refute Work.where(title: "Republic").exists?
     refute Work.where(title: "Apology").exists?
 
     producer.save
 
-    assert Producer.where(name: "Plato").exists?
+    assert Producer.where(custom_name: "Plato").exists?
     assert Work.where(title: "Republic").exists?
     assert Work.where(title: "Apology").exists?
 
@@ -189,7 +203,7 @@ class ProducerTest < ActiveSupport::TestCase
 
   test "validation on associated work_producer" do
     p1 = Producer.new({
-      name: "New Producer",
+      custom_name: "New Producer",
       work_producers: [
         WorkProducer.new({
           role: :author
@@ -203,7 +217,7 @@ class ProducerTest < ActiveSupport::TestCase
 
   test "validation on associated work" do
     p1 = Producer.new({
-      name: "New Producer",
+      custom_name: "New Producer",
       work_producers: [
         WorkProducer.new({
           role: :author,
@@ -219,15 +233,18 @@ class ProducerTest < ActiveSupport::TestCase
   end
 
   test "works counter_cache" do
-    p1 = Producer.create(name: "Plutarch")
+    p1 = Producer.create(custom_name: "Plutarch")
     assert_equal 0, p1.works.count
     assert_equal 0, p1.works_count # column default
+
     w1 = p1.works.create({ title: "Life of Dion" })
     assert_equal 1, p1.works.count
     assert_equal 1, p1.works_count
+
     w2 = p1.works.create({ title: "Life of Timoleon" })
     assert_equal 2, p1.works.count
     assert_equal 2, p1.works_count
+
     w2.destroy
     p1.reload
     assert_equal 1, p1.works.count
@@ -235,16 +252,19 @@ class ProducerTest < ActiveSupport::TestCase
   end
 
   test "full-text indexed search with dmetaphone" do
-    p1 = Producer.create(name: "Jeff Davis")
-    p2 = Producer.create(name: "Geoff Davis")
-    p3 = Producer.create(name: "Jeffrey Davis")
-    p4 = Producer.create(name: "Geoffrey Davis")
-    p5 = Producer.create(name: "George Davis")
-
+    p1 = Producer.create(given_name: "Jeff", family_name: "Davis")
+    p2 = Producer.create(given_name: "Geoff", family_name: "Davis")
     search1 = Producer.search_name("Jeff")
 
     assert p1.in?(search1)
     assert p2.in?(search1)
+
+
+    # Trigrams
+    p3 = Producer.create(given_name: "Jeffrey", family_name: "Davis")
+    p4 = Producer.create(given_name: "Geoffrey", family_name: "Davis")
+    p5 = Producer.create(given_name: "George", family_name: "Davis")
+
     refute p3.in?(search1) # no prefix
     refute p4.in?(search1) # no prefix
     refute p5.in?(search1)

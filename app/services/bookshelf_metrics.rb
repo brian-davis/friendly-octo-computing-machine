@@ -109,7 +109,8 @@ class BookshelfMetrics
                     .count
                     .max_by { |p, c| c }
       producer = Producer.find_by({ id: id })
-      return unless producer
+      return unless producer.try(:name)
+
       producer.name + ", #{count} works"
     end
 
@@ -137,7 +138,7 @@ class BookshelfMetrics
                   .max_by { |w, d| d }
       return unless id
       producer = Producer.find_by({ id: id })
-      return unless producer
+      return unless producer.try(:name)
       producer.name + ", #{human_duration(sum)}"
     end
   end

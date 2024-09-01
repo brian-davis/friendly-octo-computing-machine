@@ -4,6 +4,8 @@ module Citable
   included do
     private def alpha_author_names
       author_names = authors.pluck(:name) # order by WorkProducer create
+      author_names = editors.pluck(:name) if author_names.empty?
+
       first_author = author_names.shift
       _split = first_author.split(/\s/)
       last_name = _split.pop
@@ -18,7 +20,6 @@ module Citable
 
     def bibliography_markdown
       return unless self.is_a?(Work)
-
       if self.compilation?
         editor_names = self.editors.pluck(:name).to_sentence
         editor_status = self.editors.count > 1 ? "eds." : "ed."
@@ -29,7 +30,6 @@ module Citable
         return result
       elsif self.book?
         formatted_authors = self.alpha_author_names
-
         title = self.title_and_subtitle
         publisher = self.publisher.name
         year = self.year_of_publication
@@ -54,6 +54,8 @@ module Citable
           translator_names = self.translators.pluck(:name).to_sentence
 
           "#{formatted_authors}. “#{title}.” Translated by #{translator_names}. In _#{parent_title}_, edited by #{parent_editors}. #{parent_publisher}, #{parent_year}."
+        elsif self.reference?
+          result = "TODO"
         else
           "#{formatted_authors}. “#{title}.” In _#{parent_title}_, edited by #{parent_editors}. #{parent_publisher}, #{parent_year}."
         end
@@ -120,6 +122,10 @@ module Citable
           authors.any? &&
           year_of_publication.present?
         elsif compilation?
+          publisher &&
+          editors.any? &&
+          year_of_publication.present?
+        elsif reference?
           publisher &&
           editors.any? &&
           year_of_publication.present?

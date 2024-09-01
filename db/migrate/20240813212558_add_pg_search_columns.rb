@@ -22,7 +22,11 @@ class AddPgSearchColumns < ActiveRecord::Migration[7.1]
     execute <<-SQL
       ALTER TABLE producers
       ADD COLUMN searchable tsvector GENERATED ALWAYS AS (
-        setweight(to_tsvector('english', coalesce(name, '')), 'A')
+        setweight(to_tsvector('english', coalesce(custom_name, '')), 'A') ||
+        setweight(to_tsvector('english', coalesce(given_name, '')), 'B') ||
+
+        setweight(to_tsvector('english', coalesce(family_name, '')), 'C') ||
+        setweight(to_tsvector('english', coalesce(foreign_name, '')), 'D')
       ) STORED;
     SQL
   end

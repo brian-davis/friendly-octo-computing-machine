@@ -2,23 +2,27 @@
 #
 # Table name: producers
 #
-#  id          :bigint           not null, primary key
-#  name        :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  birth_year  :integer
-#  death_year  :integer
-#  bio_link    :string
-#  nationality :string
-#  works_count :integer          default(0)
-#  searchable  :tsvector
+#  id           :bigint           not null, primary key
+#  custom_name  :string
+#  given_name   :string
+#  middle_name  :string
+#  family_name  :string
+#  foreign_name :string
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  birth_year   :integer
+#  death_year   :integer
+#  bio_link     :string
+#  nationality  :string
+#  works_count  :integer          default(0)
+#  searchable   :tsvector
 #
 
 one:
-  name: ProducerOne
+  custom_name: Plato1
 
 two:
-  name: ProducerTwo
+  custom_name: Voltaire1
 
 three:
-  name: ProducerThree
+  custom_name: Epictetus1

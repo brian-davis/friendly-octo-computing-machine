@@ -129,7 +129,7 @@ class WorkTest < ActiveSupport::TestCase
           "0" => {
             role: "editor",
             producer_attributes: { # only one
-              name: new_name_param
+              custom_name: new_name_param
             }
           }
         }
@@ -139,13 +139,13 @@ class WorkTest < ActiveSupport::TestCase
       :role,
       :_destroy,
       :producer_id,
-      producer_attributes: [:name]
+      producer_attributes: [:custom_name]
     ])
 
-    refute Producer.where(name: new_name_param).exists?
+    refute Producer.where(custom_name: new_name_param).exists?
     work1.update(params1)
-    assert Producer.where(name: new_name_param).exists?
-    assert work1.producers.pluck(:name).include?(new_name_param)
+    assert Producer.where(custom_name: new_name_param).exists?
+    assert work1.producers.pluck(:custom_name).include?(new_name_param)
   end
 
   test "validation on associated work_producer" do
@@ -176,7 +176,8 @@ class WorkTest < ActiveSupport::TestCase
     })
 
     refute w1.valid?
-    assert_equal ["Work producers producer name can't be blank"], w1.errors.full_messages
+    errors = ["Work producers producer custom name can't be blank", "Work producers producer given name can't be blank", "Work producers producer family name can't be blank"]
+    assert_equal errors, w1.errors.full_messages
   end
 
   test "no duplicate producer on re-submit" do
@@ -188,7 +189,7 @@ class WorkTest < ActiveSupport::TestCase
           "0" => {
             role: "author",
             producer_attributes: {
-              name: "First Author"
+              custom_name: "First Author"
             }
           }
         }
@@ -198,12 +199,12 @@ class WorkTest < ActiveSupport::TestCase
       :role,
       :_destroy,
       :producer_id,
-      producer_attributes: [:name]
+      producer_attributes: [:custom_name]
     ])
     w1 = Work.new(params1)
     assert w1.save
     assert_equal 1, Work.where(title: "First Work").count
-    assert_equal 1, Producer.where(name: "First Author").count
+    assert_equal 1, Producer.where(custom_name: "First Author").count
     assert_equal 1, w1.producers.count
     assert_equal 1, w1.work_producers.count
 
@@ -224,7 +225,7 @@ class WorkTest < ActiveSupport::TestCase
           "1" => {
             role: "translator",
             producer_attributes: {
-              name: "First Translator"
+              custom_name: "First Translator"
             }
           }
         }
@@ -234,43 +235,31 @@ class WorkTest < ActiveSupport::TestCase
       :role,
       :_destroy,
       :producer_id,
-      producer_attributes: [:name]
+      producer_attributes: [:custom_name]
     ])
     assert w1.update(params2)
 
     assert_equal 1, Work.where(title: "First Work").count
-    assert_equal 1, Producer.where(name: "First Author").count
+    assert_equal 1, Producer.where(custom_name: "First Author").count
     # binding.irb
-    assert_equal 1, Producer.where(name: "First Translator").count
+    assert_equal 1, Producer.where(custom_name: "First Translator").count
     assert_equal 2, w1.producers.count
     assert_equal 2, w1.work_producers.count
   end
 
   test "no duplicate work producers; unique by id and role" do
-    # Initial form submit
-    params1 = ActionController::Parameters.new({
-      work: {
-        title: "First Work",
-        work_producers_attributes: {
-          "0" => {
-            role: "author",
-            producer_attributes: {
-              name: "First Author"
-            }
-          }
-        }
-      }
-    }).require(:work).permit(:title, work_producers_attributes: [
-      :id,
-      :role,
-      :_destroy,
-      :producer_id,
-      producer_attributes: [:name]
-    ])
-    w1 = Work.new(params1)
+    w1 = Work.new({
+      title: "First Work",
+      work_producers: [WorkProducer.new({
+        role: "author",
+        producer: Producer.new({
+          custom_name: "First Producer"
+        })
+      })]
+    })
     assert w1.save
     assert_equal 1, Work.where(title: "First Work").count
-    assert_equal 1, Producer.where(name: "First Author").count
+    assert_equal 1, Producer.where(custom_name: "First Producer").count
     assert_equal 1, w1.producers.count
     assert_equal 1, w1.work_producers.count
 
@@ -299,13 +288,13 @@ class WorkTest < ActiveSupport::TestCase
       :role,
       :_destroy,
       :producer_id,
-      producer_attributes: [:name]
+      producer_attributes: [:custom_name]
     ])
     refute w1.update(params2)
     assert_equal ["Work producers Must be unique by role"], w1.errors.full_messages
 
     assert_equal 1, Work.where(title: "First Work").count
-    assert_equal 1, Producer.where(name: "First Author").count
+    assert_equal 1, Producer.where(custom_name: "First Producer").count
 
     assert_equal 1, w1.producers.count
     assert_equal 1, w1.work_producers.count
@@ -397,7 +386,7 @@ class WorkTest < ActiveSupport::TestCase
 
     work.save & work.reload
 
-    assert_equal ["ProducerThree", "ProducerOne", "ProducerTwo"], work.producers.pluck(:name)
+    assert_equal ["Epictetus1", "Plato1", "Voltaire1"], work.producers.pluck(:custom_name)
   end
 
   # no translators, editors, etc.
@@ -409,7 +398,7 @@ class WorkTest < ActiveSupport::TestCase
 
     work.save & work.reload
 
-    assert_equal ["ProducerThree"], work.authors.pluck(:name)
+    assert_equal ["Epictetus1"], work.authors.pluck(:custom_name)
   end
 
   test "self-join" do

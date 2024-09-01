@@ -140,7 +140,12 @@ private
 
   def producer_params
     params.require(:producer).permit(
-      :name,
+      :custom_name,
+      :given_name,
+      :middle_name,
+      :family_name,
+      :foreign_name,
+
       :birth_year,
       :death_year,
       :bio_link,

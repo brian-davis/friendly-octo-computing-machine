@@ -1,8 +1,20 @@
 <%= form_with(model: producer, html: { class: "table-form" }, data: { controller: "producers", producers_id_value: @producer.id, producers_request_helper_outlet: ".request-helper" }) do |form| %>
   <%= render("shared/form_errors", form: form) %>
 
-  <%= form.label :name %>
-  <%= form.text_field :name, { placeholder: "name required" } %>
+  <%= form.label :custom_name %>
+  <%= form.text_field :custom_name %>
+
+  <%= form.label :given_name %>
+  <%= form.text_field :given_name %>
+
+  <%= form.label :middle_name %>
+  <%= form.text_field :middle_name %>
+
+  <%= form.label :family_name %>
+  <%= form.text_field :family_name %>
+
+  <%= form.label :foreign_name %>
+  <%= form.text_field :foreign_name %>
 
   <%= form.label :nationality %>
   <%= form.text_field :nationality, { list: "work_nationalities_datalist" } %>

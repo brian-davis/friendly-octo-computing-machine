@@ -13,7 +13,8 @@ class CitationableTest < ActiveSupport::TestCase
         WorkProducer.new({
           role: :author,
           producer: Producer.new({
-            name: "Charles Yu"
+            given_name: "Charles",
+            family_name: "Yu"
           })
         })
       ]
@@ -39,13 +40,17 @@ class CitationableTest < ActiveSupport::TestCase
         WorkProducer.new({
           role: :co_author,
           producer: Producer.new({
-            name: "Amy J. Binder"
+            given_name: "Amy",
+            middle_name: "J.",
+            family_name: "Binder"
           })
         }),
         WorkProducer.new({
           role: :co_author,
           producer: Producer.new({
-            name: "Jeffrey L. Kidder"
+            given_name: "Jeffrey",
+            middle_name: "L.",
+            family_name: "Kidder"
           })
         })
       ]
@@ -72,13 +77,15 @@ class CitationableTest < ActiveSupport::TestCase
         WorkProducer.new({
           role: "translator",
           producer: Producer.new({
-            name: "Jeremy Tiang"
+            given_name: "Jeremy",
+            family_name: "Tiang"
           })
         }),
         WorkProducer.new({
           role: "author",
           producer: Producer.new({
-            name: "John Smith"
+            given_name: "John",
+            family_name: "Smith"
           })
         })
       ]
@@ -99,7 +106,8 @@ class CitationableTest < ActiveSupport::TestCase
         WorkProducer.new({
           role: :author,
           producer: Producer.new({
-            name: "Charles Yu"
+            given_name: "Charles",
+            family_name: "Yu"
           })
         })
       ]
@@ -139,13 +147,17 @@ class CitationableTest < ActiveSupport::TestCase
         WorkProducer.new({
           role: :co_author,
           producer: Producer.new({
-            name: "Amy J. Binder"
+            given_name: "Amy",
+            middle_name: "J.",
+            family_name: "Binder"
           })
         }),
         WorkProducer.new({
           role: :co_author,
           producer: Producer.new({
-            name: "Jeffrey L. Kidder"
+            given_name: "Jeffrey",
+            middle_name: "L.",
+            family_name: "Kidder"
           })
         })
       ]
@@ -192,13 +204,14 @@ class CitationableTest < ActiveSupport::TestCase
         WorkProducer.new({
           role: :editor,
           producer: Producer.new({
-            name: "P. J. M. Marks"
+            custom_name: "P. J. M. Marks"
           })
         }),
         WorkProducer.new({
           role: :editor,
           producer: Producer.new({
-            name: "Stephen Parkin"
+            given_name: "Stephen",
+            family_name: "Parkin"
           })
         }),
       ]
@@ -212,7 +225,8 @@ class CitationableTest < ActiveSupport::TestCase
         WorkProducer.new({
           role: :author,
           producer: Producer.new({
-            name: "Kathleen Doyle"
+            given_name: "Kathleen",
+            family_name: "Doyle"
           })
         })
       ]
@@ -249,13 +263,14 @@ class CitationableTest < ActiveSupport::TestCase
         WorkProducer.new({
           role: :editor,
           producer: Producer.new({
-            name: "P. J. M. Marks"
+            custom_name: "P. J. M. Marks"
           })
         }),
         WorkProducer.new({
           role: :editor,
           producer: Producer.new({
-            name: "Stephen Parkin"
+            given_name: "Stephen",
+            family_name: "Parkin"
           })
         }),
       ]
@@ -285,13 +300,14 @@ class CitationableTest < ActiveSupport::TestCase
         WorkProducer.new({
           role: :editor,
           producer: Producer.new({
-            name: "P. J. M. Marks"
+            custom_name: "P. J. M. Marks"
           })
         }),
         WorkProducer.new({
           role: :editor,
           producer: Producer.new({
-            name: "Stephen Parkin"
+            given_name: "Stephen",
+            family_name: "Parkin"
           })
         }),
       ]
@@ -305,7 +321,8 @@ class CitationableTest < ActiveSupport::TestCase
         WorkProducer.new({
           role: :author,
           producer: Producer.new({
-            name: "Kathleen Doyle"
+            given_name: "Kathleen",
+            family_name: "Doyle"
           })
         })
       ]
@@ -317,9 +334,39 @@ class CitationableTest < ActiveSupport::TestCase
     })
 
     expected = "Doyle, “Queen Mary Psalter,” 64."
-
     result = quote.short_citation_markdown
+    assert_equal expected, result
+  end
 
+  test "bibliography for dictionary" do
+    # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-book
+
+    work = Work.create({
+      title: "French-English Dictionary",
+      subtitle: "",
+      alternate_title: "Merriam-Webster's French-English Dictionary",
+      foreign_title: "Dictionnaire Anglais-Français",
+      year_of_publication: 2005,
+      format: "book", # nothing special
+
+      publisher: Publisher.new({
+        name: "Merriam-Webster, Incorporated"
+      }),
+
+      work_producers: [
+        WorkProducer.new({
+          role: :editor,
+          producer: Producer.new({
+            given_name: "Eileen",
+            middle_name: "M.",
+            family_name: "Haraty"
+          })
+        })
+      ]
+    })
+
+    expected = "Haraty, Eileen M.. _French-English Dictionary_. Merriam-Webster, Incorporated, 2005."
+    result = work.bibliography_markdown
     assert_equal expected, result
   end
 end

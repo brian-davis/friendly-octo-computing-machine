@@ -90,7 +90,7 @@ class Work < ApplicationRecord
 
   scope :untagged, -> { where({ tags: [] }) }
 
-  enum format: [:book, :article, :chapter, :compilation]
+  enum format: [:book, :article, :chapter, :compilation, :reference]
 
   class << self
     # pseudo-enum

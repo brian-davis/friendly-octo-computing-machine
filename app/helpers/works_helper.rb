@@ -18,10 +18,8 @@ module WorksHelper
 
   def byline(work)
     authors = work.authors
-    author_names = authors.pluck(:name).map do |name|
-      first_name, last_name = name.split(" ")
-      formal_name = last_name || first_name
-      formal_name
+    author_names = authors.pluck(:custom_name, :family_name).map do |custom_name, family_name|
+      custom_name.presence || family_name
     end.to_sentence
     year = common_era_year(work.year_of_composition) # ApplicationHelper
 
