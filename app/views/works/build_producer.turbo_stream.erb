@@ -2,15 +2,38 @@
   <%= turbo_stream.append "sub_form_list_producers" do %>
     <div class="outline subFormContainer" data-dismissable-target="subForm">
       <%= form.fields_for :work_producers, @work.work_producers.build do |t| %>
-        <div class="subform-line">
-          <%= t.fields_for :producer_attributes, t.object.build_producer do |tt| %>
-            <%# COLUMN 1 %>
-            <b>Name:</b>
+        <%= t.fields_for :producer_attributes, t.object.build_producer do |tt| %>
 
-            <%# COLUMN 2 %>
-            <%= tt.text_field :name %>
-          <% end %>
-        </div>
+          <%# TODO: use flex for .subform-line everywhere %>
+          <div class="subform-line">
+          <%# COLUMN 1 %>
+          <b>Custom Name:</b>
+          <%# COLUMN 2 %>
+          <%= tt.text_field :custom_name %>
+          </div>
+
+          <div class="subform-line">
+          <%# COLUMN 1 %>
+          <b>Given Name:</b>
+          <%# COLUMN 2 %>
+          <%= tt.text_field :given_name %>
+          </div>
+
+          <div class="subform-line">
+          <%# COLUMN 1 %>
+          <b>Middle Name:</b>
+          <%# COLUMN 2 %>
+          <%= tt.text_field :middle_name %>
+          </div>
+
+          <div class="subform-line">
+          <%# COLUMN 1 %>
+          <b>Family Name:</b>
+          <%# COLUMN 2 %>
+          <%= tt.text_field :family_name %>
+          </div>
+
+        <% end %>
 
         <div class="subform-line">
           <%# COLUMN 1 %>

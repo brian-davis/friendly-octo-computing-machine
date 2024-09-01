@@ -61,7 +61,7 @@
     <% if @work.work_producers.empty? %>
       <div class="div-list-row empty-list">EMPTY</div>
     <% else %>
-      <% @work.work_producers.joins(:producer).merge(Producer.order(:name)).each do |wp| %>
+      <% @work_producers.each do |wp| %>
         <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
           <span class="small-text"><%= wp.role.titleize.split(" ").join("-") %>: <%= wp.producer.name %></span>
           <%= link_to "👉", wp.producer, class: "index-link" %>

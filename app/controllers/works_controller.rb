@@ -27,6 +27,7 @@ class WorksController < ApplicationController
 
   # GET /works/1 or /works/1.json
   def show
+    @work_producers = @work.work_producers.includes(:producer).order("producers.name")
   end
 
   # GET /works/new
@@ -198,7 +199,13 @@ private
         :_destroy,
         :role,
         :producer_id,
-        producer_attributes: [:name]
+        producer_attributes: [
+          :custom_name,
+          :given_name,
+          :middle_name,
+          :family_name,
+          :foreign_name,
+        ]
       ],
       quotes_attributes: [
         :id,

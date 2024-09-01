@@ -19,7 +19,7 @@ module Citable
     end
 
     def bibliography_markdown
-      return unless self.is_a?(Work)
+      return "" unless self.is_a?(Work)
       if self.compilation?
         editor_names = self.editors.pluck(:name).to_sentence
         editor_status = self.editors.count > 1 ? "eds." : "ed."
@@ -40,7 +40,7 @@ module Citable
         else
           "#{formatted_authors}. _#{title}_. #{publisher}, #{year}."
         end
-        return result
+        return result || ""
       elsif self.chapter?
         formatted_authors = self.alpha_author_names
         title = self.title_and_subtitle
@@ -61,7 +61,12 @@ module Citable
         end
 
         return result
+      else
+        # TODO
+        ""
       end
+    rescue
+      ""
     end
 
     # Charles Yu, _Interior Chinatown_ (Pantheon Books, 2020), 45.
