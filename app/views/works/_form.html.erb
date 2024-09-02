@@ -40,7 +40,7 @@
         'data-autocomplete-input-target' => :datalist
       }
     ) do %>
-    <% Work.language_options.each do |language| %>
+    <% @language_options.each do |language| %>
       <%=
         content_tag(
           :option,
@@ -57,7 +57,7 @@
   <%# https://github.com/rails/rails/pull/52137 %>
   <%= form.text_field :original_language, { list: "work_original_languages_datalist", class: "correct-width-2" } %>
   <%= content_tag(:datalist, nil, id: :work_original_languages_datalist, 'data-autocomplete-input-target' => :datalist) do %>
-    <% Work.original_language_options.each do |original_language| %>
+    <% @language_options.each do |original_language| %>
       <%=
         content_tag(
           :option,
@@ -129,6 +129,7 @@
 
             <%# COLUMN 2 %>
             <%# display only; ignore on submit %>
+            <%# # TODO: avoid cache column %>
             <%= text_field_tag(:_producer_name, work_producer.producer.name, readonly: true) %>
           </div>
 

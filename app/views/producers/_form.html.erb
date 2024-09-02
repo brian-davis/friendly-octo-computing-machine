@@ -19,7 +19,7 @@
   <%= form.label :nationality %>
   <%= form.text_field :nationality, { list: "work_nationalities_datalist" } %>
   <%= content_tag(:datalist, nil, id: :work_nationalities_datalist, 'data-autocomplete-input-target' => :datalist) do %>
-    <% Producer.nationality_options.each do |nationality| %>
+    <% @nationality_options.each do |nationality| %>
       <%=
         content_tag(
           :option,

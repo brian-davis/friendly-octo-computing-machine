@@ -111,6 +111,7 @@ class BookshelfMetrics
       producer = Producer.find_by({ id: id })
       return unless producer.try(:name)
 
+      # TODO: avoid cache column
       producer.name + ", #{count} works"
     end
 
@@ -139,6 +140,8 @@ class BookshelfMetrics
       return unless id
       producer = Producer.find_by({ id: id })
       return unless producer.try(:name)
+
+      # TODO: avoid cache column
       producer.name + ", #{human_duration(sum)}"
     end
   end

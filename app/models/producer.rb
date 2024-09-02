@@ -24,6 +24,7 @@ class Producer < ApplicationRecord
   has_many :works, through: :work_producers
   accepts_nested_attributes_for :work_producers, allow_destroy: true
 
+  # TODO: uniqueness validations
   validates :custom_name, presence: true, unless: -> { given_name? && family_name? }
   validates :given_name, presence: true, unless: -> { custom_name? }
   validates :family_name, presence: true, unless: -> { custom_name? }
@@ -57,9 +58,17 @@ class Producer < ApplicationRecord
     def nationality_options
       distinct.pluck(:nationality).compact.sort
     end
+
+    def name_options
+      # # avoid cache column
+      # distinct.order(:name).pluck(:name, :id)
+
+      ActiveRecord::Base.connection.select_all("SELECT DISTINCT COALESCE(NULLIF(custom_name, ''), CONCAT_WS(' ', NULLIF(given_name, ''), NULLIF(middle_name, ''), NULLIF(family_name, ''))) AS derived_name, id FROM producers ORDER BY derived_name").rows
+    end
   end
 
 private
+  # TODO: avoid this
   # set a canonical name for sorting, searching convenience
   def set_name
     if self.given_name.present? && self.family_name.present?

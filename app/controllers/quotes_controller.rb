@@ -98,6 +98,8 @@ private
       if params["search_term"].present?
         term = ActiveRecord::Base::sanitize_sql(params["search_term"])
         quote_ids1 = Quote.search_text(term).ids
+
+        # TODO: remove this or avoid cache column
         quote_ids2 = Quote.joins(work: :producers).where(
           "producers.name LIKE '#{term}%' OR works.title LIKE '#{term}%'"
         ).ids # can't do `.or()` here

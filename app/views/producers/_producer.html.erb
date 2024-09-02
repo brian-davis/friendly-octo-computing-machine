@@ -1,5 +1,6 @@
 <%# index views %>
 <div id="<%= dom_id producer %>">
+  <%# # TODO: avoid cache column %>
   <%= producer.name %> |
   <span class="stars"><%= (producer.works_count || 0) %></span> |
   <%= link_to "👉", producer, class: "index-link" %>

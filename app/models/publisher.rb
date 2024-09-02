@@ -21,4 +21,11 @@ class Publisher < ApplicationRecord
     works_to_remove = self.works.where({ id: destroy_ids })
     self.works -= works_to_remove
   end
+
+  class << self
+    # TODO: uniqueness validations
+    def name_options
+      distinct.order(:name).pluck(:name, :id)
+    end
+  end
 end

@@ -27,7 +27,7 @@ class WorksController < ApplicationController
 
   # GET /works/1 or /works/1.json
   def show
-    @work_producers = @work.work_producers.includes(:producer).order("producers.name")
+    @work_producers = @work.work_producers.includes(:producer)
     @bibliography = Citation::Bibliography.new(@work).entry
   end
 
@@ -156,15 +156,22 @@ private
     @work = Work.find(params[:id])
   end
 
+  # _form
   def set_form_options
     @work ||= Work.new
     @work_producers = @work.work_producers.includes(:producer)
-    @producer_options = Producer.order(:name).pluck(:name, :id).uniq
-    @publisher_options = Publisher.order(:name).pluck(:name, :id).uniq
-    @tag_options = Work.all_tags.sort
 
-    parent_ids = Work.compilation.ids - [@work.id]
-    @parent_options = Work.where(id: parent_ids).pluck(:title, :id)
+    @producer_options = Producer.name_options
+    @publisher_options = Publisher.name_options
+    @tag_options = Work.all_tags.sort
+    @language_options = Work.language_options
+
+    @parent_options = Work.parent_options(@work)
+  end
+
+  # index
+  def set_select_options
+    @language_options = Work.language_options(unspecified: true)
   end
 
   # TODO: combine with set_form_options
@@ -220,10 +227,6 @@ private
     permitted_params[:tags] ||= [] # always over-write (destructive)
     permitted_params[:tags].delete("") # ignore empty form data
     permitted_params
-  end
-
-  def set_select_options
-    @language_options = (Work.pluck(:language).compact.uniq + ["[unspecified]"]).sort
   end
 
   def filter_and_sort_works

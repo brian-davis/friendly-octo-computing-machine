@@ -85,7 +85,8 @@ private
     order_param = "#{order_arg} #{dir_arg.upcase}"
     order_params = [order_param]
     order_params << "name ASC" unless order_arg == "name"
+    order_params = order_params.uniq.join(", ")
 
-    @publishers = Publisher.all.order(*order_params)
+    @publishers = Publisher.all.order(Arel.sql(order_params))
   end
 end

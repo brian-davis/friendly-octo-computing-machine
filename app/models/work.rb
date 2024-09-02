@@ -89,17 +89,24 @@ class Work < ApplicationRecord
 
   scope :untagged, -> { where({ tags: [] }) }
 
+  # TODO: change to match Chicago
   enum format: [:book, :article, :chapter, :compilation, :reference]
 
   class << self
     # pseudo-enum
-    def language_options
-      distinct.pluck(:language).compact.sort
+    def language_options(unspecified: false)
+      saved_values = pluck(:language, :original_language).flatten.map(&:presence).compact.uniq.sort
+      unspecified ? (saved_values + ["[unspecified]"]) : saved_values
     end
 
-    # pseudo-enum
-    def original_language_options
-      distinct.pluck(:original_language).compact.sort
+    def parent_options(work)
+      Work.where.not(id: work.id).pluck(:title, :id)
+    end
+
+    def title_options
+      order(:title).pluck(:title, :id).uniq.map do |title, id|
+        [title.truncate(25), id]
+      end
     end
   end
 

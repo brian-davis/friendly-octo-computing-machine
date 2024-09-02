@@ -13,7 +13,7 @@ class ProducersTest < ApplicationSystemTestCase
   test "should create producer" do
     visit producers_url
     click_on "New producer"
-
+# TODO: avoid cache column
     fill_in "Name", with: @producer.name
     click_on "Create Producer"
 
@@ -24,7 +24,7 @@ class ProducersTest < ApplicationSystemTestCase
   test "should update Producer" do
     visit producer_url(@producer)
     click_on "Edit this producer", match: :first
-
+# TODO: avoid cache column
     fill_in "Name", with: @producer.name
     click_on "Update Producer"
 

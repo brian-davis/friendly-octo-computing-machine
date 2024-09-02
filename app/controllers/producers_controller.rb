@@ -121,16 +121,16 @@ private
     order_param = "#{order_arg} #{dir_arg.upcase}"
     order_params = [order_param]
     order_params << "name ASC" unless order_arg == "name"
+    order_params = order_params.uniq.join(", ")
 
-    @producers = @producers.order(*order_params)
+    @producers = @producers.order(Arel.sql(order_params))
   end
 
   def set_form_options
     @producer ||= Producer.new
     @work_producers = @producer.work_producers.includes(:work)
-    @work_options = Work.order(:title).pluck(:title, :id).uniq.map do |title, id|
-      [title.truncate(25), id]
-    end
+    @work_options = Work.title_options
+    @nationality_options = Producer.nationality_options
   end
 
   # TODO: combine with set_form_options
