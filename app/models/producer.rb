@@ -48,6 +48,10 @@ class Producer < ApplicationRecord
     }
   )
 
+  scope :select_names, -> () {
+    select(:id, :custom_name, :given_name, :middle_name, :family_name)
+  }
+
   class << self
     # pseudo-enum
     def nationality_options
