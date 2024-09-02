@@ -8,15 +8,17 @@
     </div>
   <% end %>
 
-  <% if @quote.citation? %>
+  <% if @long_citation %>
     <b class="label-above small-text">Long Citation</b>
     <div class="book-card outline bibliography-citation small-text">
-      <%= raw markdown.render(@quote.long_citation_markdown) %>
+      <%= raw markdown.render(@long_citation) %>
     </div>
+  <% end %>
 
+  <% if @short_citation %>
     <b class="label-above small-text">Short Citation</b>
     <div class="book-card outline bibliography-citation small-text">
-      <%= raw markdown.render(@quote.short_citation_markdown) %>
+      <%= raw markdown.render(@short_citation) %>
     </div>
   <% end %>
 

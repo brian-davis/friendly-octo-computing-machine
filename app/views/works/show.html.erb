@@ -9,9 +9,9 @@
     </div>
   <% end %>
 
-  <% if @work.citation? %>
+  <% if @bibliography %>
     <div class="book-card outline bibliography-citation small-text">
-      <%= raw markdown.render(@work.bibliography_markdown) %>
+      <%= raw markdown.render(@bibliography) %>
     </div>
   <% end %>
 

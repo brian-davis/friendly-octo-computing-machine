@@ -13,7 +13,6 @@
 #
 class Quote < ApplicationRecord
   include PgSearch::Model
-  include Citable
 
   belongs_to :work
   validates :text, presence: true

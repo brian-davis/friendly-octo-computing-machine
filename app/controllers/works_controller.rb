@@ -28,6 +28,7 @@ class WorksController < ApplicationController
   # GET /works/1 or /works/1.json
   def show
     @work_producers = @work.work_producers.includes(:producer).order("producers.name")
+    @bibliography = Citation::Bibliography.new(@work).entry
   end
 
   # GET /works/new

@@ -23,7 +23,6 @@
 #
 class Work < ApplicationRecord
   include PgSearch::Model
-  include Citable
 
   belongs_to :publisher, optional: true, counter_cache: true
   belongs_to :parent, class_name: "Work", optional: true # self join
