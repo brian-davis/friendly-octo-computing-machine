@@ -26,3 +26,13 @@ two:
 
 three:
   custom_name: Epictetus1
+
+four:
+  given_name: Samuel
+  family_name: Clemens
+  works_count: 1
+
+five:
+  given_name: Mark
+  family_name: Twain
+  works_count: 10

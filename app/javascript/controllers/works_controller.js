@@ -74,8 +74,6 @@ export default class extends Controller {
     let url = "/works/select_parent";
     url += `?parent_id=${event.currentTarget.value}`;
 
-    // TODO
-
     this.requestHelperOutlet.turboGet(url);
 
     event.currentTarget.value = "";

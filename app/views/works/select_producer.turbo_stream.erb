@@ -10,8 +10,7 @@
 
           <%# COLUMN 2 %>
           <%# display only; ignore on submit %>
-          <%# # TODO: avoid cache column %>
-          <%= text_field_tag(:_producer_name, @producer.name, readonly: true) %>
+          <%= text_field_tag(:_producer_name, @producer.full_name, readonly: true) %>
         </div>
 
         <div class="subform-line">

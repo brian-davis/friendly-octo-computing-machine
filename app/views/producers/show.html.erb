@@ -1,8 +1,7 @@
 <p style="color: green"><%= notice %></p>
 
 <div id="<%= dom_id @producer %>" class="outline">
-  <%# # TODO: avoid cache column %>
-  <b><%= @producer.name %></b>
+  <b><%= @producer.full_name %></b>
 
   <p class="small-text indented">
     <%= life_line(@producer) %>

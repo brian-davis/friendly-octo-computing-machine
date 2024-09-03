@@ -99,11 +99,13 @@ private
         term = ActiveRecord::Base::sanitize_sql(params["search_term"])
         quote_ids1 = Quote.search_text(term).ids
 
-        # TODO: remove this or avoid cache column
-        quote_ids2 = Quote.joins(work: :producers).where(
-          "producers.name LIKE '#{term}%' OR works.title LIKE '#{term}%'"
-        ).ids # can't do `.or()` here
-        full_ids = (quote_ids1 + quote_ids2).uniq
+        # # TODO: pg_search multi-model search
+        # quote_ids2 = Quote.joins(:work).where(
+        #   "producers.custom_name LIKE '#{term}%' OR producers.given_name LIKE '#{term}%' OR producers.family_name LIKE '#{term}%' OR works.title LIKE '#{term}%'"
+        # ).ids # can't do `.or()` here
+        # full_ids = (quote_ids1 + quote_ids2).uniq
+        full_ids = quote_ids1
+
         @quotes = Quote.where({ id: full_ids })
       end
 

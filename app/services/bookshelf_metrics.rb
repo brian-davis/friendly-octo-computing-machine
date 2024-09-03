@@ -111,8 +111,7 @@ class BookshelfMetrics
       producer = Producer.find_by({ id: id })
       return unless producer.try(:name)
 
-      # TODO: avoid cache column
-      producer.name + ", #{count} works"
+      producer.full_name + ", #{count} works"
     end
 
     def total_reading_time
@@ -141,8 +140,7 @@ class BookshelfMetrics
       producer = Producer.find_by({ id: id })
       return unless producer.try(:name)
 
-      # TODO: avoid cache column
-      producer.name + ", #{human_duration(sum)}"
+      producer.full_name + ", #{human_duration(sum)}"
     end
   end
 end

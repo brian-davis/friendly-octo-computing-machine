@@ -13,8 +13,9 @@ class ProducersTest < ApplicationSystemTestCase
   test "should create producer" do
     visit producers_url
     click_on "New producer"
-# TODO: avoid cache column
-    fill_in "Name", with: @producer.name
+
+    # TODO: uniqueness constraints
+    fill_in "Name", with: @producer.full_name
     click_on "Create Producer"
 
     assert_text "Producer was successfully created"
@@ -24,8 +25,8 @@ class ProducersTest < ApplicationSystemTestCase
   test "should update Producer" do
     visit producer_url(@producer)
     click_on "Edit this producer", match: :first
-# TODO: avoid cache column
-    fill_in "Name", with: @producer.name
+
+    fill_in "Name", with: @producer.full_name
     click_on "Update Producer"
 
     assert_text "Producer was successfully updated"

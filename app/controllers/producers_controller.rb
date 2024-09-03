@@ -107,23 +107,25 @@ private
       term = ActiveRecord::Base::sanitize_sql(params["search_term"])
       @producers = @producers.search_name(term).unscope(:order)
     end
-
     # order by dropdown selection
-    valid_order_params = ["name", "works_count"]
+    valid_order_params = ["full_name", "works_count"]
     valid_dir_params = ["asc", "desc"]
 
     order_param = params["order"].presence
-    order_arg = (valid_order_params & [order_param])[0] || :name
+    order_arg = (valid_order_params & [order_param])[0]
 
     dir_param = params["dir"].presence
     dir_arg = (valid_dir_params & [dir_param])[0] || :asc
 
-    order_param = "#{order_arg} #{dir_arg.upcase}"
-    order_params = [order_param]
-    order_params << "name ASC" unless order_arg == "name"
-    order_params = order_params.uniq.join(", ")
+    default_query_options = {
+      :full_name => :asc
+    }
+    new_query_options = {}
+    new_query_options[order_arg.to_sym] = dir_arg.to_sym if order_arg
 
-    @producers = @producers.order(Arel.sql(order_params))
+    query_options = default_query_options.merge(new_query_options)
+
+    @producers = @producers.order_by_full_name(query_options)
   end
 
   def set_form_options
@@ -145,6 +147,7 @@ private
       :middle_name,
       :family_name,
       :foreign_name,
+      :full_name,
 
       :birth_year,
       :death_year,

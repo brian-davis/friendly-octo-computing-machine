@@ -17,6 +17,8 @@
 #  works_count  :integer          default(0)
 #  searchable   :tsvector
 #
+
+# TODO: rename columns forename, surname;
 class Producer < ApplicationRecord
   include PgSearch::Model
 
@@ -29,7 +31,32 @@ class Producer < ApplicationRecord
   validates :given_name, presence: true, unless: -> { custom_name? }
   validates :family_name, presence: true, unless: -> { custom_name? }
 
-  before_save :set_name
+  FULL_NAME_SQL = <<~SQL.squish
+    COALESCE(
+      NULLIF(producers.custom_name, ''),
+      CONCAT_WS(
+        ' ',
+        NULLIF(producers.given_name, ''),
+        NULLIF(producers.middle_name, ''),
+        NULLIF(producers.family_name, '')
+      )
+    )
+  SQL
+
+  FULL_SURNAME_SQL = <<~SQL.squish
+    COALESCE(
+      NULLIF(producers.custom_name, ''),
+      CONCAT_WS(
+        ', ',
+        NULLIF(producers.family_name, ''),
+        CONCAT_WS(
+          ' ',
+          NULLIF(producers.given_name, ''),
+          NULLIF(producers.middle_name, '')
+        )
+      )
+    )
+  SQL
 
   pg_search_scope(
     :search_name,
@@ -49,8 +76,37 @@ class Producer < ApplicationRecord
     }
   )
 
-  scope :select_names, -> () {
-    select(:id, :custom_name, :given_name, :middle_name, :family_name)
+  scope :order_by_full_name, -> (options = {}) {
+    direction = options.delete(:full_name) || :asc
+    valid_options = options.select { |k,v| k.to_s.in?(column_names) }
+
+    # full_name always least precedence (default)
+    # IMPROVE: use ordered array of tuples, not hash
+    order(valid_options).order({ Arel.sql(FULL_NAME_SQL) => direction })
+  }
+
+  scope :pluck_full_name, -> (*args) {
+    pluck(Arel.sql(FULL_NAME_SQL), *args)
+  }
+
+  scope :where_full_name, -> (query) {
+    # TODO: use Arel for predicate & for in clause, not raw sql
+    query_str = query.map { |q| "'#{q}'" }.join(", ") # not safe
+    sql = "SELECT id FROM producers WHERE #{Producer::FULL_NAME_SQL} IN (#{query_str})"
+
+    ids = Producer.find_by_sql(sql)
+    Producer.where(id: ids)
+  }
+
+  # TODO: use for surname-sorted index
+  scope :order_by_full_surname, -> (options = {}) {
+    direction = options[:direction] || :asc
+    order({ Arel.sql(FULL_SURNAME_SQL) => direction })
+  }
+
+  # TODO: use for surname-sorted index
+  scope :pluck_full_surname, -> () {
+    pluck(Arel.sql(FULL_SURNAME_SQL))
   }
 
   class << self
@@ -59,24 +115,21 @@ class Producer < ApplicationRecord
       distinct.pluck(:nationality).compact.sort
     end
 
+    # pseudo-enum, works/_form select_options for already-saved records
     def name_options
-      # # avoid cache column
-      # distinct.order(:name).pluck(:name, :id)
-
-      ActiveRecord::Base.connection.select_all("SELECT DISTINCT COALESCE(NULLIF(custom_name, ''), CONCAT_WS(' ', NULLIF(given_name, ''), NULLIF(middle_name, ''), NULLIF(family_name, ''))) AS derived_name, id FROM producers ORDER BY derived_name").rows
+      order_by_full_name.pluck_full_name(:id)
     end
   end
 
-private
-  # TODO: avoid this
-  # set a canonical name for sorting, searching convenience
-  def set_name
-    if self.given_name.present? && self.family_name.present?
-      self.name = [self.given_name, self.middle_name, self.family_name].map(&:presence).compact.join(" ")
-    elsif self.custom_name.present?
-      self.name = self.custom_name
-    else
-      self.name = nil
-    end
+  def full_name
+    custom_name.presence || [given_name, middle_name, family_name].map(&:presence).compact.join(" ")
+  end
+
+  def full_name=(str)
+    first, *middle, last = str.split(/\s/)
+    middle = middle.join(" ")
+    self.given_name = first if first.present?
+    self.middle_name = middle if middle.present?
+    self.family_name = last if last.present?
   end
 end

@@ -213,6 +213,7 @@ private
           :middle_name,
           :family_name,
           :foreign_name,
+          :full_name
         ]
       ],
       quotes_attributes: [

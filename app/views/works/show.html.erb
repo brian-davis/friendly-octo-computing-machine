@@ -63,8 +63,7 @@
     <% else %>
       <% @work_producers.each do |wp| %>
         <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
-          <%# # TODO: avoid cache column %>
-          <span class="small-text"><%= wp.role.titleize.split(" ").join("-") %>: <%= wp.producer.name %></span>
+          <span class="small-text"><%= wp.role.titleize.split(" ").join("-") %>: <%= wp.producer.full_name %></span>
           <%= link_to "👉", wp.producer, class: "index-link" %>
         <% end %>
       <% end %>

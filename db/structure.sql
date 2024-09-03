@@ -91,7 +91,6 @@ CREATE TABLE public.producers (
     middle_name character varying,
     family_name character varying,
     foreign_name character varying,
-    name character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     birth_year integer,
@@ -571,6 +570,7 @@ ALTER TABLE ONLY public.notes
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240903162335'),
 ('20240831205129'),
 ('20240823201941'),
 ('20240821205656'),

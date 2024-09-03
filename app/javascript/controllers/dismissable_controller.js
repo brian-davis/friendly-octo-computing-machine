@@ -55,7 +55,6 @@ export default class extends Controller {
     dismissableForm.remove();
   }
 
-  // TODO: use this instead of work_controller
   dismissErrors(event) {
     // console.log("dismiss");
     const dismissableDiv = event.srcElement.closest(".dismissableDiv");
