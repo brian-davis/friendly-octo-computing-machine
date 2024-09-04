@@ -100,11 +100,17 @@ class CitableTest < ActiveSupport::TestCase
       title: "The Book by Design",
       subtitle: "The Remarkable Story of the World’s Greatest Invention",
       year_of_publication: 2023,
-      format: "compilation",
+      format: "book",
 
       publisher: Publisher.new({
         name: "University of Chicago Press"
       }),
+
+      children: [
+        Work.new({
+          title: "Chapter 1"
+        })
+      ],
 
       work_producers: [
         WorkProducer.new({

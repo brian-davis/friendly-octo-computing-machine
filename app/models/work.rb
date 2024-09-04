@@ -89,8 +89,22 @@ class Work < ApplicationRecord
 
   scope :untagged, -> { where({ tags: [] }) }
 
-  # TODO: change to match Chicago
-  enum format: [:book, :article, :chapter, :compilation, :reference]
+  # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-book
+  enum format: [
+    :book,            # Book
+    :chapter,         # Chapter or other part of an edited book
+    :translated_book, # Translated book
+    :ebook,           # Book consulted in an electronic format
+    :journal_article, # Journal article
+    :news_article,    # News or magazine article
+    :book_review,     # Book review
+    :interview,       # Interview
+    :thesis,          # Thesis or dissertation
+    :web_page,        # Web page
+    :social_media,    # Social media content
+    :video,           # Video or podcast
+    :personal         # Personal communication
+  ]
 
   class << self
     # pseudo-enum

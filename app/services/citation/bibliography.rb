@@ -7,8 +7,8 @@ module Citation
     end
 
     def entry
-      if work.compilation?
-        return unless work.editors.any? && work.publisher && work.year_of_publication
+      if work.children.any? && work.editors.any?
+        return unless work.publisher && work.year_of_publication
 
         editor_names = producer_names(work, :editors).to_sentence
 

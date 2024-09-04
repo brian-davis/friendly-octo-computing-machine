@@ -2,6 +2,10 @@
 
 - debug, follow-up for refactor of .name
 
+- remove custom name field on producer
+
+- filter/index unread books (0 reading sessions/minutes)
+
 - redo work formats
 
 - flex style on subform

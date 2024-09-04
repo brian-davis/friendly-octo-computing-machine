@@ -3,7 +3,7 @@
     <div class="outline subFormContainer" data-dismissable-target="subForm">
 
       <%= form.fields_for :parent_attributes, @work.build_parent do |t| %>
-        <%= t.hidden_field :format, value: "compilation" %>
+        <%= t.hidden_field :format, value: "book" %>
 
         <div class="subform-line">
           <%# COLUMN 1 %>

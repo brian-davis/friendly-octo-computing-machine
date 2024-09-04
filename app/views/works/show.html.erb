@@ -70,7 +70,7 @@
     <% end %>
   </div>
 
-  <% if @work.compilation? %>
+  <% if @work.children.any? %>
     <hr>
     <div style="margin-bottom: 0.5rem;">
       <b>Parts</b>
