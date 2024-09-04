@@ -83,3 +83,7 @@ gem "titleize", "~> 1.4"
 gem "redcarpet", "~> 3.6"
 
 gem "chartkick", "~> 5.1"
+
+# https://github.com/nullobject/rein
+# https://www.serhatdundar.com/posts/rails-and-postgresql-constraints/
+gem "rein", "~> 5.1"

@@ -130,7 +130,8 @@ CREATE TABLE public.publishers (
     name character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    works_count integer DEFAULT 0
+    works_count integer DEFAULT 0,
+    CONSTRAINT publishers_name_presence CHECK (((name IS NOT NULL) AND ((name)::text !~ '^\s*$'::text)))
 );
 
 
@@ -384,6 +385,14 @@ ALTER TABLE ONLY public.producers
 
 
 --
+-- Name: publishers publishers_name_unique; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.publishers
+    ADD CONSTRAINT publishers_name_unique UNIQUE (name) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: publishers publishers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -570,6 +579,7 @@ ALTER TABLE ONLY public.notes
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240904221728'),
 ('20240903162335'),
 ('20240831205129'),
 ('20240823201941'),

@@ -13,6 +13,8 @@ class Publisher < ApplicationRecord
 
   accepts_nested_attributes_for :works, allow_destroy: true
 
+  validates :name, uniqueness: true
+
   # override to delete only the association, not the record
   def works_attributes=(attrs)
     simple_attrs = attrs.values
@@ -23,7 +25,6 @@ class Publisher < ApplicationRecord
   end
 
   class << self
-    # TODO: uniqueness validations
     def name_options
       distinct.order(:name).pluck(:name, :id)
     end

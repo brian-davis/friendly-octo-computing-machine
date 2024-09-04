@@ -26,4 +26,11 @@ class PublisherTest < ActiveSupport::TestCase
     assert_equal 1, p1.works.count
     assert_equal 1, p1.works_count
   end
+
+  test "uniqueness of title" do
+    p1 = Publisher.new({
+      name: publishers(:one).name
+    })
+    refute p1.valid?
+  end
 end
