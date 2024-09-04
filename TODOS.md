@@ -2,6 +2,8 @@
 
 - debug, follow-up for refactor of .name
 
+- redo work formats
+
 - flex style on subform
 
 - home server with dynamic dns, follow tutorial
