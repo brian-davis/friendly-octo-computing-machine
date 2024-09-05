@@ -36,3 +36,8 @@ five:
   given_name: Mark
   family_name: Twain
   works_count: 10
+
+six:
+  given_name: John
+  family_name: Johnson
+  birth_year: 1980

@@ -377,6 +377,14 @@ ALTER TABLE ONLY public.notes
 
 
 --
+-- Name: producers producers_given_name_family_name_birth_year_unique; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.producers
+    ADD CONSTRAINT producers_given_name_family_name_birth_year_unique UNIQUE (given_name, family_name, birth_year) DEFERRABLE;
+
+
+--
 -- Name: producers producers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -579,6 +587,7 @@ ALTER TABLE ONLY public.notes
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240904232837'),
 ('20240904221728'),
 ('20240903162335'),
 ('20240831205129'),

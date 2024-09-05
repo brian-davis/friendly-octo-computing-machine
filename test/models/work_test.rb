@@ -241,7 +241,6 @@ class WorkTest < ActiveSupport::TestCase
 
     assert_equal 1, Work.where(title: "First Work").count
     assert_equal 1, Producer.where(custom_name: "First Author").count
-    # binding.irb
     assert_equal 1, Producer.where(custom_name: "First Translator").count
     assert_equal 2, w1.producers.count
     assert_equal 2, w1.work_producers.count
@@ -442,5 +441,39 @@ class WorkTest < ActiveSupport::TestCase
     })
 
     assert_equal(20, work.reading_sessions_minutes)
+  end
+
+  # work_producer.rb :validate_parent_role_uniqueness
+  test "same author can't be added to work twice" do
+    work = Work.create({
+      title: "test1"
+    })
+
+    producer = work.authors.create({ full_name: "test producer1" })
+    assert_equal 1, work.authors.count
+    assert_raises ActiveRecord::RecordInvalid do
+      work.authors << producer
+    end
+    assert_equal 1, work.authors.count
+
+    params = ActionController::Parameters.new(
+      "work" => {
+        "work_producers_attributes"=>{
+          "0"=>{"id"=>"#{producer.id}", "_destroy"=>"0"},
+          "1"=>{
+            "producer_attributes"=>{
+              "custom_name"=>"",
+              "full_name"=>"test producer1"
+            }
+          }
+        }
+      }
+    ).require("work").permit(work_producers_attributes: { producer_attributes: [:custom_name, :full_name]})
+
+    assert_raises ActiveRecord::RecordNotUnique do
+      work.assign_attributes(params)
+      work.save(validate:false)
+    end
+    assert_equal 1, work.authors.count
   end
 end

@@ -17,7 +17,7 @@ class PublishersControllerTest < ActionDispatch::IntegrationTest
 
   test "should create publisher" do
     assert_difference("Publisher.count") do
-      post publishers_url, params: { publisher: { name: @publisher.name } }
+      post publishers_url, params: { publisher: { name: Faker::Company.name } }
     end
 
     assert_redirected_to publisher_url(Publisher.last)

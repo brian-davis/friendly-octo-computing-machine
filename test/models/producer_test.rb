@@ -277,4 +277,27 @@ class ProducerTest < ActiveSupport::TestCase
     assert p4.in?(search2)
     refute p5.in?(search2)
   end
+
+  test "unique by full name and year" do
+    p1 = producers(:six)
+    p2 = Producer.new(given_name: p1.given_name, family_name: p1.family_name, birth_year: p1.birth_year)
+    refute p2.valid?
+    assert_equal "Name and Birth Year must be unique", p2.errors.full_messages.to_sentence
+    assert_raises ActiveRecord::RecordNotUnique do
+      p2.save(validate: false)
+    end
+  end
+
+  test "two authors with same name have date appended to full_name" do
+    p1 = Producer.create({
+      full_name: "John Smith"
+    })
+    assert p2 = Producer.create({
+      full_name: "John Smith",
+      birth_year: 1949
+    })
+    results = Producer.where_full_name("John Smith")
+    assert_equal 2, results.size
+    assert_equal ["John Smith", "John Smith (1949-)"], results.map(&:full_unique_name)
+  end
 end

@@ -31,6 +31,8 @@ class Producer < ApplicationRecord
   validates :given_name, presence: true, unless: -> { custom_name? }
   validates :family_name, presence: true, unless: -> { custom_name? }
 
+  validate :full_name_uniqueness
+
   FULL_NAME_SQL = <<~SQL.squish
     COALESCE(
       NULLIF(producers.custom_name, ''),
@@ -91,11 +93,14 @@ class Producer < ApplicationRecord
 
   scope :where_full_name, -> (query) {
     # TODO: use Arel for predicate & for in clause, not raw sql
-    query_str = query.map { |q| "'#{q}'" }.join(", ") # not safe
+    # TODO: sanitize: https://api.rubyonrails.org/classes/ActiveRecord/Sanitization/ClassMethods.html#method-i-sanitize_sql_for_conditions
+    query_str = Array(query).map { |q| "'#{q}'" }.join(", ")
+
     sql = "SELECT id FROM producers WHERE #{Producer::FULL_NAME_SQL} IN (#{query_str})"
 
     ids = Producer.find_by_sql(sql)
-    Producer.where(id: ids)
+
+    self.where(id: ids)
   }
 
   # TODO: use for surname-sorted index
@@ -122,7 +127,12 @@ class Producer < ApplicationRecord
   end
 
   def full_name
-    custom_name.presence || [given_name, middle_name, family_name].map(&:presence).compact.join(" ")
+    base_full_name = custom_name.presence || [given_name, middle_name, family_name].map(&:presence).compact.join(" ")
+  end
+
+  # Distinguish between valid authors with same name
+  def full_unique_name
+    birth_year.present? ? full_name + " (#{birth_year}-#{death_year})" : full_name
   end
 
   def full_name=(str)
@@ -131,5 +141,19 @@ class Producer < ApplicationRecord
     self.given_name = first if first.present?
     self.middle_name = middle if middle.present?
     self.family_name = last if last.present?
+  end
+
+private
+
+  def full_name_uniqueness
+    is_relevant = self.new_record? ||
+                  self.given_name_changed? ||
+                  self.family_name_changed? ||
+                  self.birth_year_changed?
+    return unless is_relevant
+    if Producer.where({ birth_year: self.birth_year })
+               .where_full_name(self.full_name).exists?
+      self.errors.add(:base, "Name and Birth Year must be unique")
+    end
   end
 end

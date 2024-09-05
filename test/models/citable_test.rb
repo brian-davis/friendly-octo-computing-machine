@@ -41,7 +41,7 @@ class CitableTest < ActiveSupport::TestCase
       }),
       work_producers: [
         WorkProducer.new({
-          role: :co_author,
+          role: :author,
           producer: Producer.new({
             given_name: "Amy",
             middle_name: "J.",
@@ -49,7 +49,7 @@ class CitableTest < ActiveSupport::TestCase
           })
         }),
         WorkProducer.new({
-          role: :co_author,
+          role: :author,
           producer: Producer.new({
             given_name: "Jeffrey",
             middle_name: "L.",

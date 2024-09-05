@@ -45,6 +45,10 @@ class ProducerFullNameTest < ActiveSupport::TestCase
     assert_equal expected, result
   end
 
+  test "where_full_nam single arg" do
+    assert Producer.where_full_name("Mark Twain").any?
+  end
+
   test "order by last name" do
     expected = ["Clemens, Samuel", "Twain, Mark"]
     result = Producer.where_full_name(["Mark Twain", "Samuel Clemens"]).order_by_full_surname.pluck_full_surname

@@ -1,21 +1,17 @@
 # TODOS
 
-- debug, follow-up for refactor of .name
-
-- remove custom name field on producer
+- improve safety of Producer.where_full_name
 
 - filter/index unread books (0 reading sessions/minutes)
 
-- redo work formats
+- book wishlist (not bought yet), with "move to collection" button once purchased
 
 - flex style on subform
 
 - home server with dynamic dns, follow tutorial
 
-- more citations, redo works formats
+- more citations (all formats)
 
-- prevent duplicate subform lines (e.g. add same author twice to work)
-
-- uniqueness validations, db constraints
+- prevent duplicate subform lines (e.g. select_producer same author twice to work)
 
 - extraneous link on publisher show view

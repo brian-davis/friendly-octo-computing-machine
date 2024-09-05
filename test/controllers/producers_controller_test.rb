@@ -17,7 +17,7 @@ class ProducersControllerTest < ActionDispatch::IntegrationTest
 
   test "should create producer" do
     assert_difference("Producer.count") do
-      post producers_url, params: { producer: { custom_name: @producer.custom_name } }
+      post producers_url, params: { producer: { custom_name: Faker::Name.name } }
     end
 
     assert_redirected_to producer_url(Producer.last)
@@ -34,7 +34,7 @@ class ProducersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update producer" do
-    patch producer_url(@producer), params: { producer: { custom_name: @producer.custom_name } }
+    patch producer_url(@producer), params: { producer: { custom_name: Faker::Name.name } }
     assert_redirected_to producer_url(@producer)
   end
 

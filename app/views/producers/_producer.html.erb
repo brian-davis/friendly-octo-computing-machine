@@ -1,6 +1,6 @@
 <%# index views %>
 <div id="<%= dom_id producer %>">
-  <%= producer.full_name %> |
+  <%= producer.full_unique_name %> |
   <span class="stars"><%= (producer.works_count || 0) %></span> |
   <%= link_to "👉", producer, class: "index-link" %>
 </div>
