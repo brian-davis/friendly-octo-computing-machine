@@ -15,3 +15,9 @@
 - prevent duplicate subform lines (e.g. select_producer same author twice to work)
 
 - extraneous link on publisher show view
+
+- year_of_birth, not birth_year
+
+- find-or-create on attributes building
+
+- series title, like "The Adventures of Tintin"
