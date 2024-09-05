@@ -41,3 +41,21 @@ six:
   given_name: John
   family_name: Johnson
   birth_year: 1980
+
+seven:
+  given_name: William
+  family_name: Williamson
+  birth_year: 1599
+  death_year: 1661
+
+eight:
+  given_name: Zilliam
+  family_name: Zilliamson
+  birth_year: -199
+  death_year: -51
+
+nine:
+  given_name: Xilliam
+  family_name: Xilliamson
+  birth_year: -50
+  death_year: 50

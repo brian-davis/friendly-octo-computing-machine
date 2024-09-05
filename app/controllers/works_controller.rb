@@ -289,6 +289,6 @@ private
       end
     end
 
-    @works = @works.order(Arel.sql(order_params))
+    @works = @works.order(Arel.sql(order_params)).includes(:parent)
   end
 end

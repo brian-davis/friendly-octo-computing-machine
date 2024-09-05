@@ -5,6 +5,15 @@ module ApplicationHelper
     year.negative? ? "#{year.abs} BCE" : "#{year.abs} CE"
   end
 
+
+  def common_era_span(early_year, late_year)
+    return if early_year.blank? && late_year.blank?
+    bc_early_year = common_era_year(early_year)
+    bc_late_year = common_era_year(late_year)
+    span = [bc_early_year, bc_late_year].map(&:presence).join(" - ")
+    "(#{span})"
+  end
+
   def markdown
     # https://github.com/vmg/redcarpet
     @markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML, autolink: true, tables: true)

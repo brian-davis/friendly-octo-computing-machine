@@ -165,3 +165,8 @@ ul.associated-items li {
 #metrics .div-list-row .metric-result {
   /* outline: 1px solid pink; */
 }
+
+.scrollable {
+  max-height: 60vh;
+  overflow: auto;
+}

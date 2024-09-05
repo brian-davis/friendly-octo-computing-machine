@@ -130,11 +130,6 @@ class Producer < ApplicationRecord
     base_full_name = custom_name.presence || [given_name, middle_name, family_name].map(&:presence).compact.join(" ")
   end
 
-  # Distinguish between valid authors with same name
-  def full_unique_name
-    birth_year.present? ? full_name + " (#{birth_year}-#{death_year})" : full_name
-  end
-
   def full_name=(str)
     first, *middle, last = str.split(/\s/)
     middle = middle.join(" ")

@@ -17,11 +17,15 @@ module WorksHelper
   end
 
   def byline(work)
-    authors = work.authors
+    authors = work.producers
     author_names = authors.pluck(:custom_name, :family_name).map do |custom_name, family_name|
       custom_name.presence || family_name
     end.to_sentence
-    year = common_era_year(work.year_of_composition) # ApplicationHelper
+
+    year_source = work.year_of_composition.presence || work.year_of_publication.presence ||
+                  work.parent&.year_of_composition.presence || work.parent&.year_of_publication.presence
+
+    year = common_era_year(year_source) # ApplicationHelper
 
     [
       author_names,

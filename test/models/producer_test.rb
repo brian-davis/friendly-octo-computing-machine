@@ -287,17 +287,4 @@ class ProducerTest < ActiveSupport::TestCase
       p2.save(validate: false)
     end
   end
-
-  test "two authors with same name have date appended to full_name" do
-    p1 = Producer.create({
-      full_name: "John Smith"
-    })
-    assert p2 = Producer.create({
-      full_name: "John Smith",
-      birth_year: 1949
-    })
-    results = Producer.where_full_name("John Smith")
-    assert_equal 2, results.size
-    assert_equal ["John Smith", "John Smith (1949-)"], results.map(&:full_unique_name)
-  end
 end

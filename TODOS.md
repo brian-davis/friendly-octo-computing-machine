@@ -4,7 +4,7 @@
 
 - filter/index unread books (0 reading sessions/minutes)
 
-- book wishlist (not bought yet), with "move to collection" button once purchased
+- book wishlist (not bought yet), with "move to collection" button once purchased, date of purchase column
 
 - flex style on subform
 
@@ -17,6 +17,8 @@
 - extraneous link on publisher show view
 
 - year_of_birth, not birth_year
+
+- debug odd ordering by year on Work index
 
 - find-or-create on attributes building
 

@@ -1,6 +1,6 @@
 <%# index views %>
 <div id="<%= dom_id producer %>">
-  <%= producer.full_unique_name %> |
+  <%= "#{producer.full_name} #{common_era_span(producer.birth_year, producer.death_year)}" %> |
   <span class="stars"><%= (producer.works_count || 0) %></span> |
   <%= link_to "👉", producer, class: "index-link" %>
 </div>
