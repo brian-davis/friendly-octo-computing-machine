@@ -16,7 +16,7 @@ class WorkProducer < ApplicationRecord
   accepts_nested_attributes_for :producer
   accepts_nested_attributes_for :work
 
-  enum role: %i[author editor contributor translator]
+  enum role: %i[author editor contributor translator illustrator]
 
   validate :validate_parent_role_uniqueness
 
