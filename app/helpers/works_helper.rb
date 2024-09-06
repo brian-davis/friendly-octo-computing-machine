@@ -1,10 +1,4 @@
 module WorksHelper
-  def title_line(work)
-    Titleize.titleize(
-      [work.title, work.subtitle].map(&:presence).compact.join(": ")
-    )
-  end
-
   def alternate_title_line(work)
     base = [
       work.alternate_title,
@@ -17,7 +11,7 @@ module WorksHelper
   end
 
   def byline(work)
-    authors = work.producers
+    authors = work.producers.merge(WorkProducer.author).presence || work.producers
     author_names = authors.pluck(:custom_name, :family_name).map do |custom_name, family_name|
       custom_name.presence || family_name
     end.to_sentence
@@ -33,10 +27,16 @@ module WorksHelper
     ].compact.join(", ")
   end
 
+  def title_line(work)
+    Titleize.titleize(
+      [work.title, work.subtitle].map(&:presence).compact.join(": ")
+    )
+  end
+
   def full_title_line(work)
     byline = byline(work)
     return work.title if byline.blank?
-    "#{work.title} (#{byline})"
+    "#{title_line(work)} (#{byline})"
   end
 
   def publishing_line(work)

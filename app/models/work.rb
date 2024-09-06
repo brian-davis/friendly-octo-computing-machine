@@ -117,6 +117,14 @@ class Work < ApplicationRecord
       Work.where.not(id: work.id).pluck(:title, :id)
     end
 
+    def tag_options
+      all_tags.sort
+    end
+
+    def format_options
+      formats.keys.map { |k| [k.titleize, k] }
+    end
+
     def title_options
       order(:title).pluck(:title, :id).uniq.map do |title, id|
         [title.truncate(25), id]

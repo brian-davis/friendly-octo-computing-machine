@@ -68,7 +68,7 @@
     %>
     |
     <%=
-    select_options = Work.formats.keys
+    select_options = @format_options
     select_tag(
       "_order",
       options_for_select(select_options), {

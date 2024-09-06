@@ -23,7 +23,7 @@
   <%= form.number_field(:rating, class: "correct-width", in: (-1..5)) %>
 
   <%= form.label :format %>
-  <%= form.select(:format, options_for_select(Work.formats.keys, @work.format), class: "correct-width") %>
+  <%= form.select(:format, options_for_select(@format_options, @work.format), class: "correct-width") %>
 
   <%= form.label :custom_citation, "Custom Citation (Markdown)", class: "small-text" %>
   <%= form.text_field :custom_citation %>

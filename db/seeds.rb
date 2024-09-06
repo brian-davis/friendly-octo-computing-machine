@@ -213,6 +213,7 @@ unless ENV["CLEAR"]
       language: "English",
       original_language: "Greek",
       tags: ["Classics", "Tragedy", "Drama"],
+      format: :translated_book,
 
       publisher: hackett,
 
@@ -339,6 +340,7 @@ unless ENV["CLEAR"]
       language: "English",
       original_language: "French",
       tags: ["Comics"],
+      format: :translated_book,
 
       publisher: Publisher.new({
         name: "Little, Brown And Company"

@@ -163,14 +163,17 @@ private
 
     @producer_options = Producer.name_options
     @publisher_options = Publisher.name_options
-    @tag_options = Work.all_tags.sort
-    @language_options = Work.language_options
 
+    @language_options = Work.language_options
     @parent_options = Work.parent_options(@work)
+    @tag_options = Work.tag_options
+
+    @format_options = Work.format_options
   end
 
   # index
   def set_select_options
+    @format_options = Work.format_options
     @language_options = Work.language_options(unspecified: true)
   end
 
@@ -258,18 +261,22 @@ private
     dir_arg = (valid_dir_params & [dir_param])[0] || "asc"
 
     # always put unrated works at end
-    if order_arg == "rating" && dir_arg == "desc"
-      order_arg = "COALESCE(works.rating, -1)"
+    order_arg = if order_arg == "rating" && dir_arg == "desc"
+      "COALESCE(works.rating, -1)"
     elsif order_arg == "rating" && dir_arg == "asc"
-      order_arg = "COALESCE(works.rating, 9999999)"
+      "COALESCE(works.rating, 9999999)"
+    elsif order_arg == "year" && dir_arg == "desc"
+      "COALESCE(year_of_composition, year_of_publication, -9999)"
+    elsif order_arg == "year" && dir_arg == "asc"
+      "COALESCE(year_of_composition, year_of_publication, 9999)"
+    else
+      order_arg
     end
 
-    @order_value = [order_arg, dir_arg].join("-");
-    order_arg = "year_of_composition" if order_arg.to_s == "year"
     order_param = "#{order_arg} #{dir_arg.upcase}"
     order_params = [order_param]
-    order_params << "title ASC" unless order_arg == "title"
-    order_params = order_params.uniq.join(", ")
+    order_params << "title ASC" unless order_arg == "title" # secondary ordering
+    order_params = order_params.uniq.join(", ") # secondary ordering
 
     format_param = params["frmt"]
     valid_formats = Work.formats.keys
