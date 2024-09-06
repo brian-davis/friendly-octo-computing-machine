@@ -12,7 +12,7 @@
 - prevent duplicate subform lines (e.g. select_producer same author twice to work)
 
 - flex style on subform
-- extraneous link on publisher show view
+- make headings (<b> or <h1> etc) consistent
 
 - find-or-create on attributes building
 

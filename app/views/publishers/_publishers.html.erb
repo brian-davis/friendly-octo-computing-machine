@@ -3,7 +3,9 @@
 <% else %>
   <% @publishers.each do |publisher| %>
     <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
-      <%= render publisher %>
+      <%= publisher.name %> |
+      <span class="stars"><%= publisher.works_count || 0 %></span> |
+      <%= link_to "👉", publisher, class: "index-link" %>
     <% end %>
   <% end %>
 <% end %>

@@ -287,10 +287,10 @@ private
 
     lang_param = params["lang"]
     if lang_param.in?(@language_options)
-      if lang_param == "[unspecified]"
-        @works = @works.where(language: nil)
+      @works = if lang_param == "[unspecified]"
+        @works.where(language: nil)
       else
-        @works = @works.where(language: lang_param)
+        @works.where(language: lang_param)
       end
     end
 
