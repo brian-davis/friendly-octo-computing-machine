@@ -1,7 +1,7 @@
 <p style="color: green"><%= notice %></p>
 
 <div id="<%= dom_id @publisher %>">
-  <b><%= @publisher.name %></b>
+  <b class="minor-heading"><%= @publisher.name %></b>
   <div class="outline">
     <b>Books</b> <span class="stars"><%= @publisher.works_count || 0 %></span>
     <div class="associated-items">

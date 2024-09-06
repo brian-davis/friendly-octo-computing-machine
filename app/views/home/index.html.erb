@@ -2,49 +2,64 @@
   data-homepage-request-helper-outlet=".request-helper"
   data-homepage-endpoint-value="/">
   <h1 class="max-heading">BOOKSHELF</h1>
+  <hr>
   <p>A personal library catalog, note-taking, and reading and writing app</p>
+  <hr>
+  <div
+    id="tabbed-summaries"
+    data-controller="tabs"
+    data-tabs-tab-selected-class="tab-selected"
+    data-tabs-tab-content-selected-class="tab-content-selected">
+
+    <div class="tab tab-selected" data-action="click->tabs#selectTab" data-tabs-target="tab" data-tabs-select-param="metrics">
+      metrics
+    </div>
+
+    <div class="tab" data-action="click->tabs#selectTab" data-tabs-target="tab" data-tabs-select-param="graph">
+      graph
+    </div>
+
+    <div class="tab-content tab-content-selected" id="metrics" data-tabs-target="tabContent">
+      <% @summary.each do |metric| %>
+        <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
+          <b class="metric-label small-text"><%= metric[:label] %></b>
+          <span class="metric-result"><%= metric[:result] %></span>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="tab-content" id="graph" data-tabs-target="tabContent">
+      <%=
+      select_options = [
+        ["past week",  "week"],
+        ["past month", "month"],
+        ["past year",  "year"],
+        ["all time",   "all"]
+      ]
+      select_tag(
+        "_chart_usage",
+        options_for_select(select_options), {
+          class: "select-button small-text",
+          style: "margin-bottom: 0.5rem;",
+          # include_blank: "Period",
+          data: {
+            action: "change->homepage#selectPeriod"
+          }
+        })
+      %>
+
+      <div id="chartkick-chart-usage" class="outline">
+        <%#= debug(@chart_usage) %>
+        <%= column_chart(@chart_usage) %>
+      </div>
+    </div>
+  </div>
+
   <hr>
   <div class="nav-links">
     <%= link_to("Books", works_path, class: "nav-button") %>
     <%= link_to("Authors", producers_path, class: "nav-button") %>
     <%= link_to("Publishers", publishers_path, class: "nav-button") %>
     <%= link_to("Quotes", quotes_path, class: "nav-button") %>
-  </div>
-
-  <hr>
-
-  <div id="metrics">
-    <% @summary.each do |metric| %>
-      <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
-        <b class="metric-label small-text"><%= metric[:label] %></b>
-        <span class="metric-result"><%= metric[:result] %></span>
-      <% end %>
-    <% end %>
-  </div>
-
-  <hr>
-
-  <%=
-  select_options = [
-    ["past week",  "week"],
-    ["past month", "month"],
-    ["past year",  "year"],
-    ["all time",   "all"]
-  ]
-  select_tag(
-    "_chart_usage",
-    options_for_select(select_options), {
-      class: "select-button small-text",
-      style: "margin-bottom: 0.5rem;",
-      # include_blank: "Period",
-      data: {
-        action: "change->homepage#selectPeriod"
-      }
-    })
-  %>
-
-  <div id="chartkick-chart-usage" class="outline">
-    <%#= debug(@chart_usage) %>
-    <%= column_chart(@chart_usage) %>
   </div>
 </div>
