@@ -108,6 +108,8 @@ GEM
       irb (~> 1.10)
       reline (>= 0.3.8)
     drb (2.2.1)
+    enum_accessor (2.3.0)
+      activesupport (>= 3.0.0)
     erubi (1.13.0)
     faker (3.4.2)
       i18n (>= 1.8.11, < 2)
@@ -277,6 +279,7 @@ DEPENDENCIES
   capybara
   chartkick (~> 5.1)
   debug
+  enum_accessor (~> 2.3)
   faker (~> 3.4)
   importmap-rails
   jbuilder

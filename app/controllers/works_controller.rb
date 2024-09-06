@@ -281,11 +281,8 @@ private
 
     format_param = params["frmt"]
     valid_formats = Work.formats.keys
-
     if format_param.in?(valid_formats)
-      @works = @works.send(format_param)
-    else
-      @works = @works.send(:all) # keeps previous
+      @works = @works.where_format(format_param)
     end
 
     lang_param = params["lang"]
@@ -297,6 +294,7 @@ private
       end
     end
 
-    @works = @works.order(Arel.sql(order_params)).includes(:parent)
+    # bullet disabled here
+    @works = @works.order(Arel.sql(order_params)).includes(:parent).includes(:authors)
   end
 end

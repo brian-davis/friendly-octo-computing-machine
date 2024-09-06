@@ -1,6 +1,6 @@
 <%# index views %>
 <div id="<%= dom_id work %>">
-  <% unless work.book? || work.translated_book? || work.ebook? %>
+  <% unless work.format_book? || work.format_translated_book? || work.format_ebook? %>
     <i class="work-title %>">
       <%= full_title_line(work) %>
     </i>
@@ -9,7 +9,7 @@
       <%= full_title_line(work) %>
     </span>
   <% end %> |
-  <span class="stars"><%= work.format.titleize %></span> |
+  <span class="stars"><%= work.format.humanize %></span> |
   <%= rating = rating_stars(work) %> |
   <%= link_to "👉", work, class: "index-link" %>
   &nbsp;

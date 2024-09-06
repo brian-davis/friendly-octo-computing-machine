@@ -11,8 +11,21 @@ module WorksHelper
   end
 
   def byline(work)
-    authors = work.producers.merge(WorkProducer.author).presence || work.producers
-    author_names = authors.pluck(:custom_name, :family_name).map do |custom_name, family_name|
+    author_names = work.authors.pluck(:custom_name, :family_name)
+
+    # partial n + 1
+    if author_names.empty?
+      author_names = work.editors.pluck(:custom_name, :family_name)
+    end
+
+    # partial n + 1
+    if author_names.empty?
+      author_names = work.translators.pluck(:custom_name, :family_name)
+    end
+
+    return "" if author_names.empty?
+
+    author_names = author_names.map do |custom_name, family_name|
       custom_name.presence || family_name
     end.to_sentence
 

@@ -15,3 +15,7 @@
 - extraneous link on publisher show view
 
 - find-or-create on attributes building
+
+- try Phlex front-end https://judoscale.com/blog/phlex-not-erb, https://www.phlex.fun/
+
+- make gem for pseudo-enum

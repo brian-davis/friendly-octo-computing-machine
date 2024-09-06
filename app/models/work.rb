@@ -29,9 +29,8 @@ class Work < ApplicationRecord
   belongs_to :parent, class_name: "Work", optional: true # self join
 
   has_many :children, class_name: "Work", foreign_key: "parent_id" # self join
-
   has_many :work_producers, dependent: :destroy
-  has_many :producers, -> { merge(WorkProducer.order(:created_at)) }, **{
+  has_many :producers, **{
     through: :work_producers,
     source: :producer
   }
@@ -40,15 +39,17 @@ class Work < ApplicationRecord
   has_many :notes, dependent: :destroy
   has_many :reading_sessions, dependent: :destroy
 
-  has_many :authors, -> { merge(WorkProducer.authors).merge(WorkProducer.order(:created_at)) }, **{
+  has_many :authors, -> { merge(WorkProducer.authors) }, **{
     through: :work_producers,
     source: :producer
   }
-  has_many :editors, -> { merge(WorkProducer.editor).merge(WorkProducer.order(:created_at)) }, **{
+
+  has_many :editors, -> { merge(WorkProducer.editor) }, **{
     through: :work_producers,
     source: :producer
   }
-  has_many :translators, -> { merge(WorkProducer.translator).merge(WorkProducer.order(:created_at)) }, **{
+
+  has_many :translators, -> { merge(WorkProducer.translator) }, **{
     through: :work_producers,
     source: :producer
   }
@@ -91,7 +92,7 @@ class Work < ApplicationRecord
   scope :untagged, -> { where({ tags: [] }) }
 
   # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-book
-  enum format: [
+  enum_accessor :format, [
     :book,            # Book
     :chapter,         # Chapter or other part of an edited book
     :translated_book, # Translated book
@@ -115,7 +116,7 @@ class Work < ApplicationRecord
     end
 
     def parent_options(work)
-      Work.where.not(id: work.id).pluck(:title, :id)
+      where.not(id: work.id).pluck(:title, :id)
     end
 
     def tag_options
@@ -123,7 +124,9 @@ class Work < ApplicationRecord
     end
 
     def format_options
-      formats.keys.map { |k| [k.titleize, k] }
+      # formats.keys.map { |k| [k.titleize, k] }
+
+      formats.keys.map { |k| [k.humanize, k] }
     end
 
     def title_options

@@ -18,7 +18,7 @@ module Citation
         year = work.year_of_publication
 
         "#{editor_names}, #{editor_status}, _#{title}_ (#{publisher}, #{year})."
-      elsif work.book? || work.translated_book?
+      elsif work.format_book? || work.format_translated_book?
         return unless work.authors.any? && work.publisher && work.year_of_publication
 
         author_names = alpha_producer_names(work)
@@ -35,7 +35,7 @@ module Citation
           "#{author_names}. _#{title}_. #{publisher}, #{year}."
         end
 
-      elsif work.chapter?
+      elsif work.format_chapter?
         return unless work.authors.any? && work.parent.publisher && work.parent.year_of_publication
 
         author_names = alpha_producer_names(work)
