@@ -9,7 +9,7 @@
       <%= full_title_line(work) %>
     </span>
   <% end %> |
-  <span class="stars"><%= work.format %></span> |
+  <span class="stars"><%= work.format.titleize %></span> |
   <%= rating = rating_stars(work) %> |
   <%= link_to "👉", work, class: "index-link" %>
   &nbsp;

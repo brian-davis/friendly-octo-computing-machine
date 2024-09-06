@@ -317,7 +317,8 @@ unless ENV["CLEAR"]
     })
 
     tintin_au_tibet = Work.create({
-      title: "Les Aventures De Tintin: Tintin au Tibet",
+      supertitle: "Les Aventures De Tintin",
+      title: "Tintin au Tibet",
       year_of_publication: 1960,
       language: "French",
       tags: ["Comics"],
@@ -335,7 +336,8 @@ unless ENV["CLEAR"]
     })
 
     tintin_king_ottokar = Work.create({
-      title: "The Adventures Of Tintin: King Ottokar's Sceptre",
+      supertitle: "The Adventures Of Tintin",
+      title: "King Ottokar's Sceptre",
       year_of_publication: 1947,
       language: "English",
       original_language: "French",

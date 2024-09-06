@@ -1,6 +1,6 @@
 <p style="color: green"><%= notice %></p>
 
-<b><%= @work.title %></b>
+<b><%= title_line(@work) %></b>
 <hr>
 <div id="<%= dom_id @work %>" class="outline">
   <% if @work.custom_citation.present? %>

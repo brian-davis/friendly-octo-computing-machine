@@ -186,6 +186,7 @@ private
     permitted_params = params.require(:work).permit(
       :title,
       :subtitle,
+      :supertitle,
       :alternate_title,
       :foreign_title,
       :year_of_composition,

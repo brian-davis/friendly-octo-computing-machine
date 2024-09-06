@@ -29,7 +29,7 @@ module WorksHelper
 
   def title_line(work)
     Titleize.titleize(
-      [work.title, work.subtitle].map(&:presence).compact.join(": ")
+      [work.supertitle, work.title, work.subtitle].map(&:presence).compact.join(": ")
     )
   end
 
@@ -58,7 +58,14 @@ module WorksHelper
   end
 
   def rating_stars(work)
-    return "" if work.rating.nil?
-    tag.span(("★" * work.rating), class: "stars")
+    empty = "☆"
+    full =  "★"
+    stars = []
+    work.rating.to_i.times { stars << full }
+    until stars.length == 5
+      stars << empty
+    end
+    result = stars.join()
+    tag.span(result, class: "stars")
   end
 end

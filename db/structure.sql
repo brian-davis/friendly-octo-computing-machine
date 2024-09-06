@@ -288,7 +288,8 @@ CREATE TABLE public.works (
     rating integer,
     format integer DEFAULT 0,
     custom_citation character varying,
-    parent_id integer
+    parent_id integer,
+    supertitle character varying
 );
 
 
@@ -587,6 +588,7 @@ ALTER TABLE ONLY public.notes
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240906015418'),
 ('20240904232837'),
 ('20240904221728'),
 ('20240903162335'),

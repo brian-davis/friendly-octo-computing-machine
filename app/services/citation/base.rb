@@ -28,8 +28,9 @@ module Citation
       work.title.sub("The ", "")
     end
 
+    # TODO: DRY with works_helper.rb :title_line
     def long_title(work)
-      [work.title, work.subtitle].map(&:presence).compact.join(": ")
+      [work.supertitle, work.title, work.subtitle].map(&:presence).compact.join(": ")
     end
   end
 end
