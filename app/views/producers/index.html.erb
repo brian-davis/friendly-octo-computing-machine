@@ -4,7 +4,8 @@
      data-controller="sortable"
      data-sortable-request-helper-outlet=".request-helper"
      data-sortable-endpoint-value="/producers">
-  <h1>Authors</h1>
+  <b class="minor-heading">Authors</b>
+  <hr>
   <div data-controller="producers">
     <%= text_field_tag(:search, nil, class: "search-box", data: { sortable_target: "search"}) %>
     <%= link_to("Search", "#", class: "search-button", data: { action: "click->sortable#search" }) %>

@@ -5,8 +5,8 @@
      data-sortable-request-helper-outlet=".request-helper"
      data-sortable-endpoint-value="<%= quotes_path %>">
 
-  <b>All Quotes</b>
-  <br><br>
+  <b class="minor-heading">All Quotes</b>
+  <hr>
   <%= text_field_tag(:search, nil, class: "search-box", data: { sortable_target: "search"}) %>
   <%= link_to("Search", "#", class: "search-button", data: { action: "click->sortable#search" }) %>
 
@@ -14,7 +14,6 @@
   <div id="quotes" class="scrollable">
     <%= render("general_quotes") %>
   </div>
-  <hr>
 </div>
 <hr>
 <div class="nav-links">

@@ -4,7 +4,9 @@
      data-controller="sortable"
      data-sortable-request-helper-outlet=".request-helper"
      data-sortable-endpoint-value="/works">
-  <h1>Books</h1>
+
+  <b class="major-heading">Books</b>
+
   <hr>
   <div class="cloud-list">
     <%= link_to(works_path, style: "text-decoration: none;", data: { turbo_stream: true, action: "click->sortable#decorateTagClick", filter_value: "all" }) do %>

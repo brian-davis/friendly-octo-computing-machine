@@ -1,7 +1,7 @@
 <p style="color: green"><%= notice %></p>
 
-<b><%= title_line(@work) %></b>
-<hr>
+<b class="minor-heading"><%= title_line(@work) %></b>
+
 <div id="<%= dom_id @work %>" class="outline">
   <% if @work.custom_citation.present? %>
     <div class="book-card outline bibliography-citation small-text">

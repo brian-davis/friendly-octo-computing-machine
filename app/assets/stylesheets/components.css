@@ -170,3 +170,26 @@ ul.associated-items li {
   max-height: 60vh;
   overflow: auto;
 }
+
+b.minor-heading,
+b.major-heading {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  font-size: larger;
+  background-color: aliceblue;
+  color: cadetblue;
+  padding: 0.5rem;
+}
+
+b.major-heading {
+  /* use <hr> below */
+  margin-bottom: unset;
+}
+
+h1.max-heading {
+  background-color: aliceblue;
+  color: cadetblue;
+  padding: 0.5rem;
+  margin: unset;
+}
