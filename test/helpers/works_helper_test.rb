@@ -23,8 +23,8 @@ class WorksHelperTest < ActiveSupport::TestCase
   def sophocles
     @sophocles ||= Producer.new({
       custom_name: "Sophocles",
-      birth_year: -495,
-      death_year: -405
+      year_of_birth: -495,
+      year_of_death: -405
     })
   end
 

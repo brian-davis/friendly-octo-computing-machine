@@ -149,8 +149,8 @@ private
       :foreign_name,
       :full_name,
 
-      :birth_year,
-      :death_year,
+      :year_of_birth,
+      :year_of_death,
       :bio_link,
       :nationality,
 

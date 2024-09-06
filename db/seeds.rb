@@ -113,6 +113,7 @@ unless ENV["CLEAR"]
       year_of_publication: 2006,
       language: "English",
       original_language: "Greek",
+      format: :translated_book,
       tags: ["Classics", "Philosophy", "Ancient Rome", "Stoicism", "Penguin Classics"],
 
       publisher: penguin,
@@ -123,8 +124,8 @@ unless ENV["CLEAR"]
           producer: Producer.new({
             custom_name: "Marcus Aurelius",
             foreign_name: "Marcus Aurelius Antoninus",
-            birth_year: 121,
-            death_year: 180
+            year_of_birth: 121,
+            year_of_death: 180
           })
         }),
         WorkProducer.new({
@@ -148,6 +149,7 @@ unless ENV["CLEAR"]
       year_of_publication: 2007,
       language: "English",
       original_language: "Latin",
+      format: :translated_book,
       tags: ["Classics", "History", "Ancient Rome", "Penguin Classics"],
 
       publisher: penguin,
@@ -158,8 +160,8 @@ unless ENV["CLEAR"]
           producer: Producer.new({
             custom_name: "Suetonius",
             foreign_name: "Gaius Suetonius Tranquillus",
-            birth_year: 70,
-            death_year: 130
+            year_of_birth: 70,
+            year_of_death: 130
           })
         }),
         WorkProducer.new({
@@ -178,6 +180,7 @@ unless ENV["CLEAR"]
       year_of_publication: 2008,
       language: "English",
       original_language: "Greek",
+      format: :translated_book,
       tags: ["Classics", "Philosophy", "Ancient Rome", "Stoicism", "Penguin Classics"],
 
       publisher: penguin,
@@ -187,8 +190,8 @@ unless ENV["CLEAR"]
           role: :author,
           producer: Producer.new({
             custom_name: "Epictetus",
-            birth_year: 55,
-            death_year: 135
+            year_of_birth: 55,
+            year_of_death: 135
           })
         }),
         WorkProducer.new({
@@ -202,8 +205,8 @@ unless ENV["CLEAR"]
 
     sophocles = Producer.new({
       custom_name: "Sophocles",
-      birth_year: -495,
-      death_year: -405
+      year_of_birth: -495,
+      year_of_death: -405
     })
 
     theban_plays = Work.create({

@@ -2,20 +2,20 @@
 #
 # Table name: producers
 #
-#  id           :bigint           not null, primary key
-#  custom_name  :string
-#  given_name   :string
-#  middle_name  :string
-#  family_name  :string
-#  foreign_name :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  birth_year   :integer
-#  death_year   :integer
-#  bio_link     :string
-#  nationality  :string
-#  works_count  :integer          default(0)
-#  searchable   :tsvector
+#  id            :bigint           not null, primary key
+#  custom_name   :string
+#  given_name    :string
+#  middle_name   :string
+#  family_name   :string
+#  foreign_name  :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  year_of_birth :integer
+#  year_of_death :integer
+#  bio_link      :string
+#  nationality   :string
+#  works_count   :integer          default(0)
+#  searchable    :tsvector
 #
 
 one:
@@ -40,22 +40,22 @@ five:
 six:
   given_name: John
   family_name: Johnson
-  birth_year: 1980
+  year_of_birth: 1980
 
 seven:
   given_name: William
   family_name: Williamson
-  birth_year: 1599
-  death_year: 1661
+  year_of_birth: 1599
+  year_of_death: 1661
 
 eight:
   given_name: Zilliam
   family_name: Zilliamson
-  birth_year: -199
-  death_year: -51
+  year_of_birth: -199
+  year_of_death: -51
 
 nine:
   given_name: Xilliam
   family_name: Xilliamson
-  birth_year: -50
-  death_year: 50
+  year_of_birth: -50
+  year_of_death: 50

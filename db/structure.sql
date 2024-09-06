@@ -93,8 +93,8 @@ CREATE TABLE public.producers (
     foreign_name character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    birth_year integer,
-    death_year integer,
+    year_of_birth integer,
+    year_of_death integer,
     bio_link character varying,
     nationality character varying,
     works_count integer DEFAULT 0,
@@ -378,11 +378,11 @@ ALTER TABLE ONLY public.notes
 
 
 --
--- Name: producers producers_given_name_family_name_birth_year_unique; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: producers producers_given_name_family_name_year_of_birth_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.producers
-    ADD CONSTRAINT producers_given_name_family_name_birth_year_unique UNIQUE (given_name, family_name, birth_year) DEFERRABLE;
+    ADD CONSTRAINT producers_given_name_family_name_year_of_birth_unique UNIQUE (given_name, family_name, year_of_birth) DEFERRABLE;
 
 
 --
@@ -588,6 +588,7 @@ ALTER TABLE ONLY public.notes
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240906021511'),
 ('20240906015418'),
 ('20240904232837'),
 ('20240904221728'),

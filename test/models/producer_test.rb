@@ -2,20 +2,20 @@
 #
 # Table name: producers
 #
-#  id           :bigint           not null, primary key
-#  custom_name  :string
-#  given_name   :string
-#  middle_name  :string
-#  family_name  :string
-#  foreign_name :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  birth_year   :integer
-#  death_year   :integer
-#  bio_link     :string
-#  nationality  :string
-#  works_count  :integer          default(0)
-#  searchable   :tsvector
+#  id            :bigint           not null, primary key
+#  custom_name   :string
+#  given_name    :string
+#  middle_name   :string
+#  family_name   :string
+#  foreign_name  :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  year_of_birth :integer
+#  year_of_death :integer
+#  bio_link      :string
+#  nationality   :string
+#  works_count   :integer          default(0)
+#  searchable    :tsvector
 #
 require "test_helper"
 
@@ -280,7 +280,7 @@ class ProducerTest < ActiveSupport::TestCase
 
   test "unique by full name and year" do
     p1 = producers(:six)
-    p2 = Producer.new(given_name: p1.given_name, family_name: p1.family_name, birth_year: p1.birth_year)
+    p2 = Producer.new(given_name: p1.given_name, family_name: p1.family_name, year_of_birth: p1.year_of_birth)
     refute p2.valid?
     assert_equal "Name and Birth Year must be unique", p2.errors.full_messages.to_sentence
     assert_raises ActiveRecord::RecordNotUnique do

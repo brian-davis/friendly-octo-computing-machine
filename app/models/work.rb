@@ -20,6 +20,7 @@
 #  format              :integer          default("book")
 #  custom_citation     :string
 #  parent_id           :integer
+#  supertitle          :string
 #
 class Work < ApplicationRecord
   include PgSearch::Model

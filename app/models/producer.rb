@@ -2,20 +2,20 @@
 #
 # Table name: producers
 #
-#  id           :bigint           not null, primary key
-#  custom_name  :string
-#  given_name   :string
-#  middle_name  :string
-#  family_name  :string
-#  foreign_name :string
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  birth_year   :integer
-#  death_year   :integer
-#  bio_link     :string
-#  nationality  :string
-#  works_count  :integer          default(0)
-#  searchable   :tsvector
+#  id            :bigint           not null, primary key
+#  custom_name   :string
+#  given_name    :string
+#  middle_name   :string
+#  family_name   :string
+#  foreign_name  :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  year_of_birth :integer
+#  year_of_death :integer
+#  bio_link      :string
+#  nationality   :string
+#  works_count   :integer          default(0)
+#  searchable    :tsvector
 #
 
 # TODO: rename columns forename, surname;
@@ -144,9 +144,9 @@ private
     is_relevant = self.new_record? ||
                   self.given_name_changed? ||
                   self.family_name_changed? ||
-                  self.birth_year_changed?
+                  self.year_of_birth_changed?
     return unless is_relevant
-    if Producer.where({ birth_year: self.birth_year })
+    if Producer.where({ year_of_birth: self.year_of_birth })
                .where_full_name(self.full_name).exists?
       self.errors.add(:base, "Name and Birth Year must be unique")
     end

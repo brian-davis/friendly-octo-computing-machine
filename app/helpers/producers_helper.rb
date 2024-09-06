@@ -1,9 +1,9 @@
 module ProducersHelper
   def life_line(producer)
-    lifetime = if (producer.birth_year || producer.death_year)
+    lifetime = if (producer.year_of_birth || producer.year_of_death)
       [
-        common_era_year(producer.birth_year),
-        common_era_year(producer.death_year)
+        common_era_year(producer.year_of_birth),
+        common_era_year(producer.year_of_death)
       ].map(&:presence).join(" — ") # 1 side empty OK
     end
 
