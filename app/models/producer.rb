@@ -60,6 +60,13 @@ class Producer < ApplicationRecord
     )
   SQL
 
+  SURNAME_SQL = <<~SQL.squish
+    COALESCE(
+      NULLIF(producers.custom_name, ''),
+      NULLIF(producers.family_name, '')
+    )
+  SQL
+
   pg_search_scope(
     :search_name,
     {
@@ -89,6 +96,14 @@ class Producer < ApplicationRecord
 
   scope :pluck_full_name, -> (*args) {
     pluck(Arel.sql(FULL_NAME_SQL), *args)
+  }
+
+  scope :pluck_last_name, -> (*args) {
+    pluck(Arel.sql(SURNAME_SQL), *args)
+  }
+
+  scope :pluck_alpha_name, -> (*args) {
+    pluck(Arel.sql(FULL_SURNAME_SQL), *args)
   }
 
   scope :where_full_name, -> (query) {

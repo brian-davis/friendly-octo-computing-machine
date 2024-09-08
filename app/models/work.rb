@@ -34,7 +34,7 @@ class Work < ApplicationRecord
 
   has_many :children, class_name: "Work", foreign_key: "parent_id" # self join
   has_many :work_producers, dependent: :destroy
-  has_many :producers, **{
+  has_many :producers, -> { merge(WorkProducer.order(:created_at)) },**{
     through: :work_producers,
     source: :producer
   }
@@ -43,17 +43,17 @@ class Work < ApplicationRecord
   has_many :notes, dependent: :destroy
   has_many :reading_sessions, dependent: :destroy
 
-  has_many :authors, -> { merge(WorkProducer.where_role(:author)) }, **{
+  has_many :authors, -> { merge(WorkProducer.where_role(:author)).merge(WorkProducer.order(:created_at)) }, **{
     through: :work_producers,
     source: :producer
   }
 
-  has_many :editors, -> { merge(WorkProducer.where_role(:editor)) }, **{
+  has_many :editors, -> { merge(WorkProducer.where_role(:editor)).merge(WorkProducer.order(:created_at)) }, **{
     through: :work_producers,
     source: :producer
   }
 
-  has_many :translators, -> { merge(WorkProducer.where_role(:translator)) }, **{
+  has_many :translators, -> { merge(WorkProducer.where_role(:translator)).merge(WorkProducer.order(:created_at)) }, **{
     through: :work_producers,
     source: :producer
   }
@@ -162,6 +162,15 @@ class Work < ApplicationRecord
 
   alias_method :complete?, def finished?
     date_of_completion.present?
+  end
+
+  def short_title
+    title.sub("The ", "")
+  end
+
+  # TODO: DRY with works_helper.rb :title_line
+  def long_title
+    [supertitle, title, subtitle].map(&:presence).compact.join(": ")
   end
 
   private
