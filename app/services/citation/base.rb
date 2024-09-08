@@ -1,7 +1,11 @@
 module Citation
   class Base
-    def alpha_producer_names(work, role = :authors)
-      authors = work.send(role).select(:id, :custom_name, :given_name, :middle_name, :family_name).to_a
+    def alpha_producer_names(work)
+      # TODO: fallbacks
+      authors = work.authors.select(:id, :custom_name, :given_name, :middle_name, :family_name).to_a
+
+
+
       first_author = authors.shift
 
       first_author_name = first_author.custom_name.presence || [

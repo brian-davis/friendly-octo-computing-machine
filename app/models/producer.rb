@@ -141,10 +141,12 @@ class Producer < ApplicationRecord
 private
 
   def full_name_uniqueness
+    # If producer has been built by subform on the work form, most columns will be nil.
+    # When submitting the producer update form, these columns may be "changed" from nil => ""
     is_relevant = self.new_record? ||
-                  self.given_name_changed? ||
-                  self.family_name_changed? ||
-                  self.year_of_birth_changed?
+                  (self.given_name_previous_change && self.given_name_changed?) ||
+                  (self.family_name_previous_change && self.family_name_changed?) ||
+                  (self.year_of_birth_previous_change && self.year_of_birth_changed?)
     return unless is_relevant
     if Producer.where({ year_of_birth: self.year_of_birth })
                .where_full_name(self.full_name).exists?

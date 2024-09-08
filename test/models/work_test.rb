@@ -294,6 +294,7 @@ class WorkTest < ActiveSupport::TestCase
       :producer_id,
       producer_attributes: [:custom_name]
     ])
+
     refute w1.update(params2)
     assert_equal ["Work producers Must be unique by role"], w1.errors.full_messages
 

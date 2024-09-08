@@ -16,12 +16,14 @@ class WorkProducer < ApplicationRecord
   accepts_nested_attributes_for :producer
   accepts_nested_attributes_for :work
 
-  enum role: %i[author editor contributor translator illustrator]
+  enum_accessor :role, %i[author editor contributor translator illustrator]
+
+  before_validation :default_role
 
   validate :validate_parent_role_uniqueness
 
   scope :authors, -> {
-    where({ role: [:author] })
+    where_role(:author)
   }
 
   class << self
@@ -31,13 +33,16 @@ class WorkProducer < ApplicationRecord
   end
 
 private
+  def default_role
+    self.role = :author if self.role.nil?
+  end
 
   def validate_parent_role_uniqueness
     if self.new_record? &&
        self.class.exists?({
          work_id: self.work_id,
          producer_id: self.producer_id,
-         role: self.role
+         role: self.class.roles[self.role] # "author" => 0
        })
 
       self.errors.add(:base, "Must be unique by role")

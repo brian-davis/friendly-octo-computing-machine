@@ -10,9 +10,11 @@ module WorksHelper
     "Also known as #{base}".html_safe
   end
 
+  # TODO: DRY with alpha_producer_names
   def byline(work)
     author_names = work.authors.pluck(:custom_name, :family_name)
 
+    # TODO: sql fallbacks
     # partial n + 1
     if author_names.empty?
       author_names = work.editors.pluck(:custom_name, :family_name)
