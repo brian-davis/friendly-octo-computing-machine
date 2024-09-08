@@ -20,11 +20,12 @@ module ApplicationHelper
   end
 
   def human_time_for(timestamp)
-    timestamp.strftime("%A, %B #{timestamp.day.ordinalize}, %Y @ %l:%M %p")
-  end
-
-  def human_updated_at(object)
-    human_time_for(object.updated_at)
+    case timestamp
+    when Date
+      timestamp.strftime("%B %e, %Y").squish
+    when ActiveSupport::TimeWithZone
+      timestamp.strftime("%A, %B #{timestamp.day.ordinalize}, %Y @ %l:%M %p")
+    end
   end
 
   def human_duration(int)

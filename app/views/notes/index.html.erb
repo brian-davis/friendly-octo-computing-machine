@@ -6,7 +6,7 @@
 <div id="notes" class="scrollable">
   <% @notes.each do |note| %>
     <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
-      <i class="small-text stars"><%= human_updated_at(note) %></i> : <%= note.text.truncate(100) %> | <%= link_to "👉", [@work, note], class: "index-link" %>
+      <i class="small-text stars"><%= human_time_for(note.updated_at) %></i> : <%= note.text.truncate(100) %> | <%= link_to "👉", [@work, note], class: "index-link" %>
     <% end %>
   <% end %>
 </div>

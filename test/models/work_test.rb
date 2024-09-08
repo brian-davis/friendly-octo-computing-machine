@@ -17,10 +17,14 @@
 #  tags                :string           default([]), is an Array
 #  searchable          :tsvector
 #  rating              :integer
-#  format              :integer          default("book")
+#  format              :integer          default(0)
 #  custom_citation     :string
 #  parent_id           :integer
 #  supertitle          :string
+#  date_of_accession   :date
+#  accession_note      :text
+#  finished            :boolean
+#  date_of_completion  :date
 #
 require "test_helper"
 
@@ -476,5 +480,16 @@ class WorkTest < ActiveSupport::TestCase
       work.save(validate:false)
     end
     assert_equal 1, work.authors.count
+  end
+
+  test "date_of_accession" do
+    w1 = works(:with_date_of_accession)
+    w2 = works(:without_date_of_accession)
+
+    assert w1.in?(Work.collection)
+    refute w2.in?(Work.collection)
+
+    assert w2.in?(Work.wishlist)
+    refute w1.in?(Work.wishlist)
   end
 end

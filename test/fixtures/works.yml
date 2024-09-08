@@ -17,10 +17,14 @@
 #  tags                :string           default([]), is an Array
 #  searchable          :tsvector
 #  rating              :integer
-#  format              :integer          default("book")
+#  format              :integer          default(0)
 #  custom_citation     :string
 #  parent_id           :integer
 #  supertitle          :string
+#  date_of_accession   :date
+#  accession_note      :text
+#  finished            :boolean
+#  date_of_completion  :date
 #
 
 one:
@@ -31,3 +35,10 @@ two:
 
 no_authors:
   title: "No Authors"
+
+with_date_of_accession:
+  title: "Astérix Le Gaulois"
+  date_of_accession: <%= Date.new(2020,1,1) %>
+
+without_date_of_accession:
+  title: "Asterix The Gaul"

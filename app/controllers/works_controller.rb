@@ -173,8 +173,18 @@ private
 
   # index
   def set_select_options
+    @sort_options = [
+      ["Title ▲", "title-asc"],
+      ["Title ▼", "title-desc"],
+      ["Year ▲", "year-asc"],
+      ["Year ▼", "year-desc"],
+      ["Rating ▲", "rating-asc"],
+      ["Rating ▼", "rating-desc"]
+    ]
     @format_options = Work.format_options
     @language_options = Work.language_options(unspecified: true)
+    @accession_options = [:collection, :wishlist].map { |opt| [opt.to_s.humanize, opt] }
+    @status_options = [:read, :unread].map { |opt| [opt.to_s.humanize, opt] }
   end
 
   # TODO: combine with set_form_options
@@ -200,6 +210,9 @@ private
       :rating,
       :_clear_publisher,
       :_clear_parent,
+      :date_of_accession,
+      :date_of_completion,
+      :accession_note,
       tags: [],
       publisher_attributes: [:name],
       parent_attributes: [
@@ -245,6 +258,18 @@ private
     else
       # ?tag=malicious
       Work.none
+    end
+
+    acc_param = params["accession"]
+    valid_accession_params = ["collection", "wishlist"]
+    if acc_param.in?(valid_accession_params)
+      @works = @works.send(acc_param)
+    end
+
+    status_param = params["sts"]
+    valid_status_params = ["read", "unread"]
+    if status_param.in?(valid_status_params)
+      @works = @works.send(status_param)
     end
 
     # filter by search term

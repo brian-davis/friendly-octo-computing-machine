@@ -91,12 +91,19 @@ unless ENV["CLEAR"]
   else
     # real books
 
+    # prep
     penguin = Publisher.create({
       name: "Penguin Books"
     })
 
     hackett = Publisher.create({
       name: "Hacket Publishing Company, Inc."
+    })
+
+    sophocles = Producer.new({
+      custom_name: "Sophocles",
+      year_of_birth: -495,
+      year_of_death: -405
     })
 
     oxford = Publisher.create({
@@ -107,6 +114,19 @@ unless ENV["CLEAR"]
       name: "Casterman"
     })
 
+    dp = Producer.new({
+      full_name: "Duncan Pritchard"
+    })
+
+    mc = Producer.new({
+      full_name: "Matthew Chrisman"
+    })
+
+    ar = Producer.new({
+      full_name: "Alisdair Richmond"
+    })
+
+    # books
     meditations = Work.create({
       title: "Meditations",
       year_of_composition: 180,
@@ -114,6 +134,9 @@ unless ENV["CLEAR"]
       language: "English",
       original_language: "Greek",
       format: :translated_book,
+      date_of_accession: Date.new(2024,4,1),
+      accession_note: "bought new from Barnes & Noble",
+
       tags: ["Classics", "Philosophy", "Ancient Rome", "Stoicism", "Penguin Classics"],
 
       publisher: penguin,
@@ -151,6 +174,8 @@ unless ENV["CLEAR"]
       original_language: "Latin",
       format: :translated_book,
       tags: ["Classics", "History", "Ancient Rome", "Penguin Classics"],
+      date_of_accession: Date.new(2024,4,1),
+      accession_note: "bought new from Barnes & Noble",
 
       publisher: penguin,
 
@@ -181,6 +206,9 @@ unless ENV["CLEAR"]
       language: "English",
       original_language: "Greek",
       format: :translated_book,
+      date_of_accession: Date.new(2024,5,1),
+      accession_note: "bought new from Barnes & Noble",
+
       tags: ["Classics", "Philosophy", "Ancient Rome", "Stoicism", "Penguin Classics"],
 
       publisher: penguin,
@@ -203,12 +231,6 @@ unless ENV["CLEAR"]
       ]
     })
 
-    sophocles = Producer.new({
-      custom_name: "Sophocles",
-      year_of_birth: -495,
-      year_of_death: -405
-    })
-
     theban_plays = Work.create({
       title: "Theban Plays",
       year_of_composition: 135,
@@ -217,6 +239,8 @@ unless ENV["CLEAR"]
       original_language: "Greek",
       tags: ["Classics", "Tragedy", "Drama"],
       format: :translated_book,
+      date_of_accession: Date.new(2024,6,1),
+      accession_note: "Bought used from Changing Hands in Tempe",
 
       publisher: hackett,
 
@@ -287,6 +311,8 @@ unless ENV["CLEAR"]
       year_of_publication: 2017,
       language: "English",
       tags: ["Philosophy", "Logic", "Oxford VSI"],
+      date_of_accession: Date.new(2024,6,10),
+      accession_note: "Bought new from Amazon",
 
       publisher: oxford,
 
@@ -306,6 +332,8 @@ unless ENV["CLEAR"]
       year_of_publication: 2010,
       language: "English",
       tags: ["Philosophy", "Information Theory", "Oxford VSI"],
+      date_of_accession: Date.new(2024,6,10),
+      accession_note: "Bought new from Amazon",
 
       publisher: oxford,
 
@@ -325,6 +353,8 @@ unless ENV["CLEAR"]
       year_of_publication: 1960,
       language: "French",
       tags: ["Comics"],
+      date_of_accession: Date.new(2024,8,1),
+      accession_note: "Bought new from European Books online",
 
       publisher: casterman,
 
@@ -346,6 +376,8 @@ unless ENV["CLEAR"]
       original_language: "French",
       tags: ["Comics"],
       format: :translated_book,
+      date_of_accession: Date.new(2010,8,1),
+      accession_note: "Don't remember when I bought this, but it was a long time ago.  Didn't read it until recently.",
 
       publisher: Publisher.new({
         name: "Little, Brown And Company"
@@ -379,6 +411,8 @@ unless ENV["CLEAR"]
       year_of_publication: 2003,
       language: "English",
       tags: ["Science", "Archaeology", "Prehistory", "History"],
+      date_of_accession: Date.new(2010,8,1),
+      accession_note: "Purchased, disposed of multiple times.",
 
       publisher: Publisher.new({
         name: "Harvard University Press"
@@ -400,6 +434,8 @@ unless ENV["CLEAR"]
       year_of_publication: 2011,
       language: "English",
       tags: ["Musicology", "History"],
+      date_of_accession: Date.new(2017,1,1),
+      accession_note: "Bought new from Amazon",
 
       publisher: oxford,
 
@@ -413,23 +449,13 @@ unless ENV["CLEAR"]
       ]
     })
 
-    dp = Producer.new({
-      full_name: "Duncan Pritchard"
-    })
-
-    mc = Producer.new({
-      full_name: "Matthew Chrisman"
-    })
-
-    ar = Producer.new({
-      full_name: "Alisdair Richmond"
-    })
-
     philosophy_for_everyone = Work.create({
       title: "Philosophy For Everyone",
       year_of_publication: 2017,
       language: "English",
       tags: ["Philosophy", "Modern"],
+      date_of_accession: Date.new(2024,2,1),
+      accession_note: "Bought direct from publisher for Coursera course.  Terrible customer service.",
 
       publisher: Publisher.new({
         name: "Routledge"

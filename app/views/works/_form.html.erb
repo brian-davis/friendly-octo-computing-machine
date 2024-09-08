@@ -17,16 +17,25 @@
   <%= form.text_field :foreign_title %>
 
   <%= form.label :year_of_composition %>
-  <%= form.number_field(:year_of_composition, class: "correct-width") %>
+  <%= form.number_field(:year_of_composition) %>
 
   <%= form.label :year_of_publication %>
-  <%= form.number_field :year_of_publication, class: "correct-width" %>
+  <%= form.number_field :year_of_publication %>
+
+  <%= form.label :date_of_accession %>
+  <%= form.date_field :date_of_accession %>
+
+  <%= form.label :accession_note %>
+  <%= form.text_field :accession_note %>
+
+  <%= form.label :date_of_completion %>
+  <%= form.date_field :date_of_completion %>
 
   <%= form.label :rating %>
-  <%= form.number_field(:rating, class: "correct-width", in: (-1..5)) %>
+  <%= form.number_field(:rating, in: (-1..5)) %>
 
   <%= form.label :format %>
-  <%= form.select(:format, options_for_select(@format_options, @work.format), class: "correct-width") %>
+  <%= form.select(:format, options_for_select(@format_options, @work.format)) %>
 
   <%= form.label :custom_citation, "Custom Citation (Markdown)", class: "small-text" %>
   <%= form.text_field :custom_citation %>

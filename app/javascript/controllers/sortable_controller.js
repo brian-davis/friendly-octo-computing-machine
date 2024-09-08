@@ -16,6 +16,8 @@ export default class extends Controller {
     this.dirValue = "";
     this.searchValue = "";
     this.languageValue = "";
+    this.accessionValue = "";
+    this.statusValue = "";
   }
 
   // index.html.erb
@@ -70,6 +72,46 @@ export default class extends Controller {
 
     // http://localhost:3000/works?tag=Classics
     let url = this.endpointValue; // or this.endpointValue
+
+    let newQuery = this._buildUrlQuery().toString();
+    // console.log(newQuery);
+    if (newQuery) {
+      url += `?${newQuery}`;
+    }
+
+    this.requestHelperOutlet.turboGet(url);
+  }
+
+  selectAccession(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    // console.log("selectAccession");
+
+    this.accessionValue = event.currentTarget.value;
+    // console.log(this.accessionValue);
+
+    // http://localhost:3000/works?accession=wishlist
+    let url = this.endpointValue;
+
+    let newQuery = this._buildUrlQuery().toString();
+    // console.log(newQuery);
+    if (newQuery) {
+      url += `?${newQuery}`;
+    }
+
+    this.requestHelperOutlet.turboGet(url);
+  }
+
+  selectStatus(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    // console.log("selectStatus");
+
+    this.statusValue = event.currentTarget.value;
+    // console.log(this.statusValue);
+
+    // http://localhost:3000/works?sts=read
+    let url = this.endpointValue;
 
     let newQuery = this._buildUrlQuery().toString();
     // console.log(newQuery);
@@ -146,6 +188,15 @@ export default class extends Controller {
 
     if (this.languageValue) {
       queryData.lang = this.languageValue;
+    }
+
+    if (this.accessionValue) {
+      queryData.accession = this.accessionValue;
+    }
+
+    if (this.statusValue) {
+      // avoid "status" keyword
+      queryData.sts = this.statusValue;
     }
 
     const searchParams = new URLSearchParams(queryData);

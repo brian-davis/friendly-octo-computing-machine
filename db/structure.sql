@@ -289,7 +289,11 @@ CREATE TABLE public.works (
     format integer DEFAULT 0,
     custom_citation character varying,
     parent_id integer,
-    supertitle character varying
+    supertitle character varying,
+    date_of_accession date,
+    accession_note text,
+    finished boolean,
+    date_of_completion date
 );
 
 
@@ -588,6 +592,10 @@ ALTER TABLE ONLY public.notes
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240908012039'),
+('20240908011849'),
+('20240907232930'),
+('20240907225507'),
 ('20240906021511'),
 ('20240906015418'),
 ('20240904232837'),

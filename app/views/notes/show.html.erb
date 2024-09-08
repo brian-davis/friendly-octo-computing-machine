@@ -2,7 +2,7 @@
 
 <div id="<%= dom_id @note %>" class="outline">
   <i class="small-text stars">
-  <%= human_updated_at(@note) %>
+  <%= human_time_for(@note.updated_at) %>
   </i>
   <br>
   <br>

@@ -66,7 +66,7 @@ module WorksHelper
     if work.original_language.present? && work.language.present?
       "#{work.language}, translated from #{work.original_language}"
     elsif work.original_language.present? || work.language.present?
-      "#{work.original_language.presence || work.language.presence} language"
+      "#{work.original_language.presence || work.language.presence}"
     end
   end
 

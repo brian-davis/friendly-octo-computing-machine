@@ -3,6 +3,7 @@
 <b class="minor-heading"><%= title_line(@work) %></b>
 
 <div id="<%= dom_id @work %>" class="outline">
+  <%# DEBUG %>
   <% if @work.custom_citation.present? %>
     <div class="book-card outline bibliography-citation small-text">
       <%= raw markdown.render(@work.custom_citation) %>
@@ -26,12 +27,28 @@
   </p>
 
   <p class="small-text">
-    <%= language_line(@work) %>
+    <b>Language:</b> <%= language_line(@work) %>
   </p>
 
   <p class="small-text">
-    rating: <%= rating_stars(@work) %>
+    <b>Rating:</b> <%= rating_stars(@work) %>
   </p>
+
+    <p class="small-text">
+    <b>Status:</b> <%= @work.finished? ? "Reading finished on #{human_time_for(@work.date_of_completion)}" : "Unread" %>
+  </p>
+
+  <% if @work.date_of_accession %>
+    <p class="small-text">
+      <b>Accession Date:</b> <%= human_time_for(@work.date_of_accession) %>
+    </p>
+  <% end %>
+
+  <% if @work.accession_note.present? %>
+    <p class="small-text">
+      <b>Accession Note:</b> <%= @work.accession_note %>
+    </p>
+  <% end %>
 
   <hr>
 

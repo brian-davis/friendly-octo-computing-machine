@@ -17,10 +17,14 @@
 #  tags                :string           default([]), is an Array
 #  searchable          :tsvector
 #  rating              :integer
-#  format              :integer          default("book")
+#  format              :integer          default(0)
 #  custom_citation     :string
 #  parent_id           :integer
 #  supertitle          :string
+#  date_of_accession   :date
+#  accession_note      :text
+#  finished            :boolean
+#  date_of_completion  :date
 #
 class Work < ApplicationRecord
   include PgSearch::Model
@@ -91,6 +95,22 @@ class Work < ApplicationRecord
 
   scope :untagged, -> { where({ tags: [] }) }
 
+  scope :collection, -> {
+    left_outer_joins(:parent).where("COALESCE(works.date_of_accession, parents_works.date_of_accession) IS NOT NULL")
+  }
+
+  scope :wishlist, -> {
+    left_outer_joins(:parent).where("COALESCE(works.date_of_accession, parents_works.date_of_accession) IS NULL")
+  }
+
+  scope :read, -> {
+    left_outer_joins(:parent).where("COALESCE(works.date_of_completion, parents_works.date_of_completion) IS NOT NULL")
+  }
+
+  scope :unread, -> {
+    left_outer_joins(:parent).where("COALESCE(works.date_of_completion, parents_works.date_of_completion) IS NULL")
+  }
+
   # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-book
   enum_accessor :format, [
     :book,            # Book
@@ -138,6 +158,10 @@ class Work < ApplicationRecord
 
   def reading_sessions_minutes
     reading_sessions.sum(:duration)
+  end
+
+  alias_method :complete?, def finished?
+    date_of_completion.present?
   end
 
   private

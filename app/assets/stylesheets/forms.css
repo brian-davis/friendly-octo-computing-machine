@@ -40,6 +40,7 @@ form.table-form {
   }
 
   form.table-form input[type="number"],
+  form.table-form input[type="date"],
   form.table-form input[type="text"],
   form.table-form textarea,
   form.table-form input[type="datetime-local"],
