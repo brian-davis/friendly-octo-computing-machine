@@ -46,7 +46,7 @@ module Citation
         title = work.long_title
         parent_title = work.parent.long_title
 
-        editors = Citation::Base.new(work.parent).producer_names(:editors)
+        editors = Citation::Base.new(work.parent).producer_names(:editor)
         parent_publisher_name = work.parent.publisher.name
         parent_year = work.parent.year_of_publication
         page = quote.page

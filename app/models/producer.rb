@@ -109,7 +109,7 @@ class Producer < ApplicationRecord
   scope :where_full_name, -> (query) {
     # TODO: use Arel for predicate & for in clause, not raw sql
     # TODO: sanitize: https://api.rubyonrails.org/classes/ActiveRecord/Sanitization/ClassMethods.html#method-i-sanitize_sql_for_conditions
-    query_str = Array(query).map { |q| "'#{q}'" }.join(", ")
+    query_str = Array(query).map { |q| q = q.sub("'", "\\'"); "'#{q}'" }.join(", ")
 
     sql = "SELECT id FROM producers WHERE #{Producer::FULL_NAME_SQL} IN (#{query_str})"
 
