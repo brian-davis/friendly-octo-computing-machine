@@ -100,10 +100,14 @@ unless ENV["CLEAR"]
       name: "Hacket Publishing Company, Inc."
     })
 
-    sophocles = Producer.new({
+    sophocles = Producer.create({
       custom_name: "Sophocles",
       year_of_birth: -495,
       year_of_death: -405
+    })
+
+    herge = Producer.create({
+      custom_name: "Hergé"
     })
 
     oxford = Publisher.create({
@@ -361,9 +365,7 @@ unless ENV["CLEAR"]
       work_producers: [
         WorkProducer.new({
           role: :author,
-          producer: Producer.new({
-            custom_name: "Hergé"
-          })
+          producer: herge
         })
       ]
     })
@@ -386,9 +388,7 @@ unless ENV["CLEAR"]
       work_producers: [
         WorkProducer.new({
           role: :author,
-          producer: Producer.new({
-            custom_name: "Hergé"
-          })
+          producer: herge
         }),
         WorkProducer.new({
           role: :translator,

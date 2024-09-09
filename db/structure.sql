@@ -29,7 +29,7 @@ COMMENT ON EXTENSION fuzzystrmatch IS 'determine similarities and distance betwe
 
 CREATE FUNCTION public.pg_search_dmetaphone(text) RETURNS text
     LANGUAGE sql IMMUTABLE STRICT
-    AS $_$ SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\\s+')))), ' ') $_$;
+    AS $_$ SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\s+')))), ' ') $_$;
 
 
 SET default_tablespace = '';

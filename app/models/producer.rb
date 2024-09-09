@@ -67,6 +67,7 @@ class Producer < ApplicationRecord
     )
   SQL
 
+  # TODO: improve this, match on partial (eg "Disk" for "Diskin")
   pg_search_scope(
     :search_name,
     {

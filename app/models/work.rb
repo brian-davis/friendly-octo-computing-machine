@@ -77,7 +77,6 @@ class Work < ApplicationRecord
 
   validates :title, presence: true
 
-  # Quote.search_text("a famous quote")
   pg_search_scope(
     :search_title, {
       against: :title,
