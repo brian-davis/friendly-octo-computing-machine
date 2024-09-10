@@ -5,7 +5,7 @@ export default class extends Controller {
   static values = {
     endpoint: String,
   };
-  static targets = ["search"];
+  static targets = ["search", "searchButton"];
   static outlets = ["request-helper"];
 
   connect() {
@@ -18,6 +18,7 @@ export default class extends Controller {
     this.languageValue = "";
     this.accessionValue = "";
     this.statusValue = "";
+    console.log(this.searchButtonTarget);
   }
 
   // index.html.erb
@@ -147,21 +148,30 @@ export default class extends Controller {
   search(event) {
     event.preventDefault();
     event.stopPropagation();
-
     // console.log("search", event.currentTarget);
-
     this.searchValue = this.searchTarget.value;
-
     let url = this.endpointValue;
-
     let newQuery = this._buildUrlQuery().toString();
     // console.log(newQuery);
     if (newQuery) {
       url += `?${newQuery}`;
     }
-
     // this.searchTarget.value = "";
     this.requestHelperOutlet.turboGet(url);
+  }
+
+  // keydown.esc
+  clearSearch() {
+    // console.log("clearSearch");
+    // console.log(this.searchTarget.value);
+    this.searchTarget.value = "";
+  }
+
+  // keydown.enter
+  submitSearch() {
+    // console.log("submitSearch");
+    // console.log(this.searchTarget.value);
+    this.searchButtonTarget.click();
   }
 
   _buildUrlQuery() {
