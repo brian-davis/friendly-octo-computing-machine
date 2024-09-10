@@ -34,7 +34,8 @@ class Work < ApplicationRecord
 
   has_many :children, class_name: "Work", foreign_key: "parent_id" # self join
   has_many :work_producers, dependent: :destroy
-  has_many :producers, -> { merge(WorkProducer.order(:created_at)) },**{
+  has_many :producers, -> {
+    merge(WorkProducer.order(:created_at)) }, **{
     through: :work_producers,
     source: :producer
   }
@@ -79,7 +80,7 @@ class Work < ApplicationRecord
 
   pg_search_scope(
     :search_title, {
-      against: :title,
+      against: [:title, :subtitle, :supertitle],
       using: {
         tsearch: {
           prefix: true, # sl => sleep
