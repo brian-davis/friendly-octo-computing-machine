@@ -480,4 +480,21 @@ class WorkTest < ActiveSupport::TestCase
     assert w2.in?(Work.wishlist)
     refute w1.in?(Work.wishlist)
   end
+
+  test "sorting is case-insensitive" do
+    w1 = Work.create(title: "asdf")
+    w2 = Work.create(title: "Astronomy For Everyone")
+    w3 = Work.create(title: "Be Here Now")
+
+    # result = Work.where(id: [w1.id, w2.id, w3.id]).order(:title).pluck(:title)
+    result = Work.where(id: [w1.id, w2.id, w3.id]).order(Arel.sql("UPPER(title)")).pluck(:title)
+
+    # TODO: can this be done with an alternate encoding/collation, either on
+    # the whole db or on this column.
+    expected_bad_collation = ["Astronomy For Everyone", "Be Here Now", "asdf"]
+    refute_equal expected_bad_collation, result
+
+    expected = ["asdf", "Astronomy For Everyone", "Be Here Now"]
+    assert_equal expected, result
+  end
 end

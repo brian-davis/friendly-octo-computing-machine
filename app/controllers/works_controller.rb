@@ -283,6 +283,7 @@ private
     valid_dir_params = ["asc", "desc"]
     order_param = params["order"].presence
     order_arg = (valid_order_params & [order_param])[0] || "title"
+    order_arg = "UPPER(#{order_arg})"
     dir_param = params["dir"].presence
     dir_arg = (valid_dir_params & [dir_param])[0] || "asc"
 
@@ -301,7 +302,7 @@ private
 
     order_param = "#{order_arg} #{dir_arg.upcase}"
     order_params = [order_param]
-    order_params << "title ASC" unless order_arg == "title" # secondary ordering
+    order_params << "UPPER(title) ASC" unless order_arg == "UPPER(title)" # secondary ordering
     order_params = order_params.uniq.join(", ") # secondary ordering
 
     format_param = params["frmt"]
