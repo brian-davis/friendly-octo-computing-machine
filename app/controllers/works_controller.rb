@@ -278,6 +278,21 @@ private
       @works = @works.search_title(term).unscope(:order)
     end
 
+    format_param = params["frmt"]
+    valid_formats = Work.formats.keys
+    if format_param.in?(valid_formats)
+      @works = @works.where_format(format_param)
+    end
+
+    lang_param = params["lang"]
+    if lang_param.in?(@language_options)
+      @works = if lang_param == "[unspecified]"
+        @works.where(language: nil)
+      else
+        @works.where(language: lang_param)
+      end
+    end
+
     # order by dropdown selection
     valid_order_params = ["title", "year", "rating"]
     valid_dir_params = ["asc", "desc"]
@@ -304,21 +319,6 @@ private
     order_params = [order_param]
     order_params << "UPPER(title) ASC" unless order_arg == "UPPER(title)" # secondary ordering
     order_params = order_params.uniq.join(", ") # secondary ordering
-
-    format_param = params["frmt"]
-    valid_formats = Work.formats.keys
-    if format_param.in?(valid_formats)
-      @works = @works.where_format(format_param)
-    end
-
-    lang_param = params["lang"]
-    if lang_param.in?(@language_options)
-      @works = if lang_param == "[unspecified]"
-        @works.where(language: nil)
-      else
-        @works.where(language: lang_param)
-      end
-    end
 
     # bullet disabled here
     @works = @works.order(Arel.sql(order_params)).includes(:parent).includes(:authors)

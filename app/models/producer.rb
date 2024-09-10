@@ -80,7 +80,9 @@ class Producer < ApplicationRecord
       using: {
         :dmetaphone => {},
         tsearch: {
-          dictionary: "english", tsvector_column: "searchable"
+          prefix: true,
+          dictionary: "english",
+          tsvector_column: "searchable"
         }
       }
     }

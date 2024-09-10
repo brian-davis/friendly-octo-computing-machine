@@ -3,12 +3,13 @@
 <div id="quotes-index"
      data-controller="sortable"
      data-sortable-request-helper-outlet=".request-helper"
-     data-sortable-endpoint-value="<%= quotes_path %>">
+     data-sortable-endpoint-value="<%= quotes_path %>"
+     data-action="keydown.enter->sortable#submitSearch">
 
   <b class="minor-heading">All Quotes</b>
   <hr>
-  <%= text_field_tag(:search, nil, class: "search-box", data: { sortable_target: "search"}) %>
-  <%= link_to("Search", "#", class: "search-button", data: { action: "click->sortable#search" }) %>
+  <%= text_field_tag(:search, nil, class: "search-box", data: { action:"keydown.esc->sortable#clearSearch", sortable_target: "search"}) %>
+  <%= link_to("Search", "#", class: "search-button", data: { sortable_target:"searchButton", action: "click->sortable#search" }) %>
 
   <hr>
   <div id="quotes" class="scrollable">

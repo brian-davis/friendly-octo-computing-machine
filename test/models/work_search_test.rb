@@ -73,7 +73,6 @@ class WorkSearchTest < ActiveSupport::TestCase
   test "search title, subtitle, supertitle" do
     result = Work.search_title("Tintin")
     subjects = [subject2, subject3, subject4]
-    binding.irb
     subjects.each do |subject|
       assert subject.in?(result)
     end

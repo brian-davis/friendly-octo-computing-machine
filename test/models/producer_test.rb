@@ -251,9 +251,21 @@ class ProducerTest < ActiveSupport::TestCase
     assert_equal 1, p1.works_count
   end
 
+  def subject1
+    @subject1 ||= Producer.create(given_name: "Jeff", family_name: "Davis")
+  end
+
+  def subject2
+    @subject2 ||= Producer.create(given_name: "Geoff", family_name: "Davis")
+  end
+
+  def subject3
+    @subject3 ||= Producer.create(given_name: "Elinor", family_name: "Mason")
+  end
+
   test "full-text indexed search with dmetaphone" do
-    p1 = Producer.create(given_name: "Jeff", family_name: "Davis")
-    p2 = Producer.create(given_name: "Geoff", family_name: "Davis")
+    p1 = subject1
+    p2 = subject2
     search1 = Producer.search_name("Jeff")
 
     assert p1.in?(search1)
@@ -265,8 +277,8 @@ class ProducerTest < ActiveSupport::TestCase
     p4 = Producer.create(given_name: "Geoffrey", family_name: "Davis")
     p5 = Producer.create(given_name: "George", family_name: "Davis")
 
-    refute p3.in?(search1) # no prefix
-    refute p4.in?(search1) # no prefix
+    assert p3.in?(search1) # prefix
+    refute p4.in?(search1) # not smart about metaphone + prefix (OK)
     refute p5.in?(search1)
 
     search2 = Producer.search_name("Jeffrey")
@@ -276,6 +288,24 @@ class ProducerTest < ActiveSupport::TestCase
     assert p3.in?(search2)
     assert p4.in?(search2)
     refute p5.in?(search2)
+  end
+
+  test "search by name is case-insensitive" do
+    p1 = subject1
+    search1 = Producer.search_name("Jeff")
+    assert p1.in?(search1)
+
+    search2 = Producer.search_name("jeff")
+    assert p1.in?(search2)
+  end
+
+  test "search by partial name" do
+    p3 = subject3
+    search1 = Producer.search_name("Elinor")
+    assert p3.in?(search1)
+
+    search2 = Producer.search_name("Eli")
+    assert p3.in?(search2)
   end
 
   test "unique by full name and year" do

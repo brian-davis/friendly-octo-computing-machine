@@ -80,7 +80,7 @@ class Work < ApplicationRecord
 
   pg_search_scope(
     :search_title, {
-      against: [:title, :subtitle, :supertitle],
+      against: {:title => "A", :subtitle => "B", :supertitle => "C"},
       using: {
         tsearch: {
           prefix: true, # sl => sleep
