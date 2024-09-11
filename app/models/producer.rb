@@ -17,8 +17,6 @@
 #  works_count   :integer          default(0)
 #  searchable    :tsvector
 #
-
-# TODO: rename columns forename, surname;
 class Producer < ApplicationRecord
   include PgSearch::Model
 
@@ -26,7 +24,6 @@ class Producer < ApplicationRecord
   has_many :works, through: :work_producers
   accepts_nested_attributes_for :work_producers, allow_destroy: true
 
-  # TODO: uniqueness validations
   validates :custom_name, presence: true, unless: -> { forename? && surname? }
   validates :forename, presence: true, unless: -> { custom_name? }
   validates :surname, presence: true, unless: -> { custom_name? }
@@ -67,7 +64,6 @@ class Producer < ApplicationRecord
     )
   SQL
 
-  # TODO: improve this, match on partial (eg "Disk" for "Diskin")
   pg_search_scope(
     :search_name,
     {
@@ -93,7 +89,6 @@ class Producer < ApplicationRecord
     valid_options = options.select { |k,v| k.to_s.in?(column_names) }
 
     # full_name always least precedence (default)
-    # IMPROVE: use ordered array of tuples, not hash
     order(valid_options).order({ Arel.sql(FULL_NAME_SQL) => direction })
   }
 

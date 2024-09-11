@@ -1,18 +1,19 @@
 <p style="color: green"><%= notice %></p>
 
-<b class="minor-heading"><%= @producer.full_name %></b>
-<div id="<%= dom_id @producer %>" class="outline">
+<b class="minor-heading">
+  <%= @producer.full_name %>
+</b>
 
+<div id="<%= dom_id @producer %>" class="outline">
   <p class="small-text indented">
     <%= life_line(@producer) %>
   </p>
 
-  <%# TODO %>
   <% if @producer.bio_link.present? %>
-  <p class="small-text indented">
-    <%= link_to("bio", @producer.bio_link, { class: "small-text index-link", target: "_blank" }) %>
-  </p>
-  <hr>
+    <p class="small-text indented">
+      <%= link_to("bio", @producer.bio_link, { class: "small-text index-link", target: "_blank" }) %>
+    </p>
+    <hr>
   <% end %>
 
   <b>Books</b>
@@ -29,6 +30,7 @@
   </div>
 </div>
 <hr>
+
 <div class="nav-links" data-controller="confirmable">
   <%= link_to "Back to authors", producers_path, class: "nav-button" %>
   <%= link_to "Back to top", root_path, class: "nav-button" %>

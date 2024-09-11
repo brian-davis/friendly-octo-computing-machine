@@ -14,8 +14,7 @@ class ProducersTest < ApplicationSystemTestCase
     visit producers_url
     click_on "New producer"
 
-    # TODO: uniqueness constraints
-    fill_in "Name", with: @producer.full_name
+    fill_in "Name", with: Faker::Name 
     click_on "Create Producer"
 
     assert_text "Producer was successfully created"
@@ -26,7 +25,7 @@ class ProducersTest < ApplicationSystemTestCase
     visit producer_url(@producer)
     click_on "Edit this producer", match: :first
 
-    fill_in "Name", with: @producer.full_name
+    fill_in "Name", with: Faker::Name
     click_on "Update Producer"
 
     assert_text "Producer was successfully updated"

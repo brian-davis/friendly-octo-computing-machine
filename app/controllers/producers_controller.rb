@@ -94,11 +94,12 @@ class ProducersController < ApplicationController
   end
 
 private
-  # Use callbacks to share common setup or constraints between actions.
+  # :show, :edit, :update, :destroy
   def set_producer
     @producer = Producer.find(params[:id])
   end
 
+  # :index
   def filter_and_sort_producers
     @producers = Producer.all
 
@@ -128,6 +129,7 @@ private
     @producers = @producers.order_by_full_name(query_options)
   end
 
+  # :new, :edit
   def set_form_options
     @producer ||= Producer.new
     @work_producers = @producer.work_producers.includes(:work)
@@ -135,7 +137,7 @@ private
     @nationality_options = Producer.nationality_options
   end
 
-  # TODO: combine with set_form_options
+  # :build_work, :select_work
   def build_or_set_producer
     @producer = Producer.find_by(id: params[:producer_id]) || Producer.new
   end

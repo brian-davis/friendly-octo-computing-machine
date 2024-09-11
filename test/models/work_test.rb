@@ -486,11 +486,7 @@ class WorkTest < ActiveSupport::TestCase
     w2 = Work.create(title: "Astronomy For Everyone")
     w3 = Work.create(title: "Be Here Now")
 
-    # result = Work.where(id: [w1.id, w2.id, w3.id]).order(:title).pluck(:title)
     result = Work.where(id: [w1.id, w2.id, w3.id]).order(Arel.sql("UPPER(title)")).pluck(:title)
-
-    # TODO: can this be done with an alternate encoding/collation, either on
-    # the whole db or on this column. not UPCASE
     expected_bad_collation = ["Astronomy For Everyone", "Be Here Now", "asdf"]
     refute_equal expected_bad_collation, result
 

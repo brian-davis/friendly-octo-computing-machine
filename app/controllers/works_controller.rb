@@ -152,11 +152,12 @@ class WorksController < ApplicationController
   end
 
 private
+  # :show, :edit, :update, :destroy
   def set_work
     @work = Work.find(params[:id])
   end
 
-  # _form
+  # :new, :edit
   def set_form_options
     @work ||= Work.new
     @work_producers = @work.work_producers.includes(:producer)
@@ -171,7 +172,7 @@ private
     @format_options = Work.format_options
   end
 
-  # index
+  # :index
   def set_select_options
     @sort_options = [
       ["Title ▲", "title-asc"],
@@ -187,7 +188,7 @@ private
     @status_options = [:read, :unread].map { |opt| [opt.to_s.humanize, opt] }
   end
 
-  # TODO: combine with set_form_options
+  # :build_*, :select_*
   def build_or_set_work
     @work = Work.find_by(id: params[:work_id]) || Work.new
   end
@@ -247,6 +248,7 @@ private
     permitted_params
   end
 
+  # :indexx
   def filter_and_sort_works
     # filter by tag
     @works = if params["tag"] == "untagged"

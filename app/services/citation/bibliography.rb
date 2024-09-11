@@ -46,7 +46,6 @@ module Citation
           "#{alpha_producer_names}. “#{title}.” In _#{parent_title}_, edited by #{parent_editor_names}. #{parent_publisher}, #{parent_year}."
         end
       else
-        # TODO
         ""
       end
     end
