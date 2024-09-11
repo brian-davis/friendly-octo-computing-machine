@@ -147,7 +147,7 @@ class WorksController < ApplicationController
   end
 
   def select_parent
-    ids = Work.compilation.ids - [@work.id]
+    ids = Work.compilations.ids - [@work.id]
     @parent = Work.where(id: ids).find(params["parent_id"])
   end
 

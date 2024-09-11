@@ -111,6 +111,10 @@ class Work < ApplicationRecord
     left_outer_joins(:parent).where("COALESCE(works.date_of_completion, parents_works.date_of_completion) IS NULL")
   }
 
+  scope :compilations, -> {
+    joins(:children).distinct
+  }
+
   # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-book
   enum_accessor :format, [
     :book,            # Book
@@ -136,7 +140,7 @@ class Work < ApplicationRecord
     end
 
     def parent_options(work)
-      where.not(id: work.id).pluck(:title, :id)
+      compilations.where.not(id: [work.id, work.parent&.id]).pluck(:title, :id)
     end
 
     def tag_options

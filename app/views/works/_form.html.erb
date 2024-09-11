@@ -1,4 +1,4 @@
-<%= form_with(model: work, html: { class: "table-form" }, data: { controller: "works", works_id_value: @work.id, works_request_helper_outlet: ".request-helper" }) do |form| %>
+<%= form_with(model: work, html: { class: "table-form" }, data: { controller: "works", works_id_value: @work.id, works_tags_value: @work.tags, works_request_helper_outlet: ".request-helper" }) do |form| %>
   <%= render("shared/form_errors", form: form) %>
 
   <%= form.label :title %>
@@ -180,7 +180,7 @@
   <div id="sub_form_list_tags" data-controller="dismissable">
     <% if work.tags.any? %>
       <% work.tags.each.with_index do |tag, i| %>
-        <div class="outline subFormContainer" data-dismissable-target="subForm">
+        <div class="outline subFormContainer" data-dismissable-target="subForm" data-works-target="tagSubForm" data-tag="<%= tag %>">
           <div class="subform-line">
             <b>Tag:</b>
             <%= text_field_tag("work[tags][]", tag, readonly: true) %>

@@ -1,5 +1,5 @@
 <%= turbo_stream.append "sub_form_list_tags" do %>
-  <div class="outline subFormContainer" data-dismissable-target="subForm">
+  <div class="outline subFormContainer" data-dismissable-target="subForm" data-works-target="tagSubForm" data-tag="<%= @tag %>">
     <div class="subform-line">
       <b>Tag:</b>
       <%= text_field_tag("work[tags][]", @tag, readonly: true) %>

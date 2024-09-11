@@ -1,12 +1,12 @@
 import { Controller } from "@hotwired/stimulus";
-import { get } from "@rails/request.js";
 
 export default class extends Controller {
   static values = {
     id: String, // may be empty, don't cast to 0, _form.html
+    tags: Array
   };
   static outlets = ["request-helper"];
-  static targets = ["producerSubForm"]
+  static targets = ["producerSubForm", "tagSubform"];
 
   connect() {
     // console.log("works connected");
@@ -45,6 +45,42 @@ export default class extends Controller {
     }
   }
 
+  _setCurrentTags(value) {
+    // memoize
+    if (!this.currentTags) {
+      this.currentTags = [];
+    }
+
+    if (value) {
+      this.currentTags.push(value)
+    }
+    // console.log(this.currentTags);
+  }
+
+  _unsetCurrentTags(value) {  
+    if (value) {
+      this.currentTags = this.currentTags.filter(e => e !== value)
+    }
+    // console.log(this.currentTags);
+  }
+
+  tagSubFormTargetConnected(element) {
+    // console.log("tagSubFormConnect", element);
+    const newTag = element.dataset.tag;
+
+    if (newTag) {
+      this._setCurrentTags(newTag);
+    }
+  }
+
+  tagSubFormTargetDisconnected(element) {
+    // console.log("tagSubFormDisonnect", element);
+    const newTag = element.dataset.tag;
+    if (newTag) {
+      this._unsetCurrentTags(newTag);
+    }
+  }
+
   // _form.html.erb
   selectProducer(event) {
     event.preventDefault();
@@ -52,7 +88,7 @@ export default class extends Controller {
 
     const newId = event.currentTarget.value;
     let url = "/works/select_producer";
-    if (this.currentProducerIds.includes(Number(newId))) {
+    if (this.currentProducerIds && this.currentProducerIds.includes(Number(newId))) {
       // no-op
     } else {
       url += `?producer_id=${newId}`;
@@ -89,11 +125,17 @@ export default class extends Controller {
 
     // console.log("selectTag", event.currentTarget.value);
     let url = "/works/select_tag";
-    url += `?tag=${event.currentTarget.value}`;
-    if (this.idValue != "") {
-      url += `&work_id=${this.idValue}`;
+    const newTag = event.currentTarget.value
+    // console.log(newTag);
+    if (this.currentTags && this.currentTags.includes(newTag)) {
+      // no-op
+    } else {
+      url += `?tag=${newTag}`;
+      if (this.idValue != "") {
+        url += `&work_id=${this.idValue}`;
+      }
+      this.requestHelperOutlet.turboGet(url);
     }
-    this.requestHelperOutlet.turboGet(url);
     event.currentTarget.value = "";
   }
 
