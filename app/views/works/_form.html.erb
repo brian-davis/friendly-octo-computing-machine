@@ -40,9 +40,7 @@
   <%= form.label :custom_citation, "Custom Citation (Markdown)", class: "small-text" %>
   <%= form.text_field :custom_citation %>
 
-  <%# LANGUAGE DROPDOWN %>
   <%= form.label :language %>
-  <%# https://github.com/rails/rails/pull/52137 %>
   <%= form.text_field :language, { list: "work_languages_datalist", class: "correct-width-2" } %>
   <%=
     content_tag(
@@ -64,9 +62,8 @@
     <% end %>
   <% end %>
 
-  <%# ORIGINAL LANGUAGE DROPDOWN %>
   <%= form.label :original_language %>
-  <%# https://github.com/rails/rails/pull/52137 %>
+
   <%= form.text_field :original_language, { list: "work_original_languages_datalist", class: "correct-width-2" } %>
   <%= content_tag(:datalist, nil, id: :work_original_languages_datalist, 'data-autocomplete-input-target' => :datalist) do %>
     <% @language_options.each do |original_language| %>
@@ -84,7 +81,6 @@
   <hr>
   <hr>
 
-  <%# PUBLISHER DROPDOWN %>
   <div class="label-group">
     <%= form.label :publisher %>
     <%= link_to(build_publisher_works_path(work_id: @work.try(:id)), class: "link-button", data: { turbo_stream: true }) do %>
@@ -94,19 +90,17 @@
   </div>
   <div class="subFormListSection" id="sub_form_list_publisher" data-controller="dismissable">
     <% if work.publisher %>
-      <%# ONLY 1 %>
+
       <div class="outline subFormContainer" data-dismissable-target="subForm">
         <%= form.hidden_field :publisher_id, value: work.publisher_id %>
         <div class="subform-line">
-          <%# COLUMN 1 %>
+
           <b>Name:</b>
-          <%# COLUMN 2 %>
-          <%# display only; ignore on submit %>
           <%= text_field_tag(:_publisher_name, work.publisher&.name, readonly: true) %>
         </div>
 
         <div class="subform-line">
-          <b><%# spacer %></b>
+          <b></b>
           <span class="undo-label">
             <%= form.check_box :_clear_publisher %>
             <b class="danger">Undo</b>
@@ -119,7 +113,6 @@
   <hr>
   <hr>
 
-  <%# PRODUCER DROPDOWN %>
   <div class="label-group">
     <%= form.label :producers do %>
       Authors
@@ -133,26 +126,21 @@
     <% @work_producers.each do |work_producer| %>
       <div class="outline subFormContainer" data-dismissable-target="subForm" data-works-target="producerSubForm" data-producer-id="<%= work_producer.producer_id %>">
         <%= form.fields_for :work_producers, work_producer do |t| %>
-          <%= t.hidden_field :id %><%# work_producer id %>
+          <%= t.hidden_field :id %>
 
           <div class="subform-line">
-            <%# COLUMN 1 %>
-            <b>Name:</b>
 
-            <%# COLUMN 2 %>
-            <%# display only; ignore on submit %>
+            <b>Name:</b>
             <%= text_field_tag(:_producer_name, work_producer.producer.full_name, readonly: true) %>
           </div>
 
           <div class="subform-line">
             <b>Role:</b>
-
-            <%# display only; ignore on submit %>
             <%= text_field_tag(:_work_producer_role, work_producer.role.titleize, readonly: true) %>
           </div>
 
           <div class="subform-line">
-            <b><%# spacer %></b>
+            <b></b>
             <span class="undo-label">
               <%= t.check_box :_destroy %>
               <b class="danger">Undo</b>
@@ -161,13 +149,11 @@
         <% end %>
       </div>
     <% end %>
-    <%# turbo_stream.append %>
   </div>
 
   <hr>
   <hr>
 
-  <%# TAG DROPDOWN %>
   <div class="label-group">
     <%= form.label :tags do %>
       Tag
@@ -194,15 +180,12 @@
             </span>
           </div>
         </div>
-
       <% end %>
     <% end %>
   </div>
-
   <hr>
   <hr>
 
-  <%# PARENT DROPDOWN %>
   <div class="label-group">
     <%= form.label :parent do %>
       Parent Work
@@ -231,13 +214,10 @@
 
   <div id="sub_form_list_parent" data-controller="dismissable">
     <% if work.parent %>
-      <%# ONLY 1 %>
       <div class="outline subFormContainer" data-dismissable-target="subForm">
         <%= form.hidden_field :parent_id, value: work.parent_id %>
         <div class="subform-line">
-          <%# COLUMN 1 %>
           <b>Title:</b>
-          <%# COLUMN 2 %>
           <%# display only; ignore on submit %>
           <%= text_field_tag(:_parent_title, work.parent&.title, readonly: true) %>
         </div>
@@ -251,8 +231,6 @@
         </div>
       </div>
     <% end %>
-
-    <%# turbo_stream.append %>
   </div>
 
   <hr>

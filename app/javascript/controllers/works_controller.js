@@ -88,7 +88,7 @@ export default class extends Controller {
 
     const newId = event.currentTarget.value;
     let url = "/works/select_producer";
-    if (this.currentProducerIds && this.currentProducerIds.includes(Number(newId))) {
+    if (newId && this.currentProducerIds && this.currentProducerIds.includes(Number(newId))) {
       // no-op
     } else {
       url += `?producer_id=${newId}`;

@@ -20,14 +20,7 @@
   <%= form.text_field :nationality, { list: "work_nationalities_datalist" } %>
   <%= content_tag(:datalist, nil, id: :work_nationalities_datalist, 'data-autocomplete-input-target' => :datalist) do %>
     <% @nationality_options.each do |nationality| %>
-      <%=
-        content_tag(
-          :option,
-          nil,
-          value: nationality,
-          'data-autocomplete-input-target' => 'datalistOption'
-        )
-      %>
+      <%= content_tag(:option, nil, {value: nationality, data: {autocomplete_input_target: 'datalistOption'}}) %>
     <% end %>
   <% end %>
 
@@ -51,30 +44,25 @@
     <%= select_tag("books", options_for_select(@work_options), { include_blank: "Select Book", class: "select-button small-text", data: { action: "change->producers#selectWork" }}) %>
   </div>
 
-  <%# COLUMN 2 %>
   <div class="subFormListSection" id="sub_form_list" data-controller="dismissable">
     <% @work_producers.each do |work_producer| %>
-      <div class="outline subFormContainer" data-dismissable-target="subForm">
+      <div class="outline subFormContainer" data-dismissable-target="subForm" data-producers-target="workSubForm" data-work-id="<%= work_producer.work_id %>">
         <%= form.fields_for :work_producers, work_producer do |t| %>
           <%= t.hidden_field :id %><%# work_producer id %>
 
           <div class="subform-line">
-            <%# COLUMN 1 %>
             <b>Title:</b>
 
-            <%# COLUMN 2 %>
-            <%# display only; ignore on submit %>
             <%= text_field_tag(:_work_title, work_producer.work.title, readonly: true) %>
           </div>
 
           <div class="subform-line">
             <b>Role:</b>
-            <%# display only; ignore on submit %>
             <%= text_field_tag(:_work_producer_role, work_producer.role.titleize, readonly: true) %>
           </div>
 
           <div class="subform-line">
-            <b><%# spacer %></b>
+            <b></b>
             <span class="undo-label">
               <%= t.check_box :_destroy %>
               <b class="danger">Undo</b>
