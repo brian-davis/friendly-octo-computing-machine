@@ -10,7 +10,7 @@ export default class extends Controller {
     // console.log("request-helper disconnected");
   }
 
-  async turboGet(url) {
+  async turboGet(url, callback) {
     // console.log("turboGet", url);
 
     // https://github.com/hotwired/stimulus/issues/689
@@ -24,8 +24,14 @@ export default class extends Controller {
 
     if (response.ok) {
       // console.log("OK");
+      if (callback) {
+        callback();
+      } else {
+        return 1; // truthy
+      }
     } else {
       console.debug(response);
+      return; // falsy
     }
   }
 }

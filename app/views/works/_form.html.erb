@@ -1,4 +1,4 @@
-<%= form_with(model: work, html: { class: "table-form" }, data: { controller: "works",  works_id_value: @work.id, works_request_helper_outlet: ".request-helper" }) do |form| %>
+<%= form_with(model: work, html: { class: "table-form" }, data: { controller: "works", works_id_value: @work.id, works_request_helper_outlet: ".request-helper" }) do |form| %>
   <%= render("shared/form_errors", form: form) %>
 
   <%= form.label :title %>
@@ -131,7 +131,7 @@
   </div>
   <div id="sub_form_list_producers" data-controller="dismissable">
     <% @work_producers.each do |work_producer| %>
-      <div class="outline subFormContainer" data-dismissable-target="subForm">
+      <div class="outline subFormContainer" data-dismissable-target="subForm" data-works-target="producerSubForm" data-producer-id="<%= work_producer.producer_id %>">
         <%= form.fields_for :work_producers, work_producer do |t| %>
           <%= t.hidden_field :id %><%# work_producer id %>
 

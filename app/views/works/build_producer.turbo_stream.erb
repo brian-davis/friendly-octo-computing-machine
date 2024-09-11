@@ -1,6 +1,6 @@
 <%= form_with(model: @work) do |form| %>
   <%= turbo_stream.append "sub_form_list_producers" do %>
-    <div class="outline subFormContainer" data-dismissable-target="subForm">
+    <div class="outline subFormContainer" data-dismissable-target="subForm" data-works-target="producerSubForm">
       <%= form.fields_for :work_producers, @work.work_producers.build do |t| %>
         <%= t.fields_for :producer_attributes, t.object.build_producer do |tt| %>
 
