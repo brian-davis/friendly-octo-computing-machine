@@ -69,10 +69,10 @@ module Citation
               NULLIF(p.custom_name, ''),
               CONCAT_WS(
                 ', ',
-                NULLIF(p.family_name, ''),
+                NULLIF(p.surname, ''),
                 CONCAT_WS(
                   ' ',
-                  NULLIF(p.given_name, ''),
+                  NULLIF(p.forename, ''),
                   NULLIF(p.middle_name, '')
                 )
               )
@@ -93,9 +93,9 @@ module Citation
               NULLIF(p.custom_name, ''),
               CONCAT_WS(
                 ' ',
-                NULLIF(p.given_name, ''),
+                NULLIF(p.forename, ''),
                 NULLIF(p.middle_name, ''),
-                NULLIF(p.family_name, '')
+                NULLIF(p.surname, '')
               )
             ) alpha_name
           FROM producers p

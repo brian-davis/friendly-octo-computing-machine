@@ -4,9 +4,9 @@
 #
 #  id            :bigint           not null, primary key
 #  custom_name   :string
-#  given_name    :string
+#  forename      :string
 #  middle_name   :string
-#  family_name   :string
+#  surname       :string
 #  foreign_name  :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
@@ -27,9 +27,9 @@ class Producer < ApplicationRecord
   accepts_nested_attributes_for :work_producers, allow_destroy: true
 
   # TODO: uniqueness validations
-  validates :custom_name, presence: true, unless: -> { given_name? && family_name? }
-  validates :given_name, presence: true, unless: -> { custom_name? }
-  validates :family_name, presence: true, unless: -> { custom_name? }
+  validates :custom_name, presence: true, unless: -> { forename? && surname? }
+  validates :forename, presence: true, unless: -> { custom_name? }
+  validates :surname, presence: true, unless: -> { custom_name? }
 
   validate :full_name_uniqueness
 
@@ -38,9 +38,9 @@ class Producer < ApplicationRecord
       NULLIF(producers.custom_name, ''),
       CONCAT_WS(
         ' ',
-        NULLIF(producers.given_name, ''),
+        NULLIF(producers.forename, ''),
         NULLIF(producers.middle_name, ''),
-        NULLIF(producers.family_name, '')
+        NULLIF(producers.surname, '')
       )
     )
   SQL
@@ -50,10 +50,10 @@ class Producer < ApplicationRecord
       NULLIF(producers.custom_name, ''),
       CONCAT_WS(
         ', ',
-        NULLIF(producers.family_name, ''),
+        NULLIF(producers.surname, ''),
         CONCAT_WS(
           ' ',
-          NULLIF(producers.given_name, ''),
+          NULLIF(producers.forename, ''),
           NULLIF(producers.middle_name, '')
         )
       )
@@ -63,7 +63,7 @@ class Producer < ApplicationRecord
   SURNAME_SQL = <<~SQL.squish
     COALESCE(
       NULLIF(producers.custom_name, ''),
-      NULLIF(producers.family_name, '')
+      NULLIF(producers.surname, '')
     )
   SQL
 
@@ -73,8 +73,8 @@ class Producer < ApplicationRecord
     {
       against: {
         custom_name: "A",
-        given_name: "B",
-        family_name: "C",
+        forename: "B",
+        surname: "C",
         foreign_name: "D"
       },
       using: {
@@ -137,15 +137,15 @@ class Producer < ApplicationRecord
   end
 
   def full_name
-    base_full_name = custom_name.presence || [given_name, middle_name, family_name].map(&:presence).compact.join(" ")
+    base_full_name = custom_name.presence || [forename, middle_name, surname].map(&:presence).compact.join(" ")
   end
 
   def full_name=(str)
     first, *middle, last = str.split(/\s/)
     middle = middle.join(" ")
-    self.given_name = first if first.present?
+    self.forename = first if first.present?
     self.middle_name = middle if middle.present?
-    self.family_name = last if last.present?
+    self.surname = last if last.present?
   end
 
 private
@@ -154,8 +154,8 @@ private
     # If producer has been built by subform on the work form, most columns will be nil.
     # When submitting the producer update form, these columns may be "changed" from nil => ""
     is_relevant = self.new_record? ||
-                  (self.given_name_previous_change && self.given_name_changed?) ||
-                  (self.family_name_previous_change && self.family_name_changed?) ||
+                  (self.forename_previous_change && self.forename_changed?) ||
+                  (self.surname_previous_change && self.surname_changed?) ||
                   (self.year_of_birth_previous_change && self.year_of_birth_changed?)
     return unless is_relevant
     if Producer.where({ year_of_birth: self.year_of_birth })

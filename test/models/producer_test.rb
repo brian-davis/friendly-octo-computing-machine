@@ -4,9 +4,9 @@
 #
 #  id            :bigint           not null, primary key
 #  custom_name   :string
-#  given_name    :string
+#  forename      :string
 #  middle_name   :string
-#  family_name   :string
+#  surname       :string
 #  foreign_name  :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
@@ -26,26 +26,26 @@ class ProducerTest < ActiveSupport::TestCase
     })
     refute pr1.valid?
 
-    errors = ["Custom name can't be blank", "Given name can't be blank", "Family name can't be blank"]
+    expected = ["Custom name can't be blank", "Forename can't be blank", "Surname can't be blank"]
 
-    assert_equal errors, pr1.errors.full_messages
+    assert_equal expected, pr1.errors.full_messages
     pr1.custom_name = ""
     refute pr1.valid?
-    assert_equal errors, pr1.errors.full_messages
+    assert_equal expected, pr1.errors.full_messages
   end
 
-  test "either custom_name or given_name and family_name presence validation" do
+  test "either custom_name or forename and surname presence validation" do
     pr1 = Producer.new({
       custom_name: "OK",
-      given_name: "",
-      family_name: ""
+      forename: "",
+      surname: ""
     })
     assert pr1.valid?
 
     pr2 = Producer.new({
       custom_name: "",
-      given_name: "OK",
-      family_name: "OK"
+      forename: "OK",
+      surname: "OK"
     })
     assert pr2.valid?
   end
@@ -252,15 +252,15 @@ class ProducerTest < ActiveSupport::TestCase
   end
 
   def subject1
-    @subject1 ||= Producer.create(given_name: "Jeff", family_name: "Davis")
+    @subject1 ||= Producer.create(forename: "Jeff", surname: "Davis")
   end
 
   def subject2
-    @subject2 ||= Producer.create(given_name: "Geoff", family_name: "Davis")
+    @subject2 ||= Producer.create(forename: "Geoff", surname: "Davis")
   end
 
   def subject3
-    @subject3 ||= Producer.create(given_name: "Elinor", family_name: "Mason")
+    @subject3 ||= Producer.create(forename: "Elinor", surname: "Mason")
   end
 
   test "full-text indexed search with dmetaphone" do
@@ -273,9 +273,9 @@ class ProducerTest < ActiveSupport::TestCase
 
 
     # Trigrams
-    p3 = Producer.create(given_name: "Jeffrey", family_name: "Davis")
-    p4 = Producer.create(given_name: "Geoffrey", family_name: "Davis")
-    p5 = Producer.create(given_name: "George", family_name: "Davis")
+    p3 = Producer.create(forename: "Jeffrey", surname: "Davis")
+    p4 = Producer.create(forename: "Geoffrey", surname: "Davis")
+    p5 = Producer.create(forename: "George", surname: "Davis")
 
     assert p3.in?(search1) # prefix
     refute p4.in?(search1) # not smart about metaphone + prefix (OK)
@@ -310,7 +310,7 @@ class ProducerTest < ActiveSupport::TestCase
 
   test "unique by full name and year" do
     p1 = producers(:six)
-    p2 = Producer.new(given_name: p1.given_name, family_name: p1.family_name, year_of_birth: p1.year_of_birth)
+    p2 = Producer.new(forename: p1.forename, surname: p1.surname, year_of_birth: p1.year_of_birth)
     refute p2.valid?
     assert_equal "Name and Birth Year must be unique", p2.errors.full_messages.to_sentence
     assert_raises ActiveRecord::RecordNotUnique do

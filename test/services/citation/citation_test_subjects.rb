@@ -14,8 +14,8 @@ module CitationTestSubjects
           WorkProducer.new({
             role: :author,
             producer: Producer.new({
-              given_name: "Charles",
-              family_name: "Yu"
+              forename: "Charles",
+              surname: "Yu"
             })
           })
         ],
@@ -42,17 +42,17 @@ module CitationTestSubjects
         WorkProducer.new({
           role: :author,
           producer: Producer.new({
-            given_name: "Amy",
+            forename: "Amy",
             middle_name: "J.",
-            family_name: "Binder"
+            surname: "Binder"
           })
         }),
         WorkProducer.new({
           role: :author,
           producer: Producer.new({
-            given_name: "Jeffrey",
+            forename: "Jeffrey",
             middle_name: "L.",
-            family_name: "Kidder"
+            surname: "Kidder"
           })
         })
       ],
@@ -78,15 +78,15 @@ module CitationTestSubjects
         WorkProducer.new({
           role: "translator",
           producer: Producer.new({
-            given_name: "Jeremy",
-            family_name: "Tiang"
+            forename: "Jeremy",
+            surname: "Tiang"
           })
         }),
         WorkProducer.new({
           role: "author",
           producer: Producer.new({
-            given_name: "John",
-            family_name: "Smith"
+            forename: "John",
+            surname: "Smith"
           })
         })
       ]
@@ -121,8 +121,8 @@ module CitationTestSubjects
         WorkProducer.new({
           role: :editor,
           producer: Producer.new({
-            given_name: "Stephen",
-            family_name: "Parkin"
+            forename: "Stephen",
+            surname: "Parkin"
           })
         }),
       ]
@@ -139,8 +139,8 @@ module CitationTestSubjects
         WorkProducer.new({
           role: :author,
           producer: Producer.new({
-            given_name: "Kathleen",
-            family_name: "Doyle"
+            forename: "Kathleen",
+            surname: "Doyle"
           })
         })
       ],

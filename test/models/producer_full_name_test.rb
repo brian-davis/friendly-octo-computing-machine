@@ -6,14 +6,14 @@ class ProducerFullNameTest < ActiveSupport::TestCase
     assert_equal "Samuel Clemens", subject1.full_name
 
     subject2 = Producer.new({
-      given_name: "Joe",
-      family_name: "Shmo"
+      forename: "Joe",
+      surname: "Shmo"
     })
     assert_equal "Joe Shmo", subject2.full_name
 
     subject3 = Producer.new()
-    subject3.given_name = "Joe2"
-    subject3.family_name = "Shmo2"
+    subject3.forename = "Joe2"
+    subject3.surname = "Shmo2"
 
     assert_equal "Joe2 Shmo2", subject3.full_name
   end
@@ -23,13 +23,13 @@ class ProducerFullNameTest < ActiveSupport::TestCase
       full_name: "Joe Shmo"
     })
 
-    assert_equal "Joe", subject1.given_name
-    assert_equal "Shmo", subject1.family_name
+    assert_equal "Joe", subject1.forename
+    assert_equal "Shmo", subject1.surname
 
     subject2 = Producer.new()
     subject2.full_name = "Joe2 Shmo2"
-    assert_equal "Joe2", subject2.given_name
-    assert_equal "Shmo2", subject2.family_name
+    assert_equal "Joe2", subject2.forename
+    assert_equal "Shmo2", subject2.surname
   end
 
   test "where full name" do

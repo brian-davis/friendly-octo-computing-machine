@@ -4,9 +4,9 @@
 #
 #  id            :bigint           not null, primary key
 #  custom_name   :string
-#  given_name    :string
+#  forename      :string
 #  middle_name   :string
-#  family_name   :string
+#  surname       :string
 #  foreign_name  :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
@@ -28,39 +28,39 @@ three:
   custom_name: Epictetus1
 
 four:
-  given_name: Samuel
-  family_name: Clemens
+  forename: Samuel
+  surname: Clemens
   works_count: 1
 
 five:
-  given_name: Mark
-  family_name: Twain
+  forename: Mark
+  surname: Twain
   works_count: 10
 
 six:
-  given_name: John
-  family_name: Johnson
+  forename: John
+  surname: Johnson
   year_of_birth: 1980
 
 seven:
-  given_name: William
-  family_name: Williamson
+  forename: William
+  surname: Williamson
   year_of_birth: 1599
   year_of_death: 1661
 
 eight:
-  given_name: Zilliam
-  family_name: Zilliamson
+  forename: Zilliam
+  surname: Zilliamson
   year_of_birth: -199
   year_of_death: -51
 
 nine:
-  given_name: Xilliam
-  family_name: Xilliamson
+  forename: Xilliam
+  surname: Xilliamson
   year_of_birth: -50
   year_of_death: 50
 
 ten:
-  given_name: Testy
+  forename: Testy
   middle_name: T.
-  family_name: Testerson
+  surname: Testerson

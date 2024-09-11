@@ -143,9 +143,9 @@ private
   def producer_params
     params.require(:producer).permit(
       :custom_name,
-      :given_name,
+      :forename,
       :middle_name,
-      :family_name,
+      :surname,
       :foreign_name,
       :full_name,
 

@@ -12,23 +12,23 @@ module WorksHelper
 
   # TODO: DRY with alpha_producer_names
   def byline(work)
-    author_names = work.authors.pluck(:custom_name, :family_name)
+    author_names = work.authors.pluck(:custom_name, :surname)
 
     # TODO: sql fallbacks
     # partial n + 1
     if author_names.empty?
-      author_names = work.editors.pluck(:custom_name, :family_name)
+      author_names = work.editors.pluck(:custom_name, :surname)
     end
 
     # partial n + 1
     if author_names.empty?
-      author_names = work.translators.pluck(:custom_name, :family_name)
+      author_names = work.translators.pluck(:custom_name, :surname)
     end
 
     return "" if author_names.empty?
 
-    author_names = author_names.map do |custom_name, family_name|
-      custom_name.presence || family_name
+    author_names = author_names.map do |custom_name, surname|
+      custom_name.presence || surname
     end.to_sentence
 
     year_source = work.year_of_composition.presence || work.year_of_publication.presence ||

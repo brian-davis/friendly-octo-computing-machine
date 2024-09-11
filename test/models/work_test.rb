@@ -181,8 +181,8 @@ class WorkTest < ActiveSupport::TestCase
     })
 
     refute w1.valid?
-    errors = ["Work producers producer custom name can't be blank", "Work producers producer given name can't be blank", "Work producers producer family name can't be blank"]
-    assert_equal errors, w1.errors.full_messages
+    expected = ["Work producers producer custom name can't be blank", "Work producers producer forename can't be blank", "Work producers producer surname can't be blank"]
+    assert_equal expected, w1.errors.full_messages
   end
 
   test "no duplicate producer on re-submit" do

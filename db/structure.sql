@@ -87,9 +87,9 @@ ALTER SEQUENCE public.notes_id_seq OWNED BY public.notes.id;
 CREATE TABLE public.producers (
     id bigint NOT NULL,
     custom_name character varying,
-    given_name character varying,
+    forename character varying,
     middle_name character varying,
-    family_name character varying,
+    surname character varying,
     foreign_name character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
@@ -98,7 +98,7 @@ CREATE TABLE public.producers (
     bio_link character varying,
     nationality character varying,
     works_count integer DEFAULT 0,
-    searchable tsvector GENERATED ALWAYS AS ((((setweight(to_tsvector('english'::regconfig, (COALESCE(custom_name, ''::character varying))::text), 'A'::"char") || setweight(to_tsvector('english'::regconfig, (COALESCE(given_name, ''::character varying))::text), 'B'::"char")) || setweight(to_tsvector('english'::regconfig, (COALESCE(family_name, ''::character varying))::text), 'C'::"char")) || setweight(to_tsvector('english'::regconfig, (COALESCE(foreign_name, ''::character varying))::text), 'D'::"char"))) STORED
+    searchable tsvector GENERATED ALWAYS AS ((((setweight(to_tsvector('english'::regconfig, (COALESCE(custom_name, ''::character varying))::text), 'A'::"char") || setweight(to_tsvector('english'::regconfig, (COALESCE(forename, ''::character varying))::text), 'B'::"char")) || setweight(to_tsvector('english'::regconfig, (COALESCE(surname, ''::character varying))::text), 'C'::"char")) || setweight(to_tsvector('english'::regconfig, (COALESCE(foreign_name, ''::character varying))::text), 'D'::"char"))) STORED
 );
 
 
@@ -382,11 +382,11 @@ ALTER TABLE ONLY public.notes
 
 
 --
--- Name: producers producers_given_name_family_name_year_of_birth_unique; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: producers producers_forename_family_name_year_of_birth_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.producers
-    ADD CONSTRAINT producers_given_name_family_name_year_of_birth_unique UNIQUE (given_name, family_name, year_of_birth) DEFERRABLE;
+    ADD CONSTRAINT producers_forename_family_name_year_of_birth_unique UNIQUE (forename, surname, year_of_birth) DEFERRABLE;
 
 
 --
@@ -592,6 +592,7 @@ ALTER TABLE ONLY public.notes
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240911181807'),
 ('20240908012039'),
 ('20240908011849'),
 ('20240907232930'),

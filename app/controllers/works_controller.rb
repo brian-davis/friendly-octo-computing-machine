@@ -226,9 +226,9 @@ private
         :producer_id,
         producer_attributes: [
           :custom_name,
-          :given_name,
+          :forename,
           :middle_name,
-          :family_name,
+          :surname,
           :foreign_name,
           :full_name
         ]
