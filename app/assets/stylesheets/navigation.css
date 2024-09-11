@@ -7,9 +7,15 @@ a.index-link {
   color: cadetblue;
   text-decoration-thickness: 2px;
   text-decoration-skip: edges;
+  text-decoration-color: aliceblue;
 
   /* ensure consistency between <%= link_to() %> and <%= button_to() %> */
   display: inline-block;
+}
+
+a.index-link:hover {
+  background-color: aliceblue;
+  text-decoration-color: cadetblue;
 }
 
 .nav-links a[data-method="delete"] {

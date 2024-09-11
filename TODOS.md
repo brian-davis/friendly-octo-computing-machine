@@ -6,9 +6,8 @@ home server with dynamic dns, follow tutorial
 *BACK END*
 more citations (all formats)
 fix search issues (foreign characters)
-#find-or-create on attributes building
 consolidate migrations
+use associated_object https://garrettdimon.com/journal/posts/organizing-rails-code-with-activerecord-associated-objects
 
 *FRONT END*
-flex style on subform
-try Phlex front-end https://judoscale.com/blog/phlex-not-erb, https://www.phlex.fun/
+

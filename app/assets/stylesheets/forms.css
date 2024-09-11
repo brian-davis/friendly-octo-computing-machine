@@ -31,7 +31,7 @@ form.table-form {
   form.table-form .label-group > .link-button,
   form.table-form .label-group > .select-button {
     display: block;
-    text-align: right;
+    /* text-align: right; */
     margin-bottom: 0.5rem;
 
     /* DEBUG: do this with flex */

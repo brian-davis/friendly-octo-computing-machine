@@ -88,13 +88,12 @@
         <% end %>
     <%= select_tag("publishers", options_for_select(@publisher_options), { include_blank: "Select Publisher", class: "select-button", data: { action: "change->works#selectPublisher" }}) %>
   </div>
+
   <div class="subFormListSection" id="sub_form_list_publisher" data-controller="dismissable">
     <% if work.publisher %>
-
       <div class="outline subFormContainer" data-dismissable-target="subForm">
         <%= form.hidden_field :publisher_id, value: work.publisher_id %>
         <div class="subform-line">
-
           <b>Name:</b>
           <%= text_field_tag(:_publisher_name, work.publisher&.name, readonly: true) %>
         </div>
