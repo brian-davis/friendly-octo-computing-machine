@@ -31,26 +31,70 @@ class WorkSearchTest < ActiveSupport::TestCase
     })
   end
 
-  # TODO: better spec for :foreign_title column
   test "accent-less search" do
-    e1 = works(:foreign_character_title) # Astérix
-    e2 = works(:without_foreign_character_title) # Asterix
+    french_work = works(:foreign_character_title) # Astérix
+    english_work = works(:without_foreign_character_title) # Asterix
 
-    r1 = Work.search_title("Asterix")
-    r2 = Work.search_title("Astérix")
+    english_search = Work.search_title("Asterix")
+    french_search = Work.search_title("Astérix")
 
-    # foreign character in search term is reduced to English
+    # POSTGRESQL unaccent excension provides this function
+    # This is a simple string function which maps foreign accent characters to
+    # the accentless English character.
+    
+    # In this version:
+    like_search_french = Work.where("unaccent(title) LIKE unaccent(?)", "%Astérix%")
+    # the second `unaccent()` reduces the user input search term accented e down to an English e,
+    # and the first `unaccent()` reduces the saved column values accented e down to an English e
+
+    # In this version:
+    like_search_english = Work.where("unaccent(title) LIKE unaccent(?)", "%Asterix%")
+    # the second `unaccent()` redundantly reduces the user input search term unaccented e down to an English e,
+    # and the first `unaccent()` reduces the saved column values accented e down to an English e
+
+    # This is what we want:
+    assert french_work.in?(like_search_french)
+    assert english_work.in?(like_search_french)
+    assert french_work.in?(like_search_english)
+    assert english_work.in?(like_search_english)
+
+    # Can we avoid a LIKE query, and also use the extra pg_search gem functionality?
+    pg_search_english = Work.search_title("Asterix")
+    pg_search_french = Work.search_title("Astérix")
+    
+    # pg_search {ignoring: :accent} option gets us 1/2-way there.
+    # Foreign character in search term param is reduced to English
     # character, English work will be found in both searches. 
-    assert e2.in?(r1)
-    assert e2.in?(r2)
+    
+    # This gem allows for defining multi-column searching, with other
+    # special options.  With `against: {...}` we can define multiple
+    # columns (which aren't being explicitly tested here, although :title is
+    # included).  This will work:    
+    
+    assert english_work.in?(pg_search_french)
+    assert english_work.in?(pg_search_english)
 
-    # # binding.irb
-    # # TODO: foreign character in title is indexed as English character,
-    # # search term is also reduced to English character,
-    # # English work will be found in both searches.
-    # # Foreign work will be found in both searches.
-    # assert e1.in?(r1)
-    # assert e1.in?(r2)
+    # assert french_work.in?(pg_search_french)  # fails with original tsvector
+    # assert french_work.in?(pg_search_english) # fails with original tsvector
+    
+    # Because the option is reducing the user input search term, then
+    # doing the equivalent of a LIKE behind the scenes, also unaccenting there.
+
+    # BUT if we are using the tsvector index options
+    # for performance gains, then the results are dependent on the values
+    # saved to the index (triggered on save or update).  The foreign
+    # character must be indexed without accents, the equivalent of the
+    # `unaccent(?)` part of the `LIKE` query above.  Enabling 
+    # `{ tsvector_column: "searchable" }` option on the model will
+    # fail the previous tests, essentially overriding the previous
+    # option (assume you have built the same logic into a migration to
+    # build the index).  The `unaccent()` function must be
+    # built into the db/migrate/20240813213517_add_pg_search_indexes.rb
+    # migration, or equivalent.
+    
+    # https://stackoverflow.com/a/50595181/21928926
+
+    # TODO: implement above solution.
   end
 
   test "search_title pg_search_scope matches partial term" do

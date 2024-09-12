@@ -85,7 +85,7 @@ class Work < ApplicationRecord
         :title => "A",
         :subtitle => "B",
         :supertitle => "C",
-        :foregin_title => "D"
+        :foreign_title => "D"
       },
       using: {
         tsearch: {
