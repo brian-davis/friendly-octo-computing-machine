@@ -441,8 +441,8 @@ class WorkTest < ActiveSupport::TestCase
     work = Work.create({
       title: "test1"
     })
-
     producer = work.authors.create({ full_name: "test producer1" })
+
     assert_equal 1, work.authors.count
     assert_raises ActiveRecord::RecordInvalid do
       work.authors << producer
@@ -463,10 +463,10 @@ class WorkTest < ActiveSupport::TestCase
       }
     ).require("work").permit(work_producers_attributes: { producer_attributes: [:custom_name, :full_name]})
 
-    assert_raises ActiveRecord::RecordNotUnique do
-      work.assign_attributes(params)
-      work.save(validate:false)
-    end
+    work.assign_attributes(params)
+    refute work.valid?
+    expected = ["Work producers producer Name and Birth Year must be unique"]
+    assert_equal expected, work.errors.full_messages
     assert_equal 1, work.authors.count
   end
 

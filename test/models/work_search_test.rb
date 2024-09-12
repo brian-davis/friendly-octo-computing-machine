@@ -31,13 +31,26 @@ class WorkSearchTest < ActiveSupport::TestCase
     })
   end
 
+  # TODO: better spec for :foreign_title column
   test "accent-less search" do
-    e1 = works(:with_date_of_accession) # Astérix
-    e2 = works(:without_date_of_accession) # Asterix
+    e1 = works(:foreign_character_title) # Astérix
+    e2 = works(:without_foreign_character_title) # Asterix
 
-    r1 = Work.search_title("Asterix") # start of title
-    # assert e1.in?(r1) # foreign-character; this problem goes both ways
+    r1 = Work.search_title("Asterix")
+    r2 = Work.search_title("Astérix")
+
+    # foreign character in search term is reduced to English
+    # character, English work will be found in both searches. 
     assert e2.in?(r1)
+    assert e2.in?(r2)
+
+    # # binding.irb
+    # # TODO: foreign character in title is indexed as English character,
+    # # search term is also reduced to English character,
+    # # English work will be found in both searches.
+    # # Foreign work will be found in both searches.
+    # assert e1.in?(r1)
+    # assert e1.in?(r2)
   end
 
   test "search_title pg_search_scope matches partial term" do

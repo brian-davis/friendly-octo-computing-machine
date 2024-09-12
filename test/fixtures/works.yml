@@ -37,8 +37,14 @@ no_authors:
   title: "No Authors"
 
 with_date_of_accession:
-  title: "Astérix Le Gaulois"
+  title: "A Book I Own"
   date_of_accession: <%= Date.new(2020,1,1) %>
 
 without_date_of_accession:
+  title: "A Book I Would Like To Own"
+
+foreign_character_title:
+  title: "Astérix Le Gaulois"
+
+without_foreign_character_title:
   title: "Asterix The Gaul"

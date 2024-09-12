@@ -11,16 +11,6 @@ class AddPgSearchIndexes < ActiveRecord::Migration[7.1]
   disable_ddl_transaction!
 
   def up
-    function_sql = <<~SQLTEXT.squish
-      CREATE EXTENSION fuzzystrmatch;
-      CREATE OR REPLACE FUNCTION pg_search_dmetaphone(text)
-      RETURNS text
-      LANGUAGE SQL IMMUTABLE STRICT AS $function$
-        SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\\s+')))), ' ')
-      $function$;
-    SQLTEXT
-    execute(function_sql)
-
     quotes_sql = <<-SQL.squish
       ALTER TABLE quotes
       ADD COLUMN searchable tsvector GENERATED ALWAYS AS (
@@ -34,7 +24,8 @@ class AddPgSearchIndexes < ActiveRecord::Migration[7.1]
       ADD COLUMN searchable tsvector GENERATED ALWAYS AS (
         setweight(to_tsvector('english', coalesce(title, '')), 'A') ||
         setweight(to_tsvector('english', coalesce(subtitle, '')), 'B') ||
-        setweight(to_tsvector('english', coalesce(supertitle, '')), 'C')
+        setweight(to_tsvector('english', coalesce(supertitle, '')), 'C') ||
+        setweight(to_tsvector('english', coalesce(foreign_title, '')), 'D')
       ) STORED;
     SQL
     execute(works_sql)
@@ -57,18 +48,19 @@ class AddPgSearchIndexes < ActiveRecord::Migration[7.1]
 
 
   def down
-    # remove_index :quotes, :index_quotes_on_searchable
-    # remove_index :works, :index_works_on_searchable
-    # remove_index :producers, :index_producers_on_searchable
+    # DEBUG
+    remove_index :quotes, :searchable
+    remove_index :works, :searchable
+    remove_index :producers, :searchable
 
-    # remove_column :quotes, :searchable
-    # remove_column :works, :searchable
-    # remove_column :producers, :searchable
+    remove_column :quotes, :searchable
+    remove_column :works, :searchable
+    remove_column :producers, :searchable
 
-    # function_sql = <<~SQL.squish
-    #   DROP FUNCTION pg_search_dmetaphone(text);
-    #   DROP EXTENSION fuzzystrmatch;
-    # SQL
-    # execute(function_sql)
+    function_sql = <<~SQL.squish
+      DROP FUNCTION pg_search_dmetaphone(text);
+      DROP EXTENSION fuzzystrmatch;
+    SQL
+    execute(function_sql)
   end
 end

@@ -24,6 +24,20 @@ COMMENT ON EXTENSION fuzzystrmatch IS 'determine similarities and distance betwe
 
 
 --
+-- Name: unaccent; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS unaccent WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION unaccent; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
+
+
+--
 -- Name: pg_search_dmetaphone(text); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -91,13 +105,13 @@ CREATE TABLE public.producers (
     middle_name character varying,
     surname character varying,
     foreign_name character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    year_of_birth integer,
-    year_of_death integer,
     bio_link character varying,
     nationality character varying,
+    year_of_birth integer,
+    year_of_death integer,
     works_count integer DEFAULT 0,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
     searchable tsvector GENERATED ALWAYS AS ((((setweight(to_tsvector('english'::regconfig, (COALESCE(custom_name, ''::character varying))::text), 'A'::"char") || setweight(to_tsvector('english'::regconfig, (COALESCE(forename, ''::character varying))::text), 'B'::"char")) || setweight(to_tsvector('english'::regconfig, (COALESCE(surname, ''::character varying))::text), 'C'::"char")) || setweight(to_tsvector('english'::regconfig, (COALESCE(foreign_name, ''::character varying))::text), 'D'::"char"))) STORED
 );
 
@@ -128,9 +142,9 @@ ALTER SEQUENCE public.producers_id_seq OWNED BY public.producers.id;
 CREATE TABLE public.publishers (
     id bigint NOT NULL,
     name character varying,
+    works_count integer DEFAULT 0,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    works_count integer DEFAULT 0,
     CONSTRAINT publishers_name_presence CHECK (((name IS NOT NULL) AND ((name)::text !~ '^\s*$'::text)))
 );
 
@@ -241,9 +255,9 @@ CREATE TABLE public.work_producers (
     id bigint NOT NULL,
     work_id bigint NOT NULL,
     producer_id bigint NOT NULL,
+    role integer DEFAULT 0,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    role integer
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -273,27 +287,26 @@ ALTER SEQUENCE public.work_producers_id_seq OWNED BY public.work_producers.id;
 CREATE TABLE public.works (
     id bigint NOT NULL,
     title character varying,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    publisher_id bigint,
     subtitle character varying,
     supertitle character varying,
     alternate_title character varying,
     foreign_title character varying,
-    year_of_composition integer,
-    year_of_publication integer,
+    custom_citation character varying,
+    accession_note text,
+    tags character varying[] DEFAULT '{}'::character varying[],
+    format integer DEFAULT 0,
     language character varying,
     original_language character varying,
-    tags character varying[] DEFAULT '{}'::character varying[],
-    searchable tsvector GENERATED ALWAYS AS (((setweight(to_tsvector('english'::regconfig, (COALESCE(title, ''::character varying))::text), 'A'::"char") || setweight(to_tsvector('english'::regconfig, (COALESCE(subtitle, ''::character varying))::text), 'B'::"char")) || setweight(to_tsvector('english'::regconfig, (COALESCE(supertitle, ''::character varying))::text), 'C'::"char"))) STORED,
+    parent_id bigint,
     rating integer,
-    format integer DEFAULT 0,
-    custom_citation character varying,
-    parent_id integer,
+    year_of_composition integer,
+    year_of_publication integer,
+    date_of_completion date,
     date_of_accession date,
-    accession_note text,
-    finished boolean,
-    date_of_completion date
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    publisher_id bigint,
+    searchable tsvector GENERATED ALWAYS AS ((((setweight(to_tsvector('english'::regconfig, (COALESCE(title, ''::character varying))::text), 'A'::"char") || setweight(to_tsvector('english'::regconfig, (COALESCE(subtitle, ''::character varying))::text), 'B'::"char")) || setweight(to_tsvector('english'::regconfig, (COALESCE(supertitle, ''::character varying))::text), 'C'::"char")) || setweight(to_tsvector('english'::regconfig, (COALESCE(foreign_title, ''::character varying))::text), 'D'::"char"))) STORED
 );
 
 
@@ -382,11 +395,11 @@ ALTER TABLE ONLY public.notes
 
 
 --
--- Name: producers producers_forename_family_name_year_of_birth_unique; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: producers producers_forename_surname_year_of_birth_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.producers
-    ADD CONSTRAINT producers_forename_family_name_year_of_birth_unique UNIQUE (forename, surname, year_of_birth) DEFERRABLE;
+    ADD CONSTRAINT producers_forename_surname_year_of_birth_unique UNIQUE (forename, surname, year_of_birth) DEFERRABLE;
 
 
 --
@@ -446,6 +459,14 @@ ALTER TABLE ONLY public.work_producers
 
 
 --
+-- Name: work_producers work_producers_work_id_producer_id_role_unique; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.work_producers
+    ADD CONSTRAINT work_producers_work_id_producer_id_role_unique UNIQUE (work_id, producer_id, role) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: works works_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -496,6 +517,13 @@ CREATE INDEX index_work_producers_on_producer_id ON public.work_producers USING 
 
 
 --
+-- Name: index_work_producers_on_role; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_work_producers_on_role ON public.work_producers USING btree (role);
+
+
+--
 -- Name: index_work_producers_on_work_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -503,10 +531,10 @@ CREATE INDEX index_work_producers_on_work_id ON public.work_producers USING btre
 
 
 --
--- Name: index_work_producers_on_work_id_and_producer_id_and_role; Type: INDEX; Schema: public; Owner: -
+-- Name: index_works_on_format; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_work_producers_on_work_id_and_producer_id_and_role ON public.work_producers USING btree (work_id, producer_id, role);
+CREATE INDEX index_works_on_format ON public.works USING btree (format);
 
 
 --
@@ -586,41 +614,27 @@ ALTER TABLE ONLY public.notes
 
 
 --
+-- Name: works fk_rails_f55f563ef0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.works
+    ADD CONSTRAINT fk_rails_f55f563ef0 FOREIGN KEY (parent_id) REFERENCES public.works(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
-('20240911181807'),
-('20240908012039'),
-('20240908011849'),
-('20240907232930'),
-('20240907225507'),
-('20240906021511'),
-('20240904232837'),
-('20240904221728'),
-('20240903162335'),
 ('20240823201941'),
-('20240821205656'),
-('20240821200516'),
-('20240821181310'),
-('20240821030845'),
-('20240820231558'),
 ('20240815004339'),
-('20240814232714'),
 ('20240813213517'),
 ('20240811224747'),
-('20240809193141'),
-('20240809174729'),
-('20240809173244'),
-('20240808000221'),
-('20240807223430'),
-('20240807215038'),
-('20240807195442'),
 ('20240806223144'),
-('20240802214946'),
 ('20240731171116'),
 ('20240731170953'),
-('20240731170927');
+('20240731170927'),
+('20240731170926');
 

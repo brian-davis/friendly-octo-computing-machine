@@ -6,9 +6,17 @@ class CreateProducers < ActiveRecord::Migration[7.1]
       t.string :middle_name
       t.string :surname
       t.string :foreign_name
-      t.string :name
+      t.string :bio_link
+      t.string :nationality
+
+      t.integer :year_of_birth
+      t.integer :year_of_death
+
+      t.integer :works_count, default: 0
 
       t.timestamps
     end
+
+    add_unique_constraint :producers, [:forename, :surname, :year_of_birth]
   end
 end

@@ -30,9 +30,10 @@ class Work < ApplicationRecord
   include PgSearch::Model
 
   belongs_to :publisher, optional: true, counter_cache: true
-  belongs_to :parent, class_name: "Work", optional: true # self join
 
+  belongs_to :parent, class_name: "Work", optional: true # self join
   has_many :children, class_name: "Work", foreign_key: "parent_id" # self join
+  
   has_many :work_producers, dependent: :destroy
   has_many :producers, -> {
     merge(WorkProducer.order(:created_at)) }, **{
@@ -80,7 +81,12 @@ class Work < ApplicationRecord
 
   pg_search_scope(
     :search_title, {
-      against: {:title => "A", :subtitle => "B", :supertitle => "C"},
+      against: {
+        :title => "A",
+        :subtitle => "B",
+        :supertitle => "C",
+        :foregin_title => "D"
+      },
       using: {
         tsearch: {
           prefix: true, # sl => sleep
@@ -89,7 +95,8 @@ class Work < ApplicationRecord
 
           tsvector_column: "searchable"
         }
-      }
+      },
+      ignoring: :accents
     }
   )
 
@@ -172,7 +179,6 @@ class Work < ApplicationRecord
     title.sub("The ", "")
   end
 
-  # TODO: DRY with works_helper.rb :title_line
   def long_title
     [supertitle, title, subtitle].map(&:presence).compact.join(": ")
   end

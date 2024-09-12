@@ -1,17 +1,30 @@
 # TODOS
 
 *DEPLOYMENT*
-home server with dynamic dns, follow tutorial
+* research home server with dynamic dns
+* research rails 7.x, 8.x built-in containers
+* research rails 7.x, 8.x built-in deployment solutions
 
 *BACK END*
-more citations (all formats)
-fix search issues (foreign characters, custom stop-word list)
-consolidate migrations
-use associated_object https://garrettdimon.com/journal/posts/organizing-rails-code-with-activerecord-associated-objects
-db collations for case-insensitive sorting
+* feature: more citations (all formats)
+
+* refactor: case-insensitive sorting
+  * research db collations
+* refactor: DRY work#long_title vs works_helper#title_line vs Citation::Bibliography
+  * use associated_object gem https://garrettdimon.com/journal/posts/organizing-rails-code-with-activerecord-associated-objects
+* refactor: lose enum gem, follow this guide: https://naturaily.com/blog/ruby-on-rails-enum
+* refactor: improve test coverage
+  * coverage gem
+
+* bugfix: research pg_search custom settings
+  * foreign characters (custom dictionary)
+  * custom stop-word list
 
 *FRONT END*
 
-producer bio/links
-fix styling on table-form class errors
-add more attributes fields to subforms
+feature: producer bio/links
+feature: add more attributes fields to subforms
+
+refactor: research extracting CSS into gem, reusable across apps (DIY CSS framework)
+
+bugfix: fix styling on table-form class errors

@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+WINDOWS_CHROME_PATH = '/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'.freeze
+COVERAGE_PATH = File.expand_path("../coverage/index.html", __dir__)
+
+if system('which wslpath') && system('which realpath')
+  # In Windows WSL2 environment
+
+  # # Windows 11 WSL2 workarounds in .bashrc
+  # alias chrome='/mnt/c/Program\ Files/Google/Chrome/Application/chrome.exe'
+  # alias chrome-index='chrome $(wslpath -w $(realpath ./index.html))'
+
+  system_command = "#{WINDOWS_CHROME_PATH} $(wslpath -w $(realpath #{COVERAGE_PATH}))"
+  puts "RUNNING COMMAND: #{system_command}"
+  system(system_command)
+elsif system('which open')
+  # In Linux/Mac environment, no workaround needed.
+  
+  system_command = "open #{COVERAGE_PATH}"
+  puts "RUNNING COMMAND: #{system_command}"
+  system(system_command)
+else
+  # something else
+end
