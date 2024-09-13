@@ -3,28 +3,40 @@
 # Table name: works
 #
 #  id                  :bigint           not null, primary key
-#  title               :string
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
-#  publisher_id        :bigint
-#  subtitle            :string
+#  accession_note      :text
 #  alternate_title     :string
+#  custom_citation     :string
+#  date_of_accession   :date
+#  date_of_completion  :date
 #  foreign_title       :string
-#  year_of_composition :integer
-#  year_of_publication :integer
+#  format              :integer          default(0)
 #  language            :string
 #  original_language   :string
-#  tags                :string           default([]), is an Array
-#  searchable          :tsvector
 #  rating              :integer
-#  format              :integer          default(0)
-#  custom_citation     :string
-#  parent_id           :integer
+#  searchable          :tsvector
+#  subtitle            :string
 #  supertitle          :string
-#  date_of_accession   :date
-#  accession_note      :text
-#  finished            :boolean
-#  date_of_completion  :date
+#  tags                :string           default([]), is an Array
+#  title               :string
+#  year_of_composition :integer
+#  year_of_publication :integer
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  parent_id           :bigint
+#  publisher_id        :bigint
+#
+# Indexes
+#
+#  index_works_on_format        (format)
+#  index_works_on_parent_id     (parent_id)
+#  index_works_on_publisher_id  (publisher_id)
+#  index_works_on_searchable    (searchable) USING gin
+#  index_works_on_tags          (tags) USING gin
+#
+# Foreign Keys
+#
+#  fk_rails_...  (parent_id => works.id)
+#  fk_rails_...  (publisher_id => publishers.id)
 #
 class Work < ApplicationRecord
   include PgSearch::Model

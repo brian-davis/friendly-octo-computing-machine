@@ -3,13 +3,22 @@
 # Table name: quotes
 #
 #  id              :bigint           not null, primary key
-#  text            :text
-#  page            :string
 #  custom_citation :string
-#  work_id         :bigint           not null
+#  page            :string
+#  searchable      :tsvector
+#  text            :text
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
-#  searchable      :tsvector
+#  work_id         :bigint           not null
+#
+# Indexes
+#
+#  index_quotes_on_searchable  (searchable) USING gin
+#  index_quotes_on_work_id     (work_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (work_id => works.id)
 #
 require "test_helper"
 

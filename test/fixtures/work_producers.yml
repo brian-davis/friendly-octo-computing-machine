@@ -3,11 +3,23 @@
 # Table name: work_producers
 #
 #  id          :bigint           not null, primary key
-#  work_id     :bigint           not null
-#  producer_id :bigint           not null
+#  role        :integer          default(0)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  role        :integer
+#  producer_id :bigint           not null
+#  work_id     :bigint           not null
+#
+# Indexes
+#
+#  index_work_producers_on_producer_id             (producer_id)
+#  index_work_producers_on_role                    (role)
+#  index_work_producers_on_work_id                 (work_id)
+#  work_producers_work_id_producer_id_role_unique  (work_id,producer_id,role) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (producer_id => producers.id)
+#  fk_rails_...  (work_id => works.id)
 #
 
 one:

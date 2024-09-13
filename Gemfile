@@ -71,7 +71,6 @@ end
 gem "rename", "~> 1.1"
 
 # $ bundle exec annotate --models
-gem "annotate", "~> 3.2"
 
 # https://github.com/tmiyamon/acts-as-taggable-array-on
 gem "acts-as-taggable-array-on", "~> 0.7.0"
@@ -91,3 +90,6 @@ gem "rein", "~> 5.1"
 
 # https://github.com/kenn/enum_accessor
 gem "enum_accessor", "~> 2.3"
+
+# https://github.com/drwl/annotaterb
+gem "annotaterb", "~> 4.11"

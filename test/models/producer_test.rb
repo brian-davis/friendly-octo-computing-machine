@@ -3,19 +3,24 @@
 # Table name: producers
 #
 #  id            :bigint           not null, primary key
+#  bio_link      :string
 #  custom_name   :string
+#  foreign_name  :string
 #  forename      :string
 #  middle_name   :string
+#  nationality   :string
+#  searchable    :tsvector
 #  surname       :string
-#  foreign_name  :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
+#  works_count   :integer          default(0)
 #  year_of_birth :integer
 #  year_of_death :integer
-#  bio_link      :string
-#  nationality   :string
-#  works_count   :integer          default(0)
-#  searchable    :tsvector
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+# Indexes
+#
+#  index_producers_on_searchable                    (searchable) USING gin
+#  producers_forename_surname_year_of_birth_unique  (forename,surname,year_of_birth) UNIQUE
 #
 require "test_helper"
 

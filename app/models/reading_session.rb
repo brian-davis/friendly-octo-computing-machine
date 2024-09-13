@@ -3,13 +3,21 @@
 # Table name: reading_sessions
 #
 #  id         :bigint           not null, primary key
-#  started_at :datetime
-#  ended_at   :datetime
-#  work_id    :bigint           not null
-#  pages      :integer
 #  duration   :integer
+#  ended_at   :datetime
+#  pages      :integer
+#  started_at :datetime
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  work_id    :bigint           not null
+#
+# Indexes
+#
+#  index_reading_sessions_on_work_id  (work_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (work_id => works.id)
 #
 class ReadingSession < ApplicationRecord
   belongs_to :work
