@@ -1,6 +1,12 @@
+html {
+}
+
 body {
   font-family: sans-serif;
   padding: 1rem;
+  
+  color:  var(--color-black);
+  background-color: var(--color-white);
 }
 
 .indented {
@@ -8,7 +14,7 @@ body {
 }
 
 .outline {
-  border: 1px solid cadetblue;
+  border: 1px solid var(--color-dark-beige);
   padding: 1em;
   margin-bottom: 1em;
 }
@@ -18,7 +24,7 @@ body {
 }
 
 hr {
-  border: 2px solid aliceblue;
+  border: 2px solid var(--color-light-beige);
 }
 
 ul.associated-items li {
@@ -32,9 +38,9 @@ ul.associated-items li {
 }
 
 .model-tag {
-  background-color: honeydew;
-  border: 2px solid cadetblue;
-  color: cadetblue;
+  background-color: var(--color-light-green);
+  border: 2px solid var(--color-dark-green);
+  color: var(--color-dark-green);
   border-radius: 8px;
   /* margin-right: 0.5em; */
   display: flex;
@@ -48,28 +54,29 @@ ul.associated-items li {
 }
 
 .model-tag .model-tag-count {
-  background-color: honeydew;
+  background-color: var(--color-light-green);
   border-radius: 0px 8px 8px 0px;
-  border-left: 2px solid cadetblue;
+  border-left: 2px solid var(--color-dark-green);
 }
 
 .model-tag.all-tag {
-  background-color: floralwhite;
-  border: 2px solid orange;
-  color: orange;
+  background-color: var(--color-light-orange);
+  border: 2px solid var(--color-dark-orange);
+  color: var(--color-dark-orange);
 }
 
 .model-tag.all-tag .model-tag-count {
-  background-color: floralwhite;
+  background-color: var(--color-light-orange);
   border-radius: 0px 8px 8px 0px;
-  border-left: 2px solid orange;
+  border-left: 2px solid var(--color-dark-orange);
 }
 
 .danger {
-  color: red;
+  color: var(--color-dark-red);
 }
+
 button.danger {
-  border-color: red;
+  border-color: var(--color-dark-red);
 }
 
 .clickable {
@@ -77,42 +84,52 @@ button.danger {
 }
 
 .book-card {
-  background-color: aliceblue;
+  background-color: var(--color-light-beige);
+  border-color: var(--color-dark-beige);
 }
 
 .quote-card {
-  background-color: antiquewhite;
+  background-color: var(--color-light-beige);
+  border-color: var(--color-dark-beige);
 }
 
 a.search-button {
   text-decoration: none;
   padding: 0.18em 0.4em;
-  border: 1px solid cadetblue;
   margin-right: 0.5rem;
   font-size: smaller;
-  background-color: honeydew;
+  background-color: var(--color-light-blue);
+  border: 1px solid var(--color-dark-blue);
+  color: var(--color-dark-blue)
 }
 
 input.search-box {
-  border: 1px solid cadetblue;
-  background-color: yellow;
+  border: 1px solid var(--color-dark-beige);
+  background-color: var(--color-light-beige);
   padding: 0.18rem;
   font-size: smaller;
 }
 
 .stars {
-  background-color: aliceblue;
+  background-color: var(--color-light-purple);
   padding: 0.1rem;
-  border: 1px solid cadetblue;
+  border: 1px solid var(--color-dark-purple);
   font-size: smaller;
-  color: mediumpurple;
+  color: var(--color-dark-purple);
 }
 
-.bibliography-citation,
+.bibliography-citation {
+  font-family: "Times New Roman", Times, serif;
+    /* TODO: space under label */
+    margin-top: 0.5rem;
+}
+
 .quote-card {
   font-family: "Times New Roman", Times, serif;
+  background-color: var(--color-light-beige);
+  border-color: var(--color-dark-beige);
 
-  /* space under label */
+  /* TODO: space under label */
   margin-top: 0.5rem;
 }
 
@@ -134,15 +151,15 @@ ul.associated-items li {
 }
 
 .div-list-row.alt-row {
-  background-color: aliceblue;
+  background-color: var(--color-light-beige);
 }
 
 .div-list-row.empty-list {
-  color: cadetblue;
+  color: var(--color-dark-beige);
 }
 
 #metrics {
-  /* outline: 1px solid red; */
+  /* outline: 1px solid var(--color-dark-red); */
 }
 
 #metrics .div-list-row {
@@ -167,25 +184,22 @@ ul.associated-items li {
 }
 
 b.minor-heading,
-b.major-heading {
+b.major-heading,
+h1.max-heading {
   display: block;
   font-weight: bold;
   margin-bottom: 0.5rem;
   font-size: larger;
-  background-color: aliceblue;
-  color: cadetblue;
+
+  background-image: linear-gradient(to right, var(--color-light-blue), var(--color-white));
+  
+  color: var(--color-dark-blue);
   padding: 0.5rem;
 }
 
-b.major-heading {
-  /* use <hr> below */
-  margin-bottom: unset;
-}
-
+b.major-heading,
 h1.max-heading {
-  background-color: aliceblue;
-  color: cadetblue;
-  padding: 0.5rem;
+  font-size:xx-large;
   margin: unset;
 }
 
@@ -193,17 +207,17 @@ h1.max-heading {
   display: inline-block;
   border-bottom: none;
   padding: 0.5rem;
-  background-color: aliceblue;
-  color: cadetblue;
+  background-color: var(--color-light-blue);
+  color: var(--color-dark-blue);
   cursor: pointer;
 }
 
 #tabbed-summaries .tab.tab-selected {
-  border-top: 1px solid cadetblue;
-  border-left: 1px solid cadetblue;
-  border-right: 1px solid cadetblue;
+  border-top: 1px solid var(--color-dark-blue);
+  border-left: 1px solid var(--color-dark-blue);
+  border-right: 1px solid var(--color-dark-blue);
 
-  background-color: white;
+  background-color: var(--volor-white);
 }
 
 #tabbed-summaries .tab-content {
@@ -212,12 +226,14 @@ h1.max-heading {
 
 #tabbed-summaries .tab-content.tab-content-selected {
   display: block;
-  /* border: 1px solid cadetblue; */
-  /* border-bottom: 1px solid cadetblue;
-  border-left: 1px solid cadetblue;
-  border-right: 1px solid cadetblue; */
 }
 
 .tab-content#graph {
   padding-top: 1rem;
+}
+
+span.horizontal-spacer {
+  border-right: 1px solid var(--color-dark-beige);
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
 }

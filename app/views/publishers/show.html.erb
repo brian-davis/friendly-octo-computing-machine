@@ -22,6 +22,6 @@
 <div class="nav-links" data-controller="confirmable">
   <%= link_to "Back to publishers", publishers_path, class: "nav-button" %>
   <%= link_to "Back to top", root_path, class: "nav-button" %>
-  <%= link_to "Edit this publisher", edit_publisher_path(@publisher), class: "nav-button nav-action" %>
+  <%= link_to "Edit this publisher", edit_publisher_path(@publisher), class: "nav-button nav-action-safe" %>
   <%= html_delete_button @publisher, "Destroy this publisher" %>
 </div>

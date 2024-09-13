@@ -23,7 +23,9 @@
     <% else %>
       <% @work_producers.each do |wp| %>
         <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
-          <%= wp.role.capitalize %>: <%= wp.work.title %> | <%= link_to "👉", wp.work, class: "index-link" %>
+          <%= wp.role.capitalize %>: <%= wp.work.title %>
+          <span class="horizontal-spacer"></span>
+          <%= link_to "👉", wp.work, class: "index-link" %>
         <% end %>
       <% end %>
     <% end %>
@@ -34,6 +36,6 @@
 <div class="nav-links" data-controller="confirmable">
   <%= link_to "Back to authors", producers_path, class: "nav-button" %>
   <%= link_to "Back to top", root_path, class: "nav-button" %>
-  <%= link_to "Edit this author", edit_producer_path(@producer), class: "nav-button nav-action" %>
+  <%= link_to "Edit this author", edit_producer_path(@producer), class: "nav-button nav-action-safe" %>
   <%= html_delete_button @producer, "Destroy this author" %>
 </div>

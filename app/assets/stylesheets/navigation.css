@@ -4,22 +4,22 @@
 
 .nav-links a,
 a.index-link {
-  color: cadetblue;
+  color: var(--color-dark-blue);
   text-decoration-thickness: 2px;
   text-decoration-skip: edges;
-  text-decoration-color: aliceblue;
+  text-decoration-color: var(--color-light-blue);
 
   /* ensure consistency between <%= link_to() %> and <%= button_to() %> */
   display: inline-block;
 }
 
 a.index-link:hover {
-  background-color: aliceblue;
-  text-decoration-color: cadetblue;
+  background-color: var(--color-light-blue);
+  text-decoration-color: var(--color-dark-blue);
 }
 
 .nav-links a[data-method="delete"] {
-  color: red;
+  color: var(--color-dark-red);
 }
 
 .empty-list {
@@ -29,14 +29,21 @@ a.index-link:hover {
 .nav-button {
   text-decoration: none;
   padding: 0.5em;
-  border: 1px solid cadetblue;
-  background: aliceblue;
+  border: 1px solid var(--color-dark-blue);
+  background: var(--color-light-blue);
   margin-right: 0.29rem;
 }
 
 /* decorate .nav-button */
+/* DEPRECATE */
 .nav-action {
-  background: floralwhite;
+  background: var(--color-light-red);
+}
+
+a.nav-action-safe {
+  background-color: var(--color-light-green);
+  color: var(--color-dark-green);
+  border-color: var(--color-dark-green);
 }
 
 a.link-button,
@@ -46,8 +53,9 @@ select.select-button {
   width: 10rem;
   text-decoration: none;
   padding: 0.5em;
-  border: 1px solid cadetblue;
-  background: floralwhite;
+  color: var(--color-dark-blue);
+  border: 1px solid var(--color-dark-blue);
+  background: var(--color-light-blue);
 }
 
 select.select-button {

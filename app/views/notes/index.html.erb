@@ -4,14 +4,21 @@
 <hr>
 
 <div id="notes" class="scrollable">
+<% if @notes.empty? %>
+  <div class="div-list-row empty-list">EMPTY</div>
+<% else %>
   <% @notes.each do |note| %>
     <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
-      <i class="small-text stars"><%= human_time_for(note.updated_at) %></i> : <%= note.text.truncate(100) %> | <%= link_to "👉", [@work, note], class: "index-link" %>
+      <i class="small-text stars"><%= human_time_for(note.updated_at) %></i> : <%= note.text.truncate(100) %>
+      <span class="horizontal-spacer"></span>
+      <%= link_to "👉", [@work, note], class: "index-link" %>
     <% end %>
   <% end %>
+<% end %>
+
 </div>
 <hr>
 <div class="nav-links">
   <%= link_to "Back to Book", @work, class: "nav-button" %>
-  <%= link_to "New note", new_work_note_path(@work), class: "nav-button nav-action"  %>
+  <%= link_to "New note", new_work_note_path(@work), class: "nav-button nav-action-safe"  %>
 </div>

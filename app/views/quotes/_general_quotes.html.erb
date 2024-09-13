@@ -5,7 +5,9 @@
     <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
       <i class="small-text"><%= full_title_line(quote.work) %>, p. <%= [quote.page, quote.custom_citation].map(&:presence).compact.join(", ") %></i>:
       <%= quote.text.truncate(100) %>
-      <% quote_resource = [quote.work, quote] %> | <%= link_to "👉", quote_resource, class: "index-link" %>
+      <% quote_resource = [quote.work, quote] %>
+      <span class="horizontal-spacer"></span>
+      <%= link_to "👉", quote_resource, class: "index-link" %>
     <% end %>
   <% end %>
 <% end %>

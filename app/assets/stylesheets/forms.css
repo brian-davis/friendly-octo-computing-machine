@@ -7,7 +7,6 @@ https://webdesign.tutsplus.com/how-to-build-web-form-layouts-with-css-grid--cms-
 
 form.table-form {
   display: grid;
-  background: white;
   max-width: 800px;
 }
 
@@ -31,10 +30,9 @@ form.table-form {
   form.table-form .label-group > .link-button,
   form.table-form .label-group > .select-button {
     display: block;
-    /* text-align: right; */
     margin-bottom: 0.5rem;
 
-    /* DEBUG: do this with flex */
+    /* TODO: do this with flex */
     position: relative;
     right: -1.7rem;
   }
@@ -48,8 +46,8 @@ form.table-form {
   form.table-form select {
     padding: 0.5rem;
     grid-column: 2 / 3;
-    background-color: yellow;
-    border: 1px solid cadetblue;
+    background-color: var(--color-light-beige);
+    border: 1px solid var(--color-dark-beige);
   }
 
   form.table-form label {
@@ -65,7 +63,9 @@ form.table-form {
 
   form.table-form input[type="submit"] {
     width: 50%;
-    background-color: honeydew;
+    background-color: var(--color-light-green);
+    color: var(--color-dark-green);
+    border-color: var(--color-dark-green);
     font-weight: 600;
   }
 
@@ -106,14 +106,14 @@ form.table-form {
   }
 
   form.table-form .subform-line input:read-only {
-    background-color: aliceblue;
+    background-color: var(--color-light-blue);
   }
 
   form.table-form .subform-line select {
     padding: 0.5em;
     width: 90%;
-    border: 1px solid cadetblue;
-    background-color: yellow;
+    border: 1px solid var(--color-dark-beige);
+    background-color: var(--color-light-beige);
     position: relative;
     left: -1px;
   }
@@ -124,9 +124,9 @@ form.table-form {
 
   form.table-form .subform-line .undo-label {
     width: 90%;
-    background-color: floralwhite;
+    background-color: var(--color-light-red);
     padding: 0.5rem;
-    border: 1px solid cadetblue;
+    border: 1px solid var(--color-dark-blue);
   }
 
   form.table-form .subform-line .undo-label .clickable {

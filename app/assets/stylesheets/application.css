@@ -13,3 +13,28 @@
  *= require_tree .
  *= require_self
  */
+
+:root {
+
+  /* https://uxplanet.org/alternatives-to-using-pure-black-000000-for-text-and-backgrounds-54ef0e733cdb */
+  --color-black: rgb(18, 19, 20);
+  --color-white: rgb(255, 254, 253);
+
+  --color-dark-blue: rgb(46 120 123); 
+  --color-light-blue: rgb(46 120 123 / 10%);
+
+  --color-dark-red: rgb(209 14 14);
+  --color-light-red: rgb(209 14 14 / 10%);
+
+  --color-dark-orange: rgb(183 60 60);
+  --color-light-orange: rgb(183 60 60 / 10%);
+
+  --color-dark-green: rgb(32 164 28);
+  --color-light-green: rgb(32 164 28 / 10%);
+
+  --color-dark-beige: rgb(139, 139, 131);
+  --color-light-beige: rgb(245, 245, 220);
+
+  --color-dark-purple: rgb(147 112 216);
+  --color-light-purple: rgb(147 112 216 / 10%);
+}
