@@ -609,5 +609,23 @@ unless ENV["CLEAR"]
         })
       ]
     })
+
+    # TODO: more details
+    asterix1 = Work.create({
+      title: "Asterix The Gaul",
+      language: "English",
+      original_language: "French",
+      tags: ["Comics"],
+      format: :translated_book
+    })
+
+    # TODO: more details
+    asterix2 = Work.create({
+      title: "Astérix Le Gaulois",
+      language: "French",
+      tags: ["Comics"],
+      format: :book
+    })
+
   end
 end

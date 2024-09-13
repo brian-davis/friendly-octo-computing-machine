@@ -22,10 +22,10 @@ class AddPgSearchIndexes < ActiveRecord::Migration[7.1]
     works_sql = <<-SQL.squish
       ALTER TABLE works
       ADD COLUMN searchable tsvector GENERATED ALWAYS AS (
-        setweight(to_tsvector('english', coalesce(title, '')), 'A') ||
-        setweight(to_tsvector('english', coalesce(subtitle, '')), 'B') ||
-        setweight(to_tsvector('english', coalesce(supertitle, '')), 'C') ||
-        setweight(to_tsvector('english', coalesce(foreign_title, '')), 'D')
+        setweight(to_tsvector('unaccented_dict', coalesce(title, '')), 'A') ||
+        setweight(to_tsvector('unaccented_dict', coalesce(subtitle, '')), 'B') ||
+        setweight(to_tsvector('unaccented_dict', coalesce(supertitle, '')), 'C') ||
+        setweight(to_tsvector('unaccented_dict', coalesce(foreign_title, '')), 'D')
       ) STORED;
     SQL
     execute(works_sql)
@@ -33,10 +33,10 @@ class AddPgSearchIndexes < ActiveRecord::Migration[7.1]
     producers_sql = <<-SQL
       ALTER TABLE producers
       ADD COLUMN searchable tsvector GENERATED ALWAYS AS (
-        setweight(to_tsvector('english', coalesce(custom_name, '')), 'A') ||
-        setweight(to_tsvector('english', coalesce(forename, '')), 'B') ||
-        setweight(to_tsvector('english', coalesce(surname, '')), 'C') ||
-        setweight(to_tsvector('english', coalesce(foreign_name, '')), 'D')
+        setweight(to_tsvector('unaccented_dict', coalesce(custom_name, '')), 'A') ||
+        setweight(to_tsvector('unaccented_dict', coalesce(forename, '')), 'B') ||
+        setweight(to_tsvector('unaccented_dict', coalesce(surname, '')), 'C') ||
+        setweight(to_tsvector('unaccented_dict', coalesce(foreign_name, '')), 'D')
       ) STORED;
     SQL
     execute(producers_sql)

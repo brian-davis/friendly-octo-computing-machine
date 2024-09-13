@@ -46,6 +46,71 @@ CREATE FUNCTION public.pg_search_dmetaphone(text) RETURNS text
     AS $_$ SELECT array_to_string(ARRAY(SELECT dmetaphone(unnest(regexp_split_to_array($1, E'\s+')))), ' ') $_$;
 
 
+--
+-- Name: unaccented_dict; Type: TEXT SEARCH CONFIGURATION; Schema: public; Owner: -
+--
+
+CREATE TEXT SEARCH CONFIGURATION public.unaccented_dict (
+    PARSER = pg_catalog."default" );
+
+ALTER TEXT SEARCH CONFIGURATION public.unaccented_dict
+    ADD MAPPING FOR asciiword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.unaccented_dict
+    ADD MAPPING FOR word WITH public.unaccent, simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.unaccented_dict
+    ADD MAPPING FOR numword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.unaccented_dict
+    ADD MAPPING FOR email WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.unaccented_dict
+    ADD MAPPING FOR url WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.unaccented_dict
+    ADD MAPPING FOR host WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.unaccented_dict
+    ADD MAPPING FOR sfloat WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.unaccented_dict
+    ADD MAPPING FOR version WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.unaccented_dict
+    ADD MAPPING FOR hword_numpart WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.unaccented_dict
+    ADD MAPPING FOR hword_part WITH public.unaccent, simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.unaccented_dict
+    ADD MAPPING FOR hword_asciipart WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.unaccented_dict
+    ADD MAPPING FOR numhword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.unaccented_dict
+    ADD MAPPING FOR asciihword WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.unaccented_dict
+    ADD MAPPING FOR hword WITH public.unaccent, simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.unaccented_dict
+    ADD MAPPING FOR url_path WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.unaccented_dict
+    ADD MAPPING FOR file WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.unaccented_dict
+    ADD MAPPING FOR "float" WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.unaccented_dict
+    ADD MAPPING FOR "int" WITH simple;
+
+ALTER TEXT SEARCH CONFIGURATION public.unaccented_dict
+    ADD MAPPING FOR uint WITH simple;
+
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -112,7 +177,7 @@ CREATE TABLE public.producers (
     works_count integer DEFAULT 0,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    searchable tsvector GENERATED ALWAYS AS ((((setweight(to_tsvector('english'::regconfig, (COALESCE(custom_name, ''::character varying))::text), 'A'::"char") || setweight(to_tsvector('english'::regconfig, (COALESCE(forename, ''::character varying))::text), 'B'::"char")) || setweight(to_tsvector('english'::regconfig, (COALESCE(surname, ''::character varying))::text), 'C'::"char")) || setweight(to_tsvector('english'::regconfig, (COALESCE(foreign_name, ''::character varying))::text), 'D'::"char"))) STORED
+    searchable tsvector GENERATED ALWAYS AS ((((setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(custom_name, ''::character varying))::text), 'A'::"char") || setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(forename, ''::character varying))::text), 'B'::"char")) || setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(surname, ''::character varying))::text), 'C'::"char")) || setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(foreign_name, ''::character varying))::text), 'D'::"char"))) STORED
 );
 
 
@@ -306,7 +371,7 @@ CREATE TABLE public.works (
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
     publisher_id bigint,
-    searchable tsvector GENERATED ALWAYS AS ((((setweight(to_tsvector('english'::regconfig, (COALESCE(title, ''::character varying))::text), 'A'::"char") || setweight(to_tsvector('english'::regconfig, (COALESCE(subtitle, ''::character varying))::text), 'B'::"char")) || setweight(to_tsvector('english'::regconfig, (COALESCE(supertitle, ''::character varying))::text), 'C'::"char")) || setweight(to_tsvector('english'::regconfig, (COALESCE(foreign_title, ''::character varying))::text), 'D'::"char"))) STORED
+    searchable tsvector GENERATED ALWAYS AS ((((setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(title, ''::character varying))::text), 'A'::"char") || setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(subtitle, ''::character varying))::text), 'B'::"char")) || setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(supertitle, ''::character varying))::text), 'C'::"char")) || setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(foreign_title, ''::character varying))::text), 'D'::"char"))) STORED
 );
 
 

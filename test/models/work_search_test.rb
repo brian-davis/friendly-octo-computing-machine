@@ -74,8 +74,8 @@ class WorkSearchTest < ActiveSupport::TestCase
     assert english_work.in?(pg_search_french)
     assert english_work.in?(pg_search_english)
 
-    # assert french_work.in?(pg_search_french)  # fails with original tsvector
-    # assert french_work.in?(pg_search_english) # fails with original tsvector
+    assert french_work.in?(pg_search_french)  # fails with original tsvector
+    assert french_work.in?(pg_search_english) # fails with original tsvector
     
     # Because the option is reducing the user input search term, then
     # doing the equivalent of a LIKE behind the scenes, also unaccenting there.
@@ -92,9 +92,16 @@ class WorkSearchTest < ActiveSupport::TestCase
     # built into the db/migrate/20240813213517_add_pg_search_indexes.rb
     # migration, or equivalent.
     
+    # solution:
     # https://stackoverflow.com/a/50595181/21928926
 
-    # TODO: implement above solution.
+    # SELECT title FROM works WHERE to_tsvector('mydict', title) @@ 'asterix';
+    # SELECT title FROM works WHERE to_tsvector('mydict', title) @@ 'astérix';
+
+    # both work OK, but case insensitive.  pg_search will do
+    # case-insensitive searching without configuration.
+    # Changing the indexing migration to use 'mydict' instead of 'english' does the trick!  Thank you https://stackoverflow.com/users/124486/evan-carroll
+    # The error was previously that the 'english' dictionary was somehow not 'immutable', but apparently the custom dictionary now somehow is immutable. ::shrugs::
   end
 
   test "search_title pg_search_scope matches partial term" do
