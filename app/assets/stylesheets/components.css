@@ -120,8 +120,10 @@ input.search-box {
 
 .bibliography-citation {
   font-family: "Times New Roman", Times, serif;
-    /* TODO: space under label */
-    margin-top: 0.5rem;
+  width: fit-content;
+
+  /* TODO: space under label */
+  margin-top: 0.5rem;
 }
 
 .quote-card {

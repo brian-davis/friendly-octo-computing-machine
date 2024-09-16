@@ -1,5 +1,5 @@
 class CreateWorks < ActiveRecord::Migration[7.1]
-  def change
+  def up
     create_table :works do |t|
       t.string :title
       t.string :subtitle
@@ -12,8 +12,7 @@ class CreateWorks < ActiveRecord::Migration[7.1]
      
       t.string :tags, array: true, default: []
       
-      # TODO: postgresql enum column
-      t.integer :format, default: 0, index: true
+      # t.integer :format, default: 0, index: true
 
       # TODO: real enum
       t.string :language
@@ -32,6 +31,25 @@ class CreateWorks < ActiveRecord::Migration[7.1]
       t.timestamps
     end
 
+    # https://naturaily.com/blog/ruby-on-rails-enum
+    execute <<-SQL
+      CREATE TYPE work_format AS ENUM ('book', 'chapter', 'ebook', 'journal_article', 'news_article', 'book_review', 'interview', 'thesis', 'web_page', 'social_media', 'video', 'personal');
+    SQL
+    add_column :works, :format, :work_format, default: "book"
+
+    add_index :works, :format
     add_index :works, :tags, using: "gin"
+  end
+
+  def down
+    remove_index :works, :tags
+    remove_index :works, :work_format
+
+    remove_column :works, :format
+    execute <<-SQL
+      DROP TYPE work_format;
+    SQL
+
+    drop_table :works
   end
 end

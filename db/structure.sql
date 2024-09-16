@@ -38,6 +38,39 @@ COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
 
 --
+-- Name: work_format; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.work_format AS ENUM (
+    'book',
+    'chapter',
+    'ebook',
+    'journal_article',
+    'news_article',
+    'book_review',
+    'interview',
+    'thesis',
+    'web_page',
+    'social_media',
+    'video',
+    'personal'
+);
+
+
+--
+-- Name: work_producer_role; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.work_producer_role AS ENUM (
+    'author',
+    'editor',
+    'contributor',
+    'translator',
+    'illustrator'
+);
+
+
+--
 -- Name: pg_search_dmetaphone(text); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -320,9 +353,9 @@ CREATE TABLE public.work_producers (
     id bigint NOT NULL,
     work_id bigint NOT NULL,
     producer_id bigint NOT NULL,
-    role integer DEFAULT 0,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    role public.work_producer_role DEFAULT 'author'::public.work_producer_role
 );
 
 
@@ -359,7 +392,6 @@ CREATE TABLE public.works (
     custom_citation character varying,
     accession_note text,
     tags character varying[] DEFAULT '{}'::character varying[],
-    format integer DEFAULT 0,
     language character varying,
     original_language character varying,
     parent_id bigint,
@@ -370,6 +402,7 @@ CREATE TABLE public.works (
     date_of_accession date,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
+    format public.work_format DEFAULT 'book'::public.work_format,
     publisher_id bigint,
     searchable tsvector GENERATED ALWAYS AS ((((setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(title, ''::character varying))::text), 'A'::"char") || setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(subtitle, ''::character varying))::text), 'B'::"char")) || setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(supertitle, ''::character varying))::text), 'C'::"char")) || setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(foreign_title, ''::character varying))::text), 'D'::"char"))) STORED
 );

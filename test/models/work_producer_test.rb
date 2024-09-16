@@ -3,7 +3,7 @@
 # Table name: work_producers
 #
 #  id          :bigint           not null, primary key
-#  role        :integer          default(0)
+#  role        :enum             default("author")
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  producer_id :bigint           not null

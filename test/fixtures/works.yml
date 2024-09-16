@@ -9,7 +9,7 @@
 #  date_of_accession   :date
 #  date_of_completion  :date
 #  foreign_title       :string
-#  format              :integer          default(0)
+#  format              :enum             default("book")
 #  language            :string
 #  original_language   :string
 #  rating              :integer

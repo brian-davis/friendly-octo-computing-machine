@@ -9,7 +9,6 @@ class BibliographyTest < ActiveSupport::TestCase
 
     expected = "Yu, Charles. _Interior Chinatown_. Pantheon Books, 2020."
     result = Citation::Bibliography.new(book1).entry
-
     assert_equal expected, result
   end
 

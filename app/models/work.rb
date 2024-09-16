@@ -9,7 +9,7 @@
 #  date_of_accession   :date
 #  date_of_completion  :date
 #  foreign_title       :string
-#  format              :integer          default(0)
+#  format              :enum             default("book")
 #  language            :string
 #  original_language   :string
 #  rating              :integer
@@ -57,17 +57,17 @@ class Work < ApplicationRecord
   has_many :notes, dependent: :destroy
   has_many :reading_sessions, dependent: :destroy
 
-  has_many :authors, -> { merge(WorkProducer.where_role(:author)).merge(WorkProducer.order(:created_at)) }, **{
+  has_many :authors, -> { merge(WorkProducer.role_author).merge(WorkProducer.order(:created_at)) }, **{
     through: :work_producers,
     source: :producer
   }
 
-  has_many :editors, -> { merge(WorkProducer.where_role(:editor)).merge(WorkProducer.order(:created_at)) }, **{
+  has_many :editors, -> { merge(WorkProducer.role_editor).merge(WorkProducer.order(:created_at)) }, **{
     through: :work_producers,
     source: :producer
   }
 
-  has_many :translators, -> { merge(WorkProducer.where_role(:translator)).merge(WorkProducer.order(:created_at)) }, **{
+  has_many :translators, -> { merge(WorkProducer.role_translator).merge(WorkProducer.order(:created_at)) }, **{
     through: :work_producers,
     source: :producer
   }
@@ -134,21 +134,21 @@ class Work < ApplicationRecord
     joins(:children).distinct
   }
 
-  # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-book
-  enum_accessor :format, [
-    :book,            # Book
-    :chapter,         # Chapter or other part of an edited book
-    :ebook,           # Book consulted in an electronic format
-    :journal_article, # Journal article
-    :news_article,    # News or magazine article
-    :book_review,     # Book review
-    :interview,       # Interview
-    :thesis,          # Thesis or dissertation
-    :web_page,        # Web page
-    :social_media,    # Social media content
-    :video,           # Video or podcast
-    :personal         # Personal communication
-  ]
+  # postgresql enum
+  enum :format, {
+    :book            => "book",
+    :chapter         => "chapter",
+    :ebook           => "ebook",
+    :journal_article => "journal_article",
+    :news_article    => "news_article",
+    :book_review     => "book_review",
+    :interview       => "interview",
+    :thesis          => "thesis",
+    :web_page        => "web_page",
+    :social_media    => "social_media",
+    :video           => "video",
+    :personal        => "personal"
+  }, prefix: :format
 
   class << self
     # pseudo-enum

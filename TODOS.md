@@ -18,6 +18,7 @@
 
 * bugfix: research pg_search custom settings
   * custom stop-word list (allow "after")
+  * fix read/unread status
 
 *FRONT END*
 

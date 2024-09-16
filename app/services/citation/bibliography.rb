@@ -53,9 +53,8 @@ module Citation
   protected
     # first result is 'last, first middle', rest are 'first middle last'
     def alpha_producer_names(role = nil)
-      rindex = WorkProducer.roles[role]
-      role_sql = if rindex
-        "AND wp.role = #{rindex}"
+      role_sql = if role
+        "AND wp.role = '#{role}'"
       end
 
       # too complex for pluck

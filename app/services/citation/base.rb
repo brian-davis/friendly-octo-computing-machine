@@ -1,3 +1,4 @@
+# Builds citations for Chicago Style, as in:   # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-book
 module Citation
   class Base
     attr_reader :work
