@@ -29,10 +29,7 @@ class Producer < ApplicationRecord
   has_many :works, through: :work_producers
   accepts_nested_attributes_for :work_producers, allow_destroy: true
 
-  validates :custom_name, presence: true, unless: -> { forename? && surname? }
-  validates :forename, presence: true, unless: -> { custom_name? }
-  validates :surname, presence: true, unless: -> { custom_name? }
-
+  validate :full_name_presence
   validate :full_name_uniqueness
 
   FULL_NAME_SQL = <<~SQL.squish
@@ -137,7 +134,7 @@ class Producer < ApplicationRecord
   end
 
   def full_name
-    base_full_name = custom_name.presence || [forename, middle_name, surname].map(&:presence).compact.join(" ")
+    custom_name.presence || [forename, middle_name, surname].map(&:presence).compact.join(" ")
   end
 
   def full_name=(str)
@@ -149,6 +146,11 @@ class Producer < ApplicationRecord
   end
 
 private
+  def full_name_presence
+    if full_name.blank?
+      self.errors.add(:base, "Custom Name or Forename and Surname must be present.")
+    end
+  end
 
   def full_name_uniqueness
     # If producer has been built by subform on the work form, most columns will be nil.

@@ -17,8 +17,8 @@
   * coverage gem
 
 * bugfix: research pg_search custom settings
-  * foreign characters (custom dictionary)
-  * custom stop-word list
+  * custom stop-word list (allow "after")
+  * redundant producer name errors
 
 *FRONT END*
 
@@ -26,5 +26,3 @@ feature: producer bio/links
 feature: add more attributes fields to subforms
 
 refactor: research extracting CSS into gem, reusable across apps (DIY CSS framework)
-
-bugfix: fix styling on table-form class errors

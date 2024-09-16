@@ -193,7 +193,7 @@ class WorkTest < ActiveSupport::TestCase
     })
 
     refute w1.valid?
-    expected = ["Work producers producer custom name can't be blank", "Work producers producer forename can't be blank", "Work producers producer surname can't be blank"]
+    expected = ["Work producers producer Custom Name or Forename and Surname must be present."]
     assert_equal expected, w1.errors.full_messages
   end
 

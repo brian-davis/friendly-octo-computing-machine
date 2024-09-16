@@ -31,7 +31,7 @@ class ProducerTest < ActiveSupport::TestCase
     })
     refute pr1.valid?
 
-    expected = ["Custom name can't be blank", "Forename can't be blank", "Surname can't be blank"]
+    expected = ["Custom Name or Forename and Surname must be present."]
 
     assert_equal expected, pr1.errors.full_messages
     pr1.custom_name = ""
