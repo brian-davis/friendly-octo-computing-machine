@@ -1,10 +1,20 @@
-<%= form_with(model: producer, html: { class: "table-form" }, data: { controller: "producers", producers_id_value: @producer.id, producers_request_helper_outlet: ".request-helper" }) do |form| %>
+<%= form_with(
+  model: producer,
+  html: {
+    class: "table-form" # css-grid 3 columns
+  },
+  data: {
+    controller: "producers",
+    producers_id_value: @producer.id,
+    producers_request_helper_outlet: ".request-helper"
+  }
+  ) do |form| %>
   <%= render("shared/form_errors", form: form) %>
 
   <%= form.label :custom_name %>
   <%= form.text_field :custom_name %>
 
-  <%= form.label :forenme %>
+  <%= form.label :forename %>
   <%= form.text_field :forename %>
 
   <%= form.label :middle_name %>

@@ -1,5 +1,5 @@
 <%= form_with(model: model_object) do |form| %>
-  <%= turbo_stream.replace "form_errors" do %>
+  <%= turbo_stream.replace "form-errors" do %>
     <%= render("shared/errors", form: form) %>
   <% end %>
 <% end %>

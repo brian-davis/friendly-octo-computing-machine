@@ -16,6 +16,25 @@ form.table-form {
     grid-gap: 16px;
   }
 
+  form.table-form #form-errors {
+    grid-column: 2/3;
+  }
+
+  form.table-form #form-errors .dismissableDiv {
+    border: 2px solid var(--color-dark-red);
+    padding: 0.5rem;
+  }
+
+  form.table-form #form-errors .dismissableDiv #dismiss-button {
+    border: 1px solid var(--color-dark-red);
+    color: var(--color-dark-red);
+    background-color: var(--color-light-red);
+    padding: 0.25rem;
+    cursor: pointer;
+    width: fit-content;
+  }
+
+
   form.table-form > label,
   form.table-form .label-group {
     text-align: right;
