@@ -167,8 +167,6 @@ class Work < ApplicationRecord
     end
 
     def format_options
-      # formats.keys.map { |k| [k.titleize, k] }
-
       formats.keys.map { |k| [k.humanize, k] }
     end
 

@@ -2,6 +2,7 @@ class ProducersController < ApplicationController
   before_action :set_producer, only: %i[ show edit update destroy ]
   before_action :build_or_set_producer, only: %i[build_work select_work]
   before_action :set_form_options, only: %i[new edit]
+  before_action :set_select_options, only: %i[index]
   before_action :filter_and_sort_producers, only: %i[index]
 
   # GET /producers or /producers.json
@@ -97,6 +98,16 @@ private
   # :show, :edit, :update, :destroy
   def set_producer
     @producer = Producer.find(params[:id])
+  end
+
+  # :index
+  def set_select_options
+    @select_options = [
+      ["Name ▲", "full_name-asc"],
+      ["Name ▼", "full_name-desc"],
+      ["works count ▲", "works_count-asc"],
+      ["works count ▼", "works_count-desc"]
+    ]
   end
 
   # :index
