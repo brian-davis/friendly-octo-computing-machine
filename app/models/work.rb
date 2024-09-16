@@ -134,6 +134,12 @@ class Work < ApplicationRecord
     joins(:children).distinct
   }
 
+  # Workaround for postgres case-sensitive ordering.
+  # TODO: research alternate db collations.
+  scope :order_by_title, -> {
+    order(Arel.sql("UPPER(works.title)"))
+  }
+
   # postgresql enum
   enum :format, {
     :book            => "book",
@@ -170,7 +176,7 @@ class Work < ApplicationRecord
     end
 
     def title_options
-      order(:title).pluck(:title, :id).uniq.map do |title, id|
+      order("UPPER(works.title)").pluck(:title, :id).uniq.map do |title, id|
         [title.truncate(25), id]
       end
     end

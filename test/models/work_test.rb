@@ -498,9 +498,9 @@ class WorkTest < ActiveSupport::TestCase
     w2 = Work.create(title: "Astronomy For Everyone")
     w3 = Work.create(title: "Be Here Now")
 
-    result = Work.where(id: [w1.id, w2.id, w3.id]).order(Arel.sql("UPPER(title)")).pluck(:title)
-    expected_bad_collation = ["Astronomy For Everyone", "Be Here Now", "asdf"]
-    refute_equal expected_bad_collation, result
+    result = Work.where(id: [w1.id, w2.id, w3.id]).order_by_title.pluck(:title)
+    expected_refute = ["Astronomy For Everyone", "Be Here Now", "asdf"]
+    refute_equal expected_refute, result
 
     expected = ["asdf", "Astronomy For Everyone", "Be Here Now"]
     assert_equal expected, result
