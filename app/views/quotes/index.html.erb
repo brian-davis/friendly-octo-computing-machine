@@ -6,7 +6,7 @@
      data-sortable-endpoint-value="<%= work_quotes_path(@work) %>"
      data-action="keydown.enter->sortable#submitSearch">
 
-  <b class="minor-heading">Quotes for <i><%= @work.title %></i></b>
+  <b class="minor-heading">Quotes for <span class="work-title-alt"><%= @work.title %></span></b>
   <hr>
   <%= text_field_tag(:search, nil, class: "search-box", data: { action:"keydown.esc->sortable#clearSearch", sortable_target: "search"}) %>
   <%= link_to("Search", "#", class: "search-button", data: { sortable_target:"searchButton", action: "click->sortable#search" }) %>

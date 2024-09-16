@@ -237,3 +237,11 @@ span.horizontal-spacer {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
 }
+
+span.work-title-std {
+  font-style: normal;
+}
+
+span.work-title-alt {
+  font-style: italic;
+}

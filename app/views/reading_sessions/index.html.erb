@@ -1,6 +1,6 @@
 <p style="color: green"><%= notice %></p>
 
-<b class="minor-heading">Reading Sessions for <i><%= @work.title %></i></b><br><br>
+<b class="minor-heading">Reading Sessions for <span class="work-title-alt"><%= @work.title %></span></b><br><br>
 Count: <b class="stars"><%= @work.reading_sessions.count %></b><br>
 Aggregate Time: <b class="stars"><%= human_duration(@work.reading_sessions_minutes) %></b>
 

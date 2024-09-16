@@ -1,6 +1,6 @@
-Producer.destroy_all
-Work.destroy_all
 Publisher.destroy_all
+Work.destroy_all
+Producer.destroy_all
 
 unless ENV["CLEAR"]
   if ENV["FAKER"]
@@ -137,7 +137,7 @@ unless ENV["CLEAR"]
       year_of_publication: 2006,
       language: "English",
       original_language: "Greek",
-      format: :translated_book,
+      format: :book,
       date_of_accession: Date.new(2024,4,1),
       accession_note: "bought new from Barnes & Noble",
 
@@ -176,7 +176,7 @@ unless ENV["CLEAR"]
       year_of_publication: 2007,
       language: "English",
       original_language: "Latin",
-      format: :translated_book,
+      format: :book,
       tags: ["Classics", "History", "Ancient Rome", "Penguin Classics"],
       date_of_accession: Date.new(2024,4,1),
       accession_note: "bought new from Barnes & Noble",
@@ -209,7 +209,7 @@ unless ENV["CLEAR"]
       year_of_publication: 2008,
       language: "English",
       original_language: "Greek",
-      format: :translated_book,
+      format: :book,
       date_of_accession: Date.new(2024,5,1),
       accession_note: "bought new from Barnes & Noble",
 
@@ -242,7 +242,7 @@ unless ENV["CLEAR"]
       language: "English",
       original_language: "Greek",
       tags: ["Classics", "Tragedy", "Drama"],
-      format: :translated_book,
+      format: :book,
       date_of_accession: Date.new(2024,6,1),
       accession_note: "Bought used from Changing Hands in Tempe",
 
@@ -377,7 +377,7 @@ unless ENV["CLEAR"]
       language: "English",
       original_language: "French",
       tags: ["Comics"],
-      format: :translated_book,
+      format: :book,
       date_of_accession: Date.new(2010,8,1),
       accession_note: "Don't remember when I bought this, but it was a long time ago.  Didn't read it until recently.",
 
@@ -616,7 +616,7 @@ unless ENV["CLEAR"]
       language: "English",
       original_language: "French",
       tags: ["Comics"],
-      format: :translated_book
+      format: :book
     })
 
     # TODO: more details

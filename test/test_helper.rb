@@ -2,6 +2,7 @@ ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
 
+# https://github.com/simplecov-ruby/simplecov/issues/1082
 require 'simplecov'
 SimpleCov.start 'rails'
 Rails.application.eager_load!

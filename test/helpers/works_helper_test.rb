@@ -18,6 +18,33 @@ class WorksHelperTest < ActiveSupport::TestCase
     assert_equal expected, result
   end
 
+  test "alternate_title_line" do
+    work1 = Work.create({
+      title: "The Stranger",
+      foreign_title: "L'Etranger"
+    })
+    expected = "Also known as <span class=\"work-title-alt\">L'Etranger</span>"
+    assert_equal expected, alternate_title_line(work1)
+  end
+
+  test "alternate_title_line alt" do
+    work2 = Work.create({
+      title: "Foo",
+      foreign_title: "Le Foo",
+      alternate_title: "Foobar"
+    })
+    expected = "Also known as <span class=\"work-title-alt\">Foobar</span> or <span class=\"work-title-alt\">Le Foo</span>"
+    assert_equal expected, alternate_title_line(work2)
+  end
+
+  test "alternate_title_line blank" do
+    work3 = Work.create({
+      title: "BarBar"
+    })
+    expected = ""
+    assert_equal expected, alternate_title_line(work3)
+  end
+
   private
 
   def sophocles

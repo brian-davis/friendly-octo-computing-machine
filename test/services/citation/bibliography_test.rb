@@ -66,30 +66,32 @@ class BibliographyTest < ActiveSupport::TestCase
     assert_equal expected, subject2.send(:alpha_producer_names)
   end
 
-  test "improved alpha_producer_names" do
-    r1 = subject1.send(:_alpha_producer_names)
-    r2 = subject1.send(:alpha_producer_names)
-    assert_equal r1, r2
-  end
+  # # DEPRECATED
+  # test "improved alpha_producer_names" do
+  #   r1 = subject1.send(:_alpha_producer_names)
+  #   r2 = subject1.send(:alpha_producer_names)
+  #   assert_equal r1, r2
+  # end
 
-  test "benchmark improved alpha_producer_names" do
-    skip("skip benchmarks")
+  # # DEPRECATED
+  # test "benchmark improved alpha_producer_names" do
+  #   skip("skip benchmarks")
 
-    result = Benchmark.bmbm do |x|
-      x.report("v1: ActiveRecord")   {
-        subject1.send(:_alpha_producer_names)
-      }
-      x.report("v2: Raw SQL")   {
-        subject1.send(:alpha_producer_names)
-      }
-    end
-    best_result = result.min_by { |r| r.total }.label
-    puts "best result: #{best_result}"
+  #   result = Benchmark.bmbm do |x|
+  #     x.report("v1: ActiveRecord")   {
+  #       subject1.send(:_alpha_producer_names)
+  #     }
+  #     x.report("v2: Raw SQL")   {
+  #       subject1.send(:alpha_producer_names)
+  #     }
+  #   end
+  #   best_result = result.min_by { |r| r.total }.label
+  #   puts "best result: #{best_result}"
 
-    #                    user       system     total    real
-    # v1: ActiveRecord   0.000655   0.000045   0.000700 (0.000692)
-    # v2: Raw SQL        0.000251   0.000041   0.000292 (0.000293)
+  #   #                    user       system     total    real
+  #   # v1: ActiveRecord   0.000655   0.000045   0.000700 (0.000692)
+  #   # v2: Raw SQL        0.000251   0.000041   0.000292 (0.000293)
 
-    assert_equal "v2: Raw SQL", best_result
-  end
+  #   assert_equal "v2: Raw SQL", best_result
+  # end
 end

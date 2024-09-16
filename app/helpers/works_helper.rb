@@ -4,7 +4,7 @@ module WorksHelper
       work.alternate_title,
       work.foreign_title
     ].map(&:presence).compact.map do |title|
-      "<i>#{title}</i>"
+      "<span class=\"work-title-alt\">#{title}</span>"
     end.join(" or ")
     return "" if base.empty?
     "Also known as #{base}".html_safe

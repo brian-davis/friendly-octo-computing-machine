@@ -44,7 +44,7 @@ class Work < ApplicationRecord
   belongs_to :publisher, optional: true, counter_cache: true
 
   belongs_to :parent, class_name: "Work", optional: true # self join
-  has_many :children, class_name: "Work", foreign_key: "parent_id" # self join
+  has_many :children, class_name: "Work", foreign_key: "parent_id", dependent: :destroy # self join
   
   has_many :work_producers, dependent: :destroy
   has_many :producers, -> {
@@ -138,7 +138,6 @@ class Work < ApplicationRecord
   enum_accessor :format, [
     :book,            # Book
     :chapter,         # Chapter or other part of an edited book
-    :translated_book, # Translated book
     :ebook,           # Book consulted in an electronic format
     :journal_article, # Journal article
     :news_article,    # News or magazine article

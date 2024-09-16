@@ -18,7 +18,6 @@
 
 * bugfix: research pg_search custom settings
   * custom stop-word list (allow "after")
-  * redundant producer name errors
 
 *FRONT END*
 

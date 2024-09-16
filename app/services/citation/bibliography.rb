@@ -12,7 +12,7 @@ module Citation
         year = work.year_of_publication
 
         "#{editor_names}, #{editor_status}, _#{title}_ (#{publisher}, #{year})."
-      elsif work.format_book? || work.format_translated_book?
+      elsif work.format_book?
         return unless work.authors.any? && work.publisher && work.year_of_publication
 
         title = work.long_title
@@ -112,12 +112,12 @@ module Citation
       results.rows.flatten.to_sentence({ two_words_connector: ", and "})
     end
 
-    # DEPRECATED: keeping original code for reference, testing, benchmarking
-    def _alpha_producer_names(role = :author)
-      role_method = role.to_s.pluralize
-      first_author_name = work.send(role_method).limit(1).pluck_alpha_name
-      rest_author_names = work.send(role_method).offset(1).pluck_full_name
-      author_names = (first_author_name + rest_author_names).to_sentence({ two_words_connector: ", and "})
-    end
+    # # DEPRECATED: keeping original code for reference, testing, benchmarking
+    # def _alpha_producer_names(role = :author)
+    #   role_method = role.to_s.pluralize
+    #   first_author_name = work.send(role_method).limit(1).pluck_alpha_name
+    #   rest_author_names = work.send(role_method).offset(1).pluck_full_name
+    #   author_names = (first_author_name + rest_author_names).to_sentence({ two_words_connector: ", and "})
+    # end
   end
 end

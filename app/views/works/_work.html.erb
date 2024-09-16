@@ -1,17 +1,9 @@
 <div id="<%= dom_id work %>">
-  <% unless work.format_book? || work.format_translated_book? || work.format_ebook? %>
-    <i class="work-title %>">
-      <%= full_title_line(work) %>
-    </i>
-  <% else %>
-    <span class="work-title %>">
-      <%= full_title_line(work) %>
-    </span>
+  <% row_class = work.format_book? ? "work-title-std" : "work-title-alt" %>
+  <%= tag.span(**{ class: row_class }) do %>
+    <%= full_title_line(work) %>
   <% end %>
 
-  <span class="horizontal-spacer"></span>
-
-  <span class="stars"><%= work.format.humanize %></span>
 
   <span class="horizontal-spacer"></span>
 
