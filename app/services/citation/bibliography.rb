@@ -13,7 +13,7 @@ module Citation
 
         "#{editor_names}, #{editor_status}, _#{title}_ (#{publisher}, #{year})."
       elsif work.format_book?
-        return unless work.authors.any? && work.publisher && work.year_of_publication
+        return unless work.producers.any? && work.publisher && work.year_of_publication
 
         title = work.reference.long_title
         publisher = work.publisher.name
@@ -28,7 +28,7 @@ module Citation
           "#{strict_author_names}. _#{title}_. #{publisher}, #{year}."
         end
       elsif work.format_chapter?
-        return unless work.authors.any? && work.parent.publisher && work.parent.year_of_publication
+        return unless work.producers.any? && work.reference.year_of_publication
 
         title = work.reference.long_title
 
@@ -40,8 +40,8 @@ module Citation
 
         if work.translators.any?
           translator_names = producer_names(:translators)
-
-          "#{formatted_authors}. “#{title}.” Translated by #{translator_names}. In _#{parent_title}_, edited by #{parent_editors}. #{parent_publisher}, #{parent_year}."
+          strict_author_names = alpha_producer_names(:author)
+          "#{strict_author_names}. “#{title}.” Translated by #{translator_names}. In _#{parent_title}_, edited by #{parent_editor_names}. #{parent_publisher}, #{parent_year}."
         else
           "#{alpha_producer_names}. “#{title}.” In _#{parent_title}_, edited by #{parent_editor_names}. #{parent_publisher}, #{parent_year}."
         end

@@ -74,6 +74,8 @@ class Work < ApplicationRecord
     source: :producer
   }
 
+  # authors_or_editors_or_translators
+
   attr_accessor :_clear_publisher
   attr_accessor :_clear_parent
 

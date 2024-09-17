@@ -38,6 +38,18 @@
   <% end %>
 
   <p class="small-text">
+    <b>Publisher:</b> <%= @work.reference.publisher_name %>
+  </p>
+
+  <p class="small-text">
+    <b>Year of Publication:</b> <%= @work.reference.year_of_publication %>
+  </p>
+
+  <p class="small-text">
+    <b>Year of Composition:</b> <%= @work.reference.year_of_composition %>
+  </p>
+
+  <p class="small-text">
     <b>Language:</b> <%= language_line(@work) %>
   </p>
 
@@ -78,6 +90,7 @@
     <b>Authors</b>
   </div>
 
+  <%# TODO: helper for lists %>
   <div class="associated-items">
     <% if @work.work_producers.empty? %>
       <div class="div-list-row empty-list">EMPTY</div>

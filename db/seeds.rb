@@ -1,6 +1,6 @@
-Publisher.destroy_all
 Work.destroy_all
 Producer.destroy_all
+Publisher.destroy_all
 
 unless ENV["CLEAR"]
   if ENV["FAKER"]
@@ -96,14 +96,111 @@ unless ENV["CLEAR"]
       name: "Penguin Books"
     })
 
-    hackett = Publisher.create({
+    hackett = Publisher.find_or_create_by({
       name: "Hacket Publishing Company, Inc."
     })
-
-    sophocles = Producer.create({
+    sophocles = Producer.find_or_create_by({
       custom_name: "Sophocles",
       year_of_birth: -495,
       year_of_death: -405
+    })
+    meineck = Producer.create({
+      full_name: "Peter Meineck"
+    })
+    woodruff = Producer.create({
+      full_name: "Paul Woodruff"
+    })
+    theban_plays = Work.create({
+      title: "Theban Plays",
+      year_of_composition: 135,
+      year_of_publication: 2003,
+      language: "English",
+      original_language: "Greek",
+      tags: ["Classics", "Tragedy", "Drama"],
+      format: :book,
+      date_of_accession: Date.new(2024,6,1),
+      accession_note: "Bought used from Changing Hands in Tempe",
+      publisher: hackett,
+
+      children: [
+        Work.new({
+          title: "Antigone",
+          year_of_composition: -441,
+          language: "English",
+          original_language: "Greek",
+          tags: ["Classics", "Tragedy", "Drama"],
+          format: :chapter,
+          work_producers: [
+            WorkProducer.new({
+              role: :author,
+              producer: sophocles
+            }),
+            WorkProducer.new({
+              role: :translator,
+              producer: meineck
+            }),
+            WorkProducer.new({
+              role: :translator,
+              producer: woodruff
+            })
+          ]
+        }),
+        Work.new({
+          title: "Oedipus Tyrannus",
+          year_of_composition: -428,
+          language: "English",
+          original_language: "Greek",
+          tags: ["Classics", "Tragedy", "Drama"],
+          format: :chapter,
+          work_producers: [
+            WorkProducer.new({
+              role: :author,
+              producer: sophocles
+            }),
+            WorkProducer.new({
+              role: :translator,
+              producer: meineck
+            }),
+            WorkProducer.new({
+              role: :translator,
+              producer: woodruff
+            })
+          ]
+        }),
+        Work.new({
+          title: "Oedipus at Colonus",
+          year_of_composition: -411,
+          language: "English",
+          original_language: "Greek",
+          tags: ["Classics", "Tragedy", "Drama"],
+          format: :chapter,
+          work_producers: [
+            WorkProducer.new({
+              role: :author,
+              producer: sophocles
+            }),
+            WorkProducer.new({
+              role: :translator,
+              producer: meineck
+            }),
+            WorkProducer.new({
+              role: :translator,
+              producer: woodruff
+            })
+          ]
+        }),
+      ],
+
+      work_producers: [
+        WorkProducer.new({
+          role: :editor,
+          producer: meineck
+        }),
+        WorkProducer.new({
+          role: :editor,
+          producer: woodruff
+        })
+      ]
     })
 
     herge = Producer.create({
@@ -230,80 +327,6 @@ unless ENV["CLEAR"]
           role: :translator,
           producer: Producer.new({
             full_name: "Robert Dobbin"
-          })
-        })
-      ]
-    })
-
-    theban_plays = Work.create({
-      title: "Theban Plays",
-      year_of_composition: 135,
-      year_of_publication: 2003,
-      language: "English",
-      original_language: "Greek",
-      tags: ["Classics", "Tragedy", "Drama"],
-      format: :book,
-      date_of_accession: Date.new(2024,6,1),
-      accession_note: "Bought used from Changing Hands in Tempe",
-
-      publisher: hackett,
-
-      children: [
-        Work.new({
-          title: "Antigone",
-          year_of_composition: -441,
-          language: "English",
-          original_language: "Greek",
-          tags: ["Classics", "Tragedy", "Drama"],
-          format: :chapter,
-          work_producers: [
-            WorkProducer.new({
-              role: :author,
-              producer: sophocles
-            })
-          ]
-        }),
-        Work.new({
-          title: "Oedipus Tyrannus",
-          year_of_composition: -428,
-          language: "English",
-          original_language: "Greek",
-          tags: ["Classics", "Tragedy", "Drama"],
-          format: :chapter,
-          work_producers: [
-            WorkProducer.new({
-              role: :author,
-              producer: sophocles
-            })
-          ]
-        }),
-        Work.new({
-          title: "Oedipus at Colonus",
-          year_of_composition: -411,
-          language: "English",
-          original_language: "Greek",
-          tags: ["Classics", "Tragedy", "Drama"],
-          format: :chapter,
-          work_producers: [
-            WorkProducer.new({
-              role: :author,
-              producer: sophocles
-            })
-          ]
-        }),
-      ],
-
-      work_producers: [
-        WorkProducer.new({
-          role: :translator,
-          producer: Producer.new({
-            full_name: "Peter Meineck"
-          })
-        }),
-        WorkProducer.new({
-          role: :translator,
-          producer: Producer.new({
-            full_name: "Paul Woodruff"
           })
         })
       ]

@@ -1,24 +1,12 @@
 module WorksHelper
   # TODO: DRY with alpha_producer_names
   def byline(work)
-    author_names = work.authors.pluck(:custom_name, :surname)
-
-    # TODO: sql fallbacks
-    # partial n + 1
-    if author_names.empty?
-      author_names = work.editors.pluck(:custom_name, :surname)
-    end
-
-    # partial n + 1
-    if author_names.empty?
-      author_names = work.translators.pluck(:custom_name, :surname)
-    end
+    # author_names = work.producers.pluck(Arel.sql "COALESCE(NULLIF(producers.custom_name, ''), NULLIF(producers.surname,''))")
+    author_names = work.producers.map { |p| p.custom_name || p.surname }
 
     return "" if author_names.empty?
 
-    author_names = author_names.map do |custom_name, surname|
-      custom_name.presence || surname
-    end.to_sentence
+    author_names = author_names.to_sentence
 
     year_source = work.year_of_composition.presence || work.year_of_publication.presence ||
                   work.parent&.year_of_composition.presence || work.parent&.year_of_publication.presence
@@ -43,16 +31,6 @@ module WorksHelper
     byline = byline(work)
     return work.title if byline.blank?
     "#{title_line(work)} (#{byline})"
-  end
-
-  def publishing_line(work)
-    return "" unless work && work.publisher
-
-    html = [
-      link_to(work.publisher&.name, work.publisher, class: "index-link").to_s,
-      work.year_of_publication
-    ].compact.join(", ")
-    html.html_safe
   end
 
   # :show

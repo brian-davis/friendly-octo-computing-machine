@@ -77,7 +77,7 @@ class WorkFilter
       order_params = order_params.uniq.join(", ") # secondary ordering
 
       # bullet disabled here
-      works_results.order(Arel.sql(order_params)).includes(:parent).includes(:authors)
+      works_results.order(Arel.sql(order_params)).includes(:parent).includes(work_producers: :producer).includes(:producers)
     end
   end
 end
