@@ -13,14 +13,14 @@ module Citation
         return unless work.authors.any? && quote.page.present?
 
         author_last_names = Citation::Base.new(work).producer_last_names
-        title = work.short_title
+        title = work.reference.short_title
         page = quote.page # String
         "#{author_last_names}, _#{title}_, #{page}."
       elsif work.format_chapter?
         return unless work.authors.any? && quote.page.present?
 
         author_last_names = Citation::Base.new(work).producer_last_names
-        title = work.short_title
+        title = work.reference.short_title
         page = quote.page
         "#{author_last_names}, “#{title},” #{page}."
       end
@@ -31,7 +31,7 @@ module Citation
         return unless work&.authors&.any? && work.year_of_publication && quote.page
 
         author_names = producer_names
-        title = work.long_title
+        title = work.reference.long_title
         page = quote.page
 
         publisher = work.publisher.name
@@ -43,8 +43,8 @@ module Citation
 
         author_names = producer_names
 
-        title = work.long_title
-        parent_title = work.parent.long_title
+        title = work.reference.long_title
+        parent_title = work.parent.reference.long_title
 
         editors = Citation::Base.new(work.parent).producer_names(:editor)
         parent_publisher_name = work.parent.publisher.name

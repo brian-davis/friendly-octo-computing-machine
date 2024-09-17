@@ -7,7 +7,7 @@ module Citation
         editor_names = producer_names(:editor)
 
         editor_status = work.editors.count > 1 ? "eds." : "ed."
-        title = work.long_title
+        title = work.reference.long_title
         publisher = work.publisher.name
         year = work.year_of_publication
 
@@ -15,7 +15,7 @@ module Citation
       elsif work.format_book?
         return unless work.authors.any? && work.publisher && work.year_of_publication
 
-        title = work.long_title
+        title = work.reference.long_title
         publisher = work.publisher.name
         year = work.year_of_publication
 
@@ -30,11 +30,11 @@ module Citation
       elsif work.format_chapter?
         return unless work.authors.any? && work.parent.publisher && work.parent.year_of_publication
 
-        title = work.long_title
+        title = work.reference.long_title
 
         parent_editor_names = Citation::Base.new(work.parent).producer_names(:editors)
 
-        parent_title = work.parent.long_title
+        parent_title = work.parent.reference.long_title
         parent_publisher = work.parent.publisher.name
         parent_year = work.parent.year_of_publication
 

@@ -1,15 +1,4 @@
 module WorksHelper
-  def alternate_title_line(work)
-    base = [
-      work.alternate_title,
-      work.foreign_title
-    ].map(&:presence).compact.map do |title|
-      "<span class=\"work-title-alt\">#{title}</span>"
-    end.join(" or ")
-    return "" if base.empty?
-    "Also known as #{base}".html_safe
-  end
-
   # TODO: DRY with alpha_producer_names
   def byline(work)
     author_names = work.authors.pluck(:custom_name, :surname)
@@ -42,12 +31,14 @@ module WorksHelper
     ].compact.join(", ")
   end
 
+  # :show
   def title_line(work)
     Titleize.titleize(
-      [work.supertitle, work.title, work.subtitle].map(&:presence).compact.join(": ")
+      work.reference.long_title
     )
   end
 
+  # :index
   def full_title_line(work)
     byline = byline(work)
     return work.title if byline.blank?
@@ -64,23 +55,15 @@ module WorksHelper
     html.html_safe
   end
 
+  # :show
   def language_line(work)
-    if work.original_language.present? && work.language.present?
-      "#{work.language}, translated from #{work.original_language}"
-    elsif work.original_language.present? || work.language.present?
-      "#{work.original_language.presence || work.language.presence}"
-    end
+    [work.language, work.original_language].map(&:presence).compact.join(", translated from ")
   end
 
+  # :show, :index
   def rating_stars(work)
-    empty = "☆"
-    full =  "★"
-    stars = []
-    work.rating.to_i.times { stars << full }
-    until stars.length == 5
-      stars << empty
-    end
-    result = stars.join()
-    tag.span(result, class: "stars")
+    rating = work.rating.to_i
+    result = (1..5).to_a.map { |i| i <= rating ? "★" : "☆" }.join
+    tag.span(result, class: "quantity")
   end
 end

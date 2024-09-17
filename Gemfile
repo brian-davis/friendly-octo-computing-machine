@@ -90,3 +90,6 @@ gem "rein", "~> 5.1"
 
 # https://github.com/drwl/annotaterb
 gem "annotaterb", "~> 4.11"
+
+# https://github.com/kaspth/active_record-associated_object
+gem "active_record-associated_object", "~> 0.8.1"

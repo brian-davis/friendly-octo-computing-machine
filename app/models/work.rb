@@ -41,6 +41,8 @@
 class Work < ApplicationRecord
   include PgSearch::Model
 
+  has_object :reference
+
   belongs_to :publisher, optional: true, counter_cache: true
 
   belongs_to :parent, class_name: "Work", optional: true # self join
@@ -188,14 +190,6 @@ class Work < ApplicationRecord
 
   alias_method :complete?, def finished?
     date_of_completion.present?
-  end
-
-  def short_title
-    title.sub("The ", "")
-  end
-
-  def long_title
-    [supertitle, title, subtitle].map(&:presence).compact.join(": ")
   end
 
   private

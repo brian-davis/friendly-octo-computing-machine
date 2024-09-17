@@ -3,6 +3,7 @@ require "test_helper"
 class WorksHelperTest < ActiveSupport::TestCase
   include ApplicationHelper
   include WorksHelper
+  include ActionView::Helpers::TagHelper
 
   test "byline includes various producers" do
     work = theban_plays
@@ -18,31 +19,52 @@ class WorksHelperTest < ActiveSupport::TestCase
     assert_equal expected, result
   end
 
-  test "alternate_title_line" do
-    work1 = Work.create({
-      title: "The Stranger",
-      foreign_title: "L'Etranger"
-    })
-    expected = "Also known as <span class=\"work-title-alt\">L'Etranger</span>"
-    assert_equal expected, alternate_title_line(work1)
+  test "rating_stars" do
+    expected = "<span class=\"quantity\">★★★☆☆</span>"
+    result = rating_stars(logic_vsi)
+    assert_equal expected, result
   end
 
-  test "alternate_title_line alt" do
-    work2 = Work.create({
-      title: "Foo",
-      foreign_title: "Le Foo",
-      alternate_title: "Foobar"
-    })
-    expected = "Also known as <span class=\"work-title-alt\">Foobar</span> or <span class=\"work-title-alt\">Le Foo</span>"
-    assert_equal expected, alternate_title_line(work2)
+  test "language_line with translation" do
+    subject = theban_plays.children.first
+    result = language_line(subject)
+    expected = "English, translated from Greek"
+    assert_equal(expected, result)
   end
 
-  test "alternate_title_line blank" do
-    work3 = Work.create({
-      title: "BarBar"
+  test "language_line without translation" do
+    subject = logic_vsi
+    result = language_line(subject)
+    expected = "English"
+    assert_equal(expected, result)
+  end
+
+  test "full_title_line with date" do
+    subject = logic_vsi
+    result = full_title_line(subject)
+    expected = "Logic: A Very Short Introduction (Priest, 2017)"
+    assert_equal(expected, result)
+  end
+
+  test "full_title_line without date" do
+    subject = Work.create({
+      title: "No Date",
+      authors: [Producer.new({
+        full_name: "John Doe"
+      })]
     })
-    expected = ""
-    assert_equal expected, alternate_title_line(work3)
+    result = full_title_line(subject)
+    expected = "No Date (Doe)"
+    assert_equal(expected, result)
+  end
+
+  test "full_title_line without author or date" do
+    subject = Work.create({
+      title: "No Date or Author"
+    })
+    result = full_title_line(subject)
+    expected = "No Date or Author"
+    assert_equal(expected, result)
   end
 
   private
@@ -135,6 +157,7 @@ class WorksHelperTest < ActiveSupport::TestCase
       title: "Logic",
       subtitle: "A Very Short Introduction",
       year_of_publication: 2017,
+      rating: 3,
       language: "English",
       tags: ["Philosophy", "Logic", "Oxford VSI"],
 
