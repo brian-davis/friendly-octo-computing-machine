@@ -41,22 +41,38 @@
 
 one:
   title: WorkOne
+  tags:
+    - "science"
 
 two:
   title: WorkTwo
+  tags:
+    - "science"
 
 no_authors:
   title: "No Authors"
+  tags:
+    - "science"
 
 with_date_of_accession:
   title: "A Book I Own"
   date_of_accession: <%= Date.new(2020,1,1) %>
+  tags:
+    - "philosophy"
 
 without_date_of_accession:
   title: "A Book I Would Like To Own"
+  tags:
+    - "philosophy"
 
 foreign_character_title:
   title: "Astérix Le Gaulois"
+  tags:
+    - "comics"
+    - "fiction"
 
 without_foreign_character_title:
   title: "Asterix The Gaul"
+  tags:
+    - "comics"
+    - "fiction"

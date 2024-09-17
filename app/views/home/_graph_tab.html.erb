@@ -1,0 +1,25 @@
+<div class="tab-content" id="graph" data-tabs-target="tabContent">
+  <%=
+  select_options = [
+    ["past week",  "week"],
+    ["past month", "month"],
+    ["past year",  "year"],
+    ["all time",   "all"]
+  ]
+  select_tag(
+    "_chart_usage",
+    options_for_select(select_options), {
+      class: "select-button small-text",
+      style: "margin-bottom: 0.5rem;",
+      # include_blank: "Period",
+      data: {
+        action: "change->homepage#selectPeriod"
+      }
+    })
+  %>
+
+  <div id="chartkick-chart-usage" class="outline">
+    <%#= debug(@chart_usage) %>
+    <%= column_chart(@chart_usage) %>
+  </div>
+</div>

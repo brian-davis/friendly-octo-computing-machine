@@ -9,9 +9,11 @@
 <% else %>
   <% @notes.each do |note| %>
     <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
-      <i class="small-text stars"><%= human_time_for(note.updated_at) %></i> : <%= note.text.truncate(100) %>
-      <span class="horizontal-spacer"></span>
-      <%= link_to "👉", [@work, note], class: "index-link" %>
+      <i class="small-text quantity">
+        <%= human_time_for(note.updated_at) %>
+      </i> : <%= note.text.truncate(100) %>
+      <%= pipe_spacer %>
+      <%= pointer_link([@work, note]) %>
     <% end %>
   <% end %>
 <% end %>

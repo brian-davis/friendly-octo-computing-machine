@@ -5,23 +5,16 @@ class WorksController < ApplicationController
   ]
   before_action :set_form_options, only: %i[new edit]
   before_action :set_select_options, only: %i[index]
+  before_action :set_tags_cloud, only: %i[index]
   before_action :filter_and_sort_works, only: %i[index]
 
   # GET /works or /works.json
   def index
     respond_to do |format|
-      # initial
-      format.html {
-        @works_count = Work.count
-        @untagged_count = Work.untagged.count
-        @tags_cloud = Work.tags_cloud.sort_by { |k, v| v * -1 } # most popular first
-        render("index")
-      }
+      format.html {}
 
-      # filter, sort
-      format.turbo_stream {
-        render("index")
-      }
+      # stimulus controller will make this request via JS
+      format.turbo_stream {}
     end
   end
 
@@ -251,5 +244,9 @@ private
   # :indexx
   def filter_and_sort_works
     @works = WorkFilter[params]
+  end
+
+  def set_tags_cloud
+    @tags_cloud = Work.extended_tags_cloud
   end
 end

@@ -182,6 +182,18 @@ class Work < ApplicationRecord
         [title.truncate(25), id]
       end
     end
+
+    def extended_tags_cloud
+      custom_tags = [
+        ["all", all.count, "alt"],
+        ["untagged", untagged.count, "alt"]
+      ]
+
+      # most popular first
+      standard_tags = tags_cloud.sort_by { |k, v| v * -1 }
+
+      custom_tags + standard_tags
+    end
   end
 
   def reading_sessions_minutes

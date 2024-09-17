@@ -3,15 +3,16 @@
 <div id="<%= dom_id @publisher %>">
   <b class="minor-heading"><%= @publisher.name %></b>
   <div class="outline">
-    <b>Books</b> <span class="stars"><%= @publisher.works_count || 0 %></span>
+    <b>Books</b> <span class="quantity"><%= @publisher.works_count %></span>
     <div class="associated-items">
       <% if @publisher.works.empty? %>
         <div class="div-list-row empty-list">EMPTY</div>
       <% else %>
         <% @publisher.works.order(:title).each do |work| %>
           <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
-            <%= work.title %> |
-            <%= link_to "👉", work, class: "index-link" %>
+            <%= work.title %>
+            <%= pipe_spacer %>
+            <%= pointer_link(work) %>
           <% end %>
         <% end %>
       <% end %>

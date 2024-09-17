@@ -505,4 +505,12 @@ class WorkTest < ActiveSupport::TestCase
     expected = ["asdf", "Astronomy For Everyone", "Be Here Now"]
     assert_equal expected, result
   end
+
+  test "extended_tags_cloud" do
+    # decorates method from gem
+    # work = works(:first)
+    result = Work.extended_tags_cloud
+    expected = [["all", 7, "alt"], ["untagged", 0, "alt"], ["science", 3], ["comics", 2], ["fiction", 2], ["philosophy", 2]]
+    assert_equal expected, result
+  end
 end

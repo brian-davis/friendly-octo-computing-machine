@@ -1,0 +1,29 @@
+<%# locals: (tags_cloud:, stimulus: true) -%>
+<%# binding.irb %>
+<% tags_cloud.each do |tag, count, style| %>
+  <%
+    # this will be used if stimulus == false
+    link_path = works_path({tag: tag})
+    link_options = { class:"non-link" }
+
+    # this will override link_path if stimulus == true
+    if stimulus
+      link_options[:data] = {
+        action: "click->sortable#decorateTagClick",
+        filter_value: tag
+      }
+    end
+  %>
+  <%= link_to(link_path, link_options) do %>
+    <span class="model-tag small-text <%= style %>">
+      <span class="model-tag-name">
+        <%= Titleize.titleize(tag) %>
+      </span>
+      <% if count %>
+        <span class="model-tag-count">
+          <%= count %>
+        </span>
+      <% end %>
+    </span>
+  <% end %>
+<% end %>

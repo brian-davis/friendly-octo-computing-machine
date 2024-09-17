@@ -4,10 +4,10 @@
   <% @publishers.each do |publisher| %>
     <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
       <%= publisher.name %>
-      <span class="horizontal-spacer"></span>
-      <span class="stars"><%= publisher.works_count || 0 %></span>
-      <span class="horizontal-spacer"></span>
-      <%= link_to "👉", publisher, class: "index-link" %>
+      <%= pipe_spacer %>
+      <span class="quantity"><%= publisher.works_count %></span>
+      <%= pipe_spacer %>
+      <%= pointer_link(publisher) %>
     <% end %>
   <% end %>
 <% end %>

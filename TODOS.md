@@ -8,12 +8,12 @@
 *BACK END*
 * feature: more citations (all formats)
 
-* refactor: case-insensitive sorting
-  * research db collations
+* refactor: case-insensitive sorting, research db collations
 * refactor: DRY work#long_title vs works_helper#title_line vs Citation::Bibliography
   * use associated_object gem https://garrettdimon.com/journal/posts/organizing-rails-code-with-activerecord-associated-objects
 * refactor: improve test coverage
   ! coverage gem broken
+* refactor: SQL COALESCE on works.pg_search columns (i.e. super + title + sub as 1 value)
 
 * bugfix:
   * research pg_search custom settings, custom stop-word list (allow "after")

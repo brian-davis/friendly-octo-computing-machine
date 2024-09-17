@@ -5,7 +5,6 @@ module ApplicationHelper
     year.negative? ? "#{year.abs} BCE" : "#{year.abs} CE"
   end
 
-
   def common_era_span(early_year, late_year)
     return if early_year.blank? && late_year.blank?
     bc_early_year = common_era_year(early_year)
@@ -32,5 +31,13 @@ module ApplicationHelper
     from_time = Time.now
     to_time = from_time + int.minutes
     distance_of_time_in_words(from_time, to_time)
+  end
+
+  def pipe_spacer
+    content_tag(:span, nil, class: "horizontal-spacer")
+  end
+
+  def pointer_link(path)
+    link_to("👉", path, class: "index-link")
   end
 end

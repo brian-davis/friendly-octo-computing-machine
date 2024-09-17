@@ -3,11 +3,13 @@
 <% else %>
   <% @quotes.each do |quote| %>
     <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
-      <i class="small-text"><%= full_title_line(quote.work) %>, p. <%= [quote.page, quote.custom_citation].map(&:presence).compact.join(", ") %></i>:
+      <%# TODO: helper %>
+      <i class="small-text">
+        <%= full_title_line(quote.work) %>, p. <%= [quote.page, quote.custom_citation].map(&:presence).compact.join(", ") %>
+      </i>:
       <%= quote.text.truncate(100) %>
-      <% quote_resource = [quote.work, quote] %>
-      <span class="horizontal-spacer"></span>
-      <%= link_to "👉", quote_resource, class: "index-link" %>
+      <%= pipe_spacer %>
+      <%= pointer_link([quote.work, quote]) %>
     <% end %>
   <% end %>
 <% end %>

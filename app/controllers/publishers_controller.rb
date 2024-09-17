@@ -1,5 +1,6 @@
 class PublishersController < ApplicationController
   before_action :set_publisher, only: %i[ show edit update destroy ]
+  before_action :set_options, only: %i[index]
   before_action :set_publishers, only: %i[index]
 
   # GET /publishers or /publishers.json
@@ -70,6 +71,15 @@ private
   # Only allow a list of trusted parameters through.
   def publisher_params
     params.require(:publisher).permit(:name, works_attributes: [:id, :_destroy])
+  end
+
+  def set_options
+    @select_options = [
+      ["Name ▲", "name-asc"],
+      ["Name ▼", "name-desc"],
+      ["works count ▲", "works_count-asc"],
+      ["works count ▼", "works_count-desc"]
+    ]
   end
 
   def set_publishers

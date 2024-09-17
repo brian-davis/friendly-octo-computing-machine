@@ -33,7 +33,7 @@ class WorkFilter
       format_param = params["frmt"]
       valid_formats = Work.formats.keys
       if format_param.in?(valid_formats)
-        works_results = works_results.where_format(format_param)
+        works_results = works_results.send("format_#{format_param}")
       end
 
       lang_param = params["lang"]
@@ -49,20 +49,24 @@ class WorkFilter
       valid_order_params = ["title", "year", "rating"]
       valid_dir_params = ["asc", "desc"]
       order_param = params["order"].presence
-      order_arg = (valid_order_params & [order_param])[0] || "title"
-      order_arg = "UPPER(works.#{order_arg})"
       dir_param = params["dir"].presence
-      dir_arg = (valid_dir_params & [dir_param])[0] || "asc"
 
-      # always put unrated works at end
-      order_arg = if order_arg == "rating" && dir_arg == "desc"
+      order_arg = (valid_order_params & [order_param])[0] || "title"
+      dir_arg = ((valid_dir_params & [dir_param])[0] || "asc").upcase
+      order_arg = if order_arg == "rating" && dir_arg == "DESC"
+        # always put nil at end
         "COALESCE(works.rating, -1)"
-      elsif order_arg == "rating" && dir_arg == "asc"
+      elsif order_arg == "rating" && dir_arg == "ASC"
+        # always put nil at end
         "COALESCE(works.rating, 9999999)"
-      elsif order_arg == "year" && dir_arg == "desc"
-        "COALESCE(year_of_composition, year_of_publication, -9999)"
-      elsif order_arg == "year" && dir_arg == "asc"
-        "COALESCE(year_of_composition, year_of_publication, 9999)"
+      elsif order_arg == "year" && dir_arg == "DESC"
+        # always put nil at end
+        "COALESCE(works.year_of_composition, works.year_of_publication, -9999)"
+      elsif order_arg == "year" && dir_arg == "ASC"
+        # always put nil at end
+        "COALESCE(works.year_of_composition, works.year_of_publication, 9999)"
+      elsif order_arg == "title"
+        "UPPER(works.title)"
       else
         order_arg
       end

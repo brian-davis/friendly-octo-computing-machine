@@ -1,13 +1,13 @@
 <div id="<%= dom_id producer %>">
+  <%# TODO: helper %>
   <%= "#{producer.full_name} #{common_era_span(producer.year_of_birth, producer.year_of_death)}" %>
 
-  <span class="horizontal-spacer"></span>
+  <%= pipe_spacer %>
 
-  <span class="stars">
-  <%= (producer.works_count || 0) %>
+  <span class="quantity">
+  <%= (producer.works_count) %>
   </span>
   
-  <span class="horizontal-spacer"></span>
-
-  <%= link_to "👉", producer, class: "index-link" %>
+  <%= pipe_spacer %>
+  <%= pointer_link(producer) %>
 </div>

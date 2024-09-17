@@ -5,22 +5,17 @@
   <hr>
   <div data-controller="publishers">
     <%=
-    select_options = [
-      ["Name ▲", "name-asc"],
-      ["Name ▼", "name-desc"],
-      ["works count ▲", "works_count-asc"],
-      ["works count ▼", "works_count-desc"]
-    ]
-    select_tag(
-      "_order",
-      options_for_select(select_options), {
-        class: "select-button small-text",
-        include_blank: "Sort",
-        data: {
-          action: "change->sortable#selectOrder",
-          action_url: "/publishers"
+      select_tag(
+        "_order",
+        options_for_select(@select_options), {
+          class: "select-button small-text",
+          include_blank: "Sort",
+          data: {
+            action: "change->sortable#selectOrder",
+            action_url: "/publishers"
+          }
         }
-      })
+      )
     %>
 
     <hr>

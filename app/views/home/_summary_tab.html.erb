@@ -1,0 +1,10 @@
+<div class="tab-content tab-content-selected" id="metrics" data-tabs-target="tabContent">
+  <% @summary.each do |metric| %>
+    <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
+      <b class="metric-label small-text">
+      <%= metric[:label] %>
+      </b>
+      <span class="metric-result small-text"><%= metric[:result] %></span>
+    <% end %>
+  <% end %>
+</div>

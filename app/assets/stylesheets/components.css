@@ -59,13 +59,13 @@ ul.associated-items li {
   border-left: 2px solid var(--color-dark-green);
 }
 
-.model-tag.all-tag {
+.model-tag.alt {
   background-color: var(--color-light-orange);
   border: 2px solid var(--color-dark-orange);
   color: var(--color-dark-orange);
 }
 
-.model-tag.all-tag .model-tag-count {
+.model-tag.alt .model-tag-count {
   background-color: var(--color-light-orange);
   border-radius: 0px 8px 8px 0px;
   border-left: 2px solid var(--color-dark-orange);
@@ -110,7 +110,7 @@ input.search-box {
   font-size: smaller;
 }
 
-.stars {
+.quantity {
   background-color: var(--color-light-purple);
   padding: 0.1rem;
   border: 1px solid var(--color-dark-purple);

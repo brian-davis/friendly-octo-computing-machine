@@ -1,16 +1,11 @@
 <div id="<%= dom_id work %>">
   <% row_class = work.format_book? ? "work-title-std" : "work-title-alt" %>
-  <%= tag.span(**{ class: row_class }) do %>
+  <%= tag.span(class: row_class) do %>
     <%= full_title_line(work) %>
   <% end %>
-
-
-  <span class="horizontal-spacer"></span>
-
-  <%= rating = rating_stars(work) %>
-
-  <span class="horizontal-spacer"></span>
-
-  <%= link_to "👉", work, class: "index-link" %>
+  <%= pipe_spacer %>
+  <%= rating_stars(work) %>
+  <%= pipe_spacer %>
+  <%= pointer_link(work) %>
   &nbsp;
 </div>

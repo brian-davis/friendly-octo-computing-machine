@@ -17,13 +17,25 @@
 
   <% if @work.parent_id %>
     <div>
-    <span class="small-text"><%= @work.parent.format %>: <%= @work.parent.title %></span> <%= link_to "👉", @work.parent, class: "index-link" %>
+      <span class="small-text">
+        Part of: <%= @work.parent.title %>
+      </span>
+      <%= pipe_spacer %>
+      <%= pointer_link(@work.parent) %>
     </div>
   <% end %>
 
-  <p class="small-text">
-    <%= alternate_title_line(@work) %>
-  </p>
+  <% if @work.alternate_title.present? %>
+    <p class="small-text">
+      Also known as <span class="work-title-alt"><%= @work.alternate_title %></span>
+    </p>
+  <% end %>
+
+  <% if @work.foreign_title.present? %>
+    <p class="small-text">
+      Also known as <span class="work-title-alt"><%= @work.foreign_title %></span>
+    </p>
+  <% end %>
 
   <p class="small-text">
     <b>Language:</b> <%= language_line(@work) %>
@@ -33,7 +45,7 @@
     <b>Rating:</b> <%= rating_stars(@work) %>
   </p>
 
-    <p class="small-text">
+  <p class="small-text">
     <b>Status:</b> <%= @work.finished? ? "Reading finished on #{human_time_for(@work.date_of_completion)}" : "Unread" %>
   </p>
 
@@ -55,16 +67,9 @@
     <b>Tags</b>
   </div>
 
+  <%# no stimulus %>
   <div class="cloud-list">
-    <% @work.tags.each do |tag| %>
-      <%= link_to(works_path({ tag: tag }), style: "text-decoration: none;", data: { turbo_stream: true, action: "click->sortable#decorateTagClick", filter_value: tag }) do %>
-        <span class="model-tag">
-          <span class="model-tag-name">
-            <%= tag %>
-          </span>
-        </span>
-      <% end %>
-    <% end %>
+    <%= render("tags_cloud", tags_cloud: @work.tags, stimulus: false) %>
   </div>
 
   <hr>
@@ -80,7 +85,8 @@
       <% @work_producers.each do |wp| %>
         <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
           <span class="small-text"><%= wp.role.titleize.split(" ").join("-") %>: <%= wp.producer.full_name %></span>
-          <%= link_to "👉", wp.producer, class: "index-link" %>
+          <%= pipe_spacer %>
+          <%= pointer_link(wp.producer) %>
         <% end %>
       <% end %>
     <% end %>
@@ -98,7 +104,8 @@
         <% @work.children.each do |child| %>
           <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
             <span class="small-text"><%= child.format %>: <%= child.title %></span>
-            <%= link_to "👉", child, class: "index-link" %>
+            <%= pipe_spacer %>
+            <%= pointer_link(child) %>
           <% end %>
         <% end %>
       <% end %>
@@ -109,29 +116,32 @@
 
   <div style="margin-bottom: 0.5rem;">
     <b>Quotes</b>
-    <%= link_to("👉", work_quotes_path(@work), class: "index-link") %>
+    <%= pipe_spacer %>
+    <%= pointer_link(work_quotes_path(@work)) %>
   </div>
   <div>
-    Count: <b class="stars"><%= @work.quotes.count %></b>
+    Count: <b class="quantity"><%= @work.quotes.count %></b>
   </div>
 
   <hr>
   <div style="margin-bottom: 0.5rem;">
     <b>Notes</b>
-    <%= link_to("👉", work_notes_path(@work), class: "index-link") %>
+    <%= pipe_spacer %>
+    <%= pointer_link(work_notes_path(@work)) %>
   </div>
   <div>
-    Count: <b class="stars"><%= @work.notes.count %></b>
+    Count: <b class="quantity"><%= @work.notes.count %></b>
   </div>
   <hr>
 
   <div style="margin-bottom: 0.5rem;">
     <b>Reading Sessions</b>
-    <%= link_to("👉", work_reading_sessions_path(@work), class: "index-link") %>
+    <%= pipe_spacer %>
+    <%= pointer_link(work_reading_sessions_path(@work)) %>
   </div>
   <div>
-    Count: <b class="stars"><%= @work.reading_sessions.count %></b><br>
-    Aggregate Time: <b class="stars"><%= human_duration(@work.reading_sessions_minutes) %></b>
+    Count: <b class="quantity"><%= @work.reading_sessions.count %></b><br>
+    Aggregate Time: <b class="quantity"><%= human_duration(@work.reading_sessions_minutes) %></b>
   </div>
 </div>
 

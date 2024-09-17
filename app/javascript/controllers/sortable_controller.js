@@ -18,7 +18,7 @@ export default class extends Controller {
     this.languageValue = "";
     this.accessionValue = "";
     this.statusValue = "";
-    console.log(this.searchButtonTarget);
+    // console.log(this.searchButtonTarget);
   }
 
   // index.html.erb
@@ -126,22 +126,17 @@ export default class extends Controller {
   decorateTagClick(event) {
     event.preventDefault();
     event.stopPropagation();
-
     // console.log("decorateTagClick", event.currentTarget);
     this.filterValue = event.currentTarget.dataset.filterValue;
-
-    const targetLink = event.currentTarget.closest("a");
-    // console.log("targetLink", targetLink);
-
-    // http://localhost:3000/works?tag=Classics
-    let url = targetLink.href; // or this.endpointValue
-
+    // console.log("this.filterValue", this.filterValue);
+    let url = this.endpointValue;
+    // console.log("url", url);
     let newQuery = this._buildUrlQuery().toString();
-    // console.log(newQuery);
+    // console.log("newQuery", newQuery);
     if (newQuery) {
       url += `?${newQuery}`;
     }
-
+    // console.log("url", url);
     this.requestHelperOutlet.turboGet(url);
   }
 
