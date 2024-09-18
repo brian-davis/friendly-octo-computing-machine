@@ -20,4 +20,8 @@ class Work::Reference < ActiveRecord::AssociatedObject
   def year_of_composition
     work.year_of_composition || work.parent&.year_of_composition
   end
+
+  def language_or_translation
+    [work.language, work.original_language].map(&:presence).compact.join(", translated from ")
+  end
 end

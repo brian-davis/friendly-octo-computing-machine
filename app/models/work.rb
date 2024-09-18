@@ -206,6 +206,10 @@ class Work < ApplicationRecord
     date_of_completion.present?
   end
 
+  def rating_stars
+    (1..5).to_a.map { |i| i <= self.rating.to_i ? "★" : "☆" }.join
+  end
+
   private
 
   # remove association, not associated record

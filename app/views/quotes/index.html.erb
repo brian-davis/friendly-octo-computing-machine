@@ -10,6 +10,7 @@
   <%= link_to("Search", "#", class: "search-button", data: { sortable_target:"searchButton", action: "click->sortable#search" }) %>
   <hr>
 
+  <%# index.turbo_stream.erb %>
   <div id="quotes" class="scrollable">
     <%= render "shared/alternating_list", collection: @quotes %>
   </div>

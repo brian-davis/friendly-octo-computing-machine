@@ -1,3 +1,3 @@
 <%= turbo_stream.update "quotes" do %>
-  <%= render "quotes" %>
+  <%= render "shared/alternating_list", collection: @quotes %>
 <% end %>

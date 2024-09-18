@@ -33,19 +33,7 @@ module WorksHelper
   # quotes general index
   def short_title_line(work)
     byline_result = byline(work)
-    return work.title if byline_result.blank?
-    "#{work.title} (#{byline_result})"
-  end
-
-  # :show
-  def language_line(work)
-    [work.language, work.original_language].map(&:presence).compact.join(", translated from ")
-  end
-
-  # :show, :index
-  def rating_stars(work)
-    rating = work.rating.to_i
-    result = (1..5).to_a.map { |i| i <= rating ? "★" : "☆" }.join
-    tag.span(result, class: "quantity")
+    return work.reference.short_title if byline_result.blank?
+    "#{work.reference.short_title} (#{byline_result})"
   end
 end

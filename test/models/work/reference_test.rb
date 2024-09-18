@@ -1,6 +1,9 @@
 require "test_helper"
+require_relative "reference_test_fixtures"
 
 class ReferenceTest < ActiveSupport::TestCase
+  include ReferenceTestFixtures
+
   test "works have associated object" do
     w1 = works(:one)
     r1 = w1.try(:reference)
@@ -49,5 +52,19 @@ class ReferenceTest < ActiveSupport::TestCase
   test "parent falback on year_of_composition" do
     assert_equal(2000, parent.reference.year_of_composition)
     assert_equal(2000, child.reference.year_of_composition) 
+  end
+
+  test "language_or_translation with translation" do
+    subject = theban_plays.children.first
+    result = subject.reference.language_or_translation
+    expected = "English, translated from Greek"
+    assert_equal(expected, result)
+  end
+
+  test "language_or_translation without translation" do
+    subject = logic_vsi
+    result = subject.reference.language_or_translation
+    expected = "English"
+    assert_equal(expected, result)
   end
 end

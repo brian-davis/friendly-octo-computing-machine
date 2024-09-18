@@ -4,7 +4,7 @@
     <%= full_title_line(work) %>
   <% end %>
   <%= pipe_spacer %>
-  <%= rating_stars(work) %>
+  <span class="quantity"><%= work.rating_stars %></span>
   <%= pipe_spacer %>
   <%= pointer_link(work) %>
   &nbsp;

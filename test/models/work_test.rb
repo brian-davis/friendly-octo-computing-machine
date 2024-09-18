@@ -513,4 +513,14 @@ class WorkTest < ActiveSupport::TestCase
     expected = [["all", 7, "alt"], ["untagged", 0, "alt"], ["science", 3], ["comics", 2], ["fiction", 2], ["philosophy", 2]]
     assert_equal expected, result
   end
+
+  test "rating_stars" do
+    subject1 = Work.new({
+      title: "A Work",
+      rating: 3
+    })
+    expected = "★★★☆☆"
+    result = subject1.rating_stars
+    assert_equal expected, result
+  end
 end

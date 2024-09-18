@@ -48,11 +48,12 @@
   </p>
 
   <p class="small-text">
-    <b>Language:</b> <%= language_line(@work) %>
+    <b>Language:</b> <%= @work.reference.language_or_translation %>
   </p>
 
   <p class="small-text">
-    <b>Rating:</b> <%= rating_stars(@work) %>
+    <b>Rating:</b>
+    <span class="quantity"><%= @work.rating_stars %></span>
   </p>
 
   <p class="small-text">
