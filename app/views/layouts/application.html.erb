@@ -5,15 +5,21 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-
   </head>
 
-
-  <%# turbo %>
   <body>
+    <% if notice.present? %>
+      <p class="controller-notice" data-controller="dismissable" data-dismissable-target="notice">
+        <%= notice %>
+        <span class="dismisser"
+              data-action="click->dismissable#dismissNotice">
+          ⓧ
+        </span>
+      </p>
+    <% end %>
+
     <%= yield %>
   </body>
 
@@ -22,5 +28,6 @@
   <div
     class="request-helper"
     style="display:none;"
-    data-controller="request-helper"></div>
+    data-controller="request-helper">
+  </div>
 </html>

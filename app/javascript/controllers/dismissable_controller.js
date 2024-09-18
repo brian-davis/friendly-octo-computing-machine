@@ -1,12 +1,16 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["subForm"];
+  static targets = ["subForm", "notice", "errors"];
 
   connect() {
     // console.log("dismissable_controller connected", this.element);
     // console.log(this.idValue === "");
     // console.log(this.subFormTargets);
+  }
+
+  disconnect() {
+    // console.log("disconnect");
   }
 
   // as multiple new associated Producer sub-forms can be added dynamically,
@@ -56,8 +60,13 @@ export default class extends Controller {
   }
 
   dismissErrors(event) {
-    // console.log("dismiss");
-    const dismissableDiv = event.srcElement.closest(".dismissableDiv");
-    dismissableDiv.remove();
+    // console.log("dismissErrors");
+    this.errorsTarget.remove();
+  }
+
+  dismissNotice(event) {
+    // console.log("dismissNotice")
+    // or this.element
+    this.noticeTarget.remove();
   }
 }

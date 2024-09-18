@@ -21,19 +21,12 @@ form.table-form {
   }
 
   form.table-form #form-errors .dismissableDiv {
-    border: 2px solid var(--color-dark-red);
-    padding: 0.5rem;
-  }
-
-  form.table-form #form-errors .dismissableDiv #dismiss-button {
-    border: 1px solid var(--color-dark-red);
+    /* border: 2px solid var(--color-dark-red); */
     color: var(--color-dark-red);
-    background-color: var(--color-light-red);
-    padding: 0.25rem;
-    cursor: pointer;
-    width: fit-content;
-  }
+    padding: 0.5rem;
 
+    background-image: linear-gradient(to right, var(--color-light-red), var(--color-white)); 
+  }
 
   form.table-form > label,
   form.table-form .label-group {

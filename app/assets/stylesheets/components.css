@@ -3,8 +3,8 @@ html {
 
 body {
   font-family: sans-serif;
-  padding: 1rem;
-  
+  padding: 0.5rem;
+  margin: unset;
   color:  var(--color-black);
   background-color: var(--color-white);
 }
@@ -185,6 +185,10 @@ ul.associated-items li {
   overflow: auto;
 }
 
+.scrollable.scrollable-short {
+  max-height: 50vh;
+}
+
 b.minor-heading,
 b.major-heading,
 h1.max-heading {
@@ -246,4 +250,15 @@ span.work-title-std {
 
 span.work-title-alt {
   font-style: italic;
+}
+
+p.controller-notice {
+  margin-bottom: 0.5rem;
+  background-image: linear-gradient(to right, var(--color-light-green), var(--color-white)); 
+  color: var(--color-dark-green);
+  padding: 0.5rem;
+}
+
+span.dismisser {
+  cursor: pointer;
 }

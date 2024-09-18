@@ -14,6 +14,7 @@
 * refactor: improve test coverage
   ! coverage gem broken
 * refactor: SQL COALESCE on works.pg_search columns (i.e. super + title + sub as 1 value)
+* change works.format column name (quasi-reserved)
 
 * bugfix:
   * research pg_search custom settings, custom stop-word list (allow "after")

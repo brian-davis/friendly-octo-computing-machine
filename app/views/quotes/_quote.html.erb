@@ -1,3 +1,20 @@
+<%
+  link_object = if @work
+    # nested under work
+    [@work, quote]
+  else
+    [quote.work, quote]
+  end
+%>
+
 <div id="<%= dom_id quote %>">
-  <%= quote.text.truncate(50) %>
+  <i class="small-text">
+    <% unless @work %>
+      <%= short_title_line(quote.work) %>,
+    <% end %>
+    p. <%= [quote.page, quote.custom_citation].map(&:presence).compact.join(", ") %>
+  </i>:
+  <%= quote.text.truncate(75) %>   
+  <%= pipe_spacer %>
+  <%= pointer_link(link_object) %>
 </div>

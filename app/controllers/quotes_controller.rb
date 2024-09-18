@@ -104,7 +104,7 @@ private
       end
 
       # Bullet: use eager loading here
-      @quotes = @quotes.includes(:work)
+      @quotes = @quotes.joins(work: :producers).includes(work: :producers)
     elsif @work
       # nested resource index
 

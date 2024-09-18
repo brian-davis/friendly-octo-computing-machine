@@ -1,5 +1,3 @@
-<p style="color: green"><%= notice %></p>
-
 <div id="books-index"
      data-controller="sortable"
      data-sortable-request-helper-outlet=".request-helper"
@@ -17,7 +15,7 @@
 
   <hr>
 
-  <div id="works-collection" class="scrollable">
+  <div id="works-collection">
     <%= text_field_tag(:search, nil, class: "search-box", data: { action:"keydown.esc->sortable#clearSearch", sortable_target: "search"}) %>
     <%= link_to("Search", "#", class: "search-button", data: {
     sortable_target:"searchButton", action: "click->sortable#search" }) %>
@@ -87,8 +85,8 @@
 
     <hr>
 
-    <div id="works">
-      <%= render "works" %>
+    <div id="works"  class="scrollable scrollable-short">
+      <%= render "shared/alternating_list", collection: @works %>
     </div>
   </div>
   <hr>

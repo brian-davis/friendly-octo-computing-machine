@@ -1,0 +1,15 @@
+<%# locals: (collection:, partial: nil) -%>
+
+<% if collection.empty? %>
+  <div class="div-list-row empty-list">EMPTY</div>
+<% else %>
+  <% collection.each do |item| %>
+    <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
+      <% if partial %>
+        <%= render partial, item: item %>
+      <% else %>
+        <%= render item %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

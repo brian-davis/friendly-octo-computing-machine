@@ -1,5 +1,3 @@
-<p style="color: green"><%= notice %></p>
-
 <div id="publishers-index" data-controller="sortable" data-sortable-request-helper-outlet=".request-helper">
   <b class="minor-heading">Publishers</b>
   <hr>
@@ -19,8 +17,8 @@
     %>
 
     <hr>
-    <div id="publishers" class="scrollable">
-      <%= render("publishers") %>
+    <div id="publishers" class="scrollable" class="scrollable">
+      <%= render("shared/alternating_list", collection: @publishers) %>
     </div>
   </div>
   <hr>

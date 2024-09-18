@@ -1,9 +1,0 @@
-<% if @works.empty? %>
-  <div class="div-list-row empty-list">EMPTY</div>
-<% else %>
-  <% @works.each do |work| %>
-    <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
-      <%= render work %>
-    <% end %>
-  <% end %>
-<% end %>

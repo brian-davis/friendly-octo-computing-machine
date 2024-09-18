@@ -1,5 +1,6 @@
 <%# locals: (tags_cloud:, stimulus: true) -%>
-<%# binding.irb %>
+<%# https://github.com/rails/rails/pull/45602 %>
+
 <% tags_cloud.each do |tag, count, style| %>
   <%
     # this will be used if stimulus == false

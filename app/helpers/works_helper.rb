@@ -21,16 +21,21 @@ module WorksHelper
 
   # :show
   def title_line(work)
-    Titleize.titleize(
-      work.reference.long_title
-    )
+    work.reference.long_title
   end
 
   # :index
   def full_title_line(work)
-    byline = byline(work)
-    return work.title if byline.blank?
-    "#{title_line(work)} (#{byline})"
+    byline_result = byline(work)
+    return work.title if byline_result.blank?
+    "#{title_line(work)} (#{byline_result})"
+  end
+
+  # quotes general index
+  def short_title_line(work)
+    byline_result = byline(work)
+    return work.title if byline_result.blank?
+    "#{work.title} (#{byline_result})"
   end
 
   # :show

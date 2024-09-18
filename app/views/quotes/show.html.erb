@@ -1,7 +1,5 @@
-<p style="color: green"><%= notice %></p>
-
 <div id="<%= dom_id @quote %>" class="outline">
-  <% if @quote.custom_citation %>
+  <% if @quote.custom_citation.present? %>
     <b class="label-above small-text">Custom Citation</b>
     <div class="book-card outline bibliography-citation small-text">
       <%= raw markdown.render(@quote.custom_citation) %>

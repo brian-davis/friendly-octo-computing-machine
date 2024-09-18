@@ -1,5 +1,3 @@
-<p style="color: green"><%= notice %></p>
-
 <div id="quotes-index"
      data-controller="sortable"
      data-sortable-request-helper-outlet=".request-helper"
@@ -13,7 +11,7 @@
 
   <hr>
   <div id="quotes" class="scrollable">
-    <%= render("general_quotes") %>
+    <%= render("shared/alternating_list", collection:@quotes) %>
   </div>
 </div>
 <hr>

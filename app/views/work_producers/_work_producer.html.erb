@@ -1,0 +1,19 @@
+<% if @work %>
+  <%# viewed from works/show %>
+  <span class="small-text">
+    <%= work_producer.role.titleize %>:
+    <%= work_producer.producer.full_name %>
+  </span>
+  <%= pipe_spacer %>
+  <%= pointer_link(work_producer.producer) %>
+<% elsif @producer %>
+  <%# viewed from producers/show %>
+  <span class="small-text">
+    <%= work_producer.role.titleize %>:
+    <%= work_producer.work.title %>
+  </span>
+  <%= pipe_spacer %>
+  <%= pointer_link(work_producer.work) %>
+<% else %>
+  <%# this shouldn't happen %>
+<% end %>

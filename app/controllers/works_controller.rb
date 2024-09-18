@@ -241,11 +241,12 @@ private
     permitted_params
   end
 
-  # :indexx
+  # :index
   def filter_and_sort_works
     @works = WorkFilter[params]
   end
 
+  # :index
   def set_tags_cloud
     @tags_cloud = Work.extended_tags_cloud
   end

@@ -1,20 +1,11 @@
-<p style="color: green"><%= notice %></p>
-
 <b class="minor-heading">Reading Sessions for <span class="work-title-alt"><%= @work.title %></span></b><br><br>
 Count: <b class="quantity"><%= @work.reading_sessions.count %></b><br>
 Aggregate Time: <b class="quantity"><%= human_duration(@work.reading_sessions_minutes) %></b>
 
 <hr>
 
-<div id="reading_sessions">
-  <% @reading_sessions.each do |reading_session| %>
-    <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
-      <%= render reading_session %>
-      <div>
-        <%= pointer_link([@work, reading_session]) %>
-      </div>
-    <% end %>
-  <% end %>
+<div id="reading_sessions" class="scrollable">
+  <%= render "shared/alternating_list", collection: @reading_sessions %>
 </div>
 
 <hr>

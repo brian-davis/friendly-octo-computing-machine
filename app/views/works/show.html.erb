@@ -1,5 +1,3 @@
-<p style="color: green"><%= notice %></p>
-
 <b class="minor-heading"><%= title_line(@work) %></b>
 
 <div id="<%= dom_id @work %>" class="outline">
@@ -85,24 +83,11 @@
   </div>
 
   <hr>
-
   <div style="margin-bottom: 0.5rem;">
     <b>Authors</b>
   </div>
-
-  <%# TODO: helper for lists %>
   <div class="associated-items">
-    <% if @work.work_producers.empty? %>
-      <div class="div-list-row empty-list">EMPTY</div>
-    <% else %>
-      <% @work_producers.each do |wp| %>
-        <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
-          <span class="small-text"><%= wp.role.titleize.split(" ").join("-") %>: <%= wp.producer.full_name %></span>
-          <%= pipe_spacer %>
-          <%= pointer_link(wp.producer) %>
-        <% end %>
-      <% end %>
-    <% end %>
+    <%= render "shared/alternating_list", collection: @work_producers %>
   </div>
 
   <% if @work.children.any? %>
@@ -110,18 +95,9 @@
     <div style="margin-bottom: 0.5rem;">
       <b>Parts</b>
     </div>
-    <div class="associated-items">
-      <% if @work.children.empty? %>
-        <div class="div-list-row empty-list">EMPTY</div>
-      <% else %>
-        <% @work.children.each do |child| %>
-          <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
-            <span class="small-text"><%= child.format %>: <%= child.title %></span>
-            <%= pipe_spacer %>
-            <%= pointer_link(child) %>
-          <% end %>
-        <% end %>
-      <% end %>
+    <div class="associated-items" class="scrollable">
+      <%# TODO: improve n+1 in WorksHelper#byline %>
+      <%= render "shared/alternating_list", collection: @work.children.joins(:producers).includes(:producers), partial: "works/child" %>
     </div>
   <% end %>
 
