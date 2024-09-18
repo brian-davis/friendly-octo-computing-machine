@@ -198,7 +198,7 @@ private
       :language,
       :original_language,
       :custom_citation,
-      :format,
+      :publishing_format,
       :publisher_id,
       :parent_id,
       :rating,
@@ -211,7 +211,7 @@ private
       publisher_attributes: [:name],
       parent_attributes: [
         :title,
-        :format
+        :publishing_format
       ],
       work_producers_attributes: [
         :id,
