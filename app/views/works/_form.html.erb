@@ -35,7 +35,7 @@
   <%= form.number_field(:rating, in: (-1..5)) %>
 
   <%= form.label :format %>
-  <%= form.select(:format, options_for_select(@format_options, @work.format)) %>
+  <%= form.select(:format, options_for_select(@publishing_format_options, @work.publishing_format)) %>
 
   <%= form.label :custom_citation, "Custom Citation (Markdown)", class: "small-text" %>
   <%= form.text_field :custom_citation %>

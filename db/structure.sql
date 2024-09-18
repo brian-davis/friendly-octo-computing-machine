@@ -38,10 +38,23 @@ COMMENT ON EXTENSION unaccent IS 'text search dictionary that removes accents';
 
 
 --
--- Name: work_format; Type: TYPE; Schema: public; Owner: -
+-- Name: work_producer_role; Type: TYPE; Schema: public; Owner: -
 --
 
-CREATE TYPE public.work_format AS ENUM (
+CREATE TYPE public.work_producer_role AS ENUM (
+    'author',
+    'editor',
+    'contributor',
+    'translator',
+    'illustrator'
+);
+
+
+--
+-- Name: work_publishing_format; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.work_publishing_format AS ENUM (
     'book',
     'chapter',
     'ebook',
@@ -54,19 +67,6 @@ CREATE TYPE public.work_format AS ENUM (
     'social_media',
     'video',
     'personal'
-);
-
-
---
--- Name: work_producer_role; Type: TYPE; Schema: public; Owner: -
---
-
-CREATE TYPE public.work_producer_role AS ENUM (
-    'author',
-    'editor',
-    'contributor',
-    'translator',
-    'illustrator'
 );
 
 
@@ -402,7 +402,7 @@ CREATE TABLE public.works (
     date_of_accession date,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    format public.work_format DEFAULT 'book'::public.work_format,
+    publishing_format public.work_publishing_format DEFAULT 'book'::public.work_publishing_format,
     publisher_id bigint,
     searchable tsvector GENERATED ALWAYS AS ((((setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(title, ''::character varying))::text), 'A'::"char") || setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(subtitle, ''::character varying))::text), 'B'::"char")) || setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(supertitle, ''::character varying))::text), 'C'::"char")) || setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(foreign_title, ''::character varying))::text), 'D'::"char"))) STORED
 );
@@ -629,13 +629,6 @@ CREATE INDEX index_work_producers_on_work_id ON public.work_producers USING btre
 
 
 --
--- Name: index_works_on_format; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_works_on_format ON public.works USING btree (format);
-
-
---
 -- Name: index_works_on_parent_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -647,6 +640,13 @@ CREATE INDEX index_works_on_parent_id ON public.works USING btree (parent_id);
 --
 
 CREATE INDEX index_works_on_publisher_id ON public.works USING btree (publisher_id);
+
+
+--
+-- Name: index_works_on_publishing_format; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_works_on_publishing_format ON public.works USING btree (publishing_format);
 
 
 --

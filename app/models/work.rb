@@ -9,9 +9,9 @@
 #  date_of_accession   :date
 #  date_of_completion  :date
 #  foreign_title       :string
-#  format              :enum             default("book")
 #  language            :string
 #  original_language   :string
+#  publishing_format   :enum             default("book")
 #  rating              :integer
 #  searchable          :tsvector
 #  subtitle            :string
@@ -27,11 +27,11 @@
 #
 # Indexes
 #
-#  index_works_on_format        (format)
-#  index_works_on_parent_id     (parent_id)
-#  index_works_on_publisher_id  (publisher_id)
-#  index_works_on_searchable    (searchable) USING gin
-#  index_works_on_tags          (tags) USING gin
+#  index_works_on_parent_id          (parent_id)
+#  index_works_on_publisher_id       (publisher_id)
+#  index_works_on_publishing_format  (publishing_format)
+#  index_works_on_searchable         (searchable) USING gin
+#  index_works_on_tags               (tags) USING gin
 #
 # Foreign Keys
 #
@@ -145,7 +145,7 @@ class Work < ApplicationRecord
   }
 
   # postgresql enum
-  enum :format, {
+  enum :publishing_format, {
     :book            => "book",
     :chapter         => "chapter",
     :ebook           => "ebook",
@@ -158,7 +158,7 @@ class Work < ApplicationRecord
     :social_media    => "social_media",
     :video           => "video",
     :personal        => "personal"
-  }, prefix: :format
+  }, prefix: :publishing_format
 
   class << self
     # pseudo-enum
@@ -175,8 +175,8 @@ class Work < ApplicationRecord
       all_tags.sort
     end
 
-    def format_options
-      formats.keys.map { |k| [k.humanize, k] }
+    def publishing_format_options
+      publishing_formats.keys.map { |k| [k.humanize, k] }
     end
 
     def title_options

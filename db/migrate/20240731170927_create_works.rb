@@ -12,7 +12,7 @@ class CreateWorks < ActiveRecord::Migration[7.1]
      
       t.string :tags, array: true, default: []
       
-      # t.integer :format, default: 0, index: true
+      # t.integer :publishing_format, default: 0, index: true
 
       # TODO: real enum
       t.string :language
@@ -33,21 +33,21 @@ class CreateWorks < ActiveRecord::Migration[7.1]
 
     # https://naturaily.com/blog/ruby-on-rails-enum
     execute <<-SQL
-      CREATE TYPE work_format AS ENUM ('book', 'chapter', 'ebook', 'journal_article', 'news_article', 'book_review', 'interview', 'thesis', 'web_page', 'social_media', 'video', 'personal');
+      CREATE TYPE work_publishing_format AS ENUM ('book', 'chapter', 'ebook', 'journal_article', 'news_article', 'book_review', 'interview', 'thesis', 'web_page', 'social_media', 'video', 'personal');
     SQL
-    add_column :works, :format, :work_format, default: "book"
+    add_column :works, :publishing_format, :work_publishing_format, default: "book"
 
-    add_index :works, :format
+    add_index :works, :publishing_format
     add_index :works, :tags, using: "gin"
   end
 
   def down
     remove_index :works, :tags
-    remove_index :works, :work_format
+    remove_index :works, :publishing_format
 
-    remove_column :works, :format
+    remove_column :works, :publishing_format
     execute <<-SQL
-      DROP TYPE work_format;
+      DROP TYPE work_publishing_format;
     SQL
 
     drop_table :works

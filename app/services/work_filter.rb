@@ -31,9 +31,9 @@ class WorkFilter
       end
 
       format_param = params["frmt"]
-      valid_formats = Work.formats.keys
+      valid_formats = Work.publishing_formats.keys
       if format_param.in?(valid_formats)
-        works_results = works_results.send("format_#{format_param}")
+        works_results = works_results.send("publishing_format_#{format_param}")
       end
 
       lang_param = params["lang"]

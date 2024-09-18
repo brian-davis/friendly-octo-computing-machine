@@ -9,9 +9,9 @@
 #  date_of_accession   :date
 #  date_of_completion  :date
 #  foreign_title       :string
-#  format              :enum             default("book")
 #  language            :string
 #  original_language   :string
+#  publishing_format   :enum             default("book")
 #  rating              :integer
 #  searchable          :tsvector
 #  subtitle            :string
@@ -27,11 +27,11 @@
 #
 # Indexes
 #
-#  index_works_on_format        (format)
-#  index_works_on_parent_id     (parent_id)
-#  index_works_on_publisher_id  (publisher_id)
-#  index_works_on_searchable    (searchable) USING gin
-#  index_works_on_tags          (tags) USING gin
+#  index_works_on_parent_id          (parent_id)
+#  index_works_on_publisher_id       (publisher_id)
+#  index_works_on_publishing_format  (publishing_format)
+#  index_works_on_searchable         (searchable) USING gin
+#  index_works_on_tags               (tags) USING gin
 #
 # Foreign Keys
 #
@@ -407,18 +407,18 @@ class WorkTest < ActiveSupport::TestCase
 
   test "self-join" do
     parent = Work.create({
-      format: "book",
+      publishing_format: "book",
       title: "A Compilation"
     })
 
     child1 = Work.create({
-      format: "chapter",
+      publishing_format: "chapter",
       title: "Chapter 1",
       parent_id: parent.id
     })
 
     child2 = Work.create({
-      format: "chapter",
+      publishing_format: "chapter",
       title: "Chapter 2",
       parent_id: parent.id
     })

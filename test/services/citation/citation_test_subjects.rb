@@ -5,7 +5,7 @@ module CitationTestSubjects
     @book1 ||= begin
       work = Work.create({
         title: "Interior Chinatown",
-        format: "book",
+        publishing_format: "book",
         year_of_publication: 2020,
         publisher: Publisher.new({
           name: "Pantheon Books"
@@ -69,7 +69,7 @@ module CitationTestSubjects
   def book3
     @book3 ||= Work.create({
       title: "The Wedding Party",
-      format: "book",
+      publishing_format: "book",
       year_of_publication: 2021,
       publisher: Publisher.new({
         name: "Amazon Crossing"
@@ -99,7 +99,7 @@ module CitationTestSubjects
       title: "The Book by Design",
       subtitle: "The Remarkable Story of the World’s Greatest Invention",
       year_of_publication: 2023,
-      format: "book",
+      publishing_format: "book",
 
       publisher: Publisher.new({
         name: "University of Chicago Press"
@@ -133,7 +133,7 @@ module CitationTestSubjects
   def book4_child
     @book4_child ||= Work.create({
       title: "The Queen Mary Psalter",
-      format: "chapter",
+      publishing_format: "chapter",
       parent: book4,
       work_producers: [
         WorkProducer.new({

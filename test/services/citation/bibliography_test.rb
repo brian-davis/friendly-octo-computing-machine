@@ -59,7 +59,7 @@ class BibliographyTest < ActiveSupport::TestCase
       language: "English",
       original_language: "Greek",
       tags: ["Classics", "Tragedy", "Drama"],
-      format: :book,
+      publishing_format: :book,
       date_of_accession: Date.new(2024,6,1),
       accession_note: "Bought used from Changing Hands in Tempe",
       publisher: hackett,
@@ -71,7 +71,7 @@ class BibliographyTest < ActiveSupport::TestCase
           language: "English",
           original_language: "Greek",
           tags: ["Classics", "Tragedy", "Drama"],
-          format: :chapter,
+          publishing_format: :chapter,
           work_producers: [
             WorkProducer.new({
               role: :author,
@@ -93,7 +93,7 @@ class BibliographyTest < ActiveSupport::TestCase
           language: "English",
           original_language: "Greek",
           tags: ["Classics", "Tragedy", "Drama"],
-          format: :chapter,
+          publishing_format: :chapter,
           work_producers: [
             WorkProducer.new({
               role: :author,
@@ -115,7 +115,7 @@ class BibliographyTest < ActiveSupport::TestCase
           language: "English",
           original_language: "Greek",
           tags: ["Classics", "Tragedy", "Drama"],
-          format: :chapter,
+          publishing_format: :chapter,
           work_producers: [
             WorkProducer.new({
               role: :author,

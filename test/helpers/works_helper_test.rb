@@ -49,9 +49,11 @@ class WorksHelperTest < ActiveSupport::TestCase
   test "full_title_line without date" do
     subject = Work.create({
       title: "No Date",
-      authors: [Producer.new({
-        full_name: "John Doe"
-      })]
+      producers: [
+        Producer.new({
+          full_name: "John Doe"
+        })
+      ]
     })
     result = full_title_line(subject)
     expected = "No Date (Doe)"
@@ -97,7 +99,7 @@ class WorksHelperTest < ActiveSupport::TestCase
           language: "English",
           original_language: "Greek",
           tags: ["Classics", "Tragedy", "Drama"],
-          format: :chapter,
+          publishing_format: :chapter,
           work_producers: [
             WorkProducer.new({
               role: :author,
@@ -111,7 +113,7 @@ class WorksHelperTest < ActiveSupport::TestCase
           language: "English",
           original_language: "Greek",
           tags: ["Classics", "Tragedy", "Drama"],
-          format: :chapter,
+          publishing_format: :chapter,
           work_producers: [
             WorkProducer.new({
               role: :author,
@@ -125,7 +127,7 @@ class WorksHelperTest < ActiveSupport::TestCase
           language: "English",
           original_language: "Greek",
           tags: ["Classics", "Tragedy", "Drama"],
-          format: :chapter,
+          publishing_format: :chapter,
           work_producers: [
             WorkProducer.new({
               role: :author,

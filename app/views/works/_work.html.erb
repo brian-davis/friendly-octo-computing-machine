@@ -1,5 +1,5 @@
 <div id="<%= dom_id work %>">
-  <% row_class = work.format_book? ? "work-title-std" : "work-title-alt" %>
+  <% row_class = work.publishing_format_book? ? "work-title-std" : "work-title-alt" %>
   <%= tag.span(class: row_class) do %>
     <%= full_title_line(work) %>
   <% end %>

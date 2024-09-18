@@ -12,7 +12,6 @@ module WorksHelper
                   work.parent&.year_of_composition.presence || work.parent&.year_of_publication.presence
 
     year = common_era_year(year_source) # ApplicationHelper
-
     [
       author_names,
       year

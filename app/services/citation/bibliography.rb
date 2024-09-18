@@ -12,7 +12,7 @@ module Citation
         year = work.year_of_publication
 
         "#{editor_names}, #{editor_status}, _#{title}_ (#{publisher}, #{year})."
-      elsif work.format_book?
+      elsif work.publishing_format_book?
         return unless work.producers.any? && work.publisher && work.year_of_publication
 
         title = work.reference.long_title
@@ -27,7 +27,7 @@ module Citation
           strict_author_names = alpha_producer_names(:author)
           "#{strict_author_names}. _#{title}_. #{publisher}, #{year}."
         end
-      elsif work.format_chapter?
+      elsif work.publishing_format_chapter?
         return unless work.producers.any? && work.reference.year_of_publication
 
         title = work.reference.long_title

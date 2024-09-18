@@ -162,7 +162,7 @@ private
     @parent_options = Work.parent_options(@work)
     @tag_options = Work.tag_options
 
-    @format_options = Work.format_options
+    @publishing_format_options = Work.publishing_format_options
   end
 
   # :index
@@ -175,7 +175,7 @@ private
       ["Rating ▲", "rating-asc"],
       ["Rating ▼", "rating-desc"]
     ]
-    @format_options = Work.format_options
+    @publishing_format_options = Work.publishing_format_options
     @language_options = Work.language_options(unspecified: true)
     @accession_options = [:collection, :wishlist].map { |opt| [opt.to_s.humanize, opt] }
     @status_options = [:read, :unread].map { |opt| [opt.to_s.humanize, opt] }

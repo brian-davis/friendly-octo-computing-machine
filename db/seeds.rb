@@ -14,7 +14,7 @@ unless ENV["CLEAR"]
       Work.create({
         title: Faker::Book.title,
         rating: rand(1..5),
-        format: (Work.formats.keys - ["article", "chapter", "compilation"]).sample,
+        publishing_format: (Work.formats.keys - ["article", "chapter", "compilation"]).sample,
         year_of_publication: (Time.now.year - rand(100)),
 
         language: ["English", "Spanish", "French", "German", "Latin", "Greek"].sample,
@@ -49,7 +49,7 @@ unless ENV["CLEAR"]
 
     parent = Work.create({
       title: Faker::Book.title,
-      format: "book",
+      publishing_format: "book",
       rating: rand(1..5),
       year_of_publication: (Time.now.year - rand(100)),
       publisher: Publisher.new({
@@ -68,7 +68,7 @@ unless ENV["CLEAR"]
     5.times {
       Work.create({
         title: Faker::Book.title,
-        format: "chapter",
+        publishing_format: "chapter",
         rating: rand(1..5),
         parent_id: parent.id,
         work_producers: [
@@ -117,7 +117,7 @@ unless ENV["CLEAR"]
       language: "English",
       original_language: "Greek",
       tags: ["Classics", "Tragedy", "Drama"],
-      format: :book,
+      publishing_format: :book,
       date_of_accession: Date.new(2024,6,1),
       accession_note: "Bought used from Changing Hands in Tempe",
       publisher: hackett,
@@ -129,7 +129,7 @@ unless ENV["CLEAR"]
           language: "English",
           original_language: "Greek",
           tags: ["Classics", "Tragedy", "Drama"],
-          format: :chapter,
+          publishing_format: :chapter,
           work_producers: [
             WorkProducer.new({
               role: :author,
@@ -151,7 +151,7 @@ unless ENV["CLEAR"]
           language: "English",
           original_language: "Greek",
           tags: ["Classics", "Tragedy", "Drama"],
-          format: :chapter,
+          publishing_format: :chapter,
           work_producers: [
             WorkProducer.new({
               role: :author,
@@ -173,7 +173,7 @@ unless ENV["CLEAR"]
           language: "English",
           original_language: "Greek",
           tags: ["Classics", "Tragedy", "Drama"],
-          format: :chapter,
+          publishing_format: :chapter,
           work_producers: [
             WorkProducer.new({
               role: :author,
@@ -234,7 +234,7 @@ unless ENV["CLEAR"]
       year_of_publication: 2006,
       language: "English",
       original_language: "Greek",
-      format: :book,
+      publishing_format: :book,
       date_of_accession: Date.new(2024,4,1),
       accession_note: "bought new from Barnes & Noble",
 
@@ -273,7 +273,7 @@ unless ENV["CLEAR"]
       year_of_publication: 2007,
       language: "English",
       original_language: "Latin",
-      format: :book,
+      publishing_format: :book,
       tags: ["Classics", "History", "Ancient Rome", "Penguin Classics"],
       date_of_accession: Date.new(2024,4,1),
       accession_note: "bought new from Barnes & Noble",
@@ -306,7 +306,7 @@ unless ENV["CLEAR"]
       year_of_publication: 2008,
       language: "English",
       original_language: "Greek",
-      format: :book,
+      publishing_format: :book,
       date_of_accession: Date.new(2024,5,1),
       accession_note: "bought new from Barnes & Noble",
 
@@ -400,7 +400,7 @@ unless ENV["CLEAR"]
       language: "English",
       original_language: "French",
       tags: ["Comics"],
-      format: :book,
+      publishing_format: :book,
       date_of_accession: Date.new(2010,8,1),
       accession_note: "Don't remember when I bought this, but it was a long time ago.  Didn't read it until recently.",
 
@@ -489,7 +489,7 @@ unless ENV["CLEAR"]
           title: "What is philosophy?",
           language: "English",
           tags: ["Philosophy", "Modern"],
-          format: :chapter,
+          publishing_format: :chapter,
           work_producers: [
             WorkProducer.new({
               role: :author,
@@ -504,7 +504,7 @@ unless ENV["CLEAR"]
           title: "Morality: objective, relative or emotive?",
           language: "English",
           tags: ["Philosophy", "Modern"],
-          format: :chapter,
+          publishing_format: :chapter,
           work_producers: [
             WorkProducer.new({
               role: :author,
@@ -517,7 +517,7 @@ unless ENV["CLEAR"]
           title: "Do we have an obligation to obey the law?",
           language: "English",
           tags: ["Philosophy", "Modern"],
-          format: :chapter,
+          publishing_format: :chapter,
           work_producers: [
             WorkProducer.new({
               role: :author,
@@ -532,7 +532,7 @@ unless ENV["CLEAR"]
           title: "What is Knowledge? Do we have any?",
           language: "English",
           tags: ["Philosophy", "Modern"],
-          format: :chapter,
+          publishing_format: :chapter,
           work_producers: [
             WorkProducer.new({
               role: :author,
@@ -545,7 +545,7 @@ unless ENV["CLEAR"]
           title: "Should you believe what you hear?",
           language: "English",
           tags: ["Philosophy", "Modern"],
-          format: :chapter,
+          publishing_format: :chapter,
           work_producers: [
             WorkProducer.new({
               role: :author,
@@ -566,7 +566,7 @@ unless ENV["CLEAR"]
           title: "What is it to have a mind?",
           language: "English",
           tags: ["Philosophy", "Modern"],
-          format: :chapter,
+          publishing_format: :chapter,
           work_producers: [
             WorkProducer.new({
               role: :author,
@@ -581,7 +581,7 @@ unless ENV["CLEAR"]
           title: "Do we have free will? (And does it matter?)",
           language: "English",
           tags: ["Philosophy", "Modern"],
-          format: :chapter,
+          publishing_format: :chapter,
           work_producers: [
             WorkProducer.new({
               role: :author,
@@ -596,7 +596,7 @@ unless ENV["CLEAR"]
           title: "Are scientific theories true?",
           language: "English",
           tags: ["Philosophy", "Modern"],
-          format: :chapter,
+          publishing_format: :chapter,
           work_producers: [
             WorkProducer.new({
               role: :author,
@@ -611,7 +611,7 @@ unless ENV["CLEAR"]
           title: "Is time travel possible?",
           language: "English",
           tags: ["Philosophy", "Modern"],
-          format: :chapter,
+          publishing_format: :chapter,
           work_producers: [
             WorkProducer.new({
               role: :author,
@@ -639,7 +639,7 @@ unless ENV["CLEAR"]
       language: "English",
       original_language: "French",
       tags: ["Comics"],
-      format: :book
+      publishing_format: :book
     })
 
     # TODO: more details
@@ -647,7 +647,7 @@ unless ENV["CLEAR"]
       title: "Astérix Le Gaulois",
       language: "French",
       tags: ["Comics"],
-      format: :book
+      publishing_format: :book
     })
 
   end
