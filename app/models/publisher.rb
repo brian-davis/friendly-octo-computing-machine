@@ -30,7 +30,7 @@ class Publisher < ApplicationRecord
 
   class << self
     def name_options
-      distinct.order(:name).pluck(:name, :id)
+      order(:name).pluck(:name, :id)
     end
   end
 end

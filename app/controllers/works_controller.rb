@@ -155,15 +155,13 @@ private
   def set_form_options
     @work ||= Work.new
     @work_producers = @work.work_producers.includes(:producer)
-
-    @producer_options = Producer.name_options
-    @publisher_options = Publisher.name_options
-
-    @language_options = Work.language_options
-    @parent_options = Work.parent_options(@work)
-    @tag_options = Work.tag_options
-
-    @publishing_format_options = Work.publishing_format_options
+ 
+    @language_options = helpers.strict_datalist_options(Work.language_options)
+    @parent_options = helpers.strict_options(Work.parent_options(@work))
+    @producer_options = helpers.strict_options(Producer.name_options)
+    @publisher_options = helpers.strict_options(Publisher.name_options)
+    @publishing_format_options = helpers.strict_options(Work.publishing_format_options)
+    @tag_options = helpers.strict_options(Work.tag_options)
   end
 
   # :index

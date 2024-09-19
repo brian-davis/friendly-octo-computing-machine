@@ -40,7 +40,7 @@ class WorkProducer < ApplicationRecord
 
   class << self
     def role_options
-      roles.keys.map { |k| [k.sub("_", "-").capitalize, k] }
+      roles.keys
     end
   end
 

@@ -127,10 +127,10 @@ class Producer < ApplicationRecord
   class << self
     # pseudo-enum
     def nationality_options
-      distinct.pluck(:nationality).compact.sort
+      distinct.pluck(:nationality)
     end
 
-    # pseudo-enum, works/_form select_options for already-saved records
+    # pseudo-enum
     def name_options
       order_by_full_name.pluck_full_name(:id)
     end

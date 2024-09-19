@@ -3,6 +3,7 @@
     # nested under work
     [@work, quote]
   else
+    # general_index
     [quote.work, quote]
   end
 %>
@@ -12,6 +13,7 @@
     <% unless @work %>
       <%= quote.work.reference.short_title_line %>,
     <% end %>
+    <%# TODO: helper/decorator %>
     p. <%= [quote.page, quote.custom_citation].map(&:presence).compact.join(", ") %>
   </i>:
   <%= quote.text.truncate(75) %>   

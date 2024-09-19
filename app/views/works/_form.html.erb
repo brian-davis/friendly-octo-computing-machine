@@ -41,42 +41,22 @@
   <%= form.text_field :custom_citation %>
 
   <%= form.label :language %>
-  <%= form.text_field :language, { list: "work_languages_datalist", class: "correct-width-2" } %>
+  <%= form.text_field :language, { list: "work_languages_datalist" } %>
   <%=
-    content_tag(
-      :datalist,
-      nil, {
-        id: :work_languages_datalist,
-        'data-autocomplete-input-target' => :datalist
-      }
-    ) do %>
-    <% @language_options.each do |language| %>
-      <%=
-        content_tag(
-          :option,
-          nil,
-          value: language,
-          'data-autocomplete-input-target' => 'datalistOption'
-        )
-      %>
-    <% end %>
-  <% end %>
+    render_datalist_options({
+      list: "work_languages_datalist",
+      select_options: @language_options
+    })
+  %>
 
   <%= form.label :original_language %>
-
-  <%= form.text_field :original_language, { list: "work_original_languages_datalist", class: "correct-width-2" } %>
-  <%= content_tag(:datalist, nil, id: :work_original_languages_datalist, 'data-autocomplete-input-target' => :datalist) do %>
-    <% @language_options.each do |original_language| %>
-      <%=
-        content_tag(
-          :option,
-          nil,
-          value: original_language,
-          'data-autocomplete-input-target' => 'datalistOption'
-        )
-      %>
-    <% end %>
-  <% end %>
+  <%= form.text_field :original_language, { list: "work_original_languages_datalist" } %>
+  <%=
+    render_datalist_options({
+      list: "work_original_languages_datalist",
+      select_options: @language_options
+    })
+  %>
 
   <hr>
   <hr>
@@ -121,6 +101,7 @@
     <% end %>
     <%= select_tag("authors", options_for_select(@producer_options), { include_blank: "Select Author", class: "select-button", data: { action: "change->works#selectProducer" }}) %>
   </div>
+
   <div id="sub_form_list_producers" data-controller="dismissable">
     <% @work_producers.each do |work_producer| %>
       <div class="outline subFormContainer" data-dismissable-target="subForm" data-works-target="producerSubForm" data-producer-id="<%= work_producer.producer_id %>">
@@ -162,6 +143,7 @@
     <% end %>
     <%= select_tag("tags", options_for_select(@tag_options), { include_blank: "Select Tag", class: "select-button", data: { action: "change->works#selectTag" }}) %>
   </div>
+
   <div id="sub_form_list_tags" data-controller="dismissable">
     <% if work.tags.any? %>
       <% work.tags.each.with_index do |tag, i| %>

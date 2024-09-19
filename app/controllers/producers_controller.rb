@@ -119,8 +119,9 @@ private
   def set_form_options
     @producer ||= Producer.new
     @work_producers = @producer.work_producers.includes(:work)
-    @work_options = Work.title_options
-    @nationality_options = Producer.nationality_options
+
+    @nationality_options = helpers.strict_datalist_options(Producer.nationality_options)
+    @work_options = helpers.strict_options(Work.title_options)
   end
 
   # :build_work, :select_work

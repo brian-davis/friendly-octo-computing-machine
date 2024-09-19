@@ -27,12 +27,13 @@
   <%= form.text_field :foreign_name %>
 
   <%= form.label :nationality %>
-  <%= form.text_field :nationality, { list: "work_nationalities_datalist" } %>
-  <%= content_tag(:datalist, nil, id: :work_nationalities_datalist, 'data-autocomplete-input-target' => :datalist) do %>
-    <% @nationality_options.each do |nationality| %>
-      <%= content_tag(:option, nil, {value: nationality, data: {autocomplete_input_target: 'datalistOption'}}) %>
-    <% end %>
-  <% end %>
+  <%= form.text_field :nationality, { list: "producer_nationalities_datalist" } %>
+  <%=
+    render_datalist_options({
+      list: "producer_nationalities_datalist",
+      select_options: @nationality_options
+    })
+  %>
 
   <%= form.label :bio_link %>
   <%= form.text_field :bio_link %>

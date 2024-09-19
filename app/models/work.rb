@@ -169,7 +169,7 @@ class Work < ApplicationRecord
     end
 
     def parent_options(work)
-      compilations.where.not(id: [work.id, work.parent&.id]).pluck(:title, :id)
+      compilations.where.not(id: [work.id, work.parent&.id]).order(:title).pluck(:title, :id)
     end
 
     def tag_options
@@ -177,13 +177,11 @@ class Work < ApplicationRecord
     end
 
     def publishing_format_options
-      publishing_formats.keys.map { |k| [k.humanize, k] }
+      publishing_formats.keys.sort
     end
 
     def title_options
-      order("UPPER(works.title)").pluck(:title, :id).uniq.map do |title, id|
-        [title.truncate(25), id]
-      end
+      order("UPPER(works.title)").pluck(:title, :id)
     end
 
     def extended_tags_cloud
