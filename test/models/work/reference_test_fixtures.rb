@@ -10,7 +10,6 @@ module ReferenceTestFixtures
   def theban_plays
     @theban_plays ||=  Work.create({
       title: "Theban Plays",
-      year_of_composition: 135,
       year_of_publication: 2003,
       language: "English",
       original_language: "Greek",
@@ -80,6 +79,10 @@ module ReferenceTestFixtures
         })
       ]
     })
+  end
+
+  def antigone
+    @antigone ||= theban_plays.children.find_by(title: "Antigone")
   end
 
   def logic_vsi

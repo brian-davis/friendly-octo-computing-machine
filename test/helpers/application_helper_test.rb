@@ -1,27 +1,28 @@
 require "test_helper"
 
 class ApplicationHelperTest < ActiveSupport::TestCase
+  # these dependencies will be already loaded in development, production
+  include ActionView::Helpers::OutputSafetyHelper
+  include ActionView::Helpers::TagHelper
+  include ActionView::Helpers::UrlHelper
+
   include ApplicationHelper
 
-  test "common era span" do
-    producer = producers(:seven)
-    result = common_era_span(producer.year_of_birth, producer.year_of_death)
-    expected = "(1599 - 1661)"
-    assert_equal expected, result
+  test ":markdown_render renders markdown" do
+    result = markdown_render("something **bold**")
+    expected = "<p>something <strong>bold</strong></p>"
+    assert_equal(expected, result)
+  end
 
-    producer2 = producers(:eight)
-    result = common_era_span(producer2.year_of_birth, producer2.year_of_death)
-    expected = "(199 BCE - 51 BCE)"
+  test ":pipe_spacer" do
+    result = pipe_spacer
+    expected = "<span class=\"horizontal-spacer\"></span>"
     assert_equal expected, result
+  end
 
-    producer3 = producers(:nine)
-    result = common_era_span(producer3.year_of_birth, producer3.year_of_death)
-    expected = "(50 BCE - 50 CE)"
-    assert_equal expected, result
-
-    producer4 = producers(:six)
-    result = common_era_span(producer4.year_of_birth, producer4.year_of_death)
-    expected = "(1980 - )"
+  test ":pointer_link" do
+    result = pointer_link("/foobar")
+    expected = "<a class=\"index-link\" href=\"/foobar\">👉</a>"
     assert_equal expected, result
   end
 end

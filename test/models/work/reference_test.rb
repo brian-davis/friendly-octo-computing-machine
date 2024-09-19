@@ -67,4 +67,69 @@ class ReferenceTest < ActiveSupport::TestCase
     expected = "English"
     assert_equal(expected, result)
   end
+
+  test "byline includes various producers" do
+    work = theban_plays
+    result = work.reference.byline
+    expected = "Meineck and Woodruff, 2003"
+    assert_equal expected, result
+  end
+
+  test "byline falls back to year of composition before parent" do
+    work = antigone
+    result = work.reference.byline
+    expected = "Sophocles, 441 BCE"
+    assert_equal expected, result
+  end
+
+  test "byline includes relevant dates" do
+    work = logic_vsi
+    result = work.reference.byline
+    expected = "Priest, 2017"
+    assert_equal expected, result
+  end
+
+  test "full_title_line with date" do
+    subject = logic_vsi
+    result = subject.reference.full_title_line
+    expected = "Logic: A Very Short Introduction (Priest, 2017)"
+    assert_equal(expected, result)
+  end
+
+  test "full_title_line without date" do
+    subject = Work.create({
+      title: "No Date",
+      producers: [
+        Producer.new({
+          full_name: "John Doe"
+        })
+      ]
+    })
+    result = subject.reference.full_title_line
+    expected = "No Date (Doe)"
+    assert_equal(expected, result)
+  end
+
+  test "full_title_line without author or date" do
+    subject = Work.create({
+      title: "No Date or Author"
+    })
+    result = subject.reference.full_title_line
+    expected = "No Date or Author"
+    assert_equal(expected, result)
+  end
+
+  test "short_title_line" do
+    subject = Work.create({
+      title: "The Book Of Kells",
+      producers: [
+        Producer.new({
+          full_name: "Medieval Monk"
+        })
+      ]
+    })
+    result = subject.reference.short_title_line
+    expected = "Book Of Kells (Monk)"
+    assert_equal(expected, result)
+  end
 end

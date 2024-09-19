@@ -1,7 +1,7 @@
 <div id="<%= dom_id work %>">
   <% row_class = work.publishing_format_book? ? "work-title-std" : "work-title-alt" %>
   <%= tag.span(class: row_class) do %>
-    <%= full_title_line(work) %>
+    <%= work.reference.full_title_line %>
   <% end %>
   <%= pipe_spacer %>
   <span class="quantity"><%= work.rating_stars %></span>

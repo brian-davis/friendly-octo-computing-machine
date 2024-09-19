@@ -71,13 +71,13 @@ class BookshelfMetrics
       session = ReadingSession.find_by(ended_at: ReadingSession.maximum(:ended_at))
       return unless session
       work = session.work
-      tag.i(title_line(work)) + ", #{time_ago_in_words(session.ended_at)} ago"
+      tag.i(work.reference.long_title) + ", #{time_ago_in_words(session.ended_at)} ago"
     end
 
     def newest_book
       work = Work.find_by(created_at: Work.maximum(:created_at))
       return unless work
-      tag.i(title_line(work)) + ", #{time_ago_in_words(work.created_at)} ago"
+      tag.i(work.reference.long_title) + ", #{time_ago_in_words(work.created_at)} ago"
     end
 
     def most_quoted_book
@@ -88,7 +88,7 @@ class BookshelfMetrics
                     .max_by { |w, c| c }
       work = Work.find_by({ id: id })
       return unless work
-      tag.i(title_line(work)) + ", #{count} quotes"
+      tag.i(work.reference.long_title) + ", #{count} quotes"
     end
 
     def most_noted_book
@@ -99,7 +99,7 @@ class BookshelfMetrics
                     .max_by { |w, c| c }
       work = Work.find_by({ id: id })
       return unless work
-      tag.i(title_line(work)) + ", #{count} notes"
+      tag.i(work.reference.long_title) + ", #{count} notes"
     end
 
     def most_represented_author
@@ -127,7 +127,7 @@ class BookshelfMetrics
                   .max_by { |w, d| d }
       work = Work.find_by({ id: id })
       return unless work
-      tag.i(title_line(work)) + ", #{human_duration(sum)}"
+      tag.i(work.reference.long_title) + ", #{human_duration(sum)}"
     end
 
     def longest_author_reading_time

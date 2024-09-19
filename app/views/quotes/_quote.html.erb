@@ -10,7 +10,7 @@
 <div id="<%= dom_id quote %>">
   <i class="small-text">
     <% unless @work %>
-      <%= short_title_line(quote.work) %>,
+      <%= quote.work.reference.short_title_line %>,
     <% end %>
     p. <%= [quote.page, quote.custom_citation].map(&:presence).compact.join(", ") %>
   </i>:

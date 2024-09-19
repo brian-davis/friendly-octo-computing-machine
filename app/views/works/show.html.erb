@@ -1,15 +1,15 @@
-<b class="minor-heading"><%= title_line(@work) %></b>
+<b class="minor-heading"><%= @work.reference.long_title %></b>
 
 <div id="<%= dom_id @work %>" class="outline">
   <% if @work.custom_citation.present? %>
     <div class="book-card outline bibliography-citation small-text">
-      <%= raw markdown.render(@work.custom_citation) %>
+      <%= markdown_render(@work.custom_citation) %>
     </div>
   <% end %>
 
   <% if @bibliography %>
     <div class="book-card outline bibliography-citation small-text">
-      <%= raw markdown.render(@bibliography) %>
+      <%= markdown_render(@bibliography) %>
     </div>
   <% end %>
 

@@ -2,27 +2,27 @@
   <% if @quote.custom_citation.present? %>
     <b class="label-above small-text">Custom Citation</b>
     <div class="book-card outline bibliography-citation small-text">
-      <%= raw markdown.render(@quote.custom_citation) %>
+      <%= markdown_render(@quote.custom_citation) %>
     </div>
   <% end %>
 
   <% if @long_citation %>
     <b class="label-above small-text">Long Citation</b>
     <div class="book-card outline bibliography-citation small-text">
-      <%= raw markdown.render(@long_citation) %>
+      <%= markdown_render(@long_citation) %>
     </div>
   <% end %>
 
   <% if @short_citation %>
     <b class="label-above small-text">Short Citation</b>
     <div class="book-card outline bibliography-citation small-text">
-      <%= raw markdown.render(@short_citation) %>
+      <%= markdown_render(@short_citation) %>
     </div>
   <% end %>
 
   <b class="label-above small-text">Quote</b>
   <div class="quote-card outline">
-    <%= raw markdown.render(@quote.text) %>
+    <%= markdown_render(@quote.text) %>
   </div>
 </div>
 <hr>
