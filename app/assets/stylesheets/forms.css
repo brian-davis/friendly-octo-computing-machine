@@ -43,10 +43,8 @@ form.table-form {
   form.table-form .label-group > .select-button {
     display: block;
     margin-bottom: 0.5rem;
-
-    /* TODO: do this with flex */
-    position: relative;
-    right: -1.7rem;
+    padding: 0.5rem;
+    width: fit-content;
   }
 
   form.table-form input[type="number"],

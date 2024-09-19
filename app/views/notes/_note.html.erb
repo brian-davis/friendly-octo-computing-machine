@@ -1,5 +1,5 @@
 <div id="<%= dom_id note %>">
-  <i class="small-text">
+  <i class="small-text quantity">
     <%= human_time_for(note.updated_at) %>
   </i> : <%= note.text.truncate(75) %>
   <%= pipe_spacer %>

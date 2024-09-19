@@ -93,6 +93,20 @@ button.danger {
   border-color: var(--color-dark-beige);
 }
 
+.note-body {
+  padding: 1rem;
+  /* padding-right: 1rem; */
+  /* color: var(--color-dark-beige); */
+  /* background-color: var(--color-light-beige); */
+  /* border: 2px solid var(--color-dark-beige); */
+  background-image: var(--center-gradient-light-beige);
+  max-width: 50rem;
+}
+
+.note-body p:nth-of-type(1) {
+  margin-top: auto;
+}
+
 a.search-button {
   text-decoration: none;
   padding: 0.18em 0.4em;
@@ -153,7 +167,7 @@ ul.associated-items li {
 }
 
 .div-list-row.alt-row {
-  background-image: linear-gradient(to right, var(--color-white) 0%, var(--color-light-beige) 5%, var(--color-white) 100%);
+  background-image: var(--center-gradient-light-beige);
 }
 
 
@@ -198,7 +212,7 @@ h1.max-heading {
   margin-bottom: 0.5rem;
   font-size: larger;
 
-  background-image: linear-gradient(to right, var(--color-light-blue), var(--color-white));
+  background-image: var(--left-gradient-light-blue);
   
   color: var(--color-dark-blue);
   padding: 0.5rem;
@@ -255,7 +269,7 @@ span.work-title-alt {
 
 p.controller-notice {
   margin-bottom: 0.5rem;
-  background-image: linear-gradient(to right, var(--color-light-green), var(--color-white)); 
+  background-image: var(--left-gradient-light-green); 
   color: var(--color-dark-green);
   padding: 0.5rem;
 }

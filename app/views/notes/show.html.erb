@@ -2,9 +2,10 @@
   <i class="small-text quantity">
   <%= human_time_for(@note.updated_at) %>
   </i>
-  <br>
-  <br>
-  <%= @note.text.truncate(100) %>
+  <hr>
+  <div class="note-body">
+    <%= markdown_render @note.text %>
+  </div>
 </div>
 
 <hr>
