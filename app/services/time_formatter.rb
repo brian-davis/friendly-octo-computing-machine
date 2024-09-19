@@ -34,7 +34,10 @@ module TimeFormatter
   end
   
   def common_era_span(early_year, late_year, options = {})
-    default_options = {spaces:true}
+    default_options = {
+      spaces: true,
+      parenthesis: true
+    }
     options = default_options.merge(options)
 
     return if early_year.blank? && late_year.blank?
@@ -42,8 +45,12 @@ module TimeFormatter
     bc_late_year = common_era_year(late_year, options)
 
     spacer = options[:spaces] ? " " : "" # re-use option
-    span = [bc_early_year, bc_late_year].map(&:presence).join("#{spacer}-#{spacer}")
-    "(#{span})"
+    span = [bc_early_year, bc_late_year].map(&:presence).join("#{spacer}—#{spacer}") # em-dash
+    if options[:parenthesis]
+      "(#{span})"
+    else
+      "#{span}"
+    end
   end
 
   def human_time_for(timestamp)

@@ -45,6 +45,7 @@ five:
 six:
   forename: John
   surname: Johnson
+  nationality: American
   year_of_birth: 1980
 
 seven:

@@ -4,7 +4,7 @@
 
 <div id="<%= dom_id @producer %>" class="outline">
   <p class="small-text indented">
-    <%= life_line(@producer) %>
+    <%= @producer.biography.context %>
   </p>
 
   <% if @producer.bio_link.present? %>

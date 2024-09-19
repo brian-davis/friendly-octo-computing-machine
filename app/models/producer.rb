@@ -23,6 +23,7 @@
 #  producers_forename_surname_year_of_birth_unique  (forename,surname,year_of_birth) UNIQUE
 #
 class Producer < ApplicationRecord
+  has_object :biography
   include PgSearch::Model
 
   has_many :work_producers, dependent: :destroy
