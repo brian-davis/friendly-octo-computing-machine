@@ -4,6 +4,7 @@
 </div>
 <hr>
 <div class="nav-links">
-  <%= link_to "Show this note", [@notable, @note], class: "nav-button"  %>
-  <%= link_to "Back to notes", notable_notes_path(@notable), class: "nav-button"  %>
+  <%= link_to "Show", [@notable, @note], class: "nav-button"  %>
+  <%= link_to "Back to Notes", notable_notes_path(@notable), class: "nav-button"  %>
+  <%= link_to "Back to Top", root_path, class:"nav-button" %>
 </div>

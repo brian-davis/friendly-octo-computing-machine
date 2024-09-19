@@ -12,5 +12,6 @@ Aggregate Time: <b class="quantity"><%= human_duration(@work.reading_sessions_mi
 
 <div class="nav-links">
   <%= link_to "Back to Book", @work, class: "nav-button" %>
-  <%= link_to "New reading session", new_work_reading_session_path(@work), class: "nav-button nav-action-safe" %>
+  <%= link_to "Back to Top", root_path, class:"nav-button" %>
+  <%= link_to "New Reading Session", new_work_reading_session_path(@work), class: "nav-button nav-action-safe" %>
 </div>

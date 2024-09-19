@@ -137,8 +137,8 @@
 
 <hr>
 <div class="nav-links" data-controller="confirmable">
-  <%= link_to "Back to books", works_path, class: "nav-button" %>
-  <%= link_to "Back to top", root_path, class: "nav-button" %>
-  <%= link_to "Edit this work", edit_work_path(@work), class: "nav-button nav-action-safe" %>
-  <%= html_delete_button(@work, "Destroy Book") %>
+  <%= link_to "Back to Books", works_path, class: "nav-button" %>
+  <%= link_to "Back to Top", root_path, class: "nav-button" %>
+  <%= link_to "Edit", edit_work_path(@work), class: "nav-button nav-action-safe" %>
+  <%= html_delete_button(@work, "Destroy") %>
 </div>

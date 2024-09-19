@@ -34,8 +34,8 @@
 
 <hr>
 <div class="nav-links" data-controller="confirmable">
-  <%= link_to "Back to authors", producers_path, class: "nav-button" %>
-  <%= link_to "Back to top", root_path, class: "nav-button" %>
-  <%= link_to "Edit this author", edit_producer_path(@producer), class: "nav-button nav-action-safe" %>
-  <%= html_delete_button @producer, "Destroy this author" %>
+  <%= link_to "Back to Authors", producers_path, class: "nav-button" %>
+  <%= link_to "Back to Top", root_path, class: "nav-button" %>
+  <%= link_to "Edit", edit_producer_path(@producer), class: "nav-button nav-action-safe" %>
+  <%= html_delete_button @producer, "Destroy" %>
 </div>

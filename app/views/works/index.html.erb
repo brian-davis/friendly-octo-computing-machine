@@ -15,74 +15,7 @@
   <hr>
 
   <div id="works-collection">
-    <%= text_field_tag(:search, nil, class: "search-box", data: { action:"keydown.esc->sortable#clearSearch", sortable_target: "search"}) %>
-    <%= link_to("Search", "#", class: "search-button", data: {
-    sortable_target:"searchButton", action: "click->sortable#search" }) %>
-    |
-    <%# TODO: helper or partial here %>
-    <%=
-      select_tag(
-        "_order",
-        options_for_select(@sort_options), {
-          class: "select-button small-text",
-          include_blank: "Sort",
-          data: {
-            action: "change->sortable#selectOrder"
-          }
-        }
-      )
-    %>
-    |
-    <%=
-      select_tag(
-        "_order",
-        options_for_select(@publishing_format_options), {
-          class: "select-button small-text",
-          include_blank: "Format",
-          data: {
-            action: "change->sortable#selectFormat"
-          }
-        }
-      )
-    %>
-    |
-    <%=
-      select_tag(
-        "_order",
-        options_for_select(@language_options), {
-          class: "select-button small-text",
-          include_blank: "Language",
-          data: {
-            action: "change->sortable#selectLanguage"
-          }
-        }
-      )
-    %> |
-    <%=
-      select_tag(
-        "_accession",
-        options_for_select(@accession_options), {
-          class: "select-button small-text",
-          include_blank: "Accesssion",
-          data: {
-            action: "change->sortable#selectAccession"
-          }
-        }
-      )
-    %> |
-    <%=
-      select_tag(
-        "_status",
-        options_for_select(@status_options), {
-          class: "select-button small-text",
-          include_blank: "Status",
-          data: {
-            action: "change->sortable#selectStatus"
-          }
-        }
-      )
-    %>
-
+    <%= render "index_filters" %>
     <hr>
 
     <%# index.turbo_stream.erb %>
@@ -92,7 +25,7 @@
   </div>
   <hr>
   <div class="nav-links">
-    <%= link_to "Back to top", root_path, class:"nav-button" %>
+    <%= link_to "Back to Top", root_path, class:"nav-button" %>
     <%= link_to "New Book", new_work_path, class: "nav-button nav-action-safe" %>
   </div>
 </div>

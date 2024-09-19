@@ -11,8 +11,7 @@
 
 <div class="nav-links" data-controller="confirmable">
   <%= link_to "Edit Note", notable_edit_note_path([@notable, @note]), class: "nav-button nav-action" %>
-  
-  <%= link_to "Back", notable_notes_path(@notable), class: "nav-button" %>
-
+  <%= link_to "Back to Notes", notable_notes_path(@notable), class: "nav-button" %>
+  <%= link_to "Back to Top", root_path, class:"nav-button" %>
   <%= html_delete_button [@notable, @note], "Destroy" %>
 </div>
