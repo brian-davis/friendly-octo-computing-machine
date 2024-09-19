@@ -153,8 +153,9 @@ ul.associated-items li {
 }
 
 .div-list-row.alt-row {
-  background-color: var(--color-light-beige);
+  background-image: linear-gradient(to right, var(--color-white) 0%, var(--color-light-beige) 5%, var(--color-white) 100%);
 }
+
 
 .div-list-row.empty-list {
   color: var(--color-dark-beige);
