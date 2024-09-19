@@ -1,9 +1,8 @@
 <b class="minor-heading">New note</b>
-
 <div class="outline">
   <%= render "form", note: @note %>
 </div>
 <hr>
 <div class="nav-links">
-  <%= link_to "Back to Notes", work_notes_path(@work), class: "nav-button"  %>
+  <%= link_to "Back", notable_notes_path(@notable), class: "nav-button"  %>
 </div>

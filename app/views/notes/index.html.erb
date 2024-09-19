@@ -1,11 +1,15 @@
-<b>Notes for <span class="work-title-alt"><%= @work.title %></span></b>
+<b>
+  Notes for
+  <span class="work-title-alt">
+    <%= @notable.try(:title) || @notable.try(:full_name) %>
+  </span>
+</b>
 <hr>
-
 <div id="notes" class="scrollable">
   <%= render("shared/alternating_list", collection: @notes) %>
 </div>
 <hr>
 <div class="nav-links">
-  <%= link_to "Back to Book", @work, class: "nav-button" %>
-  <%= link_to "New note", new_work_note_path(@work), class: "nav-button nav-action-safe"  %>
+  <%= link_to "Back", @notable, class: "nav-button" %>
+  <%= link_to "New Note", notable_new_note_path(@notable), class: "nav-button nav-action-safe"  %>
 </div>

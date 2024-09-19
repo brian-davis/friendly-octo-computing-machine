@@ -21,6 +21,7 @@ class WorksController < ApplicationController
   # GET /works/1 or /works/1.json
   def show
     @work_producers = @work.work_producers.includes(:producer)
+    @children = @work.children.joins(:producers).includes(:producers)
     @bibliography = Citation::Bibliography.new(@work).entry
   end
 

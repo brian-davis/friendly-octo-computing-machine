@@ -167,9 +167,10 @@ CREATE TABLE public.ar_internal_metadata (
 CREATE TABLE public.notes (
     id bigint NOT NULL,
     text text,
-    work_id bigint NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    notable_type character varying NOT NULL,
+    notable_id bigint NOT NULL
 );
 
 
@@ -573,10 +574,10 @@ ALTER TABLE ONLY public.works
 
 
 --
--- Name: index_notes_on_work_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_notes_on_notable; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_notes_on_work_id ON public.notes USING btree (work_id);
+CREATE INDEX index_notes_on_notable ON public.notes USING btree (notable_type, notable_id);
 
 
 --
@@ -704,14 +705,6 @@ ALTER TABLE ONLY public.work_producers
 
 
 --
--- Name: notes fk_rails_9fa473ac93; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.notes
-    ADD CONSTRAINT fk_rails_9fa473ac93 FOREIGN KEY (work_id) REFERENCES public.works(id);
-
-
---
 -- Name: works fk_rails_f55f563ef0; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -726,6 +719,7 @@ ALTER TABLE ONLY public.works
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240919181412'),
 ('20240823201941'),
 ('20240815004339'),
 ('20240813213517'),

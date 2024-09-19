@@ -55,8 +55,9 @@ class Work < ApplicationRecord
     source: :producer
   }
 
+  has_many :notes, as: :notable, dependent: :destroy
+  
   has_many :quotes, dependent: :destroy
-  has_many :notes, dependent: :destroy
   has_many :reading_sessions, dependent: :destroy
 
   has_many :authors, -> { merge(WorkProducer.role_author).merge(WorkProducer.order(:created_at)) }, **{

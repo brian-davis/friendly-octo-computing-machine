@@ -94,7 +94,7 @@ class BookshelfMetrics
     def most_noted_book
       id, count = Work
                     .joins(:notes)
-                    .group("notes.work_id")
+                    .group("notes.notable_id")
                     .count
                     .max_by { |w, c| c }
       work = Work.find_by({ id: id })

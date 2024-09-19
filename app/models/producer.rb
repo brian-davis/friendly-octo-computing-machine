@@ -26,6 +26,8 @@ class Producer < ApplicationRecord
   has_object :biography
   include PgSearch::Model
 
+  has_many :notes, as: :notable, dependent: :destroy
+
   has_many :work_producers, dependent: :destroy
   has_many :works, through: :work_producers
   accepts_nested_attributes_for :work_producers, allow_destroy: true

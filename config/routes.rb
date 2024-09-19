@@ -103,7 +103,13 @@ Rails.application.routes.draw do
 
   get 'home/index'
 
-  resources :producers do
+  concern :notable do
+    resources :notes
+  end
+
+  # resources :notes
+
+  resources :producers, concerns: :notable do
     collection do
       get :build_work, format: :turbo_stream
       get :select_work, format: :turbo_stream
@@ -112,7 +118,7 @@ Rails.application.routes.draw do
 
   resources :publishers
 
-  resources :works do
+  resources :works, concerns: :notable do
     collection do
       # combined forms
       get :build_producer, format: :turbo_stream
@@ -125,10 +131,8 @@ Rails.application.routes.draw do
       get :select_parent, format: :turbo_stream
     end
 
-    # separate forms
-    resources :quotes
-    resources :notes
     resources :reading_sessions
+    resources :quotes
   end
 
   get "quotes", to: "quotes#general_index", as: "quotes"

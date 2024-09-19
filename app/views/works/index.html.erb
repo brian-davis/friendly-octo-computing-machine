@@ -5,7 +5,6 @@
      data-action="keydown.enter->sortable#submitSearch">
 
   <b class="major-heading">Books</b>
-
   <hr>
 
   <%# stimulus %>
@@ -20,6 +19,7 @@
     <%= link_to("Search", "#", class: "search-button", data: {
     sortable_target:"searchButton", action: "click->sortable#search" }) %>
     |
+    <%# TODO: helper or partial here %>
     <%=
       select_tag(
         "_order",
@@ -86,7 +86,7 @@
     <hr>
 
     <%# index.turbo_stream.erb %>
-    <div id="works"  class="scrollable scrollable-short">
+    <div id="works" class="scrollable scrollable-short">
       <%= render "shared/alternating_list", collection: @works %>
     </div>
   </div>

@@ -98,7 +98,7 @@
     </div>
     <div class="associated-items" class="scrollable">
       <%# TODO: improve n+1 in WorksHelper#byline %>
-      <%= render "shared/alternating_list", collection: @work.children.joins(:producers).includes(:producers), partial: "works/child" %>
+      <%= render "shared/alternating_list", collection: @children %>
     </div>
   <% end %>
 
@@ -122,8 +122,8 @@
   <div>
     Count: <b class="quantity"><%= @work.notes.count %></b>
   </div>
-  <hr>
 
+  <hr>
   <div style="margin-bottom: 0.5rem;">
     <b>Reading Sessions</b>
     <%= pipe_spacer %>

@@ -14,7 +14,7 @@ unless ENV["CLEAR"]
       Work.create({
         title: Faker::Book.title,
         rating: rand(1..5),
-        publishing_format: (Work.formats.keys - ["article", "chapter", "compilation"]).sample,
+        publishing_format: (Work.publishing_formats.keys - ["article", "chapter", "compilation"]).sample,
         year_of_publication: (Time.now.year - rand(100)),
 
         language: ["English", "Spanish", "French", "German", "Latin", "Greek"].sample,

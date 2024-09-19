@@ -3,7 +3,7 @@
     <%= human_time_for(note.updated_at) %>
   </i> : <%= note.text.truncate(75) %>
   <%= pipe_spacer %>
-  <%= pointer_link([@work, note]) %>
+  <%= pointer_link([@notable, note]) %>
 </div>
 
 <%# TODO: general notes index, partials, like for quotes %>
