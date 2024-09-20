@@ -211,9 +211,7 @@ h1.max-heading {
   font-weight: bold;
   margin-bottom: 0.5rem;
   font-size: larger;
-
   background-image: var(--left-gradient-light-blue);
-  
   color: var(--color-dark-blue);
   padding: 0.5rem;
 }

@@ -61,4 +61,85 @@ class Work::Reference < ActiveRecord::AssociatedObject
     return work.reference.short_title if byline_result.blank?
     "#{work.reference.short_title} (#{byline_result})"
   end
+
+  # full names
+  def producer_names(role = :author)
+    role_method = role.to_s.pluralize
+    work.send(role_method).pluck_full_name.to_sentence
+  end
+
+  # last names only
+  def producer_last_names(role = :author)
+    role_method = role.to_s.pluralize
+    work.send(role_method).pluck_last_name.to_sentence
+  end
+
+    # first result is 'last, first middle', rest are 'first middle last'
+  # TODO: move SQL logic to model.
+  def alpha_producer_names(role = nil)
+    role_sql = if role
+      "AND wp.role = '#{role}'"
+    end
+
+    # too complex for pluck?
+    sql = <<~SQL.squish
+    SELECT alpha_name FROM (
+      (
+        SELECT
+          1 AS seq,
+          COALESCE(
+            NULLIF(p.custom_name, ''),
+            CONCAT_WS(
+              ', ',
+              NULLIF(p.surname, ''),
+              CONCAT_WS(
+                ' ',
+                NULLIF(p.forename, ''),
+                NULLIF(p.middle_name, '')
+              )
+            )
+          ) alpha_name
+        FROM producers p
+        INNER JOIN work_producers wp
+          ON p.id = wp.producer_id
+          WHERE wp.work_id = #{work.id}
+          #{role_sql}
+        ORDER BY wp.created_at
+        LIMIT 1
+      )
+      UNION
+      (
+        SELECT
+          2 AS seq,
+          COALESCE(
+            NULLIF(p.custom_name, ''),
+            CONCAT_WS(
+              ' ',
+              NULLIF(p.forename, ''),
+              NULLIF(p.middle_name, ''),
+              NULLIF(p.surname, '')
+            )
+          ) alpha_name
+        FROM producers p
+        INNER JOIN work_producers wp
+          ON p.id = wp.producer_id
+          WHERE wp.work_id = #{work.id}
+          #{role_sql}
+        ORDER BY wp.created_at
+        OFFSET 1
+      )
+    ) AS u
+    ORDER BY seq;
+    SQL
+    results = Producer.connection.select_all(Arel.sql sql)
+    results.rows.flatten.to_sentence({ two_words_connector: ", and "})
+  end
+
+  # # DEPRECATED: keeping original code for reference, testing, benchmarking
+  # def _alpha_producer_names(role = :author)
+  #   role_method = role.to_s.pluralize
+  #   first_author_name = work.send(role_method).limit(1).pluck_alpha_name
+  #   rest_author_names = work.send(role_method).offset(1).pluck_full_name
+  #   author_names = (first_author_name + rest_author_names).to_sentence({ two_words_connector: ", and "})
+  # end
 end

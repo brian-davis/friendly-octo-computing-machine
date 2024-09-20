@@ -39,8 +39,9 @@
   --color-light-purple: rgb(147 112 216 / 10%);
 
   --center-gradient-light-beige: linear-gradient(to right, var(--color-white) 0%, var(--color-light-beige) 5%, var(--color-white) 100%);
+  --center-gradient-light-blue: linear-gradient(to right, var(--color-white) 0%, var(--color-light-blue) 5%, var(--color-white) 100%);
 
   --left-gradient-light-blue: linear-gradient(to right, var(--color-light-blue), var(--color-white));
-
   --left-gradient-light-green: linear-gradient(to right, var(--color-light-green), var(--color-white));
+  --left-gradient-light-red: linear-gradient(to right, var(--color-light-red), var(--color-white));
 }

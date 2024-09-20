@@ -1,17 +1,17 @@
 <div id="form-errors"
      data-controller="dismissable">
   <% if form.object.errors.any? %>
-  <div class="dismissableDiv" data-dismissable-target="errors">
-    <%= pluralize(form.object.errors.count, "error") %> prohibited this object from being saved:
-    <ul>
-      <% form.object.errors.each do |error| %>
-        <li><%= error.full_message %></li>
-      <% end %>      
-    </ul>
-    <span class="dismisser"
-          data-action="click->dismissable#dismissErrors">
-      ⓧ
-    </span>
-  </div>
+    <div class="dismissableDiv" data-dismissable-target="errors">
+      <%= pluralize(form.object.errors.count, "error") %> prohibited this object from being saved:
+      <ul>
+        <% form.object.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>      
+      </ul>
+      <span class="dismisser"
+            data-action="click->dismissable#dismissErrors">
+        ⓧ
+      </span>
+    </div>
   <% end %>
 </div>

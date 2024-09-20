@@ -25,7 +25,7 @@ form.table-form {
     color: var(--color-dark-red);
     padding: 0.5rem;
 
-    background-image: linear-gradient(to right, var(--color-light-red), var(--color-white)); 
+    background-image: var(--left-gradient-light-red); 
   }
 
   form.table-form > label,
