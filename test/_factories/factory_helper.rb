@@ -222,6 +222,14 @@ module FactoryHelper
             WorkProducer.new({
               role: :author,
               producer: fixture_producers_sophocles
+            }),
+            WorkProducer.new({
+              role: :translator,
+              producer: fixture_producers_peter_meineck
+            }),
+            WorkProducer.new({
+              role: :translator,
+              producer: fixture_producers_paul_woodruff
             })
           ]
         }),
@@ -236,6 +244,14 @@ module FactoryHelper
             WorkProducer.new({
               role: :author,
               producer: fixture_producers_sophocles
+            }),
+            WorkProducer.new({
+              role: :translator,
+              producer: fixture_producers_peter_meineck
+            }),
+            WorkProducer.new({
+              role: :translator,
+              producer: fixture_producers_paul_woodruff
             })
           ]
         }),
@@ -250,6 +266,14 @@ module FactoryHelper
             WorkProducer.new({
               role: :author,
               producer: fixture_producers_sophocles
+            }),
+            WorkProducer.new({
+              role: :translator,
+              producer: fixture_producers_peter_meineck
+            }),
+            WorkProducer.new({
+              role: :translator,
+              producer: fixture_producers_paul_woodruff
             })
           ]
         }),
@@ -257,11 +281,11 @@ module FactoryHelper
 
       work_producers: [
         WorkProducer.new({
-          role: :translator,
+          role: :editor,
           producer: fixture_producers_peter_meineck
         }),
         WorkProducer.new({
-          role: :translator,
+          role: :editor,
           producer: fixture_producers_paul_woodruff
         })
       ]

@@ -1,7 +1,7 @@
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
-require_relative("factory_helper")
+require_relative("_factories/factory_helper")
 
 # https://github.com/simplecov-ruby/simplecov/issues/1082
 require 'simplecov'

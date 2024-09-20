@@ -127,14 +127,14 @@ class ReferenceTest < ActiveSupport::TestCase
   test "producer_names" do
     subject = fixture_works_theban_plays
     expected = "Peter Meineck and Paul Woodruff"
-    result = subject.reference.producer_names(:translator)
+    result = subject.reference.producer_names(:editor)
     assert_equal(expected, result)
   end
 
   test "producer_last_names" do
     subject = fixture_works_theban_plays
     expected = "Meineck and Woodruff"
-    result = subject.reference.producer_last_names(:translator)
+    result = subject.reference.producer_last_names(:editor)
     assert_equal(expected, result)
   end
 
@@ -142,7 +142,7 @@ class ReferenceTest < ActiveSupport::TestCase
     subject = fixture_works_theban_plays
     # with comma after first entry
     expected = "Meineck, Peter, and Paul Woodruff"
-    result = subject.reference.alpha_producer_names(:translator)
+    result = subject.reference.alpha_producer_names(:editor)
     assert_equal(expected, result)
   end
 end

@@ -1,37 +1,35 @@
-# fixtures for base_test, bibliography_test, note_test
-module CitationTestSubjects
-  # BOOK, 1 AUTHOR
-  def book1
-    @book1 ||= begin
-      work = Work.create({
-        title: "Interior Chinatown",
-        publishing_format: "book",
-        year_of_publication: 2020,
-        publisher: Publisher.new({
-          name: "Pantheon Books"
-        }),
-        work_producers: [
-          WorkProducer.new({
-            role: :author,
-            producer: Producer.new({
-              forename: "Charles",
-              surname: "Yu"
-            })
+# Fixtures taken from examples at Chicago Manual of Sytle site.
+module FactoryHelperCitations
+  private
+
+  def fixture_citation_interior_chinatown
+    @fixture_citation_interior_chinatown ||= Work.create({
+      title: "Interior Chinatown",
+      publishing_format: "book",
+      year_of_publication: 2020,
+      publisher: Publisher.new({
+        name: "Pantheon Books"
+      }),
+      work_producers: [
+        WorkProducer.new({
+          role: :author,
+          producer: Producer.new({
+            forename: "Charles",
+            surname: "Yu"
           })
-        ],
-        quotes: [
-          Quote.new({
-            page: 45,
-            text: "This is a quote."
-          })
-        ]
-      })
-    end
+        })
+      ],
+      quotes: [
+        Quote.new({
+          page: 45,
+          text: "This is a quote."
+        })
+      ]
+    })
   end
 
-  # BOOK, MULTIPLE AUTHORS
-  def book2
-    @book2 ||= Work.create({
+  def fixture_citation_channels
+    @fixture_citation_channels ||= Work.create({
       title: "The Channels of Student Activism",
       subtitle: "How the Left and Right Are Winning (and Losing) in Campus Politics Today",
       year_of_publication: 2022,
@@ -65,9 +63,8 @@ module CitationTestSubjects
     })
   end
 
-  # BOOK, TRANSLATED
-  def book3
-    @book3 ||= Work.create({
+  def fixture_citation_wedding_party
+    @fixture_citation_wedding_party ||= Work.create({
       title: "The Wedding Party",
       publishing_format: "book",
       year_of_publication: 2021,
@@ -93,9 +90,8 @@ module CitationTestSubjects
     })
   end
 
-  # COMPILATION PARENT
-  def book4
-    @book4 ||= Work.create({
+  def fixture_citation_book_by_design
+    @fixture_citation_book_by_design ||= Work.create({
       title: "The Book by Design",
       subtitle: "The Remarkable Story of the World’s Greatest Invention",
       year_of_publication: 2023,
@@ -129,12 +125,11 @@ module CitationTestSubjects
     })
   end
 
-  # COMPILATION CHILD
-  def book4_child
-    @book4_child ||= Work.create({
+  def fixture_citation_book_by_design_child
+    @fixture_citation_book_by_design_child ||= Work.create({
       title: "The Queen Mary Psalter",
       publishing_format: "chapter",
-      parent: book4,
+      parent: fixture_citation_book_by_design,
       work_producers: [
         WorkProducer.new({
           role: :author,
@@ -151,37 +146,5 @@ module CitationTestSubjects
         })
       ]
     })
-  end
-
-  def base_w1
-    @base_w1 ||= begin
-      base_w1 = Work.create({
-        title: "Test Work",
-        work_producers: [
-          WorkProducer.new({
-            role: :author,
-            producer: producers(:nine)
-          })
-        ]
-      })
-      base_w1.authors << producers(:ten) # force order
-      base_w1
-    end
-  end
-
-  def base_w2
-    @base_w2 ||= begin
-      base_w2 = Work.create({
-        title: "Test Work2",
-        work_producers: [
-          WorkProducer.new({
-            role: :translator,
-            producer: Producer.new(full_name: "John Döe")
-          })
-        ]
-      })
-      base_w2.translators << Producer.new(full_name: "Jane D'Onofrio") # force order
-      base_w2
-    end
   end
 end

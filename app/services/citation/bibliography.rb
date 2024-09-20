@@ -29,15 +29,15 @@ module Citation
         end
       elsif work.publishing_format_chapter?
         return unless work.producers.any? && work.reference.year_of_publication
-
+        
         title = work.reference.long_title
-
+        
         parent_editor_names = work.parent.reference.producer_names(:editors)
-
+        
         parent_title = work.parent.reference.long_title
         parent_publisher = work.parent.publisher.name
         parent_year = work.parent.year_of_publication
-
+        
         if work.translators.any?
           translator_names = work.reference.producer_names(:translators)
           strict_author_names = work.reference.alpha_producer_names(:author)
