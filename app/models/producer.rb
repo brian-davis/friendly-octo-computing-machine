@@ -23,6 +23,8 @@
 #  producers_forename_surname_year_of_birth_unique  (forename,surname,year_of_birth) UNIQUE
 #
 class Producer < ApplicationRecord
+  include ProducerSql
+
   has_object :biography
   include PgSearch::Model
 
@@ -34,40 +36,6 @@ class Producer < ApplicationRecord
 
   validate :full_name_presence
   validate :full_name_uniqueness
-
-  FULL_NAME_SQL = <<~SQL.squish
-    COALESCE(
-      NULLIF(producers.custom_name, ''),
-      CONCAT_WS(
-        ' ',
-        NULLIF(producers.forename, ''),
-        NULLIF(producers.middle_name, ''),
-        NULLIF(producers.surname, '')
-      )
-    )
-  SQL
-
-  FULL_SURNAME_SQL = <<~SQL.squish
-    COALESCE(
-      NULLIF(producers.custom_name, ''),
-      CONCAT_WS(
-        ', ',
-        NULLIF(producers.surname, ''),
-        CONCAT_WS(
-          ' ',
-          NULLIF(producers.forename, ''),
-          NULLIF(producers.middle_name, '')
-        )
-      )
-    )
-  SQL
-
-  SURNAME_SQL = <<~SQL.squish
-    COALESCE(
-      NULLIF(producers.custom_name, ''),
-      NULLIF(producers.surname, '')
-    )
-  SQL
 
   pg_search_scope(
     :search_name,
@@ -105,6 +73,7 @@ class Producer < ApplicationRecord
     pluck(Arel.sql(SURNAME_SQL), *args)
   }
 
+  # TODO: use for surname-sorted index?
   scope :pluck_alpha_name, -> (*args) {
     pluck(Arel.sql(FULL_SURNAME_SQL), *args)
   }
@@ -113,13 +82,13 @@ class Producer < ApplicationRecord
     where(Arel.sql("#{FULL_NAME_SQL} IN (:arr)"), arr: Array(query))
   }
 
-  # TODO: use for surname-sorted index
+  # TODO: use for surname-sorted index?
   scope :order_by_full_surname, -> (options = {}) {
     direction = options[:direction] || :asc
     order({ Arel.sql(FULL_SURNAME_SQL) => direction })
   }
 
-  # TODO: use for surname-sorted index
+  # TODO: use for surname-sorted index?
   scope :pluck_full_surname, -> () {
     pluck(Arel.sql(FULL_SURNAME_SQL))
   }

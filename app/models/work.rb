@@ -39,6 +39,7 @@
 #  fk_rails_...  (publisher_id => publishers.id)
 #
 class Work < ApplicationRecord
+  include WorkSql
   include PgSearch::Model
 
   has_object :reference
