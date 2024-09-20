@@ -24,9 +24,13 @@
 require "test_helper"
 
 class WorkProducerTest < ActiveSupport::TestCase
-  test "role enum" do
-    assert work_producers(:one).role_author?
-    assert work_producers(:two).role_editor?
+  test "role enum with prefix methods" do
+    subject = fixture_works_the_baltic_origins # save it
+    wp1 = subject.work_producers.find_by(role: "author")
+    assert wp1.role_author?
+
+    wp2 = subject.work_producers.find_by(role: "translator")
+    assert wp2.role_translator?
   end
 
   test "required references" do

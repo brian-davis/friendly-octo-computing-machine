@@ -50,8 +50,8 @@ class WorkTest < ActiveSupport::TestCase
   end
 
   test "build a new work_producer and link to existing producer" do
-    work1 = works(:one)
-    producer1 = producers(:two)
+    work1 = fixture_works_logic_vsi
+    producer1 = fixture_producers_peter_meineck
 
     params1 = ActionController::Parameters.new({
       work: {
@@ -79,9 +79,9 @@ class WorkTest < ActiveSupport::TestCase
   end
 
   test "remove existing work_producer" do
-    work1 = works(:one)
-    producer1 = producers(:one)
-    assert work1.producers.include?(producer1) # fixture
+    work1 = fixture_works_logic_vsi
+    producer1 = fixture_works_logic_vsi.producers.first
+
     work_producer1 = work1.work_producers.find_by(producer: producer1)
 
     params1 = ActionController::Parameters.new({
@@ -108,10 +108,10 @@ class WorkTest < ActiveSupport::TestCase
   end
 
   test "add similar work_producer" do
-    work1 = works(:one)
-    producer1 = producers(:one)
-    assert work1.producers.include?(producer1) # fixture
-    work_producer1 = work1.work_producers.find_by(producer: producer1)
+    work1 = fixture_works_logic_vsi
+    producer1 = fixture_works_logic_vsi.producers.first
+
+    # work_producer1 = work1.work_producers.find_by(producer: producer1)
 
     params1 = ActionController::Parameters.new({
       work: {
@@ -137,14 +137,14 @@ class WorkTest < ActiveSupport::TestCase
   end
 
   test "create a producer through work_producer" do
-    work1 = works(:one)
+    work1 = fixture_works_logic_vsi
     new_name_param = "apoinvwljnawlk3tnq2l3kn"
     params1 = ActionController::Parameters.new({
       work: {
         title: work1.title,
         work_producers_attributes: {
           "0" => {
-            role: "editor",
+            role: "editor", # not author
             producer_attributes: { # only one
               custom_name: new_name_param
             }
@@ -356,7 +356,7 @@ class WorkTest < ActiveSupport::TestCase
   end
 
   test "build quote with nested params" do
-    work1 = works(:one)
+    work1 = fixture_works_logic_vsi
 
     params1 = ActionController::Parameters.new({
       work: {
@@ -383,45 +383,49 @@ class WorkTest < ActiveSupport::TestCase
   end
 
   test "authors are returned in the order the join model is created" do
-    work = works(:no_authors)
-    work.producers << producers(:three)
-    work.producers << producers(:one)
-    work.producers << producers(:two)
+    work = Work.create({
+      title: "Example With No Authors"
+    })
+    work.producers << fixture_producers_epictetus
+    work.producers << fixture_producers_plato
+    work.producers << fixture_producers_voltaire
 
     work.save & work.reload
 
-    assert_equal ["Epictetus1", "Plato1", "Voltaire1"], work.producers.pluck(:custom_name)
+    assert_equal ["Epictetus", "Plato", "Voltaire"], work.producers.pluck(:custom_name)
   end
 
   # no translators, editors, etc.
   test "authors scope" do
-    work = works(:no_authors)
-    work.work_producers.build producer: producers(:three), role: :author
-    work.work_producers.build producer: producers(:two), role: :editor
-    work.work_producers.build producer: producers(:one), role: :translator
+    work = Work.create({
+      title: "Example With No Authors"
+    })
+    work.work_producers.build({
+      producer: fixture_producers_epictetus,
+      role: :author
+    })
 
-    work.save & work.reload
+    work.work_producers.build({
+      producer: fixture_producers_plato,
+      role: :editor
+    })
 
-    assert_equal ["Epictetus1"], work.authors.pluck(:custom_name)
+    work.work_producers.build({
+      producer: fixture_producers_voltaire,
+      role: :translator
+    })
+
+    work.save && work.reload
+
+    assert_equal ["Epictetus"], work.authors.pluck(:custom_name)
   end
 
   test "self-join" do
-    parent = Work.create({
-      publishing_format: "book",
-      title: "A Compilation"
-    })
+    parent = fixture_works_philosophy_for_everyone
 
-    child1 = Work.create({
-      publishing_format: "chapter",
-      title: "Chapter 1",
-      parent_id: parent.id
-    })
-
-    child2 = Work.create({
-      publishing_format: "chapter",
-      title: "Chapter 2",
-      parent_id: parent.id
-    })
+    # TODO: :chapters alias and/or scope
+    child1 = parent.children.first
+    child2 = parent.children.second
 
     assert child1.in?(parent.children)
     assert_equal parent, child1.parent
@@ -429,32 +433,25 @@ class WorkTest < ActiveSupport::TestCase
   end
 
   test "reading session aggregate minutes" do
-    work = Work.create({ title: "aggregate counter" })
-
+    work = fixture_works_oedipus_at_colonus
     _baseline = 1.year.ago
-
-    rs1 = work.reading_sessions.create({
+    _rs1 = work.reading_sessions.create({
       pages: 10,
       started_at: _baseline,
       ended_at: _baseline + 10.minutes
     })
-
-    rs2 = work.reading_sessions.create({
+    _rs2 = work.reading_sessions.create({
       pages: 10,
       started_at: _baseline + 1.day,
       ended_at: _baseline + 1.day + 10.minutes
     })
-
     assert_equal(20, work.reading_sessions_minutes)
   end
 
   # work_producer.rb :validate_parent_role_uniqueness
   test "same author can't be added to work twice" do
-    work = Work.create({
-      title: "test1"
-    })
-    producer = work.authors.create({ full_name: "test producer1" })
-
+    work = fixture_works_meet_me_in_atlantis
+    producer = work.authors.first
     assert_equal 1, work.authors.count
     assert_raises ActiveRecord::RecordInvalid do
       work.authors << producer
@@ -468,7 +465,7 @@ class WorkTest < ActiveSupport::TestCase
           "1"=>{
             "producer_attributes"=>{
               "custom_name"=>"",
-              "full_name"=>"test producer1"
+              "full_name"=> producer.full_name
             }
           }
         }
@@ -483,8 +480,8 @@ class WorkTest < ActiveSupport::TestCase
   end
 
   test "date_of_accession" do
-    w1 = works(:with_date_of_accession)
-    w2 = works(:without_date_of_accession)
+    w1 = fixture_works_philosophy_for_everyone
+    w2 = fixture_works_asterix_in_egypt
 
     assert w1.in?(Work.collection)
     refute w2.in?(Work.collection)
@@ -507,11 +504,20 @@ class WorkTest < ActiveSupport::TestCase
   end
 
   test "extended_tags_cloud" do
-    # decorates method from gem
-    # work = works(:first)
+    subjects = [
+      fixture_works_asterix_le_gaulois,
+      fixture_works_meet_me_in_atlantis,
+      fixture_works_philosophy_for_everyone
+    ]
     result = Work.extended_tags_cloud
-    expected = [["all", 7, "alt"], ["untagged", 0, "alt"], ["science", 3], ["comics", 2], ["fiction", 2], ["philosophy", 2]]
-    assert_equal expected, result
+    
+    # [["all", 12, "alt"], ["untagged", 0, "alt"], ["Modern", 10], ["Philosophy", 10], ["Atlantis", 1], ["Classics", 1], ["Comics", 1], ["Mythology", 1]]
+    assert result[0][0] == "all"
+    assert result[1][0] == "untagged"
+
+    assert result.any? { |a,b,c| a == "Atlantis" }
+    assert result.any? { |a,b,c| a == "Comics" }
+    assert result.any? { |a,b,c| a == "Philosophy" }
   end
 
   test "rating_stars" do

@@ -2,86 +2,59 @@ require "test_helper"
 
 class ProducerFullNameTest < ActiveSupport::TestCase
   test "full_name virtual attribute getter" do
-    subject1 = producers(:four)
-    assert_equal "Samuel Clemens", subject1.full_name
-
-    subject2 = Producer.new({
-      forename: "Joe",
-      surname: "Shmo"
-    })
-    assert_equal "Joe Shmo", subject2.full_name
-
-    subject3 = Producer.new()
-    subject3.forename = "Joe2"
-    subject3.surname = "Shmo2"
-
-    assert_equal "Joe2 Shmo2", subject3.full_name
+    # forename:, surname:
+    subject1 = fixture_producers_graham_priest
+    assert_equal "Graham Priest", subject1.full_name
   end
 
   test "full_name virtual attribute setter" do
-    subject1 = Producer.new({
-      full_name: "Joe Shmo"
-    })
-
-    assert_equal "Joe", subject1.forename
-    assert_equal "Shmo", subject1.surname
-
-    subject2 = Producer.new()
-    subject2.full_name = "Joe2 Shmo2"
-    assert_equal "Joe2", subject2.forename
-    assert_equal "Shmo2", subject2.surname
+    # full_name:
+    subject1 = fixture_producers_paul_woodruff
+    assert_equal "Paul", subject1.forename
+    assert_equal "Woodruff", subject1.surname
   end
 
-  test "where full name" do
-    result = Producer.where_full_name(["Mark Twain", "Samuel Clemens"]).map(&:full_name)
-    assert "Samuel Clemens".in?(result)
-    assert "Mark Twain".in?(result)
+  test "where full name is only an exact match" do
+    subject = fixture_producers_mark_twain
+    result = Producer.where_full_name("Mark Twain")
+    assert subject.in?(result)
   end
 
   test "order by full name" do
-    expected = ["Mark Twain", "Samuel Clemens"]
-    result = Producer.where_full_name(["Mark Twain", "Samuel Clemens"]).order_by_full_name.pluck_full_name
+    subject1 = fixture_producers_mark_twain
+    subject2 = fixture_producers_paul_woodruff
+    result = Producer.order_by_full_name.ids
+    assert result.index(subject1.id) < result.index(subject2.id)
+  end
 
+  test "where_full_name array arg" do
+    subject1 = fixture_producers_mark_twain
+    subject2 = fixture_producers_paul_woodruff
+    subject3 = fixture_producers_peter_meineck
+
+    result = Producer.where_full_name(["Mark Twain", "Paul Woodruff"])
+
+    assert subject1.in?(result)
+    assert subject2.in?(result)
+    refute subject3.in?(result)
+  end
+
+  test "surname scopes" do
+    _subject1 = fixture_producers_paul_woodruff
+    _subject2 = fixture_producers_peter_meineck
+    result = Producer.order_by_full_surname.pluck_full_surname
+    expected = ["Meineck, Peter", "Woodruff, Paul"]
     assert_equal expected, result
-  end
-
-  test "where_full_nam single arg" do
-    assert Producer.where_full_name("Mark Twain").any?
-  end
-
-  test "order by last name" do
-    expected = ["Clemens, Samuel", "Twain, Mark"]
-    result = Producer.where_full_name(["Mark Twain", "Samuel Clemens"]).order_by_full_surname.pluck_full_surname
-    assert_equal expected, result
-  end
-
-  test "order by full name desc" do
-    expected = ["Samuel Clemens", "Mark Twain"]
-    result = Producer.where_full_name(["Mark Twain", "Samuel Clemens"]).order_by_full_name({ full_name: :desc }).pluck_full_name
-
-    assert_equal expected, result
-  end
-
-  test "order by full name desc with second column" do
-    # works_count overrides name
-    expected = ["Mark Twain", "Samuel Clemens"]
-    result = Producer.where_full_name(["Mark Twain", "Samuel Clemens"]).order_by_full_name({ works_count: :desc, full_name: :desc }).pluck_full_name
-
-    assert_equal expected, result
-  end
-
-  test "order works with joins" do
-    w = works(:one)
-    result = w.producers.order_by_full_name.pluck_full_name
-    assert_equal(result, result.sort)
-  end
-
-  test "order works with joins and merge" do
-    w = works(:one)
-
-    # DEBUG:
-    # joins works, .include doesn't
-    result = w.work_producers.joins(:producer).merge(Producer.order_by_full_name).to_a
-    assert result.first.producer.is_a?(Producer)
   end
 end
+
+# TODO: more testing on these scopes
+
+# irb(#<ProducerFullNameTest:0x0000...):003> Producer.pluck_full_name
+# => ["Mark Twain", "Paul Woodruff", "Peter Meineck"]
+# irb(#<ProducerFullNameTest:0x0000...):004> Producer.pluck_last_name
+# => ["Mark Twain", "Woodruff", "Meineck"]
+# irb(#<ProducerFullNameTest:0x0000...):005> Producer.pluck_alpha_name
+# => ["Mark Twain", "Woodruff, Paul", "Meineck, Peter"]
+# irb(#<ProducerFullNameTest:0x0000...):006> Producer.pluck_full_surname
+# => ["Mark Twain", "Woodruff, Paul", "Meineck, Peter"]

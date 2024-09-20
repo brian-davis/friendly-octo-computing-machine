@@ -1,42 +1,16 @@
 require "test_helper"
 
 class WorkSearchTest < ActiveSupport::TestCase
-  def subject1
-    @subject1 ||= Work.create({
-      title: "After The Ice",
-      subtitle: "A Global Human History 20,000-5,000 BC",
-      alternate_title: "",
-      foreign_title: ""
-    })
-  end
-
-  def subject2
-    @subject2 ||= Work.create({
-      title: "King Ottokar's Sceptre",
-      supertitle: "The Adventures of Tintin",
-    })
-  end
-
-  def subject3
-    @subject3 ||= Work.create({
-      title: "Les Aventures De Tintin",
-      subtitle: "Tintin Au Tibet",
-    })
-  end
-
-  def subject4
-    @subject4 ||= Work.create({
-      title: "The Mysterious Book",
-      subtitle: "Tintin Example",
-    })
-  end
+  # def subject4
+  #   @subject4 ||= Work.create({
+  #     title: "The Mysterious Book",
+  #     subtitle: "Tintin Example",
+  #   })
+  # end
 
   test "accent-less search" do
-    french_work = works(:foreign_character_title) # Astérix
-    english_work = works(:without_foreign_character_title) # Asterix
-
-    english_search = Work.search_title("Asterix")
-    french_search = Work.search_title("Astérix")
+    french_work = fixture_works_asterix_le_gaulois # Astérix
+    english_work = fixture_works_asterix_the_gaul # Asterix
 
     # POSTGRESQL unaccent excension provides this function
     # This is a simple string function which maps foreign accent characters to
@@ -105,37 +79,56 @@ class WorkSearchTest < ActiveSupport::TestCase
   end
 
   test "search_title pg_search_scope matches partial term" do
-    term = subject1.title # save the object
+    term = fixture_works_after_the_ice.title # save the object
 
     result1 = Work.search_title(term) # exact, full-string search
-    assert subject1.in?(result1)
+    assert fixture_works_after_the_ice.in?(result1)
 
+    # TODO: research custom stop-words
     result2 = Work.search_title("After")
-    # refute subject1.in?(result2) # 'After' is a stop-word!
+    refute fixture_works_after_the_ice.in?(result2) # 'After' is a stop-word!
 
     result3 = Work.search_title("Ice")
-    assert subject1.in?(result3)
+    assert fixture_works_after_the_ice.in?(result3)
   end
 
   test "search is case insensitive" do
-    term = subject1.title # save the object
+    term = fixture_works_after_the_ice.title # save the object
 
     result1 = Work.search_title(term) # exact, full-string search
-    assert subject1.in?(result1)
+    assert fixture_works_after_the_ice.in?(result1)
 
     result2 = Work.search_title(term.upcase) # exact, full-string search
-    assert subject1.in?(result2)
+    assert fixture_works_after_the_ice.in?(result2)
 
     result3 = Work.search_title(term.downcase) # exact, full-string search
-    assert subject1.in?(result2)
+    assert fixture_works_after_the_ice.in?(result3)
 
     result4 = Work.search_title("ice") # partial, case-insensitive search
-    assert subject1.in?(result4)
+    assert fixture_works_after_the_ice.in?(result4)
   end
 
   test "search title, subtitle, supertitle" do
+    subjects = [
+      fixture_works_tintin_king_ottokar, # supertitle and title
+      fixture_works_tintin_au_tibet # supertitle and title
+    ] #save the objects
+
+    subjects << Work.create({
+      supertitle: "Tintin", # only in the supertitle
+      title: "Generic1"
+    })
+
+    subjects << Work.create({
+      title: "Tintin" # only in the Title
+    })
+
+    subjects << Work.create({
+      title: "Generic2",
+      subtitle: "Tintin" # only in the subitle
+    })
+
     result = Work.search_title("Tintin")
-    subjects = [subject2, subject3, subject4]
     subjects.each do |subject|
       assert subject.in?(result)
     end

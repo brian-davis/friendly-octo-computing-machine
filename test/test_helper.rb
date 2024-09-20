@@ -1,6 +1,7 @@
 ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
+require_relative("factory_helper")
 
 # https://github.com/simplecov-ruby/simplecov/issues/1082
 require 'simplecov'
@@ -9,6 +10,8 @@ Rails.application.eager_load!
 
 module ActiveSupport
   class TestCase
+    include FactoryHelper
+
     # Run tests in parallel with specified workers
     parallelize(workers: :number_of_processors)
 

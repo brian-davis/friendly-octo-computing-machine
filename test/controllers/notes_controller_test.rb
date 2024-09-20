@@ -2,11 +2,11 @@ require "test_helper"
 
 class NotesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @wnote = notes(:one)
-    @work = @wnote.notable
+    @work = fixture_works_the_baltic_origins
+    @wnote = @work.notes.first
 
-    @pnote = notes(:three)
-    @producer = @pnote.notable
+    @producer = fixture_producers_herge
+    @pnote = @producer.notes.first
   end
 
   test "should get index work" do
@@ -33,7 +33,7 @@ class NotesControllerTest < ActionDispatch::IntegrationTest
     assert_difference("Note.count") do
       post work_notes_url(@work), params: { note: { text: @wnote.text } }
     end
-
+    @work.reload
     note = @work.notes.last
     assert_redirected_to work_note_url(@work, note)
   end

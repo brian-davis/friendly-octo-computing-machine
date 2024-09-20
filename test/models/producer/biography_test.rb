@@ -1,15 +1,12 @@
 require "test_helper"
 
 class Producer::BiographyTest < ActiveSupport::TestCase
-  setup do
-    # @producer = producers(:TODO_fixture_name)
-    # @biography = @producer.biography
-  end
-
-  test "context" do
-    producer = producers(:six)
+  test "context with no year_of_death" do
+    producer = fixture_producers_john_searle
     result = producer.biography.context
-    expected = "American, 1980 — "
+    expected = "American, 1932 — "
     assert_equal(expected, result)
   end
+
+  # TODO: more testing
 end

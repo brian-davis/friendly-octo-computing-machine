@@ -21,13 +21,3 @@
 #  fk_rails_...  (producer_id => producers.id)
 #  fk_rails_...  (work_id => works.id)
 #
-
-one:
-  work: one
-  producer: one
-  role: author
-
-two:
-  work: two
-  producer: two
-  role: editor

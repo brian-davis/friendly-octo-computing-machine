@@ -2,7 +2,7 @@ require "test_helper"
 
 class WorksControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @work = works(:one)
+    @work = fixture_works_history_of_jazz
   end
 
   test "should get index" do

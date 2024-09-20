@@ -2,7 +2,7 @@ require "test_helper"
 
 class PublishersControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @publisher = publishers(:one)
+    @publisher = fixture_publishers_penguin
   end
 
   test "should get index" do

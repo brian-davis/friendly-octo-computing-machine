@@ -12,9 +12,3 @@
 #
 #  publishers_name_unique  (name) UNIQUE
 #
-
-one:
-  name: Penguin Books
-
-two:
-  name: Hackett Publishing Company, Inc.

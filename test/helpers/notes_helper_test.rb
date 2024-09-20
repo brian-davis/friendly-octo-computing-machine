@@ -6,35 +6,35 @@ class NotesHelperTest < ActiveSupport::TestCase
   include NotesHelper
 
   test ":notable_new_note_path for work" do
-    subject = works(:one)
+    subject = fixture_works_the_baltic_origins
     result = notable_new_note_path(subject)
     expected = "/works/#{subject.id}/notes/new"
     assert_equal expected, result
   end
 
   test ":notable_new_note_path for producer" do
-    subject = producers(:one)
+    subject = fixture_producers_herge
     result = notable_new_note_path(subject)
     expected = "/producers/#{subject.id}/notes/new"
     assert_equal expected, result
   end
 
   test ":notable_notes_path for work" do
-    subject = works(:one)
+    subject = fixture_works_the_baltic_origins
     result = notable_notes_path(subject)
     expected = "/works/#{subject.id}/notes"
     assert_equal expected, result
   end
 
   test ":notable_notes_path for producer" do
-    subject = producers(:one)
+    subject = fixture_producers_herge
     result = notable_notes_path(subject)
     expected = "/producers/#{subject.id}/notes"
     assert_equal expected, result
   end
 
   test ":notable_edit_note_path for work" do
-    subject = works(:one)
+    subject = fixture_works_the_baltic_origins
     nsubject = subject.notes.first
     result = notable_edit_note_path([subject, nsubject])
     expected = "/works/#{subject.id}/notes/#{nsubject.id}/edit"
@@ -42,7 +42,7 @@ class NotesHelperTest < ActiveSupport::TestCase
   end
 
   test ":notable_edit_note_path for producer" do
-    subject = producers(:one)
+    subject = fixture_producers_herge
     nsubject = subject.notes.first
     result = notable_edit_note_path([subject, nsubject])
     expected = "/producers/#{subject.id}/notes/#{nsubject.id}/edit"

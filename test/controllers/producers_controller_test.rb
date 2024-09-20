@@ -2,7 +2,7 @@ require "test_helper"
 
 class ProducersControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @producer = producers(:one)
+    @producer = fixture_producers_herge
   end
 
   test "should get index" do

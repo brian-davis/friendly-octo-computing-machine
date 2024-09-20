@@ -2,8 +2,8 @@ require "test_helper"
 
 class ReadingSessionsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @work = works(:one)
-    @reading_session = reading_sessions(:one) # references @work
+    @work = fixture_works_meet_me_in_atlantis
+    @reading_session = @work.reading_sessions.first
   end
 
   test "should get index" do

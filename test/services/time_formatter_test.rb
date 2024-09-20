@@ -26,17 +26,29 @@ class BaseTest < ActiveSupport::TestCase
   end
 
   test "common era span" do
-    producer = producers(:seven)
+    producer = Producer.new({
+      custom_name: "Early Modern",
+      year_of_birth: 1599,
+      year_of_death: 1661
+    })
     result = common_era_span(producer.year_of_birth, producer.year_of_death)
     expected = "(1599 — 1661)"
     assert_equal expected, result
   
-    producer2 = producers(:eight)
+    producer2 = Producer.new({
+      custom_name: "All BC",
+      year_of_birth: -199,
+      year_of_death: -51
+    })
     result = common_era_span(producer2.year_of_birth, producer2.year_of_death)
     expected = "(199 BCE — 51 BCE)"
     assert_equal expected, result
   
-    producer3 = producers(:nine)
+    producer3 = Producer.new({
+      custom_name: "Augustan Era",
+      year_of_birth: -50,
+      year_of_death: 50
+    })
     result = common_era_span(producer3.year_of_birth, producer3.year_of_death)
     expected = "(50 BCE — 50 CE)"
     assert_equal expected, result
@@ -53,7 +65,11 @@ class BaseTest < ActiveSupport::TestCase
     expected = "(50BC—50AD)"
     assert_equal expected, result
   
-    producer4 = producers(:six)
+    producer4 = Producer.new({
+      custom_name: "Still Living",
+      year_of_birth: 1980
+      # year_of_death: 
+    })
     result = common_era_span(producer4.year_of_birth, producer4.year_of_death)
     expected = "(1980 — )"
     assert_equal expected, result

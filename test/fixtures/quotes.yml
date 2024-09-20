@@ -20,15 +20,3 @@
 #
 #  fk_rails_...  (work_id => works.id)
 #
-
-one:
-  text: MyText
-  page: 1
-  custom_citation: MyString
-  work: one
-
-two:
-  text: MyText
-  page: 1
-  custom_citation: MyString
-  work: two

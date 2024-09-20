@@ -13,15 +13,3 @@
 #
 #  index_notes_on_notable  (notable_type,notable_id)
 #
-
-one:
-  text: "Note One"
-  notable: one (Work)
-
-two:
-  text: "Note Two"
-  notable: two (Work)
-
-three:
-  text: "Note Three"
-  notable: one (Producer)

@@ -24,7 +24,8 @@ require "test_helper"
 
 class QuoteTest < ActiveSupport::TestCase
   test "validates text" do
-    q1 = works(:one).quotes.build({
+    subject = fixture_works_meet_me_in_atlantis # save it 
+    q1 = subject.quotes.build({
       text: "",
       custom_citation: "1a",
       page: 1

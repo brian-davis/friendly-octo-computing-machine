@@ -2,8 +2,8 @@ require "test_helper"
 
 class QuotesControllerTest < ActionDispatch::IntegrationTest
   setup do
-    @work = works(:one)
-    @quote = quotes(:one) # belongs to @work
+    @work = fixture_works_philosophy_for_everyone
+    @quote = @work.quotes.first
   end
 
   test "should get index" do
@@ -20,6 +20,7 @@ class QuotesControllerTest < ActionDispatch::IntegrationTest
     assert_difference("Quote.count") do
       post work_quotes_url(work_id: @work.id), params: { quote: { text: "new quote" } }
     end
+    @work.reload
     quote = @work.quotes.last
     assert_redirected_to work_quote_url(@work, quote)
   end

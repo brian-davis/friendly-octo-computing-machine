@@ -57,11 +57,11 @@ class ProducerTest < ActiveSupport::TestCase
 
   test "build a new work_producer and link to existing work" do
     work = Work.create({
-      title: "Physics"
+      title: "New Work"
     })
 
     producer = Producer.new({
-      custom_name: "Aristotle",
+      custom_name: "New Producer",
       work_producers: [WorkProducer.new({
         role: "author",
         work: work
@@ -76,10 +76,10 @@ class ProducerTest < ActiveSupport::TestCase
   end
 
   test "remove existing work_producer" do
-    producer = producers(:one)
-    work = works(:one)
+    producer = fixture_producers_aristotle
+    work = fixture_works_politics # aristotle
+    assert producer.works.include?(work) # setup
 
-    assert producer.works.include?(work) # fixture
     work_producer = producer.work_producers.find_by(work: work)
 
     params = ActionController::Parameters.new({
@@ -106,10 +106,9 @@ class ProducerTest < ActiveSupport::TestCase
   end
 
   test "add similar work_producer" do
-    producer = producers(:one)
-    work = works(:one)
-    assert producer.works.include?(work) # fixture
-    work_producer = producer.work_producers.find_by(work: work)
+    producer = fixture_producers_aristotle
+    work = fixture_works_politics # aristotle
+    assert producer.works.include?(work) # setup
 
     params = ActionController::Parameters.new({
       producer: {
@@ -135,8 +134,8 @@ class ProducerTest < ActiveSupport::TestCase
   end
 
   test "create a work through existing work_producer" do
-    producer = producers(:one)
-    new_title_param = "New Work"
+    producer = fixture_producers_aristotle
+    new_title_param = "New Work 2"
     params = ActionController::Parameters.new({
       producer: {
         custom_name: producer.custom_name,
@@ -276,7 +275,6 @@ class ProducerTest < ActiveSupport::TestCase
     assert p1.in?(search1)
     assert p2.in?(search1)
 
-
     # Trigrams
     p3 = Producer.create(forename: "Jeffrey", surname: "Davis")
     p4 = Producer.create(forename: "Geoffrey", surname: "Davis")
@@ -314,8 +312,17 @@ class ProducerTest < ActiveSupport::TestCase
   end
 
   test "unique by full name and year" do
-    p1 = producers(:six)
-    p2 = Producer.new(forename: p1.forename, surname: p1.surname, year_of_birth: p1.year_of_birth)
+    p1 = fixture_producers_john_searle
+
+    # TODO: more testing:
+    # p1 = fixture_producers_mark_twain
+
+    p2 = Producer.new({
+      forename: p1.forename,
+      surname: p1.surname,
+      year_of_birth: p1.year_of_birth
+    })
+
     refute p2.valid?
     assert_equal "Name and Birth Year must be unique", p2.errors.full_messages.to_sentence
     assert_raises ActiveRecord::RecordNotUnique do

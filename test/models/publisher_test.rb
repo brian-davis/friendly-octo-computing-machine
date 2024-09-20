@@ -33,7 +33,7 @@ class PublisherTest < ActiveSupport::TestCase
 
   test "uniqueness of title" do
     p1 = Publisher.new({
-      name: publishers(:one).name
+      name: fixture_publishers_oup.name
     })
     refute p1.valid?
   end

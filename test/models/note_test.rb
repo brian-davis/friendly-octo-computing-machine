@@ -17,16 +17,16 @@ require "test_helper"
 
 class NoteTest < ActiveSupport::TestCase
   test "polymorphic to Work" do
-    work = works(:one)
-    note = work.notes.first
+    subject = fixture_works_meet_me_in_atlantis # save it
+    note = subject.notes.first
     assert note.is_a?(Note)
-    assert_equal work, note.notable
+    assert_equal subject, note.notable
   end
 
   test "polymorphic to Producer" do
-    producer = producers(:one)
-    note = producer.notes.first
+    subject = fixture_producers_peter_meineck # save it
+    note = subject.notes.first
     assert note.is_a?(Note)
-    assert_equal producer, note.notable
+    assert_equal subject, note.notable
   end
 end
