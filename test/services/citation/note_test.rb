@@ -74,4 +74,18 @@ class NoteTest < ActiveSupport::TestCase
     result = subject.reference.chicago_note(subject, :long)
     assert_equal expected, result
   end
+
+  test "ebook with url note quote, short" do
+    subject = fixture_citation_ebook_url.quotes.first
+    expected = "Kurland and Lerner, _Founders’ Constitution_, chap. 10, doc. 19."
+    result = subject.reference.chicago_note(subject, :short)
+    assert_equal expected, result
+  end
+
+  test "ebook without url note quote, short" do
+    subject = fixture_citation_ebook_no_url.quotes.first
+    expected = "Roy, _God of Small Things_, chap. 6."
+    result = subject.reference.chicago_note(subject, :short)
+    assert_equal expected, result
+  end
 end

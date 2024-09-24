@@ -81,9 +81,13 @@ class Work::Reference < ActiveRecord::AssociatedObject
   end
 
   # last names only
-  def producer_last_names(role = :author)
-    role_method = role.to_s.pluralize
-    work.send(role_method).pluck_last_name.to_sentence
+  def producer_last_names(role = nil)
+    if role
+      role_method = role.to_s.pluralize
+      work.send(role_method).pluck_last_name.to_sentence
+    else
+      work.producers.pluck_last_name.to_sentence
+    end
   end
 
   # first result is 'last, first middle', rest are 'first middle last'

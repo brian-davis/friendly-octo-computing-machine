@@ -14,15 +14,20 @@ module Citation
   
           author_last_names = work.reference.producer_last_names
           title = work.reference.short_title
-          page = quote.page # String
+          page = quote.custom_citation.presence || quote.page.presence # String
           "#{author_last_names}, _#{title}_, #{page}."
         elsif work.publishing_format_chapter?
           return unless work.authors.any? && quote.page.present?
   
           author_last_names = work.reference.producer_last_names
           title = work.reference.short_title
-          page = quote.page
+          page = quote.custom_citation.presence || quote.page.presence
           "#{author_last_names}, “#{title},” #{page}."
+        elsif work.publishing_format_ebook?
+          author_last_names = work.reference.producer_last_names
+          title = work.reference.short_title
+          page = quote.custom_citation.presence || quote.page.presence
+          "#{author_last_names}, _#{title}_, #{page}."
         end
       end
   
