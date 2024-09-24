@@ -24,6 +24,8 @@ class Quote < ApplicationRecord
   include PgSearch::Model
 
   belongs_to :work
+  delegate :reference, to: :work
+
   validates :text, presence: true
 
   # Quote.search_text("a famous quote")

@@ -1,6 +1,7 @@
 # app/models/post/publisher.rb
 class Work::Reference < ActiveRecord::AssociatedObject
   include TimeFormatter
+  include ActionView::Helpers::TextHelper
 
   def short_title
     work.title.sub("The ", "")
@@ -70,9 +71,13 @@ class Work::Reference < ActiveRecord::AssociatedObject
   end
 
   # full names
-  def producer_names(role = :author)
-    role_method = role.to_s.pluralize
-    work.send(role_method).pluck_full_name.to_sentence
+  def producer_names(role = nil)
+    if role
+      role_method = role.to_s.pluralize
+      work.send(role_method).pluck_full_name.to_sentence
+    else
+      work.producers.pluck_full_name.to_sentence
+    end
   end
 
   # last names only
@@ -89,5 +94,29 @@ class Work::Reference < ActiveRecord::AssociatedObject
     sql.gsub!(":role_sql", role_sub)
     results = Producer.connection.select_all(Arel.sql(sql))
     results.rows.flatten.to_sentence({ two_words_connector: ", and "})
+  end
+
+  def short_producer_roles(period = false)
+    if work.work_producers.pluck(:role).all? { |r| r == "editor" }
+      root = "ed"
+      proot = pluralize(work.work_producers.size, root).split(" ").last
+      proot.concat(".") if period
+      proot
+    else
+      # TODO: anything else?
+    end
+  end
+
+  def chicago_bibliography
+    @chicago_bibliography ||= Citation::Chicago::Bibliography.new(work).entry
+  end
+
+  def chicago_note(quote, length = :long)
+    case length
+    when :long
+      @chicago_note_long ||= Citation::Chicago::Note.new(work, quote).long
+    when :short
+      @chicago_note_short ||= Citation::Chicago::Note.new(work, quote).short
+    end
   end
 end

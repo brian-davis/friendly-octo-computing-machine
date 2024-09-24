@@ -22,7 +22,6 @@ class WorksController < ApplicationController
   def show
     @work_producers = @work.work_producers.includes(:producer)
     @children = @work.children.joins(:producers).includes(:producers)
-    @bibliography = Citation::Bibliography.new(@work).entry
   end
 
   # GET /works/new

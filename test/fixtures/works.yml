@@ -8,6 +8,7 @@
 #  custom_citation     :string
 #  date_of_accession   :date
 #  date_of_completion  :date
+#  ebook_source        :string
 #  foreign_title       :string
 #  language            :string
 #  original_language   :string

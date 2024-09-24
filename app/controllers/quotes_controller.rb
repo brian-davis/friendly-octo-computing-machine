@@ -20,8 +20,8 @@ class QuotesController < ApplicationController
 
   # GET /quotes/1 or /quotes/1.json
   def show
-    @long_citation = Citation::Note.new(@quote).long
-    @short_citation = Citation::Note.new(@quote).short
+    @long_citation = @work.reference.chicago_note(@quote, :long)
+    @short_citation = @work.reference.chicago_note(@quote, :long)
   end
 
   # GET /quotes/new

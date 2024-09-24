@@ -147,4 +147,58 @@ module FactoryHelperCitations
       ]
     })
   end
+
+  def fixture_citation_ebook_url
+    @fixture_citation_ebook_url ||= Work.create({
+      title: "The Founders’ Constitution",
+      publishing_format: :ebook,
+      year_of_publication: 1987,
+      publisher: Publisher.find_or_create_by(name: "University of Chicago Press"),
+      ebook_source: "https://press-pubs.uchicago.edu/founders/",
+      work_producers: [
+        WorkProducer.new({
+          role: :editor,
+          producer: Producer.new({
+            full_name: "Philip B. Kurland"
+          })
+        }),
+        WorkProducer.new({
+          role: :editor,
+          producer: Producer.new({
+            full_name: "Ralph Lerner"
+          })
+        })
+      ],
+      quotes: [
+        Quote.new({
+          custom_citation: "chap. 10, doc. 19",
+          text: "Example quote"
+        })
+      ]
+    })
+  end
+
+  def fixture_citation_ebook_no_url
+    @fixture_citation_ebook_no_url ||= Work.create({
+      title: "The God of Small Things",
+      publishing_format: :ebook,
+      year_of_publication: 2008,
+      publisher: Publisher.find_or_create_by(name: "Random House"),
+      ebook_source: "Kindle",
+      work_producers: [
+        WorkProducer.new({
+          role: :author,
+          producer: Producer.new({
+            full_name: "Arundhati Roy"
+          })
+        })
+      ],
+      quotes: [
+        Quote.new({
+          custom_citation: "chap. 6",
+          text: "Example quote"
+        })
+      ]
+    })
+  end
 end

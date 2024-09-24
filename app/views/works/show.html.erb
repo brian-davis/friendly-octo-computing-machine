@@ -7,9 +7,9 @@
     </div>
   <% end %>
 
-  <% if @bibliography %>
+  <% if @work.reference.chicago_bibliography.present? %>
     <div class="book-card outline bibliography-citation small-text">
-      <%= markdown_render(@bibliography) %>
+      <%= markdown_render(@work.reference.chicago_bibliography) %>
     </div>
   <% end %>
 
