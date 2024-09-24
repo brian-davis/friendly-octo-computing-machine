@@ -1,6 +1,9 @@
 require "test_helper"
+require_relative "../../_factories/factory_helper_citations"
 
 class ReferenceTest < ActiveSupport::TestCase
+  include FactoryHelperCitations
+
   test "works have associated object" do
     w1 = fixture_works_logic_vsi
     r1 = w1.try(:reference)
@@ -21,9 +24,31 @@ class ReferenceTest < ActiveSupport::TestCase
     assert_equal("Hacket Publishing Company, Inc.", subject_child.reference.publisher_name) # decorator
   end
 
-  test "short_title" do
+  test "short_title removes initial 'the'" do
     w1 = fixture_works_the_baltic_origins
-    assert_equal "Baltic Origins Of Homer's Epic Tales", w1.reference.short_title
+    rexpected = /\AThe/
+    result = w1.reference.short_title
+    refute result.match?(rexpected)
+  end
+
+  test "short_title makes smart abridgement" do
+    # "The Baltic Origins Of Homer's Epic Tales"
+    w1 = fixture_works_the_baltic_origins
+    expected = "Baltic Origins"
+    result = w1.reference.short_title
+    assert_equal expected, result
+
+    # "Temporal Variation in Selection Influences Microgeographic Local Adaptation"
+    w2 = fixture_citation_journal1
+    expected = "Temporal Variation"
+    result = w2.reference.short_title
+    assert_equal expected, result
+
+    # "The God of Small Things"
+    w3 = fixture_citation_ebook_no_url
+    expected = "God of Small Things"
+    result = w3.reference.short_title
+    assert_equal expected, result
   end
 
   test "long_title for subtitle" do
@@ -120,7 +145,7 @@ class ReferenceTest < ActiveSupport::TestCase
   test "short_title_line" do
     subject = fixture_works_the_baltic_origins
     result = subject.reference.short_title_line
-    expected = "Baltic Origins Of Homer's Epic Tales (Vinci and Francesco, 2006)"
+    expected = "Baltic Origins (Vinci and Francesco, 2006)"
     assert_equal(expected, result)
   end
 

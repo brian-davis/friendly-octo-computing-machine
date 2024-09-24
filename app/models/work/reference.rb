@@ -3,8 +3,38 @@ class Work::Reference < ActiveRecord::AssociatedObject
   include TimeFormatter
   include ActionView::Helpers::TextHelper
 
+  TITLE_INITIAL_STOPWORDS = ["the"].map { |word| [word, word.capitalize] }.flatten
+  TITLE_INTERNAL_STOPWORDS = ["of", "in", "with"].map { |word| [word, word.capitalize] }.flatten
+
   def short_title
-    work.title.sub("The ", "")
+    init_regexp = %r{
+    ^ # start of string
+    #{Regexp.union(TITLE_INITIAL_STOPWORDS)} # helper for ANY
+    \s # match trailing space, avoid match on Theatre, etc. 
+    }x
+
+    post_count_regexp = %r{
+    \s # match leading space, avoid match on end of Within, etc.
+    #{Regexp.union(TITLE_INTERNAL_STOPWORDS)}
+    \s # match trailing space, avoid match on end of Inside, etc. 
+    }x
+
+    pre_keep_regexp = %r{
+    \s
+    #{Regexp.union(TITLE_INTERNAL_STOPWORDS)}
+    \s
+    .+ # greedy, .split will drop the rest
+    }x
+
+    result = work.title.sub(init_regexp, "")
+
+    result = if result.split(post_count_regexp)[1]&.split(/\s/)&.size.to_i > 2
+      result.split(pre_keep_regexp).first
+    else
+      result
+    end
+
+    result
   end
 
   def long_title
@@ -111,10 +141,12 @@ class Work::Reference < ActiveRecord::AssociatedObject
     end
   end
 
+  # REFACTOR: is this a bad pattern?
   def chicago_bibliography
     @chicago_bibliography ||= Citation::Chicago::Bibliography.new(work).entry
   end
 
+  # REFACTOR: is this a bad pattern?
   def chicago_note(quote, length = :long)
     case length
     when :long

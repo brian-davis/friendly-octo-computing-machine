@@ -88,4 +88,18 @@ class NoteTest < ActiveSupport::TestCase
     result = subject.reference.chicago_note(subject, :short)
     assert_equal expected, result
   end
+
+  test "journal article with url note quote, long" do
+    subject = fixture_citation_journal1.quotes.first
+    expected = "Dittmar, Emily L., and Douglas W. Schemske. “Temporal Variation in Selection Influences Microgeographic Local Adaptation.” _American Naturalist_ 202, no. 4 (2023): 480. https://doi.org/10.1086/725865."
+    result = subject.reference.chicago_note(subject, :long)
+    assert_equal expected, result
+  end
+
+  test "journal article with url note quote, short" do
+    subject = fixture_citation_journal1.quotes.first
+    expected = "Dittmar and Schemske, “Temporal Variation,” 480."
+    result = subject.reference.chicago_note(subject, :short)
+    assert_equal expected, result
+  end
 end

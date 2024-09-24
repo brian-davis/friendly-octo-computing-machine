@@ -10,6 +10,10 @@
 #  date_of_completion  :date
 #  ebook_source        :string
 #  foreign_title       :string
+#  journal_issue       :integer
+#  journal_name        :string
+#  journal_page_span   :string
+#  journal_volume      :integer
 #  language            :string
 #  original_language   :string
 #  publishing_format   :enum             default("book")
@@ -19,6 +23,7 @@
 #  supertitle          :string
 #  tags                :string           default([]), is an Array
 #  title               :string
+#  url                 :string
 #  year_of_composition :integer
 #  year_of_publication :integer
 #  created_at          :datetime         not null

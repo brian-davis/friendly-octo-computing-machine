@@ -406,7 +406,12 @@ CREATE TABLE public.works (
     publishing_format public.work_publishing_format DEFAULT 'book'::public.work_publishing_format,
     publisher_id bigint,
     searchable tsvector GENERATED ALWAYS AS ((((setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(title, ''::character varying))::text), 'A'::"char") || setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(subtitle, ''::character varying))::text), 'B'::"char")) || setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(supertitle, ''::character varying))::text), 'C'::"char")) || setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(foreign_title, ''::character varying))::text), 'D'::"char"))) STORED,
-    ebook_source character varying
+    ebook_source character varying,
+    url character varying,
+    journal_name character varying,
+    journal_volume integer,
+    journal_issue integer,
+    journal_page_span character varying
 );
 
 
@@ -720,6 +725,7 @@ ALTER TABLE ONLY public.works
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20240924183914'),
 ('20240924000304'),
 ('20240919181412'),
 ('20240823201941'),

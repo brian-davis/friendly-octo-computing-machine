@@ -154,7 +154,7 @@ module FactoryHelperCitations
       publishing_format: :ebook,
       year_of_publication: 1987,
       publisher: Publisher.find_or_create_by(name: "University of Chicago Press"),
-      ebook_source: "https://press-pubs.uchicago.edu/founders/",
+      url: "https://press-pubs.uchicago.edu/founders/",
       work_producers: [
         WorkProducer.new({
           role: :editor,
@@ -197,6 +197,39 @@ module FactoryHelperCitations
         Quote.new({
           custom_citation: "chap. 6",
           text: "Example quote"
+        })
+      ]
+    })
+  end
+
+  def fixture_citation_journal1
+    @fixture_citation_journal1 ||= Work.create({
+      title: "Temporal Variation in Selection Influences Microgeographic Local Adaptation",
+      year_of_publication: 2023,
+      publishing_format: :journal_article,
+      journal_name: "American Naturalist",
+      journal_volume: 202,
+      journal_issue: 4,
+      journal_page_span: "471–85",
+      url: "https://doi.org/10.1086/725865",
+      work_producers: [
+        WorkProducer.new({
+          role: :author,
+          producer: Producer.new({
+            full_name: "Emily L. Dittmar"
+          })
+        }),
+        WorkProducer.new({
+          role: :author,
+          producer: Producer.new({
+            full_name: "Douglas W. Schemske"
+          })
+        })
+      ],
+      quotes: [
+        Quote.new({
+          page: "480",
+          text: "example quote"
         })
       ]
     })

@@ -69,4 +69,11 @@ class BibliographyTest < ActiveSupport::TestCase
     result = subject.reference.chicago_bibliography
     assert_equal expected, result
   end
+
+  test "journal article" do
+    subject = fixture_citation_journal1
+    expected = "Dittmar, Emily L., and Douglas W. Schemske. “Temporal Variation in Selection Influences Microgeographic Local Adaptation.” _American Naturalist_ 202, no. 4 (2023): 471–85. https://doi.org/10.1086/725865."
+    result = subject.reference.chicago_bibliography
+    assert_equal expected, result
+  end
 end
