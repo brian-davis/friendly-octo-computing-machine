@@ -26,127 +26,161 @@ class Work::Reference < ActiveRecord::AssociatedObject
     .+ # greedy, .split will drop the rest
     }x
 
-    result = work.title.sub(init_regexp, "")
-
-    result = if result.split(post_count_regexp)[1]&.split(/\s/)&.size.to_i > 2
-      result.split(pre_keep_regexp).first
-    else
+    @short_title ||= begin
+      result = work.title.sub(init_regexp, "")
+      result = if result.split(post_count_regexp)[1]&.split(/\s/)&.size.to_i > 2
+        result.split(pre_keep_regexp).first
+      else
+        result
+      end
       result
     end
-
-    result
   end
 
   def long_title
-    [work.supertitle, work.title, work.subtitle].map(&:presence).compact.join(": ")
+    @long_title ||= begin
+      [
+        work.supertitle,
+        work.title,
+        work.subtitle
+      ].map(&:presence).compact.join(": ")
+    end
   end
 
   def publisher_name
-    work.publisher&.name.presence || work.parent&.publisher&.name
+    @publisher_name ||= begin
+      work.publisher&.name.presence ||
+      work.parent&.publisher&.name ||
+      work.journal_name
+    end
   end
 
   # TODO: research self-join SQL fallback
   def year_of_publication
-    work.year_of_publication || work.parent&.year_of_publication
+    @year_of_publication ||= begin
+      work.year_of_publication ||
+      work.parent&.year_of_publication
+    end
   end
 
   def year_of_composition
-    work.year_of_composition || work.parent&.year_of_composition
+    @year_of_composition ||= begin
+      work.year_of_composition ||
+      work.parent&.year_of_composition
+    end
   end
 
   def language_or_translation
-    [work.language, work.original_language].map(&:presence).compact.join(", translated from ")
+    @language_or_translation ||= begin
+      [
+        work.language,
+        work.original_language
+      ].map(&:presence).compact.join(", translated from ")
+    end
   end
 
   # TODO: DRY with alpha_producer_names
   def byline
-    
-    # TODO: does this logic work elsewhere;
-    # TODO: avoid ruby here:
-    # author_names = work.producers.pluck(Arel.sql "COALESCE(NULLIF(producers.custom_name, ''), NULLIF(producers.surname,''))")
-    author_names = if work.year_of_composition.present?
-      work.authors.map { |p| p.custom_name || p.surname }
-    else 
-      work.producers.map { |p| p.custom_name || p.surname }
+    @byline ||= begin
+      # TODO: does this logic work elsewhere;
+      # TODO: avoid ruby here:
+      # author_names = work.producers.pluck(Arel.sql "COALESCE(NULLIF(producers.custom_name, ''), NULLIF(producers.surname,''))")
+      author_names = if work.year_of_composition.present?
+        work.authors.map { |p| p.custom_name || p.surname }
+      else 
+        work.producers.map { |p| p.custom_name || p.surname }
+      end
+
+      return "" if author_names.empty?
+
+      author_names = author_names.to_sentence
+
+      year_source = year_of_composition || year_of_publication
+
+      year = common_era_year(year_source) # ApplicationHelper
+      [
+        author_names,
+        year
+      ].compact.join(", ")
     end
-
-    return "" if author_names.empty?
-
-    author_names = author_names.to_sentence
-
-    year_source = work.year_of_publication.presence ||
-                  work.year_of_composition.presence ||
-                  work.parent&.year_of_publication.presence ||
-                  work.parent&.year_of_composition.presence
-
-    year = common_era_year(year_source) # ApplicationHelper
-    [
-      author_names,
-      year
-    ].compact.join(", ")
   end
  
   # :index
   def full_title_line
-    byline_result = work.reference.byline
-    return work.title if byline_result.blank?
-    "#{work.reference.long_title} (#{byline_result})"
+    @full_title_line ||= begin
+      byline_result = work.reference.byline
+      return work.title if byline_result.blank?
+      "#{work.reference.long_title} (#{byline_result})"
+    end
   end
 
   # quotes general index
   def short_title_line
-    byline_result = work.reference.byline
-    return work.reference.short_title if byline_result.blank?
-    "#{work.reference.short_title} (#{byline_result})"
+    @short_title_line ||= begin
+      byline_result = work.reference.byline
+      return work.reference.short_title if byline_result.blank?
+      "#{work.reference.short_title} (#{byline_result})"
+    end
   end
 
   # full names
+  # fallback to parent?
   def producer_names(role = nil)
-    if role
-      role_method = role.to_s.pluralize
-      work.send(role_method).pluck_full_name.to_sentence
-    else
-      work.producers.pluck_full_name.to_sentence
+    scope = role.present? ? role.to_s.pluralize : :producers
+    cache_key = "@producer_names_#{scope}"
+    instance_variable_get(cache_key) || begin
+      result = work.send(scope).pluck_full_name.to_sentence
+      instance_variable_set(cache_key, result)
     end
   end
 
   # last names only
   def producer_last_names(role = nil)
-    if role
-      role_method = role.to_s.pluralize
-      work.send(role_method).pluck_last_name.to_sentence
-    else
-      work.producers.pluck_last_name.to_sentence
+    scope = role.present? ? role.to_s.pluralize : :producers
+    cache_key = "@producer_last_names_#{scope}"
+    instance_variable_get(cache_key) || begin
+      result = work.send(scope).pluck_last_name.to_sentence
+      instance_variable_set(cache_key, result)
     end
   end
 
   # first result is 'last, first middle', rest are 'first middle last'
   def alpha_producer_names(role = nil)
-    sql_base = Work::ALPHA_FIRST
-    sql = sql_base.gsub(":work_id", work.id.to_s)
-    role_sub = role ? "AND wp.role = '#{role}'" : ""
-    sql.gsub!(":role_sql", role_sub)
-    results = Producer.connection.select_all(Arel.sql(sql))
-    results.rows.flatten.to_sentence({ two_words_connector: ", and "})
-  end
-
-  def short_producer_roles(period = false)
-    if work.work_producers.pluck(:role).all? { |r| r == "editor" }
-      root = "ed"
-      proot = pluralize(work.work_producers.size, root).split(" ").last
-      proot.concat(".") if period
-      proot
-    else
-      # TODO: anything else?
+    scope = role.present? ? role.to_s.pluralize : :producers
+    cache_key = "@alpha_producer_names_#{scope}"
+    instance_variable_get(cache_key) || begin
+      sql_base = Work::ALPHA_FIRST
+      sql = sql_base.gsub(":work_id", work.id.to_s)
+      role_sub = role ? "AND wp.role = '#{role}'" : ""
+      sql.gsub!(":role_sql", role_sub)
+      results = Producer.connection.select_all(Arel.sql(sql))  
+      result = results.rows.flatten.to_sentence({ two_words_connector: ", and "})
+      instance_variable_set(cache_key, result)
     end
   end
 
-  # REFACTOR: is this a bad pattern?
+  def short_producer_roles(period = false)
+    cache_key = "@short_producer_roles_#{!!period}"
+    instance_variable_get(cache_key) || begin
+      # REFACTOR
+      result = if work.work_producers.pluck(:role).all? { |r| r == "editor" }
+        root = "ed"
+        proot = pluralize(work.work_producers.size, root).split(" ").last
+        proot.concat(".") if period
+        proot
+      else
+        "" # TODO: anything else?
+      end
+      instance_variable_set(cache_key, result)
+    end
+  end
+
+  # REFACTOR: bad pattern?
   def chicago_bibliography
     @chicago_bibliography ||= Citation::Chicago::Bibliography.new(work).entry
   end
 
-  # REFACTOR: is this a bad pattern?
+  # REFACTOR: bad pattern?
   def chicago_note(quote, length = :long)
     case length
     when :long
@@ -154,5 +188,36 @@ class Work::Reference < ActiveRecord::AssociatedObject
     when :short
       @chicago_note_short ||= Citation::Chicago::Note.new(work, quote).short
     end
+  end
+
+  def complete_data?
+    producers? &&
+    publisher_name.present? &&
+    year_of_publication.present?
+
+    if work.publishing_format_journal_article?
+      work.publishing_format_journal_article? &&
+      work.journal_name.present? &&
+      work.journal_volume.present? &&
+      work.journal_issue.present? &&
+      work.journal_page_span.present? &&
+
+      producers? &&
+      publisher_name.present? &&
+      year_of_publication.present?
+    else
+      producers? &&
+      publisher_name.present? &&
+      year_of_publication.present?
+    end
+  end
+
+  def producers?
+    work.producers.any? ||
+    work.parent&.producers&.any?
+  end
+
+  def compilation?
+    work.children.any? && work.editors.any?
   end
 end

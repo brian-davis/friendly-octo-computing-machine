@@ -44,4 +44,9 @@ class Quote < ApplicationRecord
       }
     }
   )
+
+  def citation_page
+    # REFACTOR: are these redundant?
+    custom_citation.presence || page.presence
+  end
 end

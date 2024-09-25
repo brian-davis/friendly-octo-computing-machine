@@ -4,6 +4,22 @@ require_relative "../../_factories/factory_helper_citations"
 class BibliographyTest < ActiveSupport::TestCase
   include FactoryHelperCitations  
 
+  test "work bibliography citations bad data" do
+    formats = Work.publishing_formats.keys
+    formats.each do |k|
+      subject = Work.new({
+        title: "Missing Data #{k}",
+        publishing_format: k
+      })
+
+      result1 = subject.reference.chicago_bibliography
+      assert result1.blank?
+  
+      result2 = subject.reference.chicago_bibliography
+      assert result2.blank?
+    end
+  end
+
   test "book bibliography entry" do
     # https://www.chicagomanualofstyle.org/tools_citationguide/citation-guide-1.html#cg-book
 
@@ -25,7 +41,6 @@ class BibliographyTest < ActiveSupport::TestCase
   test "book with translator bibliography" do
     expected = "Smith, John. _The Wedding Party_. Translated by Jeremy Tiang. Amazon Crossing, 2021."
     result = fixture_citation_wedding_party.reference.chicago_bibliography
-
     assert_equal(expected, result)
   end
 

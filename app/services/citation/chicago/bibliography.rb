@@ -1,100 +1,98 @@
 module Citation
   module Chicago
     class Bibliography < Citation::Chicago::Base
-      attr_reader :work
-
-      def initialize(work)
-        @work = work
-      end
+      attr_reader :work, :reference
 
       def entry
-        if work.publishing_format_book?
-          if work.children.any? && work.editors.any?
-            return unless work.publisher && work.year_of_publication
-    
-            editor_names = work.reference.producer_names(:editor)
-    
-            editor_status = work.editors.count > 1 ? "eds." : "ed."
-            title = work.reference.long_title
-            publisher = work.publisher.name
-            year = work.year_of_publication
-    
-            result = "#{editor_names}, #{editor_status}, #{italicize(title)} (#{publisher}, #{year})."
-            greedy_quote(result)
-          else
-            return unless work.producers.any? && work.publisher && work.year_of_publication
-  
-            title = work.reference.long_title
-            publisher = work.publisher.name
-            year = work.year_of_publication
-    
-            result = if work.translators.any?
-              translator_names = work.reference.producer_names(:translator)
-              strict_author_names = work.reference.alpha_producer_names(:author)
-              "#{strict_author_names}. #{italicize(title)}. Translated by #{translator_names}. #{publisher}, #{year}."
-            else
-              strict_author_names = work.reference.alpha_producer_names(:author)
-              "#{strict_author_names}. #{italicize(title)}. #{publisher}, #{year}."
-            end
+        return unless reference.complete_data?
+        helper = "#{work.publishing_format}_entry"
+        send(helper) if respond_to?(helper, true) # NotImplemented
+      end
 
-            greedy_quote(result)
-          end
-        elsif work.publishing_format_chapter?
-          return unless work.producers.any? && work.reference.year_of_publication
-          
-          title = work.reference.long_title
-          
-          parent_editor_names = work.parent.reference.producer_names(:editors)
-          
-          parent_title = work.parent.reference.long_title
-          parent_publisher = work.parent.publisher.name
-          parent_year = work.parent.year_of_publication
-          
-          result = if work.translators.any?
-            translator_names = work.reference.producer_names(:translators)
-            strict_author_names = work.reference.alpha_producer_names(:author)
-            "#{strict_author_names}. #{inverted_commas(title)}. Translated by #{translator_names}. In #{italicize(parent_title)}, edited by #{parent_editor_names}. #{parent_publisher}, #{parent_year}."
-          else
-            "#{work.reference.alpha_producer_names}. #{inverted_commas(title)}. In #{italicize(parent_title)}, edited by #{parent_editor_names}. #{parent_publisher}, #{parent_year}."
-          end
+      private
 
-          greedy_quote(result)
-        elsif work.publishing_format_ebook?
-          name_and_role = [
-            work.reference.alpha_producer_names,
-            work.reference.short_producer_roles
-          ].map(&:presence).compact.join(", ")
-          
-          italic_title = italicize(work.reference.long_title)
-          publishing = "#{work.publisher.name}, #{work.year_of_publication}"
-          source = work.digital_source
-
-          result = [
-            name_and_role,
-            italic_title,
-            publishing,
-            source
-          ].join(". ").concat(".")
-          return result
-        elsif work.publishing_format_journal_article?
-
-          translator_names = work.reference.producer_names(:translator)
-          strict_author_names = work.reference.alpha_producer_names(:author)
-
-          result = ""
-          result << strict_author_names
-          result << ". "
-          result << "#{inverted_commas(work.reference.long_title)}. " # TODO: use inverted-commas helper
-          result << ". Translated by #{translator_names}. " if translator_names.present?
-          result << "#{italicize(work.journal_name)} " # TODO: use Publisher model?  self join for the whole journal issue?
-          result << "#{work.journal_volume}, no. #{work.journal_issue} (#{work.year_of_publication}): #{work.journal_page_span}."
-          result << " #{work.digital_source}." if work.digital_source.present?
-
-          result = greedy_quote(result)
-          result
+      def book_entry
+        if reference.compilation?
+          editor_names = reference.producer_names(:editor)
+          editor_status = reference.short_producer_roles(true) # "eds."
+          parts = [
+            editor_names,
+            editor_status,
+            title_and_publishing # base
+          ]
+          build_from_parts(parts)
         else
-          ""
+          translator_names = reference.producer_names(:translator)
+          strict_author_names = reference.alpha_producer_names(:author)
+          title = prep_title(reference.long_title, :italics)
+
+          parts = [
+            strict_author_names,
+            title,
+            translated_by, # base
+            publishing # base
+          ].compact # optional translation
+          build_from_parts(parts, :period)
         end
+      end
+
+      def chapter_entry
+        title = prep_title(reference.long_title, :quotes)
+
+        strict_author_names = reference.alpha_producer_names(:author)
+
+        parent_ref = "In #{prep_title(work.parent.reference.long_title, :italics)}, edited by #{work.parent.reference.producer_names(:editors)}"
+        
+        _publishing = publishing(parent: true)
+
+        parts = [
+          strict_author_names,
+          title,
+          translated_by, # base
+          parent_ref,
+          _publishing
+        ].compact # optional translation
+        build_from_parts(parts, :period)
+      end
+
+      def ebook_entry
+        # with translation?
+
+        name_and_role = [
+          reference.alpha_producer_names,
+          reference.short_producer_roles # ed
+        ].map(&:presence).compact.join(", ")
+        
+        title = prep_title(reference.long_title, :italics)
+
+        source = work.digital_source
+
+        parts = [
+          name_and_role,
+          title,
+          publishing, # base
+          source
+        ]
+
+        build_from_parts(parts, :period)
+      end
+
+      def journal_article_entry
+        strict_author_names = reference.alpha_producer_names(:author)
+        title = prep_title(reference.long_title, :quotes)
+
+        journal = journal_subreference(work.journal_page_span)
+        source = work.digital_source
+
+        parts = [
+          strict_author_names,
+          title,
+          translated_by, # base
+          journal,
+          source
+        ].compact # optional translation
+
+        build_from_parts(parts, :period)
       end
     end
   end
