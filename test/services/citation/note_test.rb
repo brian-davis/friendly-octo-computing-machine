@@ -102,4 +102,100 @@ class NoteTest < ActiveSupport::TestCase
     result = subject.reference.chicago_note(subject, :short)
     assert_equal expected, result
   end
+
+  test "news_article_long" do
+    skip
+    expected = "Rob Pegoraro, “Apple’s iPhone Is Sleek, Smart and Simple,” _Washington Post_, July 5, 2007, LexisNexis Academic."
+    assert false # TODO
+  end
+
+  test "book_review_long" do
+    skip
+    expected = "Alexandra Jacobs, “The Muchness of Madonna,” review of _Madonna: A Rebel Life_, by Mary Gabriel, _New York Times_, October 8, 2023."
+    assert false # TODO
+  end
+
+  test "interview_long" do
+    skip
+    expected = "Joy Buolamwini, “ ‘If You Have a Face, You Have a Place in the Conversation About AI,’ Expert Says,” interview by Tonya Mosley, _Fresh Air_, NPR, November 28, 2023, audio, 37:58, https://www.npr.org/2023/11/28/1215529902/unmasking-ai-facial-recognition-technology-joy-buolamwini."
+    assert false # TODO
+  end
+
+  test "thesis_long" do
+    skip
+    expected = "Yuna Blajer de la Garza, “A House Is Not a Home: Citizenship and Belonging in Contemporary Democracies” (PhD diss., University of Chicago, 2019), 66–67, ProQuest (13865986)."
+    assert false # TODO
+  end
+
+  test "web_page_long" do
+    skip
+    expected = "“About Yale: Yale Facts,” Yale University, accessed March 8, 2022, https://www.yale.edu/about-yale/yale-facts."
+    assert false # TODO
+  end
+
+  test "social_media_long" do
+    skip
+    expected = "Chicago Manual of Style, “Is the world ready for singular they? We thought so back in 1993,” Facebook, April 17, 2015, https://www.facebook.com/ChicagoManual/posts/10152906193679151."
+    assert false # TODO
+  end
+
+  test "video_long" do
+    skip
+    expected = "Vaitea Cowan, “How Green Hydrogen Could End the Fossil Fuel Era,” TED Talk, Vancouver, BC, April 2022, 9 min., 15 sec., https://www.ted.com/talks/vaitea_cowan_how_green_hydrogen_could_end_the_fossil_fuel_era."
+    assert false # TODO
+  end
+
+  test "personal_long" do
+    skip
+    expected = "Sam Gomez, Facebook direct message to author, August 1, 2024."
+    assert false # TODO
+  end
+
+  test "news_article_short" do
+    skip
+    expected = "Pegoraro, “Apple’s iPhone.”"
+    assert false # TODO
+  end
+
+  test "book_review_short" do
+    skip
+    expected = "Jacobs, “Muchness of Madonna.”"
+    assert false # TODO
+  end
+
+  test "interview_short" do
+    skip
+    expected = "Buolamwini, interview."
+    assert false # TODO
+  end
+
+  test "thesis_short" do
+    skip
+    expected = "Blajer de la Garza, “House,” 93."
+    assert false # TODO
+  end
+
+  test "web_page_short" do
+    skip
+    expected = "“Yale Facts.”"
+    assert false # TODO
+  end
+
+  test "social_media_short" do
+    skip
+    expected = "Michele Truty, April 17, 2015, 1:09 p.m., comment on Chicago Manual of Style, “singular they.”"
+    assert false # TODO
+  end
+
+  test "video_short" do
+    skip
+    expected = "Cowan, “Green Hydrogen,” at 6:09–17."
+    assert false # TODO
+  end
+
+  test "personal_short" do
+    skip
+    expected = nil
+    assert false # TODO
+  end
 end

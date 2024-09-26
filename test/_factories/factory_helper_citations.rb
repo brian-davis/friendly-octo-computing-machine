@@ -184,7 +184,7 @@ module FactoryHelperCitations
       publishing_format: :ebook,
       year_of_publication: 2008,
       publisher: Publisher.find_or_create_by(name: "Random House"),
-      ebook_source: "Kindle",
+      online_source: "Kindle",
       work_producers: [
         WorkProducer.new({
           role: :author,
@@ -210,7 +210,7 @@ module FactoryHelperCitations
       journal_name: "American Naturalist",
       journal_volume: 202,
       journal_issue: 4,
-      journal_page_span: "471–85",
+      article_page_span: "471–85",
       url: "https://doi.org/10.1086/725865",
       work_producers: [
         WorkProducer.new({
@@ -229,6 +229,209 @@ module FactoryHelperCitations
       quotes: [
         Quote.new({
           page: "480",
+          text: "example quote"
+        })
+      ]
+    })
+  end
+
+  def fixture_citation_news_article
+    @fixture_citation_news_article ||= Work.create({
+      title: "Apple’s iPhone Is Sleek, Smart and Simple",
+      year_of_publication: 2007,
+      publishing_format: :news_article,
+      journal_name: "Washington Post", # TODO: use Producer model, :journal enum?
+      article_date: Date.new(2007, 7, 5),
+      online_source: "LexisNexis Academic", # TODO: use Producer model, :online enum?
+      work_producers: [
+        WorkProducer.new({
+          role: :author,
+          producer: Producer.new({
+            full_name: "Rob Pegoraro"
+          })
+        })
+      ],
+      quotes: [
+        Quote.new({
+          page: "",
+          text: "example quote"
+        })
+      ]
+    })
+  end
+
+  def fixture_citation_book_review
+    @fixture_citation_book_review ||= Work.create({
+      title: "The Muchness of Madonna",
+      year_of_publication: 2023,
+      publishing_format: :book_review,
+      journal_name: "New York Times", # TODO: use Producer model, :journal enum?
+      article_date: Date.new(2023, 10, 8),
+
+      review_title: "Madonna: A Rebel Life",
+      review_author: "Mary Gabriel",
+
+      work_producers: [
+        WorkProducer.new({
+          role: :author,
+          producer: Producer.new({
+            full_name: "Alexandra Jacobs"
+          })
+        })
+      ],
+      quotes: [
+        Quote.new({
+          page: "",
+          text: "example quote"
+        })
+      ]
+    })
+  end
+
+  def fixture_citation_interview
+    @fixture_citation_interview ||= Work.create({
+      title: "‘If You Have a Face, You Have a Place in the Conversation About AI,’ Expert Says",
+      year_of_publication: 2023,
+      publishing_format: :interview,
+      media_source: "Fresh Air",
+      media_format: "Audio",
+      online_source: "NPR", # TODO: use Producer model, :journal enum?
+      media_date: Date.new(2023, 11, 28),
+      interviewer_name: "Tonya Mosley",
+      media_timestamp: "37:58",
+      url: "https://www.npr.org/2023/11/28/1215529902/unmasking-ai-facial-recognition-technology-joy-buolamwini",
+      work_producers: [
+        WorkProducer.new({
+          role: :author,
+          producer: Producer.new({
+            full_name: "Joy Buolamwini"
+          })
+        })
+      ],
+      quotes: [
+        Quote.new({
+          page: "",
+          text: "example quote"
+        })
+      ]
+    })
+  end
+
+  def fixture_citation_thesis
+    @fixture_citation_thesis ||= Work.create({
+      title: "A House Is Not a Home",
+      subtitle: "Citizenship and Belonging in Contemporary Democracies",
+      year_of_publication: 2019,
+      publishing_format: :thesis,
+      journal_name: "University of Chicago",
+      media_format: "PhD diss.",
+      online_source: "ProQuest (13865986)",
+      
+      work_producers: [
+        WorkProducer.new({
+          role: :author,
+          producer: Producer.new({
+            forename: "Yuna",
+            surname: "Blajer de la Garza"
+          })
+        })
+      ],
+      quotes: [
+        Quote.new({
+          page: "",
+          text: "example quote"
+        })
+      ]
+    })
+  end
+
+  def fixture_citation_web_page
+    @fixture_citation_web_page ||= Work.create({
+      title: "About Yale",
+      subtitle: "Yale Facts",
+      publishing_format: :web_page,
+      media_date: Date.new(2022,3,8),
+      media_source: "Yale University",
+      url: "https://www.yale.edu/about-yale/yale-facts",
+      work_producers: [
+      ],
+      quotes: [
+        Quote.new({
+          page: "",
+          text: "example quote"
+        })
+      ]
+    })
+  end
+
+  def fixture_citation_social_media
+    @fixture_citation_social_media ||= Work.create({
+      title: "Is the world ready for singular they?",
+      subtitle: "We thought so back in 1993",
+      publishing_format: :social_media,
+      media_date: Date.new(2015,4,17),
+      media_source: "Facebook",
+      url: "https://www.facebook.com/ChicagoManual/posts/10152906193679151",
+      work_producers: [
+        WorkProducer.new({
+          role: :author, # TODO: flag for social_media/corporate account?,
+          producer: Producer.new({
+            custom_name: "Chicago Manual of Style"
+          })
+        })
+      ],
+      quotes: [
+        Quote.new({
+          page: "",
+          text: "example quote"
+        })
+      ]
+    })
+  end
+
+  def fixture_citation_video
+    @fixture_citation_video ||= Work.create({
+      title: "How Green Hydrogen Could End the Fossil Fuel Era",
+      publishing_format: :video,
+
+      media_source: "TED Talk, Vancouver, BC, April 2022", # hack
+      url: "https://www.ted.com/talks/vaitea_cowan_how_green_hydrogen_could_end_the_fossil_fuel_era",
+      media_format: "Video",
+      media_timestamp: "9 min., 15 sec", # alt.
+      work_producers: [
+        WorkProducer.new({
+          role: :author, # TODO: flag for social_media/corporate account?,
+          producer: Producer.new({
+            full_name: "Vaitea Cowan"
+          })
+        })
+      ],
+      quotes: [
+        Quote.new({
+          page: "",
+          text: "example quote"
+        })
+      ]
+    })
+  end
+
+  def fixture_citation_personal
+    @fixture_citation_personal ||= Work.create({
+      title: "direct message to author",
+      publishing_format: :personal,
+      media_date: Date.new(2024,8,1),
+      media_source: "Facebook",
+      work_producers: [
+        WorkProducer.new({
+          role: :author, # TODO: flag for social_media/corporate account?,
+          producer: Producer.new({
+            full_name: "Sam Gomez"
+          })
+        })
+      ],
+      quotes: [
+        Quote.new({
+          page: "",
           text: "example quote"
         })
       ]

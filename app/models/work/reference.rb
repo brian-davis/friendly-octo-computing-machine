@@ -39,11 +39,12 @@ class Work::Reference < ActiveRecord::AssociatedObject
 
   def long_title
     @long_title ||= begin
-      [
+      parts = [
         work.supertitle,
         work.title,
         work.subtitle
-      ].map(&:presence).compact.join(": ")
+      ].map(&:presence)
+      parts.compact.join(": ").gsub("?:", "?")
     end
   end
 
@@ -51,7 +52,8 @@ class Work::Reference < ActiveRecord::AssociatedObject
     @publisher_name ||= begin
       work.publisher&.name.presence ||
       work.parent&.publisher&.name ||
-      work.journal_name
+      work.journal_name ||
+      work.media_source
     end
   end
 
@@ -191,20 +193,23 @@ class Work::Reference < ActiveRecord::AssociatedObject
   end
 
   def complete_data?
-    producers? &&
-    publisher_name.present? &&
-    year_of_publication.present?
-
     if work.publishing_format_journal_article?
       work.publishing_format_journal_article? &&
       work.journal_name.present? &&
       work.journal_volume.present? &&
       work.journal_issue.present? &&
-      work.journal_page_span.present? &&
+      work.article_page_span.present? &&
 
       producers? &&
       publisher_name.present? &&
       year_of_publication.present?
+    elsif work.publishing_format_web_page? || work.publishing_format_social_media?
+      work.title.present? &&
+      work.media_date.present? &&
+      work.media_source.present? &&
+      work.url.present? 
+    elsif work.publishing_format_video?
+      producers? && work.title.present? && work.media_format.present? && work.digital_source.present?
     else
       producers? &&
       publisher_name.present? &&

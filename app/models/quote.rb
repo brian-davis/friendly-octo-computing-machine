@@ -26,6 +26,7 @@ class Quote < ApplicationRecord
   belongs_to :work
   delegate :reference, to: :work
 
+  # page _not_ required
   validates :text, presence: true
 
   # Quote.search_text("a famous quote")

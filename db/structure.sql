@@ -406,12 +406,20 @@ CREATE TABLE public.works (
     publishing_format public.work_publishing_format DEFAULT 'book'::public.work_publishing_format,
     publisher_id bigint,
     searchable tsvector GENERATED ALWAYS AS ((((setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(title, ''::character varying))::text), 'A'::"char") || setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(subtitle, ''::character varying))::text), 'B'::"char")) || setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(supertitle, ''::character varying))::text), 'C'::"char")) || setweight(to_tsvector('public.unaccented_dict'::regconfig, (COALESCE(foreign_title, ''::character varying))::text), 'D'::"char"))) STORED,
-    ebook_source character varying,
+    online_source character varying,
     url character varying,
     journal_name character varying,
     journal_volume integer,
     journal_issue integer,
-    journal_page_span character varying
+    article_page_span character varying,
+    article_date date,
+    review_title character varying,
+    review_author character varying,
+    media_source character varying,
+    media_timestamp character varying,
+    interviewer_name character varying,
+    media_format character varying,
+    media_date date
 );
 
 

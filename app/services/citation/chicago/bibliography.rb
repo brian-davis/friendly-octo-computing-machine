@@ -80,10 +80,8 @@ module Citation
       def journal_article_entry
         strict_author_names = reference.alpha_producer_names(:author)
         title = prep_title(reference.long_title, :quotes)
-
-        journal = journal_subreference(work.journal_page_span)
+        journal = journal_subreference(work.article_page_span)
         source = work.digital_source
-
         parts = [
           strict_author_names,
           title,
@@ -91,8 +89,125 @@ module Citation
           journal,
           source
         ].compact # optional translation
-
         build_from_parts(parts, :period)
+      end
+
+      def news_article_entry
+        strict_author_names = reference.alpha_producer_names(:author)
+        title = prep_title(reference.long_title, :quotes)
+        journal = prep_title(work.journal_name, :italics) # TODO: rename?
+        date = prep_date(work.article_date)
+        journal_source = "#{journal}, #{date}"
+
+        source = work.digital_source
+        parts = [
+          strict_author_names,
+          title,
+          journal_source,
+          source
+        ].compact # optional source
+        build_from_parts(parts, :period)
+      end
+
+      def book_review_entry
+        strict_author_names = reference.alpha_producer_names(:author)
+        title = prep_title(reference.long_title, :quotes)
+        journal = prep_title(work.journal_name, :italics) # TODO: rename?
+        date = prep_date(work.article_date)
+        journal_source = "#{journal}, #{date}"
+        review_subreference = "Review of #{prep_title(work.review_title, :italics)}, by #{work.review_author}"
+        source = work.digital_source
+        parts = [
+          strict_author_names,
+          title,
+          review_subreference,
+          journal_source,
+          source
+        ].compact # optional source
+        build_from_parts(parts, :period)
+      end
+
+      def interview_entry
+        strict_author_names = reference.alpha_producer_names(:author)
+        title = prep_title(reference.long_title, :quotes)
+        
+        interviewer = "Interview by #{work.interviewer_name}"
+        interview_subreference = "#{prep_title(work.media_source, :italics)}, #{work.online_source}, #{prep_date(work.media_date)}"
+        interview_format_time = "#{work.media_format}, #{work.media_timestamp}"
+        source = work.digital_source # url
+
+        parts = [
+          strict_author_names,
+          title,
+          interviewer,
+          interview_subreference,
+          interview_format_time,
+          source
+        ].compact # optional source
+        build_from_parts(parts, :period)
+      end
+
+      def thesis_entry
+        strict_author_names = reference.alpha_producer_names(:author)
+        title = "#{prep_title(reference.long_title, :quotes)}"
+        journal_name = "#{work.media_format}, #{work.journal_name}, #{work.year_of_publication}"
+        source = work.digital_source # online_source
+
+        parts = [
+          strict_author_names,
+          title,
+          journal_name,
+          
+          source
+        ].compact # optional source
+        build_from_parts(parts, :period)
+      end
+
+      def web_page_entry
+        title = "#{prep_title(reference.long_title, :quotes)}"
+        accessed_at = "Accessed #{prep_date(work.media_date)}"
+        source = work.digital_source # url
+        parts = [
+          work.media_source,
+          title,
+          accessed_at,       
+          source
+        ].compact # optional source
+        build_from_parts(parts, :period)
+      end
+
+      def social_media_entry
+        account = reference.alpha_producer_names(:author)
+        title = "#{prep_title(reference.long_title, :quotes)}"
+        accessed_at = "#{work.media_source}, #{prep_date(work.media_date)}"
+        source = work.digital_source # url
+        parts = [
+          account,
+          title,
+          accessed_at,       
+          source
+        ].compact # optional source
+        build_from_parts(parts, :period)
+      end
+
+      def video_entry
+        strict_author_names = reference.alpha_producer_names(:author)
+        title = "#{prep_title(reference.long_title, :quotes)}"
+        media_subreference = work.media_source # hack, TODO
+        _format = "#{work.media_format}, #{work.media_timestamp}"
+        source = work.digital_source # url
+
+        parts = [
+          strict_author_names,
+          title,
+          media_subreference,
+          _format,
+          source
+        ].compact # optional source
+        build_from_parts(parts, :period)
+      end
+
+      def personal_entry
       end
     end
   end

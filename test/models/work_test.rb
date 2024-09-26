@@ -5,19 +5,27 @@
 #  id                  :bigint           not null, primary key
 #  accession_note      :text
 #  alternate_title     :string
+#  article_date        :date
+#  article_page_span   :string
 #  custom_citation     :string
 #  date_of_accession   :date
 #  date_of_completion  :date
-#  ebook_source        :string
 #  foreign_title       :string
+#  interviewer_name    :string
 #  journal_issue       :integer
 #  journal_name        :string
-#  journal_page_span   :string
 #  journal_volume      :integer
 #  language            :string
+#  media_date          :date
+#  media_format        :string
+#  media_source        :string
+#  media_timestamp     :string
+#  online_source       :string
 #  original_language   :string
 #  publishing_format   :enum             default("book")
 #  rating              :integer
+#  review_author       :string
+#  review_title        :string
 #  searchable          :tsvector
 #  subtitle            :string
 #  supertitle          :string

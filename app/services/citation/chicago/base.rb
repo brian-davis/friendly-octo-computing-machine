@@ -64,6 +64,10 @@ module Citation
           .gsub("..", ".") # paranoid
           .gsub(",,", ",") # paranoid
       end
+
+      def prep_date(date)
+        date.strftime("%B %-d, %Y")
+      end
     end
   end
 end

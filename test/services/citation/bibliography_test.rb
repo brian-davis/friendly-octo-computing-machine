@@ -91,4 +91,59 @@ class BibliographyTest < ActiveSupport::TestCase
     result = subject.reference.chicago_bibliography
     assert_equal expected, result
   end
+
+  test "news_article" do
+    expected = "Pegoraro, Rob. “Apple’s iPhone Is Sleek, Smart and Simple.” _Washington Post_, July 5, 2007. LexisNexis Academic."
+    subject = fixture_citation_news_article
+    result = subject.reference.chicago_bibliography
+    assert_equal expected, result
+  end
+
+  test "book_review" do
+    expected = "Jacobs, Alexandra. “The Muchness of Madonna.” Review of _Madonna: A Rebel Life_, by Mary Gabriel. _New York Times_, October 8, 2023."
+    subject = fixture_citation_book_review
+    result = subject.reference.chicago_bibliography
+    assert_equal expected, result
+  end
+
+  test "interview" do
+    expected = "Buolamwini, Joy. “‘If You Have a Face, You Have a Place in the Conversation About AI,’ Expert Says.” Interview by Tonya Mosley. _Fresh Air_, NPR, November 28, 2023. Audio, 37:58. https://www.npr.org/2023/11/28/1215529902/unmasking-ai-facial-recognition-technology-joy-buolamwini."
+    subject = fixture_citation_interview
+    result = subject.reference.chicago_bibliography
+    assert_equal expected, result
+  end
+
+  test "thesis" do
+    expected = "Blajer de la Garza, Yuna. “A House Is Not a Home: Citizenship and Belonging in Contemporary Democracies.” PhD diss., University of Chicago, 2019. ProQuest (13865986)."
+    subject = fixture_citation_thesis
+    result = subject.reference.chicago_bibliography
+    assert_equal expected, result
+  end
+
+  test "web_page" do
+    expected = "Yale University. “About Yale: Yale Facts.” Accessed March 8, 2022. https://www.yale.edu/about-yale/yale-facts."
+    subject = fixture_citation_web_page
+    result = subject.reference.chicago_bibliography
+    assert_equal expected, result
+  end
+
+  test "social_media" do
+    expected = "Chicago Manual of Style. “Is the world ready for singular they? We thought so back in 1993.” Facebook, April 17, 2015. https://www.facebook.com/ChicagoManual/posts/10152906193679151."
+    subject = fixture_citation_social_media
+    result = subject.reference.chicago_bibliography
+    assert_equal expected, result
+  end
+
+  test "video" do
+    expected = "Cowan, Vaitea. “How Green Hydrogen Could End the Fossil Fuel Era.” TED Talk, Vancouver, BC, April 2022. Video, 9 min., 15 sec. https://www.ted.com/talks/vaitea_cowan_how_green_hydrogen_could_end_the_fossil_fuel_era."
+    subject = fixture_citation_video
+    result = subject.reference.chicago_bibliography
+    assert_equal expected, result
+  end
+
+  test "personal" do
+    subject = fixture_citation_personal
+    result = subject.reference.chicago_bibliography
+    assert_nil result
+  end
 end
