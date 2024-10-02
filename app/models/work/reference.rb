@@ -2,8 +2,8 @@ class Work::Reference < ActiveRecord::AssociatedObject
   include TimeFormatter
   include ActionView::Helpers::TextHelper
 
-  TITLE_INITIAL_STOPWORDS = ["the"].map { |word| [word, word.capitalize] }.flatten
-  TITLE_INTERNAL_STOPWORDS = ["of", "in", "with"].map { |word| [word, word.capitalize] }.flatten
+  TITLE_INITIAL_STOPWORDS = ["a", "the", "how"].map { |word| [word, word.capitalize] }.flatten # TODO: more stopwords
+  TITLE_INTERNAL_STOPWORDS = ["of", "in", "with", "is", "could"].map { |word| [word, word.capitalize] }.flatten
 
   def short_title
     init_regexp = %r{

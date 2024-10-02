@@ -52,6 +52,8 @@ module Citation
       end
 
       def build_from_parts(parts, separator = :comma)
+        return "" if parts.empty?
+
         joiner = {
           comma: ", ",
           period: ". "

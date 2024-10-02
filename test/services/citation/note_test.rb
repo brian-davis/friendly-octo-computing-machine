@@ -166,50 +166,67 @@ class NoteTest < ActiveSupport::TestCase
   end
 
   test "news_article_short" do
-    skip
     expected = "Pegoraro, “Apple’s iPhone.”"
-    assert false # TODO
+    subject = fixture_citation_news_article.quotes.first
+    
+    result = subject.reference.chicago_note(:short)
+    assert_equal expected, result
   end
 
   test "book_review_short" do
-    skip
     expected = "Jacobs, “Muchness of Madonna.”"
-    assert false # TODO
+    subject = fixture_citation_book_review.quotes.first
+    result = subject.reference.chicago_note(:short)
+    assert_equal expected, result
   end
 
   test "interview_short" do
-    skip
     expected = "Buolamwini, interview."
-    assert false # TODO
+    
+    subject = fixture_citation_interview.quotes.first
+    result = subject.reference.chicago_note(:short)
+    assert_equal expected, result
   end
 
   test "thesis_short" do
-    skip
-    expected = "Blajer de la Garza, “House,” 93."
-    assert false # TODO
+    expected = "Blajer de la Garza, “House,” 66–67."
+
+    subject = fixture_citation_thesis.quotes.first
+    result = subject.reference.chicago_note(:short)
+    assert_equal expected, result
   end
 
   test "web_page_short" do
-    skip
     expected = "“Yale Facts.”"
-    assert false # TODO
+
+    subject = fixture_citation_web_page.quotes.first
+    result = subject.reference.chicago_note(:short)
+    assert_equal expected, result
   end
 
   test "social_media_short" do
-    skip
     expected = "Michele Truty, April 17, 2015, 1:09 p.m., comment on Chicago Manual of Style, “singular they.”"
-    assert false # TODO
+
+    subject = fixture_citation_social_media.quotes.create({
+      custom_citation: "Michele Truty, April 17, 2015, 1:09 p.m., comment on Chicago Manual of Style, “singular they.”",
+      page: "",
+      text: "example with custom citation"
+    })
+    result = subject.reference.chicago_note(:short)
+    assert_equal expected, result
   end
 
   test "video_short" do
-    skip
-    expected = "Cowan, “Green Hydrogen,” at 6:09–17."
-    assert false # TODO
+    expected = "Cowan, “Green Hydrogen,” at 9 min., 15 sec."
+    subject = fixture_citation_video.quotes.first
+    result = subject.reference.chicago_note(:short)
+    assert_equal expected, result
   end
 
   test "personal_short" do
-    skip
-    expected = nil
-    assert false # TODO
+    subject = fixture_citation_personal.quotes.first
+    result = subject.reference.chicago_note(:short)
+    expected = ""
+    assert_equal "", result
   end
 end

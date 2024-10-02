@@ -23,24 +23,63 @@ module Citation
       end
 
       def short
+        return quote.custom_citation if quote.custom_citation.present?
         return unless guard_citation
-        case work.publishing_format
+
+        parts = case work.publishing_format
         when "book", "ebook"
-          names = reference.producer_last_names
-          title = prep_title(reference.short_title, :italics)
-          page = quote.citation_page
-          parts = [names, title, page]
-          build_from_parts(parts, :comma)
+          _names = reference.producer_last_names
+          _title = prep_title(reference.short_title, :italics)
+          _page = quote.citation_page
+
+          [_names, _title, _page]
         when "chapter", "journal_article"
-          names = reference.producer_last_names
-          title = prep_title(reference.short_title, :quotes)
-          page = quote.citation_page
-          parts = [names, title, page]
-          build_from_parts(parts, :comma)
+          _names = reference.producer_last_names
+          _title = prep_title(reference.short_title, :quotes)
+          _page = quote.citation_page
+
+          [_names, _title, _page]
+        when "news_article", "book_review"
+          _names = reference.producer_last_names
+          _title = prep_title(reference.short_title, :quotes)
+
+          [_names, _title]
+        when "interview"
+          _names = reference.producer_last_names
+
+          [_names, "interview"]
+        when "thesis"
+          _names = reference.producer_last_names
+          _title = prep_title(reference.short_title, :quotes)
+          _page = quote.citation_page
+
+          [_names, _title, _page]
+        when "web_page"
+          _title = prep_title(reference.short_title, :quotes)
+
+          [_title]
+        when "social_media"
+          # untested, example requires custom_citation
+          _names = reference.producer_names
+          _title = prep_title(reference.short_title, :quotes)
+          _date = prep_date(work.media_date)
+          _media_source = work.media_source
+
+          [_names, _title, _date, _media_source]
+        when "video"
+          _names = reference.producer_last_names
+          _title = prep_title(reference.short_title, :quotes)
+          _time = "at #{work.media_timestamp}"
+
+          [_names, _title, _time]
+        when "personal"
+          [] # no-op
         end
+        build_from_parts(parts, :comma)
       end
   
       def long
+        return quote.custom_citation if quote.custom_citation.present?
         return unless guard_citation
         helper = "#{work.publishing_format}_long"
         send(helper) if respond_to?(helper, true) # NotImplemented

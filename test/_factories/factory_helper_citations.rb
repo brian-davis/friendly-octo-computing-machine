@@ -171,7 +171,7 @@ module FactoryHelperCitations
       ],
       quotes: [
         Quote.new({
-          custom_citation: "chap. 10, doc. 19",
+          page: "chap. 10, doc. 19",
           text: "Example quote"
         })
       ]
@@ -195,7 +195,7 @@ module FactoryHelperCitations
       ],
       quotes: [
         Quote.new({
-          custom_citation: "chap. 6",
+          page: "chap. 6",
           text: "Example quote"
         })
       ]
@@ -347,8 +347,8 @@ module FactoryHelperCitations
 
   def fixture_citation_web_page
     @fixture_citation_web_page ||= Work.create({
-      title: "About Yale",
-      subtitle: "Yale Facts",
+      supertitle: "About Yale",
+      title: "Yale Facts",
       publishing_format: :web_page,
       media_date: Date.new(2022,3,8),
       media_source: "Yale University",
