@@ -46,7 +46,7 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ]
   gem "faker", "~> 3.4"
   # https://github.com/flyerhzm/bullet
-  gem 'bullet'
+  # gem 'bullet'
 end
 
 group :development do
