@@ -1,4 +1,3 @@
-# app/models/post/publisher.rb
 class Work::Reference < ActiveRecord::AssociatedObject
   include TimeFormatter
   include ActionView::Helpers::TextHelper
@@ -177,12 +176,12 @@ class Work::Reference < ActiveRecord::AssociatedObject
     end
   end
 
-  # REFACTOR: bad pattern?
+  # REFACTOR: bad pattern
   def chicago_bibliography
     @chicago_bibliography ||= Citation::Chicago::Bibliography.new(work).entry
   end
 
-  # REFACTOR: bad pattern?
+  # REFACTOR: bad pattern
   def chicago_note(quote, length = :long)
     case length
     when :long
@@ -210,6 +209,8 @@ class Work::Reference < ActiveRecord::AssociatedObject
       work.url.present? 
     elsif work.publishing_format_video?
       producers? && work.title.present? && work.media_format.present? && work.digital_source.present?
+    elsif work.publishing_format_personal?
+      producers? && work.media_date.present?
     else
       producers? &&
       publisher_name.present? &&

@@ -24,7 +24,7 @@ class Quote < ApplicationRecord
   include PgSearch::Model
 
   belongs_to :work
-  delegate :reference, to: :work
+  has_object :reference
 
   # page _not_ required
   validates :text, presence: true

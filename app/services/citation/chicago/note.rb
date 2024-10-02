@@ -10,7 +10,16 @@ module Citation
 
       private def guard_citation
         reference.complete_data? &&
-        quote.citation_page.present?
+        (
+          reference.work.publishing_format_news_article? ||
+          reference.work.publishing_format_book_review? ||
+          reference.work.publishing_format_interview? ||
+          reference.work.publishing_format_web_page? ||
+          reference.work.publishing_format_social_media? ||
+          reference.work.publishing_format_video? ||
+          reference.work.publishing_format_personal? ||
+          quote.citation_page.present?
+        ) # REFACTOR
       end
 
       def short
@@ -111,6 +120,155 @@ module Citation
         ].compact
 
         build_from_parts(parts, :period)
+      end
+
+      def news_article_long
+        strict_author_names = reference.producer_names(:author)
+        title = prep_title(reference.long_title, :quotes)      
+        news = prep_title(work.journal_name, :italics)
+        date = prep_date(work.article_date)
+        source = work.digital_source
+
+        parts = [
+          strict_author_names,
+          title,
+          translated_by, # base
+          news,
+          date,
+          source
+        ].compact
+
+        build_from_parts(parts, :comma)
+      end
+
+      def book_review_long
+        strict_author_names = reference.producer_names(:author)
+        title = prep_title(reference.long_title, :quotes)
+
+        # REFACTOR: review_title, review_author is hacky.
+        review_subreference = "review of #{prep_title(work.review_title, :italics)}, by #{work.review_author}"
+
+        news = prep_title(work.journal_name, :italics)
+        date = prep_date(work.article_date)
+        source = work.digital_source
+
+        parts = [
+          strict_author_names,
+          title,
+          review_subreference,
+          translated_by, # base
+          news,
+          date,
+          source
+        ].compact
+
+        build_from_parts(parts, :comma)
+      end
+
+      def interview_long
+        strict_author_names = reference.producer_names(:author)
+        title = prep_title(reference.long_title, :quotes)
+
+        # REFACTOR: interviewer_name, media_source, online_source is hacky.
+        interview_subreference = "interview by #{work.interviewer_name}"
+        interview_show = prep_title(work.media_source, :italics)
+        interview_source = work.online_source
+        date = prep_date(work.media_date)
+        _format = work.media_format.downcase
+        timestamp = work.media_timestamp 
+        url = work.url.presence
+
+        parts = [
+          strict_author_names,
+          title,
+          interview_subreference,
+          interview_show,
+          interview_source,
+          translated_by, # base
+          date,
+          _format,
+          timestamp,
+          url
+        ].compact
+
+        build_from_parts(parts, :comma)
+      end
+
+      def thesis_long
+        strict_author_names = reference.producer_names(:author)
+        
+        # REFACTOR, hacky
+        _format = "#{prep_title(reference.long_title, :quotes)} (#{work.media_format}, #{work.journal_name}, #{work.year_of_publication})"
+        page = quote.citation_page # page
+        source = work.online_source
+
+        parts = [
+          strict_author_names,
+          translated_by, # base
+          _format,
+          page,
+          source
+        ].compact
+
+        build_from_parts(parts, :comma)
+      end
+
+      def web_page_long
+        title = prep_title(reference.long_title, :quotes)
+        _date = "accessed #{prep_date(work.media_date)}"
+
+        parts = [
+          title,
+          work.media_source, # REFACTOR, hacky
+          _date,
+          work.url
+        ].compact
+
+        build_from_parts(parts, :comma)
+      end
+
+      def social_media_long
+        strict_author_names = reference.producer_names(:author)
+        _title = prep_title(reference.long_title, :quotes)
+        
+        parts = [
+          strict_author_names, # REFACTOR, hacky
+          _title,
+          work.media_source, # REFACTOR, hacky
+          prep_date(work.media_date),
+          work.url
+        ].compact
+
+        build_from_parts(parts, :comma)
+      end
+
+      def video_long
+        strict_author_names = reference.producer_names(:author)
+        _title = prep_title(reference.long_title, :quotes)
+        
+        parts = [
+          strict_author_names, # REFACTOR, hacky
+          _title,
+          work.media_source, # REFACTOR, hacky
+          work.media_timestamp,
+          work.url
+        ].compact
+
+        build_from_parts(parts, :comma)
+      end
+
+      def personal_long
+        strict_author_names = reference.producer_names(:author)
+        _title = work.title # not prep, Refactor: hacky
+        _date = prep_date(work.media_date) # hacky
+   
+        parts = [
+          strict_author_names, # REFACTOR, hacky
+          _title,
+          _date
+        ].compact
+
+        build_from_parts(parts, :comma)
       end
     end
   end

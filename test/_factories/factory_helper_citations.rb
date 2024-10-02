@@ -338,7 +338,7 @@ module FactoryHelperCitations
       ],
       quotes: [
         Quote.new({
-          page: "",
+          page: "66–67",
           text: "example quote"
         })
       ]
@@ -397,7 +397,7 @@ module FactoryHelperCitations
       media_source: "TED Talk, Vancouver, BC, April 2022", # hack
       url: "https://www.ted.com/talks/vaitea_cowan_how_green_hydrogen_could_end_the_fossil_fuel_era",
       media_format: "Video",
-      media_timestamp: "9 min., 15 sec", # alt.
+      media_timestamp: "9 min., 15 sec.", # alt.
       work_producers: [
         WorkProducer.new({
           role: :author, # TODO: flag for social_media/corporate account?,
@@ -417,10 +417,10 @@ module FactoryHelperCitations
 
   def fixture_citation_personal
     @fixture_citation_personal ||= Work.create({
-      title: "direct message to author",
+      title: "Facebook direct message to author", # hack
       publishing_format: :personal,
       media_date: Date.new(2024,8,1),
-      media_source: "Facebook",
+      media_source: "",
       work_producers: [
         WorkProducer.new({
           role: :author, # TODO: flag for social_media/corporate account?,
