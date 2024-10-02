@@ -88,4 +88,8 @@ Rails.application.configure do
   # # $ bin/rails s -b 0.0.0.0 -p 3000
   # # config.hosts << 'hostname.local'
   # config.hosts.clear
+
+  # ngrok http --url=xxx-xxx.ngrok-free.app 3000
+  # alias ngrok-pipe
+  config.hosts << Rails.application.credentials.ngrok.domain
 end

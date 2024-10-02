@@ -36,3 +36,5 @@
 coverage
 
 /_dev/*
+
+/config/credentials/development.key
