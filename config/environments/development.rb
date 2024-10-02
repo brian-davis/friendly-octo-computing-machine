@@ -92,4 +92,7 @@ Rails.application.configure do
   # ngrok http --url=xxx-xxx.ngrok-free.app 3000
   # alias ngrok-pipe
   config.hosts << Rails.application.credentials.ngrok.domain
+
+  # devise
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 end

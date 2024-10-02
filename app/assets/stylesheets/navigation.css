@@ -79,3 +79,7 @@ button.nav-button.nav-action.nav-button-to {
 a.non-link {
   text-decoration: none
 }
+
+.user-nav-links button.danger {
+  background-color: var(--color-light-red);
+}

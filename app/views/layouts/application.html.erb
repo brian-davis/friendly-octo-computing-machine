@@ -30,4 +30,17 @@
     style="display:none;"
     data-controller="request-helper">
   </div>
-</html>
+
+
+  <%# TODO: content_for %>
+  <div class="user-nav-links" data-controller="confirmable">
+  <% if user_signed_in? %>
+  <hr />  
+  <%#=
+  link_to("Sign out", destroy_user_session_path, data: { turbo_method: :delete })
+  %>
+  <%= sign_out_button %>
+  <% end %>
+  </div>
+
+  </html>

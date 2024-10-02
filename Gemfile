@@ -94,3 +94,5 @@ gem "annotaterb", "~> 4.11"
 
 # https://github.com/kaspth/active_record-associated_object
 gem "active_record-associated_object", "~> 0.8.1"
+
+gem "devise", "~> 4.9"
