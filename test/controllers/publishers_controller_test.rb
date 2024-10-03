@@ -1,8 +1,18 @@
 require "test_helper"
 
 class PublishersControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
+  # before each
   setup do
+    sign_in users(:one)
+
+    # refactor
     @publisher = fixture_publishers_penguin
+  end
+
+  teardown do
+    sign_out users(:one)
   end
 
   test "should get index" do

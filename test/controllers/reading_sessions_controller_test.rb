@@ -1,9 +1,19 @@
 require "test_helper"
 
 class ReadingSessionsControllerTest < ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+
+  # before each
   setup do
+    sign_in users(:one)
+
+    # refactor
     @work = fixture_works_meet_me_in_atlantis
     @reading_session = @work.reading_sessions.first
+  end
+
+  teardown do
+    sign_out users(:one)
   end
 
   test "should get index" do

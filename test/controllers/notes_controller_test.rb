@@ -1,12 +1,21 @@
 require "test_helper"
 
 class NotesControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    @work = fixture_works_the_baltic_origins
-    @wnote = @work.notes.first
+  include Devise::Test::IntegrationHelpers
 
+  # before each
+  setup do
+    sign_in users(:one)
+
+    # refactor
+    @work = fixture_works_the_baltic_origins
+    @wnote = @work.notes.first 
     @producer = fixture_producers_herge
     @pnote = @producer.notes.first
+  end
+
+  teardown do
+    sign_out users(:one)
   end
 
   test "should get index work" do
