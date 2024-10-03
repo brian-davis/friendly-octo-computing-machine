@@ -1,9 +1,9 @@
 class WorksController < ApplicationController
   before_action :set_work, only: %i[show edit update destroy]
   before_action :build_or_set_work, only: %i[
-    build_producer select_producer build_publisher select_publisher build_tag select_tag build_parent select_parent
+    build_producer select_producer build_publisher select_publisher build_tag select_tag build_parent select_parent clone_work
   ]
-  before_action :set_form_options, only: %i[new edit]
+  before_action :set_form_options, only: %i[new edit clone_work]
   before_action :set_select_options, only: %i[index]
   before_action :set_tags_cloud, only: %i[index]
   before_action :filter_and_sort_works, only: %i[index]
@@ -144,6 +144,18 @@ class WorksController < ApplicationController
     @parent = Work.where(id: ids).find(params["parent_id"])
   end
 
+  def clone_work
+    # copy @work attributes to new object
+    # make @work_producer ids blank
+    new_attrs = @work.attributes.except("created_at", "updated_at", "id", "searchable")
+    new_attrs["title"] += " CLONE"
+    @work = Work.new(new_attrs)
+    @work_producers = @work_producers.map { |wp|
+      new_attrs = wp.attributes.except("work_id","id", "created_at", "updated_at")
+      WorkProducer.new(new_attrs)
+    }
+  end
+
 private
   # :show, :edit, :update, :destroy
   def set_work
@@ -154,13 +166,14 @@ private
   def set_form_options
     @work ||= Work.new
     @work_producers = @work.work_producers.includes(:producer)
- 
+    @publisher = @work.publisher
     @language_options = helpers.strict_datalist_options(Work.language_options)
     @parent_options = helpers.strict_options(Work.parent_options(@work))
     @producer_options = helpers.strict_options(Producer.name_options)
     @publisher_options = helpers.strict_options(Publisher.name_options)
     @publishing_format_options = helpers.strict_options(Work.publishing_format_options)
     @tag_options = helpers.strict_options(Work.tag_options)
+    @clone_options = helpers.strict_options(Work.clone_options)
   end
 
   # :index

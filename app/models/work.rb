@@ -195,7 +195,9 @@ class Work < ApplicationRecord
       publishing_formats.keys.sort
     end
 
-    def title_options
+    # Producer form associations
+    # Work form clone
+    alias_method :clone_options, def title_options
       order("UPPER(works.title)").pluck(:title, :id)
     end
 

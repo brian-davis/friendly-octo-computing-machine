@@ -1,0 +1,5 @@
+<%= form_with(model: @work) do |form| %>
+  <%= turbo_stream.update "new-work-form" do %>
+    <%= render "form", work: @work %>
+  <% end %>
+<% end %>
