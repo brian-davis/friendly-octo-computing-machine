@@ -94,4 +94,8 @@ Rails.application.configure do
   # ]
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+
+  # ngrok http --url=xxx-xxx.ngrok-free.app 3000
+  # alias ngrok-pipe
+  config.hosts << Rails.application.credentials.ngrok.domain
 end
