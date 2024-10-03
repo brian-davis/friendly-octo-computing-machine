@@ -130,6 +130,7 @@ Rails.application.routes.draw do
       get :select_tag, format: :turbo_stream
       get :build_parent, format: :turbo_stream
       get :select_parent, format: :turbo_stream
+      get :clone_work, format: :turbo_stream
     end
 
     resources :reading_sessions

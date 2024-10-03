@@ -1,11 +1,41 @@
-<%= form_with(model: work, html: { class: "table-form" }, data: { controller: "works", works_id_value: @work.id, works_tags_value: @work.tags, works_request_helper_outlet: ".request-helper" }) do |form| %>
+<%=
+  form_with(
+    model: work,
+    html: { class: "table-form" },
+    data: {
+      controller: "works",
+      works_id_value: @work.id,
+      works_tags_value: @work.tags,
+      works_request_helper_outlet: ".request-helper"
+    }
+  ) do |form|
+%>
   <%= render("shared/form_errors", form: form) %>
 
-  <%= form.label :title %>
-  <%= form.text_field :title, { placeholder: "title required" } %>
+  <% if action_name.in?(["new", "clone_work"]) %>
+    <%= form.label :clone_work, "Clone existing work" %>
+    <%=
+      select_tag(
+        "clone_work",
+        options_for_select(@clone_options),
+        {
+          include_blank: "Select Work",
+          class: "select-button",
+          data: {
+            action: "change->works#cloneWork"
+          }
+        }
+      )
+    %>
+    <hr>
+    <hr>
+  <% end %>
 
   <%= form.label :supertitle %>
   <%= form.text_field :supertitle %>
+
+  <%= form.label :title %>
+  <%= form.text_field :title, { placeholder: "required" } %>
 
   <%= form.label :subtitle %>
   <%= form.text_field :subtitle %>
@@ -34,8 +64,8 @@
   <%= form.label :rating %>
   <%= form.number_field(:rating, in: (-1..5)) %>
 
-  <%= form.label :format %>
-  <%= form.select(:format, options_for_select(@publishing_format_options, @work.publishing_format)) %>
+  <%= form.label :publishing_format %>
+  <%= form.select(:publishing_format, options_for_select(@publishing_format_options, @work.publishing_format)) %>
 
   <%= form.label :custom_citation, "Custom Citation (Markdown)", class: "small-text" %>
   <%= form.text_field :custom_citation %>
@@ -70,7 +100,7 @@
   </div>
 
   <div class="subFormListSection" id="sub_form_list_publisher" data-controller="dismissable">
-    <% if work.publisher %>
+    <% if @publisher %>
       <div class="outline subFormContainer" data-dismissable-target="subForm">
         <%= form.hidden_field :publisher_id, value: work.publisher_id %>
         <div class="subform-line">
@@ -107,6 +137,10 @@
       <div class="outline subFormContainer" data-dismissable-target="subForm" data-works-target="producerSubForm" data-producer-id="<%= work_producer.producer_id %>">
         <%= form.fields_for :work_producers, work_producer do |t| %>
           <%= t.hidden_field :id %>
+
+          <% if work_producer.producer_id.present? %>
+            <%= t.hidden_field :producer_id %>
+          <% end %>
 
           <div class="subform-line">
 

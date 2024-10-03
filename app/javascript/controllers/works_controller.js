@@ -150,4 +150,16 @@ export default class extends Controller {
     this.requestHelperOutlet.turboGet(url);
     event.currentTarget.value = "";
   }
+
+  cloneWork(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    console.log("cloneWork");
+
+    let url = "/works/clone_work";
+    url += `?work_id=${event.currentTarget.value}`;
+    // console.log(url);
+    this.requestHelperOutlet.turboGet(url);
+    event.currentTarget.value = "";
+  }
 }
