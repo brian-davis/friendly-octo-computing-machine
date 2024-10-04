@@ -35,7 +35,6 @@ class WorksController < ApplicationController
   # POST /works or /works.json
   def create
     @work = Work.new(work_params)
-
     respond_to do |format|
       if @work.save
         format.html { redirect_to work_url(@work), notice: "Work was successfully created." }
