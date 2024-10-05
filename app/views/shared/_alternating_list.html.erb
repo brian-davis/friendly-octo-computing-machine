@@ -1,10 +1,16 @@
-<%# locals: (collection:, partial: nil) -%>
+<%# locals: (collection:, partial: nil, numbering: true) -%>
 
 <% if collection.empty? %>
   <div class="div-list-row empty-list">EMPTY</div>
 <% else %>
-  <% collection.each do |item| %>
+  <% collection.each.with_index(1) do |item, i| %>
     <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
+      <% if numbering %>
+        <div class="line-numbering">
+          <%= i %>.
+        </div>
+      <% end %>
+
       <% if partial %>
         <%= render partial, item: item %>
       <% else %>

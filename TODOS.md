@@ -25,4 +25,3 @@ feature: add more attributes fields to forms, subforms
 refactor: research extracting CSS into gem, reusable across apps (DIY CSS framework)
 
 - missing author names on index (prod)
-- add list numbers, basic books count

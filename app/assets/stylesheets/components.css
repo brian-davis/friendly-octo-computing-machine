@@ -163,24 +163,25 @@ ul.associated-items li {
 }
 
 .div-list-row {
-  padding: 0.5rem;
+  line-height: 2rem;
 }
+
 
 .div-list-row.alt-row {
   background-image: var(--center-gradient-light-beige);
 }
 
-
 .div-list-row.empty-list {
   color: var(--color-dark-beige);
 }
 
-#metrics {
-  /* outline: 1px solid var(--color-dark-red); */
+.line-numbering {
+  float: left;
+  margin-right: 0.5rem;
+  opacity: 0.5;
 }
 
 #metrics .div-list-row {
-  padding: 0.5rem;
   display: flex;
   gap: 1rem;
 }
@@ -193,7 +194,6 @@ ul.associated-items li {
 #metrics .div-list-row .metric-result {
   flex: 80%;
 }
-
 
 .scrollable {
   max-height: 60vh;
@@ -252,7 +252,7 @@ h1.max-heading {
 }
 
 span.horizontal-spacer {
-  border-right: 1px solid var(--color-dark-beige);
+  border-right: 2px solid var(--color-dark-beige);
   margin-left: 0.5rem;
   margin-right: 0.5rem;
 }
