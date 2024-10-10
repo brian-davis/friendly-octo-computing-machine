@@ -83,3 +83,7 @@ a.non-link {
 .user-nav-links button.danger {
   background-color: var(--color-light-red);
 }
+
+#works-collection .search-button {
+  margin-right: unset;
+}

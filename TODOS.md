@@ -21,7 +21,6 @@
 *FRONT END*
 
 * mobile-friendly views
-* improve pipe_spacer
 * tabs for lists of associated authors/quotes/notes/reqding sessions on show views
 * refactor: research extracting CSS into gem, reusable across apps (DIY CSS framework)
 

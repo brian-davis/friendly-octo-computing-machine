@@ -260,9 +260,14 @@ h1.max-heading {
 }
 
 span.horizontal-spacer {
-  border-right: 2px solid var(--color-dark-beige);
-  margin-left: 0.5rem;
-  margin-right: 0.5rem;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+span.horizontal-spacer:after {
+  content: "|";
+  font-weight: 900;
+  color: var(--color-light-blue);
 }
 
 span.work-title-std {
