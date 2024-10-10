@@ -1,8 +1,5 @@
 # TODOS
 
-*DEPLOYMENT*
-* research rails 8.x built-in containers, deployment solutions
-
 *BACK END*
 * refactor: case-insensitive sorting, research db collations
 * refactor: DRY work#long_title vs works_helper#title_line vs Citation::Bibliography
@@ -12,16 +9,26 @@
 * refactor: SQL COALESCE on works.pg_search columns (i.e. super + title + sub as 1 value)
   * postgress trigger to save actual full name to cached column
 * refactor: avoid hacky columns for non-book formats and citations,(use different models, not enums?)
+* research pg_search custom settings, custom stop-word list (allow "after")
+* user-scoped authorization, allow for multiple users/libraries
 
 * bugfix:
-  * research pg_search custom settings, custom stop-word list (allow "after")
   * fix partial n+1 on works index, fix other n + 1 (without Bullet)
 
 *FRONT END*
 
-feature: producer bio/links
-feature: add more attributes fields to forms, subforms
+* mobile-friendly views
+* hideable tag list
+* improve pipe_spacer
+* tabs for lists of associated authors/quotes/notes/reqding sessions on show views
+* refactor: research extracting CSS into gem, reusable across apps (DIY CSS framework)
 
-refactor: research extracting CSS into gem, reusable across apps (DIY CSS framework)
+*FEATURES*
 
-- missing author names on index (prod)
+* producer bio/links
+* add more attributes fields to subforms
+* dynamic work form, fields change based on publication_format (maybe it should be a new subclassed model)
+* location field on publisher
+* flipper gem or feature toggling, admin view, disable reading sessions
+* add hardback/paperback, condition
+

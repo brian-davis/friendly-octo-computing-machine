@@ -87,16 +87,16 @@ class Work::Reference < ActiveRecord::AssociatedObject
       # TODO: avoid ruby here:
       # author_names = work.producers.pluck(Arel.sql "COALESCE(NULLIF(producers.custom_name, ''), NULLIF(producers.surname,''))")
       author_names = if work.year_of_composition.present?
-        work.authors.map { |p| p.custom_name || p.surname }
+        work.authors.map { |p| p.custom_name.presence || p.surname }
       else 
-        work.producers.map { |p| p.custom_name || p.surname }
+        work.producers.map { |p| p.custom_name.presence || p.surname }
       end
 
       return "" if author_names.empty?
 
       author_names = author_names.to_sentence
 
-      year_source = year_of_composition || year_of_publication
+      year_source = year_of_publication || year_of_composition # TODO: use parent/child for classical works?
 
       year = common_era_year(year_source) # ApplicationHelper
       [
