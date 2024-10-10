@@ -1,5 +1,8 @@
 # TODOS
 
+*DEVELOPMENT*
+* Debug Ruby Language Server (Shopify) with VSCode in WSL2
+
 *BACK END*
 * refactor: case-insensitive sorting, research db collations
 * refactor: DRY work#long_title vs works_helper#title_line vs Citation::Bibliography
@@ -18,7 +21,6 @@
 *FRONT END*
 
 * mobile-friendly views
-* hideable tag list
 * improve pipe_spacer
 * tabs for lists of associated authors/quotes/notes/reqding sessions on show views
 * refactor: research extracting CSS into gem, reusable across apps (DIY CSS framework)

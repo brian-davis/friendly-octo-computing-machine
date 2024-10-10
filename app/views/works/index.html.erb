@@ -7,11 +7,14 @@
   <b class="major-heading">Books</b>
   <hr>
 
-  <%# stimulus %>
-  <div class="cloud-list">
-    <%= render("tags_cloud", tags_cloud: @tags_cloud, stimulus: true) %>
-  </div>
+  <details id="class-list-wrapper" open>
+    <summary>Tags</summary>
 
+    <%# stimulus %>
+    <div class="cloud-list">
+      <%= render("tags_cloud", tags_cloud: @tags_cloud, stimulus: true) %>
+    </div>
+  </details>
   <hr>
 
   <div id="works-collection">
