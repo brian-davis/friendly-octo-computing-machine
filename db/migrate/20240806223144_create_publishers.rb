@@ -11,5 +11,4 @@ class CreatePublishers < ActiveRecord::Migration[7.1]
     add_presence_constraint :publishers, :name, deferred: true
     add_unique_constraint :publishers, :name, deferred: true
   end
-
 end

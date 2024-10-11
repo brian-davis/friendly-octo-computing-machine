@@ -1,5 +1,7 @@
 <div id="<%= dom_id @publisher %>">
   <b class="minor-heading"><%= @publisher.name %></b>
+  <p><%= @publisher.country_name %></p>
+
   <div class="outline">
     <b>Books</b> <span class="quantity"><%= @publisher.works_count %></span>
     <div class="associated-items" class="scrollable">

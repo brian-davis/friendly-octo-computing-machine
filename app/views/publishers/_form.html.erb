@@ -4,5 +4,8 @@
   <%= form.label :name %>
   <%= form.text_field :name, { placeholder: "name required" } %>
 
+  <%= form.label :location %>
+  <%= form.select :location, options_for_select(@country_options, @publisher.location), { prompt: "Select Country" } %>
+
   <%= form.submit %>
 <% end %>

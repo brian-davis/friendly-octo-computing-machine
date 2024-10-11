@@ -244,6 +244,7 @@ CREATE TABLE public.publishers (
     works_count integer DEFAULT 0,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
+    location character varying,
     CONSTRAINT publishers_name_presence CHECK (((name IS NOT NULL) AND ((name)::text !~ '^\s*$'::text)))
 );
 
@@ -797,6 +798,7 @@ ALTER TABLE ONLY public.works
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241011192903'),
 ('20241002230402'),
 ('20240924183914'),
 ('20240924000304'),

@@ -3,6 +3,7 @@
 # Table name: publishers
 #
 #  id          :bigint           not null, primary key
+#  location    :string
 #  name        :string
 #  works_count :integer          default(0)
 #  created_at  :datetime         not null

@@ -109,6 +109,14 @@
         </div>
 
         <div class="subform-line">
+          <%# COLUMN 1 %>
+          <b>Location:</b>
+          <%# COLUMN 2 %>
+          <%# display only; ignore on submit %>
+          <%= text_field_tag(:_publisher_location, @publisher.country_name, readonly: true) %>
+        </div>
+
+        <div class="subform-line">
           <b></b>
           <span class="undo-label">
             <%= form.check_box :_clear_publisher %>

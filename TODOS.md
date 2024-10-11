@@ -6,9 +6,7 @@
 *BACK END*
 * refactor: case-insensitive sorting, research db collations
 * refactor: DRY work#long_title vs works_helper#title_line vs Citation::Bibliography
-  * use associated_object gem https://garrettdimon.com/journal/posts/organizing-rails-code-with-activerecord-associated-objects
-* refactor: improve test coverage
-  ! coverage gem broken
+! fix: improve test coverage, coverage gem broken
 * refactor: SQL COALESCE on works.pg_search columns (i.e. super + title + sub as 1 value)
   * postgress trigger to save actual full name to cached column
 * refactor: avoid hacky columns for non-book formats and citations,(use different models, not enums?)
@@ -29,7 +27,6 @@
 * producer bio/links
 * add more attributes fields to subforms
 * dynamic work form, fields change based on publication_format (maybe it should be a new subclassed model)
-* location field on publisher
 * flipper gem or feature toggling, admin view, disable reading sessions
 * add hardback/paperback, condition
 

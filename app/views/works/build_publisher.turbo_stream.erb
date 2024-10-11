@@ -5,9 +5,15 @@
         <div class="subform-line">
           <%# COLUMN 1 %>
           <b>Name:</b>
-
           <%# COLUMN 2 %>
           <%= t.text_field(:name) %>
+        </div>
+
+        <div class="subform-line">
+          <%# COLUMN 1 %>
+          <b>Location:</b>
+          <%# COLUMN 2 %>
+          <%= t.select(:location, Publisher.country_options, { prompt: "Select Country" }) %>
         </div>
       <% end %>
 

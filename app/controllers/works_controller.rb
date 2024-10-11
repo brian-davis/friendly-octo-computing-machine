@@ -218,7 +218,10 @@ private
       :date_of_completion,
       :accession_note,
       tags: [],
-      publisher_attributes: [:name],
+      publisher_attributes: [
+        :name,
+        :location
+      ],
       parent_attributes: [
         :title,
         :publishing_format

@@ -96,3 +96,5 @@ gem "annotaterb", "~> 4.11"
 gem "active_record-associated_object", "~> 0.8.1"
 
 gem "devise", "~> 4.9"
+
+gem "countries", "~> 7.0"

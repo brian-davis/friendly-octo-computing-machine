@@ -1,7 +1,10 @@
 class PublishersController < ApplicationController
   before_action :set_publisher, only: %i[ show edit update destroy ]
+
   before_action :set_options, only: %i[index]
   before_action :set_publishers, only: %i[index]
+
+  before_action :set_form_options, only: %i[new edit]
 
   # GET /publishers or /publishers.json
   def index
@@ -70,7 +73,7 @@ private
 
   # Only allow a list of trusted parameters through.
   def publisher_params
-    params.require(:publisher).permit(:name, works_attributes: [:id, :_destroy])
+    params.require(:publisher).permit(:name, :location, works_attributes: [:id, :_destroy])
   end
 
   def set_options
@@ -98,5 +101,9 @@ private
     order_params = order_params.uniq.join(", ")
 
     @publishers = Publisher.all.order(Arel.sql(order_params))
+  end
+
+  def set_form_options
+    @country_options = Publisher.country_options
   end
 end

@@ -1,4 +1,10 @@
 <%= publisher.name %>
+
+<% if publisher.country_name %>
+  <%= pipe_spacer %>
+  <%= publisher.country_name %>
+<% end %>
+
 <%= pipe_spacer %>
 <span class="quantity">
   <%= publisher.works_count %>
