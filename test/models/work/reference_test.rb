@@ -120,11 +120,16 @@ class ReferenceTest < ActiveSupport::TestCase
   end
 
   test "full_title_line without date" do
-    subject = Work.new({
+    subject = Work.create({
       title: "No Date",
-      producers: [
-        Producer.new({
-          full_name: "John Doe"
+      # year_of_publication
+      # year_of_composition
+      work_producers: [
+        WorkProducer.new({
+          role: :author,
+          producer: Producer.new({
+            full_name: "John Doe"
+          })
         })
       ]
     })
@@ -145,7 +150,7 @@ class ReferenceTest < ActiveSupport::TestCase
   test "short_title_line" do
     subject = fixture_works_the_baltic_origins
     result = subject.reference.short_title_line
-    expected = "Baltic Origins (Vinci and Francesco, 2006)"
+    expected = "Baltic Origins (Vinci, 2006)" # not 'and Francesco'
     assert_equal(expected, result)
   end
 

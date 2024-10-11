@@ -83,20 +83,16 @@ class Work::Reference < ActiveRecord::AssociatedObject
   # TODO: DRY with alpha_producer_names
   def byline
     @byline ||= begin
-      # TODO: does this logic work elsewhere;
-      # TODO: avoid ruby here:
-      # author_names = work.producers.pluck(Arel.sql "COALESCE(NULLIF(producers.custom_name, ''), NULLIF(producers.surname,''))")
-      author_names = if work.year_of_composition.present?
-        work.authors.map { |p| p.custom_name.presence || p.surname }
-      else 
-        work.producers.map { |p| p.custom_name.presence || p.surname }
-      end
+      author_names = work.authors.pluck_last_name.presence ||
+        work.producers.pluck_last_name
 
-      return "" if author_names.empty?
+      return if author_names.empty?
 
       author_names = author_names.to_sentence
 
-      year_source = year_of_publication || year_of_composition # TODO: use parent/child for classical works?
+      year_source = work.year_of_composition || # e.g. Sophocles' Antigone 441 BC.
+      work.year_of_publication || # don't use this for Antigone
+      work.parent&.reference&.year_of_publication # e.g. Hackett edition, 2020
 
       year = common_era_year(year_source) # ApplicationHelper
       [
