@@ -192,7 +192,14 @@ class Work < ApplicationRecord
     end
 
     def publishing_format_options
-      publishing_formats.keys.sort
+      if Flipper.enabled?(:all_work_formats)
+        publishing_formats.keys.sort
+      else
+        hash1 = Work.publishing_formats
+        keep_keys = %i[book chapter]
+        kept = hash1.slice(*keep_keys)
+        kept.keys.sort
+      end
     end
 
     # Producer form associations

@@ -25,6 +25,6 @@
 
 * producer bio/links
 * add more attributes fields to subforms
-* dynamic work form, fields change based on publication_format (maybe it should be a new subclassed model)
+* dynamic work form, fields change based on publication_format
 * add hardback/paperback, condition
-
+* flipper enable various work types
