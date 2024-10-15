@@ -1,6 +1,10 @@
 <b class="minor-heading"><%= @work.reference.long_title %></b>
 
 <div id="<%= dom_id @work %>" class="outline">
+  <div style="margin-bottom: 0.5rem;">
+    <b>Bibliography Citation</b>
+  </div> 
+
   <% if @work.custom_citation.present? %>
     <div class="book-card outline bibliography-citation small-text">
       <%= markdown_render(@work.custom_citation) %>
@@ -13,65 +17,72 @@
     </div>
   <% end %>
 
-  <% if @work.parent_id %>
-    <div>
-      <span class="small-text">
-        Part of: <%= @work.parent.title %>
-      </span>
-      <%= pipe_spacer %>
-      <%= pointer_link(@work.parent) %>
+  <hr>
+
+  <details id="work-details-wrapper" closed>
+    <summary>Details</summary>
+    <div class="work-details">
+      <% if @work.parent_id %>
+        <div>
+          <span class="small-text">
+            Part of: <%= @work.parent.title %>
+          </span>
+          <%= pipe_spacer %>
+          <%= pointer_link(@work.parent) %>
+        </div>
+      <% end %>
+
+      <% if @work.alternate_title.present? %>
+        <p class="small-text">
+          Also known as <span class="work-title-alt"><%= @work.alternate_title %></span>
+        </p>
+      <% end %>
+
+      <% if @work.foreign_title.present? %>
+        <p class="small-text">
+          Also known as <span class="work-title-alt"><%= @work.foreign_title %></span>
+        </p>
+      <% end %>
+
+      <p class="small-text">
+        <b>Publisher:</b> <%= @work.reference.publisher_name %>
+      </p>
+
+      <p class="small-text">
+        <b>Year of Publication:</b> <%= @work.reference.year_of_publication %>
+      </p>
+
+      <p class="small-text">
+        <b>Year of Composition:</b> <%= @work.reference.year_of_composition %>
+      </p>
+
+      <p class="small-text">
+        <b>Language:</b> <%= @work.reference.language_or_translation %>
+      </p>
+
+      <p class="small-text">
+        <b>Rating:</b>
+        <span class="quantity"><%= @work.rating_stars %></span>
+      </p>
+
+      <p class="small-text">
+        <b>Status:</b> <%= @work.finished? ? "Reading finished on #{human_time_for(@work.date_of_completion)}" : "Unread" %>
+      </p>
+
+      <% if @work.date_of_accession %>
+        <p class="small-text">
+          <b>Accession Date:</b> <%= human_time_for(@work.date_of_accession) %>
+        </p>
+      <% end %>
+
+      <% if @work.accession_note.present? %>
+        <p class="small-text">
+          <b>Accession Note:</b> <%= @work.accession_note %>
+        </p>
+      <% end %>
     </div>
-  <% end %>
-
-  <% if @work.alternate_title.present? %>
-    <p class="small-text">
-      Also known as <span class="work-title-alt"><%= @work.alternate_title %></span>
-    </p>
-  <% end %>
-
-  <% if @work.foreign_title.present? %>
-    <p class="small-text">
-      Also known as <span class="work-title-alt"><%= @work.foreign_title %></span>
-    </p>
-  <% end %>
-
-  <p class="small-text">
-    <b>Publisher:</b> <%= @work.reference.publisher_name %>
-  </p>
-
-  <p class="small-text">
-    <b>Year of Publication:</b> <%= @work.reference.year_of_publication %>
-  </p>
-
-  <p class="small-text">
-    <b>Year of Composition:</b> <%= @work.reference.year_of_composition %>
-  </p>
-
-  <p class="small-text">
-    <b>Language:</b> <%= @work.reference.language_or_translation %>
-  </p>
-
-  <p class="small-text">
-    <b>Rating:</b>
-    <span class="quantity"><%= @work.rating_stars %></span>
-  </p>
-
-  <p class="small-text">
-    <b>Status:</b> <%= @work.finished? ? "Reading finished on #{human_time_for(@work.date_of_completion)}" : "Unread" %>
-  </p>
-
-  <% if @work.date_of_accession %>
-    <p class="small-text">
-      <b>Accession Date:</b> <%= human_time_for(@work.date_of_accession) %>
-    </p>
-  <% end %>
-
-  <% if @work.accession_note.present? %>
-    <p class="small-text">
-      <b>Accession Note:</b> <%= @work.accession_note %>
-    </p>
-  <% end %>
-
+  </details>
+  
   <hr>
 
   <div style="margin-bottom: 1em; cloud-list;">
