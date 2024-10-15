@@ -8,6 +8,9 @@ private
 
   def set_metrics
     @summary = BookshelfMetrics.summary
-    @chart_usage = BookshelfMetrics.chart_usage(params["period"].presence, 200)
+    
+    if Flipper.enabled?(:reading_sessions)
+      @chart_usage = BookshelfMetrics.chart_usage(params["period"].presence, 200)
+    end
   end
 end

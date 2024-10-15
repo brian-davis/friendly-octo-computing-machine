@@ -122,17 +122,19 @@
   <div>
     Count: <b class="quantity"><%= @work.notes.count %></b>
   </div>
-
-  <hr>
-  <div style="margin-bottom: 0.5rem;">
-    <b>Reading Sessions</b>
-    <%= pipe_spacer %>
-    <%= pointer_link(work_reading_sessions_path(@work)) %>
-  </div>
-  <div>
-    Count: <b class="quantity"><%= @work.reading_sessions.count %></b><br>
-    Aggregate Time: <b class="quantity"><%= human_duration(@work.reading_sessions_minutes) %></b>
-  </div>
+                       
+  <% if Flipper.enabled?(:reading_sessions) %>
+    <hr>
+    <div style="margin-bottom: 0.5rem;">
+      <b>Reading Sessions</b>
+      <%= pipe_spacer %>
+      <%= pointer_link(work_reading_sessions_path(@work)) %>
+    </div>
+    <div>
+      Count: <b class="quantity"><%= @work.reading_sessions.count %></b><br>
+      Aggregate Time: <b class="quantity"><%= human_duration(@work.reading_sessions_minutes) %></b>
+    </div>
+  <% end %>
 </div>
 
 <hr>

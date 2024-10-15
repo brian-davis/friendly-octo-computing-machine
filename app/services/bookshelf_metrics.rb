@@ -6,10 +6,26 @@ class BookshelfMetrics
 
   class << self
     def summary
-      [
+      base_metrics = [
         {
-          label: "Current Book",
-          result: self.current_book
+          label: "Number of Books",
+          result: books_count
+        },
+        {
+          label: "Number of Authors",
+          result: authors_count
+        },
+        {
+          label: "Number of Publishers",
+          result: publishers_count
+        },
+        {
+          label: "Most Represented Author",
+          result: most_represented_author
+        },
+        {
+          label: "Most Represented Author",
+          result: most_represented_publisher
         },
         {
           label: "Newest Book",
@@ -23,23 +39,29 @@ class BookshelfMetrics
           label: "Most Noted Book",
           result: most_noted_book
         },
-        {
-          label: "Most Represented Author",
-          result: most_represented_author
-        },
-        {
-          label: "Total Reading Time",
-          result: total_reading_time
-        },
-        {
-          label: "Longest Book Reading Time",
-          result: longest_book_reading_time
-        },
-        {
-          label: "Longest Author Reading Time",
-          result: longest_author_reading_time
-        }
       ]
+      if Flipper.enabled?(:reading_sessions)
+        reading_sessions_metrics = [
+          {
+            label: "Current Book",
+            result: self.current_book
+          },
+          {
+            label: "Total Reading Time",
+            result: total_reading_time
+          },
+          {
+            label: "Longest Book Reading Time",
+            result: longest_book_reading_time
+          },
+          {
+            label: "Longest Author Reading Time",
+            result: longest_author_reading_time
+          }
+        ]
+        base_metrics += reading_sessions_metrics
+      end
+      return base_metrics
     end
 
     def chart_usage(scale, max = 100)
@@ -66,6 +88,18 @@ class BookshelfMetrics
     end
 
     private
+
+    def books_count
+      Work.publishing_format_book.size
+    end
+
+    def authors_count
+      WorkProducer.role_author.pluck(:producer_id).uniq.size
+    end
+
+    def publishers_count
+      Publisher.all.size
+    end
 
     def current_book
       session = ReadingSession.find_by(ended_at: ReadingSession.maximum(:ended_at))
@@ -107,11 +141,20 @@ class BookshelfMetrics
                     .joins(work_producers: :work)
                     .group("work_producers.producer_id")
                     .count
-                    .max_by { |p, c| c }
+                    .max_by { |_p, c| c }
       producer = Producer.find_by({ id: id })
-      return unless producer.try(:name)
+      return unless producer.full_name.present?
+      producer.full_name + ", #{count} works" # IMPROVE: use helper for formatting
+    end
 
-      producer.full_name + ", #{count} works"
+    def most_represented_publisher
+      id, count = Publisher
+                    .joins(:works)
+                    .group("works.publisher_id")
+                    .count
+                    .max_by { |_p, c| c }
+      publisher = Publisher.find_by({ id: id })
+      publisher.name + ", #{count} works" # IMPROVE: use helper for formatting
     end
 
     def total_reading_time

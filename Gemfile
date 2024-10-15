@@ -98,3 +98,9 @@ gem "active_record-associated_object", "~> 0.8.1"
 gem "devise", "~> 4.9"
 
 gem "countries", "~> 7.0"
+
+# https://www.honeybadger.io/blog/flipper-feature-flags-rails/
+# https://www.flippercloud.io/docs/get-started/self-hosted
+gem "flipper", "~> 1.3"
+# gem "flipper-ui", "~> 1.3"
+gem "flipper-active_record", "~> 1.3"

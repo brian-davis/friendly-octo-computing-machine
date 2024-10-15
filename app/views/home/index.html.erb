@@ -14,13 +14,17 @@
       Metrics
     </div>
 
+    <% if Flipper.enabled?(:reading_sessions) %>
     <div class="tab" data-action="click->tabs#selectTab" data-tabs-target="tab" data-tabs-select-param="graph">
-      Graph
+      Reading Graph
     </div>
+    <% end %>
 
     <%= render "summary_tab" %>
 
-    <%= render "graph_tab" %>
+    <% if Flipper.enabled?(:reading_sessions) %>
+      <%= render "graph_tab" %>
+    <% end %>
   </div>
 
   <hr>
