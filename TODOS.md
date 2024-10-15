@@ -1,7 +1,6 @@
 # TODOS
 
 *DEVELOPMENT*
-* Debug Ruby Language Server (Shopify) with VSCode in WSL2
 
 *BACK END*
 * refactor: case-insensitive sorting, research db collations
@@ -27,6 +26,5 @@
 * producer bio/links
 * add more attributes fields to subforms
 * dynamic work form, fields change based on publication_format (maybe it should be a new subclassed model)
-* flipper gem or feature toggling, admin view, disable reading sessions
 * add hardback/paperback, condition
 

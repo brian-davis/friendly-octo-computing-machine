@@ -120,7 +120,7 @@ class WorksController < ApplicationController
   end
 
   def build_publisher
-    @tag = String.new
+    @tag = ''
     respond_to do |format|
       format.turbo_stream
     end
@@ -170,6 +170,8 @@ private
     @parent_options = helpers.strict_options(Work.parent_options(@work))
     @producer_options = helpers.strict_options(Producer.name_options)
     @publisher_options = helpers.strict_options(Publisher.name_options)
+
+    # TDOD: feature flag limits
     @publishing_format_options = helpers.strict_options(Work.publishing_format_options)
     @tag_options = helpers.strict_options(Work.tag_options)
     @clone_options = helpers.strict_options(Work.clone_options)
