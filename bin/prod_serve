@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+# Run app server for simple self hosting.  prod_proxy must be run in parallel.
+# See also prod_serve, prod_proxy, prod_teardown
+
+require "fileutils"
+APP_ROOT = File.expand_path("..", __dir__)
+
+def system!(*args)
+  system(*args, exception: true)
+end
+
+FileUtils.chdir APP_ROOT do
+  system!("RAILS_ENV=production rails s")
+end

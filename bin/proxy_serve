@@ -1,0 +1,21 @@
+#!/usr/bin/env ruby
+
+# Use ngrok as an easy, free solution for simple self-hosting.  Runs ngrok proxy server.
+# Assume app server is running in parallel
+# Assume ngrok server software already installed)
+# Assume ngrok domain has been kept in Rails credentials.
+
+require "fileutils"
+APP_ROOT = File.expand_path("..", __dir__)
+
+def system!(*args)
+  system(*args, exception: true)
+end
+
+# This can actually be used with a development env app server, as in the case of mobile development.
+# Just grab the domain from 'prod' credentials.
+
+FileUtils.chdir APP_ROOT do
+  ngrok_command = `RAILS_ENV=production bundle exec rake proxy:serve` # not system()
+  system!(ngrok_command)
+end
