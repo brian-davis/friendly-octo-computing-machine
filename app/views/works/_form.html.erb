@@ -27,18 +27,33 @@
         }
       )
     %>
+    <%= form.label :publishing_format %>
+    <%=
+      form.select(
+        :publishing_format,
+        options_for_select(
+          @publishing_format_options,
+          @work.publishing_format
+        ),
+        {}, # important
+        {
+          data: { action: "change->works#selectPublishingFormat" },
+          class: "dynamic-select"
+        }
+      )
+    %>
     <hr>
     <hr>
   <% end %>
-
-  <%= form.label :supertitle %>
-  <%= form.text_field :supertitle %>
 
   <%= form.label :title %>
   <%= form.text_field :title, { placeholder: "required" } %>
 
   <%= form.label :subtitle %>
   <%= form.text_field :subtitle %>
+
+  <%= form.label :supertitle %>
+  <%= form.text_field :supertitle %>
 
   <%= form.label :alternate_title %>
   <%= form.text_field :alternate_title %>
@@ -63,9 +78,6 @@
 
   <%= form.label :rating %>
   <%= form.number_field(:rating, in: (-1..5)) %>
-
-  <%= form.label :publishing_format %>
-  <%= form.select(:publishing_format, options_for_select(@publishing_format_options, @work.publishing_format)) %>
 
   <%= form.label :custom_citation, "Custom Citation (Markdown)", class: "small-text" %>
   <%= form.text_field :custom_citation %>
@@ -209,7 +221,7 @@
   <hr>
   <hr>
 
-  <div class="label-group">
+  <div class="label-group" data-works-target="parentWorkHideable">
     <%= form.label :parent do %>
       Parent Work
     <% end %>
@@ -221,7 +233,6 @@
     %>
       New Parent Work &nbsp;+
     <% end %>
-
     <%=
       select_tag(
         "parent_work",
@@ -229,15 +240,23 @@
         {
           include_blank: "Select Parent Work",
           class: "select-button",
-          data: { action: "change->works#selectParent" }
+          data: {
+            action: "change->works#selectParent"
+          }
         }
       )
     %>
   </div>
 
-  <div id="sub_form_list_parent" data-controller="dismissable">
+  <div
+    id="sub_form_list_parent"
+    data-controller="dismissable"
+    data-works-target="parentWorkHideable">
     <% if work.parent %>
-      <div class="outline subFormContainer" data-dismissable-target="subForm">
+      <div
+        class="outline subFormContainer"
+        data-dismissable-target="subForm"
+        data-works-target="parentWorkClearable">
         <%= form.hidden_field :parent_id, value: work.parent_id %>
         <div class="subform-line">
           <b>Title:</b>
@@ -256,8 +275,8 @@
     <% end %>
   </div>
 
-  <hr>
-  <hr>
+  <hr data-works-target="parentWorkHideable">
+  <hr data-works-target="parentWorkHideable">
 
   <%= form.submit %>
 <% end %>

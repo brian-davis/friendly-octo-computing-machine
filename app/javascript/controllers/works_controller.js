@@ -6,10 +6,16 @@ export default class extends Controller {
     tags: Array
   };
   static outlets = ["request-helper"];
-  static targets = ["producerSubForm", "tagSubform"];
+  static targets = [
+    "producerSubForm",
+    "tagSubform",
+    "parentWorkHideable",
+    "parentWorkClearable"
+  ];
 
   connect() {
     // console.log("works connected");
+    this.defaultVisibility();
   }
 
   _setCurrentProducerIds(value) {
@@ -161,5 +167,30 @@ export default class extends Controller {
     // console.log(url);
     this.requestHelperOutlet.turboGet(url);
     event.currentTarget.value = "";
+  }
+
+  defaultVisibility() {
+    
+    // select "chapter" from :publishing_format to reveal
+    // selectPublishingFormat
+    this.parentWorkHideableTargets.forEach((el) => {
+      el.hidden = true;
+    });
+  }
+
+  selectPublishingFormat(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const val = event.currentTarget.value
+    if (val === "book") {
+      this.parentWorkHideableTargets.forEach((el) => {
+        el.hidden = true;
+      });
+      this.parentWorkClearableTarget.remove();
+    } else if (val === "chapter") {
+      this.parentWorkHideableTargets.forEach((el) => {
+        el.hidden = false;
+      });
+    }
   }
 }

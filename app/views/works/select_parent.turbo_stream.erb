@@ -1,6 +1,9 @@
 <%= form_with(model: @work) do |form| %>
   <%= turbo_stream.update "sub_form_list_parent" do %>
-    <div class="outline subFormContainer" data-dismissable-target="subForm">
+    <div
+      class="outline subFormContainer"
+      data-dismissable-target="subForm"
+      data-works-target="parentWorkClearable">
       <%= form.hidden_field :parent_id, value: @parent.id %>
       <div class="subform-line">
         <%# COLUMN 1 %>
