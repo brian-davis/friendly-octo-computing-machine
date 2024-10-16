@@ -1,24 +1,26 @@
-<b class="minor-heading"><%= @work.reference.long_title %></b>
-
 <div id="<%= dom_id @work %>">
-  <div style="margin-bottom: 0.5rem;">
-    <b>Bibliography Citation</b>
-  </div> 
+  <b class="minor-heading"><%= @work.reference.long_title %></b>
 
-  <% if @work.custom_citation.present? %>
-    <div class="book-card outline bibliography-citation small-text">
-      <%= markdown_render(@work.custom_citation) %>
-    </div>
-  <% end %>
+  <details id="work-citation-wrapper" closed>
+    <summary>Citation</summary>
+    <div style="margin-bottom: 0.5rem;">
+      <b>Bibliographic Entry</b>
+    </div> 
 
-  <% if @work.reference.chicago_bibliography.present? %>
-    <div class="book-card outline bibliography-citation small-text">
-      <%= markdown_render(@work.reference.chicago_bibliography) %>
-    </div>
-  <% end %>
+    <% if @work.custom_citation.present? %>
+      <div class="book-card outline bibliography-citation small-text">
+        <%= markdown_render(@work.custom_citation) %>
+      </div>
+    <% end %>
+
+    <% if @work.reference.chicago_bibliography.present? %>
+      <div class="book-card outline bibliography-citation small-text">
+        <%= markdown_render(@work.reference.chicago_bibliography) %>
+      </div>
+    <% end %>
+  </details>
 
   <hr>
-
   <details id="work-details-wrapper" closed>
     <summary>Details</summary>
     <div class="work-details">
@@ -59,6 +61,32 @@
       <p class="small-text">
         <b>Language:</b> <%= @work.reference.language_or_translation %>
       </p>
+    </div>
+  </details>
+  
+  <hr>
+
+  <details id="work-status-wrapper" closed>
+    <summary>Status</summary>
+    <% if @work.wishlist %>
+      <p class="small-text">
+        <b class="danger">Wishlist item</b>
+      </p>
+    <% else %>
+      <p class="small-text">
+        <b>Date of Accession</b>:
+        <% if @work.date_of_accession.present? %>
+          <span class="display-date"><%= human_date_for(@work.date_of_accession) %></span>
+        <% else %>
+          <span class="danger">Unknown<span>
+        <% end %>
+      </p>
+
+      <% if @work.accession_note.present? %>
+        <p class="small-text">
+          <b>Accession Note:</b> <%= @work.accession_note %>
+        </p>
+      <% end %>
 
       <p class="small-text">
         <b>Rating:</b>
@@ -66,24 +94,17 @@
       </p>
 
       <p class="small-text">
-        <b>Status:</b> <%= @work.finished? ? "Reading finished on #{human_time_for(@work.date_of_completion)}" : "Unread" %>
+        <b>Completion:</b>
+        <% if @work.finished? %>
+          <%= "Reading finished on #{human_time_for(@work.date_of_completion)}" %>
+        <% else %>
+          <span class="danger">Unread</span>
+        <% end %>
       </p>
-
-      <% if @work.date_of_accession %>
-        <p class="small-text">
-          <b>Accession Date:</b> <%= human_time_for(@work.date_of_accession) %>
-        </p>
-      <% end %>
-
-      <% if @work.accession_note.present? %>
-        <p class="small-text">
-          <b>Accession Note:</b> <%= @work.accession_note %>
-        </p>
-      <% end %>
-    </div>
+    <% end %>
   </details>
-  
   <hr>
+
 
   <div style="margin-bottom: 1em; cloud-list;">
     <b>Tags</b>

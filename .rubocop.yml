@@ -1,1 +1,14 @@
 inherit_from: .rubocop_todo.yml
+
+# Use alias_method instead of alias.
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+  Enabled: true
+
+# seems to be broken (huge number of spaces), disable
+Layout/IndentationWidth:
+  Enabled: false
+
+# gets confused by case blocks, disable
+Layout/DefEndAlignment:
+  Enabled: false

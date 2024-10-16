@@ -32,6 +32,7 @@
 #  tags                :string           default([]), is an Array
 #  title               :string
 #  url                 :string
+#  wishlist            :boolean          default(FALSE)
 #  year_of_composition :integer
 #  year_of_publication :integer
 #  created_at          :datetime         not null
@@ -46,6 +47,7 @@
 #  index_works_on_publishing_format  (publishing_format)
 #  index_works_on_searchable         (searchable) USING gin
 #  index_works_on_tags               (tags) USING gin
+#  index_works_on_wishlist           (wishlist)
 #
 # Foreign Keys
 #
@@ -493,17 +495,6 @@ class WorkTest < ActiveSupport::TestCase
     assert_equal 1, work.authors.count
   end
 
-  test "date_of_accession" do
-    w1 = fixture_works_philosophy_for_everyone
-    w2 = fixture_works_asterix_in_egypt
-
-    assert w1.in?(Work.collection)
-    refute w2.in?(Work.collection)
-
-    assert w2.in?(Work.wishlist)
-    refute w1.in?(Work.wishlist)
-  end
-
   test "sorting is case-insensitive" do
     w1 = Work.create(title: "asdf")
     w2 = Work.create(title: "Astronomy For Everyone")
@@ -542,5 +533,19 @@ class WorkTest < ActiveSupport::TestCase
     expected = "★★★☆☆"
     result = subject1.rating_stars
     assert_equal expected, result
+  end
+
+  test "wishlist column" do
+    w1 = Work.find_or_create_by(title: "defaults")
+    refute w1.wishlist # defaults to false
+
+    w2 = Work.find_or_create_by(title: "wishlist item", wishlist: true)
+    assert w2.wishlist
+
+    assert w1.in?(Work.collection) # queries wishlist column
+    refute w2.in?(Work.collection) # queries wishlist column
+
+    refute w1.in?(Work.wishlist) # queries wishlist column
+    assert w2.in?(Work.wishlist) # queries wishlist column
   end
 end

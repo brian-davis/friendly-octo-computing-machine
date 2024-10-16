@@ -217,6 +217,7 @@ private
       :date_of_accession,
       :date_of_completion,
       :accession_note,
+      :wishlist,
       tags: [],
       publisher_attributes: [
         :name,

@@ -32,6 +32,7 @@
 #  tags                :string           default([]), is an Array
 #  title               :string
 #  url                 :string
+#  wishlist            :boolean          default(FALSE)
 #  year_of_composition :integer
 #  year_of_publication :integer
 #  created_at          :datetime         not null
@@ -46,6 +47,7 @@
 #  index_works_on_publishing_format  (publishing_format)
 #  index_works_on_searchable         (searchable) USING gin
 #  index_works_on_tags               (tags) USING gin
+#  index_works_on_wishlist           (wishlist)
 #
 # Foreign Keys
 #
@@ -135,11 +137,15 @@ class Work < ApplicationRecord
   scope :untagged, -> { where({ tags: [] }) }
 
   scope :collection, -> {
-    left_outer_joins(:parent).where("COALESCE(works.date_of_accession, parents_works.date_of_accession) IS NOT NULL")
+    left_outer_joins(:parent).where(
+      "COALESCE(works.wishlist, parents_works.wishlist) IS NOT ?", true
+    )
   }
 
   scope :wishlist, -> {
-    left_outer_joins(:parent).where("COALESCE(works.date_of_accession, parents_works.date_of_accession) IS NULL")
+    left_outer_joins(:parent).where(
+      "COALESCE(works.wishlist, parents_works.wishlist) IS ?", true
+    )
   }
 
   scope :read, -> {

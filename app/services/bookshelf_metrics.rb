@@ -143,7 +143,7 @@ class BookshelfMetrics
                     .count
                     .max_by { |_p, c| c }
       producer = Producer.find_by({ id: id })
-      return unless producer.full_name.present?
+      return "no data" unless producer&.full_name&.present?
       producer.full_name + ", #{count} works" # IMPROVE: use helper for formatting
     end
 
@@ -154,6 +154,7 @@ class BookshelfMetrics
                     .count
                     .max_by { |_p, c| c }
       publisher = Publisher.find_by({ id: id })
+      return "no data" unless publisher&.name&.present?
       publisher.name + ", #{count} works" # IMPROVE: use helper for formatting
     end
 

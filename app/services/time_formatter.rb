@@ -53,7 +53,7 @@ module TimeFormatter
     end
   end
 
-  def human_time_for(timestamp)
+  alias_method :human_date_for, def human_time_for(timestamp)
     case timestamp
     when Date
       timestamp.strftime("%B %e, %Y").squish

@@ -32,6 +32,7 @@
 #  tags                :string           default([]), is an Array
 #  title               :string
 #  url                 :string
+#  wishlist            :boolean          default(FALSE)
 #  year_of_composition :integer
 #  year_of_publication :integer
 #  created_at          :datetime         not null
@@ -46,6 +47,7 @@
 #  index_works_on_publishing_format  (publishing_format)
 #  index_works_on_searchable         (searchable) USING gin
 #  index_works_on_tags               (tags) USING gin
+#  index_works_on_wishlist           (wishlist)
 #
 # Foreign Keys
 #

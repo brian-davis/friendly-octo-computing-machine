@@ -18,7 +18,7 @@ export default class extends Controller {
     this.languageValue = "";
     this.accessionValue = "";
     this.statusValue = "";
-    // console.log(this.searchButtonTarget);
+    this.wishlistValue = "";
   }
 
   // index.html.erb
@@ -176,6 +176,7 @@ export default class extends Controller {
     }
 
     if (this.frmtValue) {
+      // avoid "format" keyword
       queryData.frmt = this.frmtValue;
     }
 

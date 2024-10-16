@@ -519,7 +519,8 @@ CREATE TABLE public.works (
     media_timestamp character varying,
     interviewer_name character varying,
     media_format character varying,
-    media_date date
+    media_date date,
+    wishlist boolean DEFAULT false
 );
 
 
@@ -852,6 +853,13 @@ CREATE INDEX index_works_on_tags ON public.works USING gin (tags);
 
 
 --
+-- Name: index_works_on_wishlist; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_works_on_wishlist ON public.works USING btree (wishlist);
+
+
+--
 -- Name: reading_sessions fk_rails_0de1d5975c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -906,6 +914,7 @@ ALTER TABLE ONLY public.works
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241016190110'),
 ('20241015205125'),
 ('20241011192903'),
 ('20241002230402'),

@@ -12,6 +12,9 @@
 %>
   <%= render("shared/form_errors", form: form) %>
 
+  <%# DYNAMIC FIELDS %>
+
+  <%# This will fill in standard fields by copying values from an existing work. %>
   <% if action_name.in?(["new", "clone_work"]) %>
     <%= form.label :clone_work, "Clone existing work" %>
     <%=
@@ -27,25 +30,38 @@
         }
       )
     %>
-    <%= form.label :publishing_format %>
-    <%=
-      form.select(
-        :publishing_format,
-        options_for_select(
-          @publishing_format_options,
-          @work.publishing_format
-        ),
-        {}, # important
-        {
-          data: { action: "change->works#selectPublishingFormat" },
-          class: "dynamic-select"
-        }
-      )
-    %>
-    <hr>
-    <hr>
   <% end %>
 
+  <%# This will show or hide parent association fields. %>
+  <%= form.label :publishing_format %>
+  <%=
+    form.select(
+      :publishing_format,
+      options_for_select(
+        @publishing_format_options,
+        @work.publishing_format
+      ),
+      {}, # important
+      {
+        data: { action: "change->works#selectPublishingFormat" },
+        class: "dynamic-select"
+      }
+    )
+  %>
+
+  <%# This will show or hide standard fields. %>
+  <%= form.label :wishlist %>
+  <%=
+    form.check_box(:wishlist, {
+      data: { action: "change->works#checkWishlist" },
+      class: "dynamic-check"
+    })
+  %>
+
+  <hr>
+  <hr>
+
+  <%# STANDARD FIELDS %>
   <%= form.label :title %>
   <%= form.text_field :title, { placeholder: "required" } %>
 
@@ -66,18 +82,6 @@
 
   <%= form.label :year_of_publication %>
   <%= form.number_field :year_of_publication %>
-
-  <%= form.label :date_of_accession %>
-  <%= form.date_field :date_of_accession %>
-
-  <%= form.label :accession_note %>
-  <%= form.text_field :accession_note %>
-
-  <%= form.label :date_of_completion %>
-  <%= form.date_field :date_of_completion %>
-
-  <%= form.label :rating %>
-  <%= form.number_field(:rating, in: (-1..5)) %>
 
   <%= form.label :custom_citation, "Custom Citation (Markdown)", class: "small-text" %>
   <%= form.text_field :custom_citation %>
@@ -100,9 +104,54 @@
     })
   %>
 
+  <%# BEGIN Hidden or revealed by wishlist choice. %>
+  <%=
+    form.label(:date_of_accession, {
+      data: { works_target: "wishlistHideable" }
+    })
+  %>
+  <%=
+    form.date_field(:date_of_accession, {
+      data: { works_target: "wishlistHideable" }
+    })
+  %>
+  <%=
+    form.label(:accession_note, {
+      data: { works_target: "wishlistHideable" }
+    })
+  %>
+  <%=
+    form.text_field(:accession_note, {
+      data: { works_target: "wishlistHideable" }
+    })
+  %>
+  <%=
+    form.label(:date_of_completion, {
+      data: { works_target: "wishlistHideable" }
+    })
+  %>
+  <%=
+    form.date_field(:date_of_completion, {
+      data: { works_target: "wishlistHideable" }
+    })
+  %>
+  <%=
+    form.label(:rating, {
+      data: { works_target: "wishlistHideable" }
+    })
+  %>
+  <%=
+    form.number_field(:rating, {
+      in: (-1..5),
+      data: { works_target: "wishlistHideable" }
+    })
+  %>
+  <%# END Hidden or revealed by wishlist choice. %>
+
   <hr>
   <hr>
 
+  <%# ASSOCIATION FIELDS %>
   <div class="label-group">
     <%= form.label :publisher %>
     <%= link_to(build_publisher_works_path(work_id: @work.try(:id)), class: "link-button", data: { turbo_stream: true }) do %>
@@ -221,6 +270,7 @@
   <hr>
   <hr>
 
+  <%# BEGIN Hidden or revealed by publishing_format choice. %>
   <div class="label-group" data-works-target="parentWorkHideable">
     <%= form.label :parent do %>
       Parent Work
@@ -247,7 +297,6 @@
       )
     %>
   </div>
-
   <div
     id="sub_form_list_parent"
     data-controller="dismissable"
@@ -274,9 +323,9 @@
       </div>
     <% end %>
   </div>
-
   <hr data-works-target="parentWorkHideable">
   <hr data-works-target="parentWorkHideable">
+  <%# END Hidden or revealed by publishing_format choice. %>
 
   <%= form.submit %>
 <% end %>

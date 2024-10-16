@@ -10,7 +10,8 @@ export default class extends Controller {
     "producerSubForm",
     "tagSubform",
     "parentWorkHideable",
-    "parentWorkClearable"
+    "parentWorkClearable",
+    "wishlistHideable"
   ];
 
   connect() {
@@ -186,9 +187,32 @@ export default class extends Controller {
       this.parentWorkHideableTargets.forEach((el) => {
         el.hidden = true;
       });
+
+      // remove subform element
       this.parentWorkClearableTarget.remove();
     } else if (val === "chapter") {
       this.parentWorkHideableTargets.forEach((el) => {
+        el.hidden = false;
+      });
+    }
+  }
+
+  checkWishlist(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const val = event.currentTarget.checked;
+    if (val) {
+      this.wishlistHideableTargets.forEach((el) => {
+        if (el.value){
+          // this is an input field
+          el.value = "";
+        } else {
+          // this is a label
+        }
+        el.hidden = true;
+      });
+    } else {
+      this.wishlistHideableTargets.forEach((el) => {
         el.hidden = false;
       });
     }

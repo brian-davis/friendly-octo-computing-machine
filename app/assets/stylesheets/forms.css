@@ -60,6 +60,13 @@ form.table-form {
     border: 1px solid var(--color-dark-beige);
   }
 
+  form.table-form input[type="checkbox"] {
+    width: fit-content;
+    margin: 0;
+    position: relative;
+    top: 0.48rem;
+  }
+
   form.table-form label {
     position: relative;
     top: 0.5rem;
