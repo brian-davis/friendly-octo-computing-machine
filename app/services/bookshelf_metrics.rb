@@ -90,25 +90,28 @@ class BookshelfMetrics
     private
 
     def books_count
-      Work.publishing_format_book.size
+      Work.publishing_format_book.collection.size
     end
 
     def authors_count
-      WorkProducer.role_author.pluck(:producer_id).uniq.size
+      WorkProducer.role_author.joins(:work).merge(Work.collection).pluck(:producer_id).uniq.size
     end
 
     def publishers_count
-      Publisher.all.size
+      Publisher.joins(:works).merge(Work.collection).distinct.size
     end
 
     def newest_book
-      work = Work.find_by(created_at: Work.maximum(:created_at))
+      work = Work.collection.find_by({
+        created_at: Work.collection.maximum(:created_at)
+      })
       return unless work
       tag.i(work.reference.long_title) + ", #{time_ago_in_words(work.created_at)} ago"
     end
 
     def most_quoted_book
       id, count = Work
+                    .collection
                     .joins(:quotes)
                     .group("quotes.work_id")
                     .count
@@ -120,6 +123,7 @@ class BookshelfMetrics
 
     def most_noted_book
       id, count = Work
+                    .collection
                     .joins(:notes)
                     .group("notes.notable_id")
                     .count
@@ -133,6 +137,7 @@ class BookshelfMetrics
       id, count = Producer
                     .joins(work_producers: :work)
                     .merge(WorkProducer.role_author)
+                    .merge(Work.collection)
                     .group("work_producers.producer_id")
                     .count
                     .max_by { |_p, c| c }
@@ -144,6 +149,7 @@ class BookshelfMetrics
     def most_represented_publisher
       id, count = Publisher
                     .joins(:works)
+                    .merge(Work.collection)
                     .group("works.publisher_id")
                     .count
                     .max_by { |_p, c| c }

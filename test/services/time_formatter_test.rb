@@ -1,6 +1,6 @@
 require "test_helper"
 
-class BaseTest < ActiveSupport::TestCase
+class TimeFormatterTest < ActiveSupport::TestCase
   include TimeFormatter
 
   test "common_era_year CE or BC" do

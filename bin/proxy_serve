@@ -2,7 +2,7 @@
 
 # Use ngrok as an easy, free solution for simple self-hosting.  Runs ngrok proxy server.
 # Assume app server is running in parallel
-# Assume ngrok server software already installed)
+# Assume ngrok server software already installed
 # Assume ngrok domain has been kept in Rails credentials.
 
 require "fileutils"

@@ -13,7 +13,6 @@
 * user-scoped authorization, allow for multiple users/libraries
 * fix: partial n+1 on works index, fix other n + 1 (without Bullet)
 * order by full title (supertitle, subtitle) in works filter
-* exclude wishlist items from metrics
 
 *FRONT END*
 
