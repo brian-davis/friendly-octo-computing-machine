@@ -8,23 +8,23 @@ class BookshelfMetrics
     def summary
       base_metrics = [
         {
-          label: "Number of Books",
+          label: "Total Books",
           result: books_count
         },
         {
-          label: "Number of Authors",
+          label: "Total Authors",
           result: authors_count
         },
         {
-          label: "Number of Publishers",
+          label: "Total Publishers",
           result: publishers_count
         },
         {
-          label: "Most Represented Author",
+          label: "Top Author",
           result: most_represented_author
         },
         {
-          label: "Most Represented Author",
+          label: "Top Publisher",
           result: most_represented_publisher
         },
         {
@@ -101,13 +101,6 @@ class BookshelfMetrics
       Publisher.all.size
     end
 
-    def current_book
-      session = ReadingSession.find_by(ended_at: ReadingSession.maximum(:ended_at))
-      return unless session
-      work = session.work
-      tag.i(work.reference.long_title) + ", #{time_ago_in_words(session.ended_at)} ago"
-    end
-
     def newest_book
       work = Work.find_by(created_at: Work.maximum(:created_at))
       return unless work
@@ -139,6 +132,7 @@ class BookshelfMetrics
     def most_represented_author
       id, count = Producer
                     .joins(work_producers: :work)
+                    .merge(WorkProducer.role_author)
                     .group("work_producers.producer_id")
                     .count
                     .max_by { |_p, c| c }
@@ -157,6 +151,8 @@ class BookshelfMetrics
       return "no data" unless publisher&.name&.present?
       publisher.name + ", #{count} works" # IMPROVE: use helper for formatting
     end
+
+    # toggled off
 
     def total_reading_time
       duration = ReadingSession.sum(:duration)
@@ -185,6 +181,13 @@ class BookshelfMetrics
       return unless producer.try(:name)
 
       producer.full_name + ", #{human_duration(sum)}"
+    end
+
+    def current_book
+      session = ReadingSession.find_by(ended_at: ReadingSession.maximum(:ended_at))
+      return unless session
+      work = session.work
+      tag.i(work.reference.long_title) + ", #{time_ago_in_words(session.ended_at)} ago"
     end
   end
 end

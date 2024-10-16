@@ -13,7 +13,7 @@ class WorkFilter
       end
 
       acc_param = params["accession"]
-      valid_accession_params = ["collection", "`wishlist`"]
+      valid_accession_params = ["collection", "wishlist"]
       if acc_param.in?(valid_accession_params)
         works_results = works_results.send(acc_param)
       end
