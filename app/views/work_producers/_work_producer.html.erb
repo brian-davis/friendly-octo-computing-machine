@@ -9,8 +9,8 @@
 <% elsif @producer %>
   <%# viewed from producers/show %>
   <span class="small-text">
-    <%= work_producer.role.titleize %>:
-    <%= work_producer.work.title %>
+    <b><%= work_producer.role.titleize %></b>:
+    <%= work_producer.work.reference.title_and_date_line %>
   </span>
   <%= pipe_spacer %>
   <%= pointer_link(work_producer.work) %>

@@ -81,33 +81,44 @@ class Work::Reference < ActiveRecord::AssociatedObject
   end
 
   # TODO: DRY with alpha_producer_names
-  def byline
+  def byline(options = {})
     @byline ||= begin
       author_names = work.authors.pluck_last_name.presence ||
         work.producers.pluck_last_name
 
       return if author_names.empty?
-
       author_names = author_names.to_sentence
-
       year_source = work.year_of_composition || # e.g. Sophocles' Antigone 441 BC.
       work.year_of_publication || # don't use this for Antigone
       work.parent&.reference&.year_of_publication # e.g. Hackett edition, 2020
-
       year = common_era_year(year_source) # ApplicationHelper
-      [
-        author_names,
-        year
-      ].compact.join(", ")
+      parts = []
+      parts << author_names unless options[:year_only]
+      parts << year
+      result = parts.compact.join(", ")
+      result
     end
   end
  
+  def display_title
+    @display_title ||= Titleize.titleize(work.reference.long_title)
+  end
+
+  # producer show works index
+  def title_and_date_line
+    @title_and_date_line ||= begin
+      byline_result = work.reference.byline(year_only: true)
+      return display_title if byline_result.blank?
+      "#{display_title} (#{byline_result})"
+    end
+  end
+
   # :index
   def full_title_line
     @full_title_line ||= begin
       byline_result = work.reference.byline
-      return work.title if byline_result.blank?
-      "#{work.reference.long_title} (#{byline_result})"
+      return display_title if byline_result.blank?
+      "#{display_title} (#{byline_result})"
     end
   end
 

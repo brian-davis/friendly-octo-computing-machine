@@ -34,7 +34,7 @@ module Citation
           publisher = reference.publisher_name
           year = reference.year_of_publication
         end
-        publishing = "#{publisher}, #{year}"
+        "#{publisher}, #{year}"
       end
 
       def title_and_publishing
@@ -68,6 +68,8 @@ module Citation
       end
 
       def prep_date(date)
+        return unless date.is_a?(Date)
+
         date.strftime("%B %-d, %Y")
       end
     end

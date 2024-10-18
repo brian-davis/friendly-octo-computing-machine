@@ -22,7 +22,6 @@ module Citation
           ]
           build_from_parts(parts)
         else
-          translator_names = reference.producer_names(:translator)
           strict_author_names = reference.alpha_producer_names(:author)
           title = prep_title(reference.long_title, :italics)
 

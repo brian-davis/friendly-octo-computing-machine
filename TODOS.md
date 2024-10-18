@@ -13,7 +13,6 @@ exclude coverage from vscode search results
 * research pg_search custom settings, custom stop-word list (allow "after")
 * user-scoped authorization, allow for multiple users/libraries
 * fix: partial n+1 on works index, fix other n + 1 (without Bullet)
-* order by full title (supertitle, subtitle) in works filter
 
 *FRONT END*
 
