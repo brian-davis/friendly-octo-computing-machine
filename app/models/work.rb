@@ -149,21 +149,28 @@ class Work < ApplicationRecord
   }
 
   scope :read, -> {
-    left_outer_joins(:parent).where("COALESCE(works.date_of_completion, parents_works.date_of_completion) IS NOT NULL")
+    left_outer_joins(:parent).where(
+      "COALESCE(works.date_of_completion, parents_works.date_of_completion) IS NOT NULL"
+    )
   }
 
   scope :unread, -> {
-    left_outer_joins(:parent).where("COALESCE(works.date_of_completion, parents_works.date_of_completion) IS NULL")
+    left_outer_joins(:parent).where(
+      "COALESCE(works.date_of_completion, parents_works.date_of_completion) IS NULL"
+    )
   }
 
   scope :compilations, -> {
     joins(:children).distinct
   }
 
-  # Workaround for postgres case-sensitive ordering.
-  # TODO: research alternate db collations.
-  scope :order_by_title, -> {
-    order(Arel.sql("UPPER(works.title)"))
+  # cf. WorkFilter
+  scope :order_by_title, ->(dir = "ASC") {
+    return unless %w[ASC DESC].include?(dir.upcase)
+    
+    # Workaround for postgres case-sensitive ordering.
+    # TODO: research alternate db collations.
+    order(Arel.sql("UPPER(#{FULL_TITLE_SQL}) #{dir.upcase}"))
   }
 
   # postgresql enum
@@ -181,6 +188,10 @@ class Work < ApplicationRecord
     :video           => "video",
     :personal        => "personal"
   }, prefix: :publishing_format
+
+  scope :pluck_full_title, ->(*args) {
+    pluck(Arel.sql(FULL_TITLE_SQL), *args)
+  }
 
   class << self
     # pseudo-enum

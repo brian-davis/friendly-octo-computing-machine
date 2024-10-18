@@ -66,7 +66,8 @@ class WorkFilter
         # always put nil at end
         "COALESCE(works.year_of_composition, works.year_of_publication, 9999)"
       elsif order_arg == "title"
-        "UPPER(works.title)"
+        # cf. Work.order_by_title
+        "UPPER(#{WorkSql::FULL_TITLE_SQL})"
       else
         order_arg
       end

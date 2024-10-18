@@ -1,6 +1,7 @@
 # TODOS
 
 *DEVELOPMENT*
+exclude coverage from vscode search results
 
 *BACK END*
 * refactor: case-insensitive sorting, research db collations
@@ -19,6 +20,7 @@
 * mobile-friendly views
 * tabs for lists of associated authors/quotes/notes/reqding sessions on show views
 * refactor: research extracting CSS into gem, reusable across apps (DIY CSS framework)
+* use Titleize gem more (fix Chrisman Author: Morality: objective, relative or emotive? )
 
 *FEATURES*
 

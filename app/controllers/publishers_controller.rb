@@ -9,13 +9,14 @@ class PublishersController < ApplicationController
   # GET /publishers or /publishers.json
   def index
     respond_to do |format|
-      format.html { }
-      format.turbo_stream { }
+      format.html {}
+      format.turbo_stream {}
     end
   end
 
   # GET /publishers/1 or /publishers/1.json
   def show
+    @publisher_works = @publisher.works.joins(:producers).includes(:producers).order_by_title
   end
 
   # GET /publishers/new

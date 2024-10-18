@@ -3,9 +3,9 @@
   <p><%= @publisher.country_name %></p>
 
   <div class="outline">
-    <b>Books</b> <span class="quantity"><%= @publisher.works_count %></span>
+    <b>Works</b> <span class="quantity"><%= @publisher.works_count %></span>
     <div class="associated-items" class="scrollable">
-      <%= render("shared/alternating_list", collection: @publisher.works.joins(:producers).includes(:producers)) %>
+      <%= render("shared/alternating_list", collection: @publisher_works) %>
     </div>
   </div>
 </div>

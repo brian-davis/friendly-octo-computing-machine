@@ -50,4 +50,15 @@ module WorkSql
     ) AS u
     ORDER BY seq;
   SQL
+
+  FULL_TITLE_SQL = <<~SQL.squish
+    COALESCE(
+      CONCAT_WS(
+        ': ',
+        NULLIF(works.supertitle, ''),
+        NULLIF(works.title, ''),
+        NULLIF(works.subtitle, '')
+      )
+    )
+  SQL
 end

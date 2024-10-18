@@ -495,7 +495,7 @@ class WorkTest < ActiveSupport::TestCase
     assert_equal 1, work.authors.count
   end
 
-  test "sorting is case-insensitive" do
+  test "order_by_title sorting is case-insensitive" do
     w1 = Work.create(title: "asdf")
     w2 = Work.create(title: "Astronomy For Everyone")
     w3 = Work.create(title: "Be Here Now")
@@ -505,6 +505,39 @@ class WorkTest < ActiveSupport::TestCase
     refute_equal expected_refute, result
 
     expected = ["asdf", "Astronomy For Everyone", "Be Here Now"]
+    assert_equal expected, result
+  end
+
+  test "pluck_full_title" do
+    w1 = Work.create(title: "The Fellowship Of The Ring", supertitle: "The Lord Of The Rings")
+    w2 = Work.create(title: "The Two Towers", supertitle: "The Lord Of The Rings")
+    w3 = Work.create(title: "The Return Of The King", supertitle: "The Lord Of The Rings")
+    w4 = Work.create(title: "The Hobbit", subtitle: "Or There And Back Again")
+    w5 = Work.create(title: "The Silmarilion")
+    result = Work.where(id: [w1.id, w2.id, w3.id, w4.id, w5.id]).pluck_full_title.sort
+    expected = ["The Hobbit: Or There And Back Again", "The Lord Of The Rings: The Fellowship Of The Ring", "The Lord Of The Rings: The Return Of The King", "The Lord Of The Rings: The Two Towers", "The Silmarilion"]
+    assert_equal expected, result
+  end
+
+  test "order_by_title includes supertitle, subtitle" do
+    w1 = Work.create(title: "The Fellowship Of The Ring", supertitle: "The Lord Of The Rings")
+    w2 = Work.create(title: "The Two Towers", supertitle: "The Lord Of The Rings")
+    w3 = Work.create(title: "The Return Of The King", supertitle: "The Lord Of The Rings")
+    w4 = Work.create(title: "The Hobbit", subtitle: "Or There And Back Again")
+    w5 = Work.create(title: "The Silmarilion")
+    result = Work.where(id: [w1.id, w2.id, w3.id, w4.id, w5.id]).order_by_title.pluck_full_title
+    expected = ["The Hobbit: Or There And Back Again", "The Lord Of The Rings: The Fellowship Of The Ring", "The Lord Of The Rings: The Return Of The King", "The Lord Of The Rings: The Two Towers", "The Silmarilion"]
+    assert_equal expected, result
+  end
+
+  test "order_by_title includes supertitle, subtitle DESC" do
+    w1 = Work.create(title: "The Fellowship Of The Ring", supertitle: "The Lord Of The Rings")
+    w2 = Work.create(title: "The Two Towers", supertitle: "The Lord Of The Rings")
+    w3 = Work.create(title: "The Return Of The King", supertitle: "The Lord Of The Rings")
+    w4 = Work.create(title: "The Hobbit", subtitle: "Or There And Back Again")
+    w5 = Work.create(title: "The Silmarilion")
+    result = Work.where(id: [w1.id, w2.id, w3.id, w4.id, w5.id]).order_by_title("desc").pluck_full_title
+    expected = ["The Silmarilion", "The Lord Of The Rings: The Two Towers", "The Lord Of The Rings: The Return Of The King", "The Lord Of The Rings: The Fellowship Of The Ring", "The Hobbit: Or There And Back Again"]
     assert_equal expected, result
   end
 
