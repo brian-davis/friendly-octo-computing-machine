@@ -29,7 +29,7 @@ module ApplicationHelper
       .uniq
       .map { |name, value|
         display_text = options[:raw] ? name : name.humanize.titleize.truncate(max_length)
-        param_value = (value || name) # not altered
+        param_value = (value.presence || name) # not altered
         [display_text, param_value]
       }
   end

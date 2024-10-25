@@ -520,7 +520,10 @@ CREATE TABLE public.works (
     interviewer_name character varying,
     media_format character varying,
     media_date date,
-    wishlist boolean DEFAULT false
+    wishlist boolean DEFAULT false,
+    condition integer,
+    cover integer,
+    series_ordinal integer
 );
 
 
@@ -914,6 +917,7 @@ ALTER TABLE ONLY public.works
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241025192411'),
 ('20241016190110'),
 ('20241015205125'),
 ('20241011192903'),

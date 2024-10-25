@@ -288,3 +288,8 @@ p.controller-notice {
 span.dismisser {
   cursor: pointer;
 }
+
+#series-list .div-list-row {
+  /* indent */
+  padding-left: 2rem;
+}

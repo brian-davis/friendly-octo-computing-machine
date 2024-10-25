@@ -34,6 +34,23 @@
         </div>
       <% end %>
 
+      <% if @work.series? %>
+        <div class="small-text" id="series-list">
+          <span>
+            <b>Part of Series</b>: <i><%= @work.series_title %></i>
+          </span>
+          <% @work.series_parts.pluck(:title, :id, :series_ordinal).each do |title, id, ordinal| %>
+            <%= tag.div(**{ class: cycle("div-list-row", "div-list-row alt-row") }) do %>
+              <% if id == @work.id %>
+                <b><%= ordinal %>: <%= title %></b>
+              <% else %>
+                <%= ordinal %>: <%= title %>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      <% end %>
+
       <% if @work.alternate_title.present? %>
         <p class="small-text">
           Also known as <span class="work-title-alt"><%= @work.alternate_title %></span>
@@ -60,6 +77,14 @@
 
       <p class="small-text">
         <b>Language:</b> <%= @work.reference.language_or_translation %>
+      </p>
+
+      <p class="small-text">
+        <b>Cover:</b> <%= @work.cover&.humanize %>
+      </p>
+
+      <p class="small-text">
+        <b>Condition:</b> <%= @work.condition&.humanize %>
       </p>
     </div>
   </details>

@@ -7,6 +7,8 @@
 #  alternate_title     :string
 #  article_date        :date
 #  article_page_span   :string
+#  condition           :integer
+#  cover               :integer
 #  custom_citation     :string
 #  date_of_accession   :date
 #  date_of_completion  :date
@@ -27,6 +29,7 @@
 #  review_author       :string
 #  review_title        :string
 #  searchable          :tsvector
+#  series_ordinal      :integer
 #  subtitle            :string
 #  supertitle          :string
 #  tags                :string           default([]), is an Array

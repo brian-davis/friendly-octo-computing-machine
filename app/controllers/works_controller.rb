@@ -173,6 +173,9 @@ private
     @publishing_format_options = helpers.strict_options(Work.publishing_format_options)
     @tag_options = helpers.strict_options(Work.tag_options)
     @clone_options = helpers.strict_options(Work.clone_options)
+
+    @cover_options = helpers.strict_options(Work.covers.keys) # array, simple enum
+    @condition_options = helpers.strict_options(Work.conditions.keys.reverse) # array, simple enum
   end
 
   # :index
@@ -218,6 +221,9 @@ private
       :date_of_completion,
       :accession_note,
       :wishlist,
+      :cover,
+      :condition,
+      :series_ordinal,
       tags: [],
       publisher_attributes: [
         :name,

@@ -7,6 +7,8 @@
 #  alternate_title     :string
 #  article_date        :date
 #  article_page_span   :string
+#  condition           :integer
+#  cover               :integer
 #  custom_citation     :string
 #  date_of_accession   :date
 #  date_of_completion  :date
@@ -27,6 +29,7 @@
 #  review_author       :string
 #  review_title        :string
 #  searchable          :tsvector
+#  series_ordinal      :integer
 #  subtitle            :string
 #  supertitle          :string
 #  tags                :string           default([]), is an Array
@@ -173,6 +176,9 @@ class Work < ApplicationRecord
     order(Arel.sql("UPPER(#{FULL_TITLE_SQL}) #{dir.upcase}"))
   }
 
+  enum :cover, %i[paperback hardcover large_paperback large_hardcover], prefix: :cover
+  enum :condition, %i[poor fair good very_good excellent mint], prefix: :condition
+
   # postgresql enum
   enum :publishing_format, {
     :book            => "book",
@@ -252,6 +258,28 @@ class Work < ApplicationRecord
 
   def digital_source
     url.presence || online_source
+  end
+
+  def series_title
+    return unless self.series_ordinal.present?
+
+    self.supertitle.presence || self.subtitle.presence
+  end
+
+  def series?
+    self.series_ordinal.present? && self.series_title.present?
+  end
+
+  def series_parts
+    return self.class.none unless self.series?
+
+    search_term = if self.supertitle.present?
+                    { supertitle: self.supertitle }
+                  elsif self.subtitle.present?
+                    { subtitle: self.subtitle }
+                  end
+
+    self.class.where(search_term).order(:series_ordinal)
   end
 
   private

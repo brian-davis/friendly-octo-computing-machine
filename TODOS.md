@@ -28,3 +28,4 @@ exclude coverage from vscode search results
 * add hardback/paperback, condition
 * add wishlist checkbox
 * flipper enable various work types (after further development)
+* imprint, place of publication, edition

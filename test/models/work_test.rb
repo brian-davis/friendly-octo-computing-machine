@@ -7,6 +7,8 @@
 #  alternate_title     :string
 #  article_date        :date
 #  article_page_span   :string
+#  condition           :integer
+#  cover               :integer
 #  custom_citation     :string
 #  date_of_accession   :date
 #  date_of_completion  :date
@@ -27,6 +29,7 @@
 #  review_author       :string
 #  review_title        :string
 #  searchable          :tsvector
+#  series_ordinal      :integer
 #  subtitle            :string
 #  supertitle          :string
 #  tags                :string           default([]), is an Array
@@ -508,41 +511,97 @@ class WorkTest < ActiveSupport::TestCase
     assert_equal expected, result
   end
 
+  def tolkien1
+    @tolkien1 ||= Work.create({
+      title: "The Fellowship Of The Ring",
+      supertitle: "The Lord Of The Rings",
+      series_ordinal: 1
+    })
+  end
+
+  def tolkien2
+    @tolkien2 ||= Work.create({
+      title: "The Two Towers",
+      supertitle: "The Lord Of The Rings",
+      series_ordinal: 2
+    })
+  end
+
+  def tolkien3
+    @tolkien3 ||= Work.create({
+      title: "The Return Of The King",
+      supertitle: "The Lord Of The Rings",
+      series_ordinal: 3
+    })
+  end
+
+  def tolkien4
+    @tolkien4 ||= Work.create({
+      title: "The Hobbit", subtitle: "Or There And Back Again"
+    })
+  end
+
+  def tolkien5
+    @tolkien5 ||= Work.create({
+      title: "The Silmarilion"
+    })
+  end
+
+  def tolkien_work_ids
+    [tolkien1.id, tolkien2.id, tolkien3.id, tolkien4.id, tolkien5.id]
+  end
+
+  test "series_parts" do
+    assert tolkien_work_ids # build data
+    output = tolkien1.series_parts.pluck_full_title
+    # ordered by series_ordinal
+    expected = ["The Lord Of The Rings: The Fellowship Of The Ring", "The Lord Of The Rings: The Two Towers", "The Lord Of The Rings: The Return Of The King"]
+
+    assert_equal expected, output
+  end
+
+  test "series_parts by subtitle" do
+    # like Oxford VSI series
+    w2 = Work.create(title: "Topic Two", subtitle: "A Very Short Introduction", series_ordinal: 345)
+    w1 = Work.create(title: "Topic One", subtitle: "A Very Short Introduction", series_ordinal: 123)
+
+    output = w1.series_parts.pluck_full_title
+    # ordered by series_ordinal
+    expected = [w1.reference.full_title, w2.reference.full_title]
+
+    assert_equal expected, output
+  end
+
   test "pluck_full_title" do
-    w1 = Work.create(title: "The Fellowship Of The Ring", supertitle: "The Lord Of The Rings")
-    w2 = Work.create(title: "The Two Towers", supertitle: "The Lord Of The Rings")
-    w3 = Work.create(title: "The Return Of The King", supertitle: "The Lord Of The Rings")
-    w4 = Work.create(title: "The Hobbit", subtitle: "Or There And Back Again")
-    w5 = Work.create(title: "The Silmarilion")
-    result = Work.where(id: [w1.id, w2.id, w3.id, w4.id, w5.id]).pluck_full_title.sort
+    result = Work.where(id: tolkien_work_ids).pluck_full_title.sort
     expected = ["The Hobbit: Or There And Back Again", "The Lord Of The Rings: The Fellowship Of The Ring", "The Lord Of The Rings: The Return Of The King", "The Lord Of The Rings: The Two Towers", "The Silmarilion"]
     assert_equal expected, result
   end
 
   test "order_by_title includes supertitle, subtitle" do
-    w1 = Work.create(title: "The Fellowship Of The Ring", supertitle: "The Lord Of The Rings")
-    w2 = Work.create(title: "The Two Towers", supertitle: "The Lord Of The Rings")
-    w3 = Work.create(title: "The Return Of The King", supertitle: "The Lord Of The Rings")
-    w4 = Work.create(title: "The Hobbit", subtitle: "Or There And Back Again")
-    w5 = Work.create(title: "The Silmarilion")
-    result = Work.where(id: [w1.id, w2.id, w3.id, w4.id, w5.id]).order_by_title.pluck_full_title
+    w1 = tolkien1
+    w2 = tolkien2
+    w3 = tolkien3
+    w4 = tolkien4
+    w5 = tolkien5
+    result = Work.where(id: tolkien_work_ids).order_by_title.pluck_full_title
     expected = ["The Hobbit: Or There And Back Again", "The Lord Of The Rings: The Fellowship Of The Ring", "The Lord Of The Rings: The Return Of The King", "The Lord Of The Rings: The Two Towers", "The Silmarilion"]
     assert_equal expected, result
   end
 
   test "order_by_title includes supertitle, subtitle DESC" do
-    w1 = Work.create(title: "The Fellowship Of The Ring", supertitle: "The Lord Of The Rings")
-    w2 = Work.create(title: "The Two Towers", supertitle: "The Lord Of The Rings")
-    w3 = Work.create(title: "The Return Of The King", supertitle: "The Lord Of The Rings")
-    w4 = Work.create(title: "The Hobbit", subtitle: "Or There And Back Again")
-    w5 = Work.create(title: "The Silmarilion")
-    result = Work.where(id: [w1.id, w2.id, w3.id, w4.id, w5.id]).order_by_title("desc").pluck_full_title
+    w1 = tolkien1
+    w2 = tolkien2
+    w3 = tolkien3
+    w4 = tolkien4
+    w5 = tolkien5
+    result = Work.where(id: tolkien_work_ids).order_by_title("desc").pluck_full_title
     expected = ["The Silmarilion", "The Lord Of The Rings: The Two Towers", "The Lord Of The Rings: The Return Of The King", "The Lord Of The Rings: The Fellowship Of The Ring", "The Hobbit: Or There And Back Again"]
     assert_equal expected, result
   end
 
   test "extended_tags_cloud" do
-    subjects = [
+    _subjects = [
       fixture_works_asterix_le_gaulois,
       fixture_works_meet_me_in_atlantis,
       fixture_works_philosophy_for_everyone
@@ -580,5 +639,41 @@ class WorkTest < ActiveSupport::TestCase
 
     refute w1.in?(Work.wishlist) # queries wishlist column
     assert w2.in?(Work.wishlist) # queries wishlist column
+  end
+
+  test "cover enum" do
+    expected = {"paperback"=>0, "hardcover"=>1, "large_paperback"=>2, "large_hardcover"=>3}
+    output = Work.covers
+    assert_equal expected, output
+  end
+
+  test "cover enum setter" do
+    w1 = Work.create(title: "A Paperback Book", cover: :paperback)
+    assert w1.cover_paperback?
+    assert_equal "paperback", w1.cover
+    assert w1.in?(Work.cover_paperback)
+
+    w1.cover_large_paperback!
+    assert w1.cover_large_paperback?
+    assert_equal "large_paperback", w1.cover
+    assert w1.in?(Work.cover_large_paperback)
+  end
+
+  test "condition enum" do
+    expected = {"poor"=>0, "fair"=>1, "good"=>2, "very_good"=>3, "excellent"=>4, "mint"=>5}
+    output = Work.conditions
+    assert_equal expected, output
+  end
+
+  test "condition enum setter" do
+    w1 = Work.create(title: "An Excellent Book", condition: :excellent)
+    assert w1.condition_excellent?
+    assert_equal "excellent", w1.condition
+    assert w1.in?(Work.condition_excellent)
+
+    w1.condition_very_good!
+    assert w1.condition_very_good?
+    assert_equal "very_good", w1.condition
+    assert w1.in?(Work.condition_very_good)
   end
 end

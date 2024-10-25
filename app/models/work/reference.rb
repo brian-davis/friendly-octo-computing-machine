@@ -36,7 +36,7 @@ class Work::Reference < ActiveRecord::AssociatedObject
     end
   end
 
-  def long_title
+  alias_method :full_title, def long_title
     @long_title ||= begin
       parts = [
         work.supertitle,

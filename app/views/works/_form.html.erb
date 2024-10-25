@@ -22,7 +22,7 @@
         "clone_work",
         options_for_select(@clone_options),
         {
-          include_blank: "Select Work",
+          include_blank: "-- Select Source --",
           class: "select-button",
           data: {
             action: "change->works#cloneWork"
@@ -77,6 +77,9 @@
   <%= form.label :foreign_title %>
   <%= form.text_field :foreign_title %>
 
+  <%= form.label :series_ordinal %>
+  <%= form.number_field :series_ordinal %>
+
   <%= form.label :year_of_composition %>
   <%= form.number_field(:year_of_composition) %>
 
@@ -85,6 +88,44 @@
 
   <%= form.label :custom_citation, "Custom Citation (Markdown)", class: "small-text" %>
   <%= form.text_field :custom_citation %>
+
+  <%# dropdowns %>
+
+  <%= form.label :cover %>
+  <%=
+    form.select(
+      :cover,
+      options_for_select(
+        @cover_options,
+        @work.cover
+      ),
+      {
+        include_blank: "-- Select Cover --"
+      },
+      {
+        # data: { action: "change->works#selectPublishingFormat" },
+        # class: "dynamic-select"
+      }
+    )
+  %>
+
+  <%= form.label :condition %>
+  <%=
+    form.select(
+      :condition,
+      options_for_select(
+        @condition_options,
+        @work.condition
+      ),
+      {
+        include_blank: "-- Select Condition --"
+      },
+      {
+        # data: { action: "change->works#selectPublishingFormat" },
+        # class: "dynamic-select"
+      }
+    )
+  %>
 
   <%= form.label :language %>
   <%= form.text_field :language, { list: "work_languages_datalist" } %>
@@ -157,7 +198,19 @@
     <%= link_to(build_publisher_works_path(work_id: @work.try(:id)), class: "link-button", data: { turbo_stream: true }) do %>
           New Publisher &nbsp;+
         <% end %>
-    <%= select_tag("publishers", options_for_select(@publisher_options), { include_blank: "Select Publisher", class: "select-button", data: { action: "change->works#selectPublisher" }}) %>
+    <%=
+      select_tag(
+        "publishers",
+        options_for_select(@publisher_options),
+        {
+          include_blank: "-- Select Publisher --",
+          class: "select-button",
+          data: {
+            action: "change->works#selectPublisher"
+          }
+        }
+      )
+    %>
   </div>
 
   <div class="subFormListSection" id="sub_form_list_publisher" data-controller="dismissable">
@@ -198,7 +251,19 @@
     <%= link_to(build_producer_works_path(work_id: @work.try(:id)), class: "link-button", data: { turbo_stream: true }) do %>
           New Author &nbsp;+
     <% end %>
-    <%= select_tag("authors", options_for_select(@producer_options), { include_blank: "Select Author", class: "select-button", data: { action: "change->works#selectProducer" }}) %>
+    <%=
+      select_tag(
+        "authors",
+        options_for_select(@producer_options),
+        {
+          include_blank: "-- Select Author --",
+          class: "select-button",
+          data: {
+            action: "change->works#selectProducer"
+          }
+        }
+      )
+    %>
   </div>
 
   <div id="sub_form_list_producers" data-controller="dismissable">
@@ -244,7 +309,19 @@
     <%= link_to(build_tag_works_path(work_id: @work.try(:id)), class: "link-button", data: { turbo_stream: true }) do %>
       New Tag &nbsp;+
     <% end %>
-    <%= select_tag("tags", options_for_select(@tag_options), { include_blank: "Select Tag", class: "select-button", data: { action: "change->works#selectTag" }}) %>
+    <%=
+      select_tag(
+        "tags",
+        options_for_select(@tag_options),
+        {
+          include_blank: "-- Select Tag --",
+          class: "select-button",
+          data: {
+            action: "change->works#selectTag"
+          }
+        }
+      )
+    %>
   </div>
 
   <div id="sub_form_list_tags" data-controller="dismissable">
@@ -288,7 +365,7 @@
         "parent_work",
         options_for_select(@parent_options),
         {
-          include_blank: "Select Parent Work",
+          include_blank: "-- Select Parent Work --",
           class: "select-button",
           data: {
             action: "change->works#selectParent"
