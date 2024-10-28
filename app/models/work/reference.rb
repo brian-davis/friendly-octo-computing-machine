@@ -83,8 +83,8 @@ class Work::Reference < ActiveRecord::AssociatedObject
   # TODO: DRY with alpha_producer_names
   def byline(options = {})
     @byline ||= begin
-      author_names = work.authors.pluck_last_name.presence ||
-        work.producers.pluck_last_name
+      author_names = work.authors.pluck_last_name.compact.presence ||
+        work.producers.pluck_last_name.compact
 
       return if author_names.empty?
       author_names = author_names.to_sentence

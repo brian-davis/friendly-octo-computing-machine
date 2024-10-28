@@ -293,3 +293,7 @@ span.dismisser {
   /* indent */
   padding-left: 2rem;
 }
+
+.work-wishlist {
+  color: var(--color-dark-beige);
+}

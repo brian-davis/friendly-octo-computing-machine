@@ -14,6 +14,7 @@ exclude coverage from vscode search results
 * user-scoped authorization, allow for multiple users/libraries
 * fix: partial n+1 on works index, fix other n + 1 (without Bullet)
 
+
 *FRONT END*
 
 * mobile-friendly views
@@ -25,7 +26,6 @@ exclude coverage from vscode search results
 
 * producer bio/links
 * add more attributes fields to subforms
-* add hardback/paperback, condition
 * add wishlist checkbox
 * flipper enable various work types (after further development)
 * imprint, place of publication, edition

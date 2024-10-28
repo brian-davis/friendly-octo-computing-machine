@@ -1,8 +1,13 @@
 <div id="<%= dom_id work %>">
-  <% row_class = work.publishing_format_book? ? "work-title-std" : "work-title-alt" %>
   <% if @children %>
     <%= work.publishing_format.humanize %>:
   <% end %>
+  <%
+    row_class = [
+      (work.publishing_format_book? ? "work-title-std" : "work-title-alt"),
+      (work.wishlist? ? "work-wishlist" : "work-collection")
+    ]
+  %>
   <%= tag.span(class: row_class) do %>
     <%= work.reference.full_title_line %>
   <% end %>
