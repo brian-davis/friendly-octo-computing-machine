@@ -84,6 +84,7 @@ form.table-form {
     color: var(--color-dark-green);
     border-color: var(--color-dark-green);
     font-weight: 600;
+    cursor: pointer;
   }
 
   form.table-form .correct-width {
