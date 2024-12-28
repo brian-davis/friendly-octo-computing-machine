@@ -1,4 +1,4 @@
-require_relative("../test/factory_helper")
+require_relative("../test/_factories/factory_helper")
 
 class Seeder
   include FactoryHelper

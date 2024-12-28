@@ -33,12 +33,13 @@
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
+/config/credentials/development.key
+/config/credentials/production.key
+/config/credentials/test.key
+
 coverage
 
 /_dev/*
 
-/config/credentials/development.key
 
-/config/credentials/production.key
 
-/config/credentials/test.key
